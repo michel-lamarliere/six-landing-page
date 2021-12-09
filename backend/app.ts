@@ -1,21 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-const app = express();
+const { MongoClient } = require('mongodb');
 
-const USERS: {
-	name: string;
-	email: string;
-}[] = [
-	{
-		name: 'Michel',
-		email: 'michel@test.com',
-	},
-	{
-		name: 'Enola',
-		email: 'enola@test.com',
-	},
-];
+const userRoutes = require('./routes/users-routes');
+
+const app = express();
 
 app.use('/', bodyParser.json());
 
@@ -30,26 +20,23 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.post('/api/login', (req, res, next) => {
-	const { email, password } = req.body;
-
-	res.json({ email, password });
-});
-
-app.post('/api/signup', (req, res, next) => {
-	const { name, email } = req.body;
-	USERS.push({ name, email });
-
-	res.json({ name, email });
-	console.log(USERS);
-});
-
-app.get('/api/users/', async (req, res, next) => {
-	console.log(USERS);
-	let users = await USERS.map((user) => user);
-	res.json({ users });
-});
+app.use('/api/users', userRoutes);
 
 app.listen(8080, () => {
 	console.log('listening on port 8080');
 });
+
+const uri =
+	'mongodb+srv://michel:OJzkF3ALZkZeAoWh@cluster0.oy9ya.mongodb.net/test?retryWrites=true&w=majority';
+const client = new MongoClient(uri);
+
+const runServer = async () => {
+	try {
+		await client.connect();
+		const database = client.db('insertDB');
+		const haiku = database.collection('haiku');
+	} finally {
+		await client.close();
+	}
+};
+runServer();

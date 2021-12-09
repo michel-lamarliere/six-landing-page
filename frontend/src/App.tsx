@@ -8,7 +8,7 @@ const App: React.FC = () => {
 	const [users, setUsers] = useState([]);
 
 	const requestFn = async () => {
-		const response = await fetch('http://localhost:8080/api/users', {
+		const response = await fetch('http://localhost:8080/api/users/', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',

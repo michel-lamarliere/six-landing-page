@@ -1,151 +1,92 @@
 import React, { FormEvent, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
+
+import { useInput } from '../../hooks/useInput';
+import FormInput from '../FormElements/FormInput';
+
 import classes from './Navigation.module.scss';
 
 const Header: React.FC = () => {
-	const [loginForm, setLoginForm] = useState(false);
-	const [signUpForm, setSignUpForm] = useState(false);
+	const {
+		input: nameInput,
+		setInput: setNameInput,
+		inputOnChangeHandler: nameOnChangeHander,
+	} = useInput();
+	const {
+		input: emailInput,
+		setInput: setEmailInput,
+		inputOnChangeHandler: emailOnChangeHander,
+	} = useInput();
 
-	const [loginFormInputs, setLoginFormInputs] = useState({
-		name: '',
-		email: '',
-	});
+	const {
+		input: passwordInput,
+		setInput: setPasswordInput,
+		inputOnChangeHandler: passwordOnChangeHander,
+	} = useInput();
 
-	const [signupFormInputs, setSignupFormInputs] = useState({
-		name: '',
-		email: '',
-	});
-
-	const loginNameRef = useRef<HTMLInputElement | null>(null);
-	const loginEmailRef = useRef<null | HTMLInputElement>(null);
-
-	const signupNameRef = useRef<HTMLInputElement | null>(null);
-	const signupEmailRef = useRef<null | HTMLInputElement>(null);
-
-	const loginBtnHandler = () => {
-		setSignUpForm(false);
-		setLoginForm(true);
-	};
+	const [loginMode, setLoginMode] = useState(false);
 
 	const signUpBtnHandler = () => {
-		setLoginForm(false);
-		setSignUpForm(true);
+		setLoginMode((prev) => !prev);
 	};
 
-	const loginPasswordOnChangeHandler = () => {
-		if (loginNameRef.current !== null) {
-			setLoginFormInputs((prev) => ({
-				...prev,
-				name: loginNameRef.current!.value,
-			}));
-		}
-	};
-
-	const loginEmailOnChangeHandler = () => {
-		if (loginEmailRef.current !== null) {
-			setLoginFormInputs((prev) => ({
-				...prev,
-				email: loginEmailRef.current!.value,
-			}));
-		}
-	};
-
-	const signUpPasswordOnChangeHandler = () => {
-		if (signupNameRef.current !== null) {
-			setSignupFormInputs((prev) => ({
-				...prev,
-				name: signupNameRef.current!.value,
-			}));
-		}
-	};
-
-	const signUpEmailOnChangeHandler = () => {
-		if (signupEmailRef.current !== null) {
-			setSignupFormInputs((prev) => ({
-				...prev,
-				email: signupEmailRef.current!.value,
-			}));
-		}
-	};
-	const loginFormHandler = (event: FormEvent) => {
-		event.preventDefault();
-		fetch('http://localhost:8080/api/login', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				name: loginFormInputs.name,
-				email: loginFormInputs.email,
-			}),
-		});
+	const resetFormInputs = () => {
+		setNameInput('');
+		setEmailInput('');
+		setPasswordInput('');
 	};
 
 	const signupFormHandler = (event: FormEvent) => {
 		event.preventDefault();
-		fetch('http://localhost:8080/api/signup', {
+		fetch('http://localhost:8080/api/users/signup', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
-				name: signupFormInputs.name,
-				email: signupFormInputs.email,
+				id: Math.random(),
+				name: nameInput,
+				email: emailInput,
+				password: passwordInput,
 			}),
 		});
-		setSignupFormInputs({ name: '', email: '' });
+		resetFormInputs();
 	};
 
 	return (
 		<div className={classes.wrapper}>
 			<Link to='/users' />
 			<div className={classes.nav}>
-				<button onClick={loginBtnHandler}>Login</button>
-				<button onClick={signUpBtnHandler}>Sign Up</button>
+				<button onClick={signUpBtnHandler}>
+					{loginMode ? 'Sign Up' : 'Login'}
+				</button>
 			</div>
-			{loginForm && (
-				<form onSubmit={loginFormHandler} className={classes.form}>
-					<label htmlFor='name'>Name</label>
-					<input
-						type='tyep'
-						id='name'
-						ref={loginNameRef}
-						value={loginFormInputs.name}
-						onChange={loginPasswordOnChangeHandler}
-					></input>
-					<label htmlFor='email'>Email</label>
-					<input
+			<form onSubmit={signupFormHandler} className={classes.form}>
+				{!loginMode && (
+					<FormInput
+						id='Name'
 						type='text'
-						id='email'
-						ref={loginEmailRef}
-						value={loginFormInputs.email}
-						onChange={loginEmailOnChangeHandler}
-					></input>
-
-					<button>Send</button>
-				</form>
-			)}
-			{signUpForm && (
-				<form onSubmit={signupFormHandler} className={classes.form}>
-					<label htmlFor='name'>Name</label>
-					<input
-						type='text'
-						id='name'
-						value={signupFormInputs.name}
-						ref={signupNameRef}
-						onChange={signUpPasswordOnChangeHandler}
-					></input>
-					<label htmlFor='email'>Email</label>
-					<input
-						type='text'
-						id='email'
-						value={signupFormInputs.email}
-						ref={signupEmailRef}
-						onChange={signUpEmailOnChangeHandler}
-					></input>
-					<button>Send</button>
-				</form>
-			)}
+						placeholder='John'
+						value={nameInput}
+						onChange={nameOnChangeHander}
+					/>
+				)}
+				<FormInput
+					id='Email'
+					type='text'
+					placeholder='example@example.com'
+					value={emailInput}
+					onChange={emailOnChangeHander}
+				/>
+				<FormInput
+					id='password'
+					type='password'
+					placeholder='********'
+					value={passwordInput}
+					onChange={passwordOnChangeHander}
+				/>
+				<button>{loginMode ? 'Login' : 'Sign Up'}</button>
+			</form>
 		</div>
 	);
 };
