@@ -25,18 +25,3 @@ app.use('/api/users', userRoutes);
 app.listen(8080, () => {
 	console.log('listening on port 8080');
 });
-
-const uri =
-	'mongodb+srv://michel:OJzkF3ALZkZeAoWh@cluster0.oy9ya.mongodb.net/test?retryWrites=true&w=majority';
-const client = new MongoClient(uri);
-
-const runServer = async () => {
-	try {
-		await client.connect();
-		const database = client.db('insertDB');
-		const haiku = database.collection('haiku');
-	} finally {
-		await client.close();
-	}
-};
-runServer();
