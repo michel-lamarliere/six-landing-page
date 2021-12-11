@@ -44,7 +44,7 @@ const storeReducer = (state = initialStateReducer, action: Action) => {
 				name: action.name,
 				email: action.email,
 			};
-		case 'LOG_OUT':
+		case LOG_OUT:
 			return {
 				isLoggedIn: false,
 				id: null,

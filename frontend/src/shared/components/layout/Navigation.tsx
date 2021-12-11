@@ -64,9 +64,9 @@ const Header: React.FC = () => {
 		resetFormInputs();
 	};
 
-	const signupFormHandler = (event: FormEvent) => {
+	const signupFormHandler = async (event: FormEvent) => {
 		event.preventDefault();
-		fetch('http://localhost:8080/api/users/signup', {
+		const response = await fetch('http://localhost:8080/api/users/signup', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -77,50 +77,67 @@ const Header: React.FC = () => {
 				password: passwordInput,
 			}),
 		});
+
+		const responseData = await response.json();
+		const { id, name, email } = responseData;
+		dispatch({ type: 'LOG_IN', isLoggedIn: true, id: id, name: name, email: email });
 		resetFormInputs();
+	};
+
+	const logoutBtnHandler = () => {
+		dispatch({ type: 'LOG_OUT' });
 	};
 
 	return (
 		<div className={classes.wrapper}>
 			<Link to='/users' />
 			<div className={classes.nav}>
-				<button onClick={signUpBtnHandler}>
-					{loginMode ? 'Sign Up' : 'Login'}
-				</button>
-			</div>
-			<form
-				onSubmit={loginMode ? loginFormHandler : signupFormHandler}
-				className={classes.form}
-			>
-				{!loginMode && (
-					<FormInput
-						id='Name'
-						type='text'
-						placeholder='John'
-						value={nameInput}
-						onChange={nameOnChangeHander}
-					/>
+				{!userState.isLoggedIn && (
+					<button onClick={signUpBtnHandler}>
+						{loginMode ? 'Sign Up' : 'Log In'}
+					</button>
 				)}
-				<FormInput
-					id='Email'
-					type='text'
-					placeholder='example@example.com'
-					value={emailInput}
-					onChange={emailOnChangeHander}
-				/>
-				<FormInput
-					id='password'
-					type='password'
-					placeholder='********'
-					value={passwordInput}
-					onChange={passwordOnChangeHander}
-				/>
-				<button>{loginMode ? 'Login' : 'Sign Up'}</button>
-				<div>Is Logged In:{userState.isLoggedIn.toString()}</div>
-				<div>Id:{userState.id}</div>
-				<div>Name:{userState.name}</div>
-				<div>Email:{userState.email}</div>
-			</form>
+				{userState.isLoggedIn && (
+					<button onClick={logoutBtnHandler}>
+						{userState.isLoggedIn && 'Log Out'}
+					</button>
+				)}
+			</div>
+			{!userState.isLoggedIn && (
+				<form
+					onSubmit={loginMode ? loginFormHandler : signupFormHandler}
+					className={classes.form}
+				>
+					{!loginMode && (
+						<FormInput
+							id='Name'
+							type='text'
+							placeholder='John'
+							value={nameInput}
+							onChange={nameOnChangeHander}
+						/>
+					)}
+					<FormInput
+						id='Email'
+						type='text'
+						placeholder='example@example.com'
+						value={emailInput}
+						onChange={emailOnChangeHander}
+					/>
+					<FormInput
+						id='password'
+						type='password'
+						placeholder='********'
+						value={passwordInput}
+						onChange={passwordOnChangeHander}
+					/>
+					<button>{loginMode ? 'Login' : 'Sign Up'}</button>
+				</form>
+			)}
+			<div>Is Logged In:{userState.isLoggedIn.toString()}</div>
+			<div>Id:{userState.id}</div>
+			<div>Name:{userState.name}</div>
+			<div>Email:{userState.email}</div>
 		</div>
 	);
 };

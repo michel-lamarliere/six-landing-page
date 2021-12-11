@@ -9,21 +9,37 @@ const signUp: RequestHandler = async (req, res, next) => {
 		'mongodb+srv://michel:OJzkF3ALZkZeAoWh@cluster0.oy9ya.mongodb.net/test?retryWrites=true&w=majority';
 	const client = new MongoClient(uri);
 
+	let id;
 	try {
 		await client.connect();
 		const database = await client.db('six-dev');
 		const testCollection = await database.collection('test');
-		const user = {
+		const newUser = {
 			name,
 			email,
 			password,
 		};
-		const result = await testCollection.insertOne(user);
+		await testCollection.insertOne(newUser);
+
+		console.log(id);
 	} finally {
 		await client.close();
 	}
 
-	res.json({ name, email, password });
+	try {
+		await client.connect();
+		const database = await client.db('six-dev');
+		const testCollection = await database.collection('test');
+		const query = {
+			email,
+		};
+		let user = await testCollection.findOne(query);
+		id = await user._id.toString();
+		console.log(id);
+	} finally {
+		await client.close();
+	}
+	res.json({ id, name, email });
 };
 
 const signIn: RequestHandler = async (req, res, next) => {
