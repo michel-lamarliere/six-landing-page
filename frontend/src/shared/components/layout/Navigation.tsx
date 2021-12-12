@@ -1,5 +1,5 @@
-import React, { FormEvent, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { FormEvent, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useInput } from '../../hooks/useInput';
 import FormInput from '../FormElements/FormInput';
@@ -12,8 +12,7 @@ import type { RootState, AppDispatch } from '../../store/store';
 const Header: React.FC = () => {
 	const userState = useSelector((state: RootState) => state);
 	const dispatch = useDispatch();
-
-	console.log(userState);
+	const navigate = useNavigate();
 
 	const {
 		input: nameInput,
@@ -59,9 +58,10 @@ const Header: React.FC = () => {
 
 		const responseData = await response.json();
 		console.log(responseData);
-		const { id, name, email } = responseData;
-		dispatch({ type: 'LOG_IN', isLoggedIn: true, id: id, name: name, email: email });
+		const { token, id, name, email } = responseData;
+		dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
 		resetFormInputs();
+		navigate(`/${id}/log`);
 	};
 
 	const signupFormHandler = async (event: FormEvent) => {
@@ -79,31 +79,30 @@ const Header: React.FC = () => {
 		});
 
 		const responseData = await response.json();
-		const { id, name, email } = responseData;
-		dispatch({ type: 'LOG_IN', isLoggedIn: true, id: id, name: name, email: email });
+		const { token, id, name, email } = responseData;
+		dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
 		resetFormInputs();
 	};
 
 	const logoutBtnHandler = () => {
 		dispatch({ type: 'LOG_OUT' });
+		navigate('/');
 	};
 
 	return (
 		<div className={classes.wrapper}>
 			<Link to='/users' />
 			<div className={classes.nav}>
-				{!userState.isLoggedIn && (
+				{userState.token === null && (
 					<button onClick={signUpBtnHandler}>
-						{loginMode ? 'Sign Up' : 'Log In'}
+						{loginMode ? 'Switch to Sign Up' : 'Switch to Log In'}
 					</button>
 				)}
-				{userState.isLoggedIn && (
-					<button onClick={logoutBtnHandler}>
-						{userState.isLoggedIn && 'Log Out'}
-					</button>
+				{userState.token !== null && (
+					<button onClick={logoutBtnHandler}>Log Out</button>
 				)}
 			</div>
-			{!userState.isLoggedIn && (
+			{userState.token === null && (
 				<form
 					onSubmit={loginMode ? loginFormHandler : signupFormHandler}
 					className={classes.form}
@@ -134,7 +133,7 @@ const Header: React.FC = () => {
 					<button>{loginMode ? 'Login' : 'Sign Up'}</button>
 				</form>
 			)}
-			<div>Is Logged In:{userState.isLoggedIn.toString()}</div>
+			<div>token:{userState.token}</div>
 			<div>Id:{userState.id}</div>
 			<div>Name:{userState.name}</div>
 			<div>Email:{userState.email}</div>

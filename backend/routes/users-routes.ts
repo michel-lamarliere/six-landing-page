@@ -1,5 +1,4 @@
 import { Router } from 'express';
-const { MongoClient } = require('mongodb');
 
 const usersController = require('../controllers/users-controllers');
 

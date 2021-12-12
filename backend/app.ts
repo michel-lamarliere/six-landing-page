@@ -1,9 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-const { MongoClient } = require('mongodb');
-
 const userRoutes = require('./routes/users-routes');
+const logsRoutes = require('./routes/logs-routes');
 
 const app = express();
 
@@ -21,6 +20,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/users', userRoutes);
+app.use('/api/logs', logsRoutes);
 
 app.listen(8080, () => {
 	console.log('listening on port 8080');

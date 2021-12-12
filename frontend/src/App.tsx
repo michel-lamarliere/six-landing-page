@@ -1,6 +1,8 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
+
+import Log from './log/pages/Log';
 
 import store from './shared/store/store';
 
@@ -11,6 +13,9 @@ const App: React.FC = () => {
 		<Provider store={store}>
 			<BrowserRouter>
 				<Navigation />
+				<Routes>
+					<Route path='/:userId/log' element={<Log />} />
+				</Routes>
 			</BrowserRouter>
 		</Provider>
 	);

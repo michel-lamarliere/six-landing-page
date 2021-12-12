@@ -1,11 +1,13 @@
 import { RequestHandler } from 'express';
-import bcrypt from 'bcrypt';
+const jwt = require('jsonwebtoken');
 
+const bcrypt = require('bcrypt');
 const { MongoClient } = require('mongodb');
 
 const signUp: RequestHandler = async (req, res, next) => {
 	const { name, email, password } = await req.body;
 
+	// HASHING PASSWORD
 	let hashedPassword;
 	try {
 		hashedPassword = await bcrypt.hash(password, 12);
@@ -17,21 +19,23 @@ const signUp: RequestHandler = async (req, res, next) => {
 		name,
 		email,
 		password: hashedPassword,
+		log: {},
 	};
 
-	const uri =
-		'mongodb+srv://michel:OJzkF3ALZkZeAoWh@cluster0.oy9ya.mongodb.net/test?retryWrites=true&w=majority';
-	const client = new MongoClient(uri);
+	const client = new MongoClient(process.env.SERVER_URI);
 
 	// CHECKS IF EMAIL ADDRESS IS ALREADY IN USE
 	try {
 		await client.connect();
 		const database = await client.db('six-dev');
 		const testCollection = await database.collection('test');
+
 		const query = {
 			email,
 		};
+
 		let user = await testCollection.findOne(query);
+
 		if (user) {
 			console.log('email address already exists, please log in');
 			return;
@@ -53,60 +57,82 @@ const signUp: RequestHandler = async (req, res, next) => {
 
 	// LOGS IN NEW USER
 	let id;
+	await client.connect();
+	const database = await client.db('six-dev');
+	const testCollection = await database.collection('test');
+	const query = {
+		email,
+	};
+	let user = await testCollection.findOne(query);
+	id = await user._id.toString();
+
+	// CREATES TOKEN
+	let token;
 	try {
-		await client.connect();
-		const database = await client.db('six-dev');
-		const testCollection = await database.collection('test');
-		const query = {
-			email,
-		};
-		let user = await testCollection.findOne(query);
-		id = await user._id.toString();
-	} finally {
-		await client.close();
+		token = await jwt.sign({ id: id, email: email }, 'je-mange-du-pain-blanc-enola', {
+			expiresIn: '1h',
+		});
+	} catch (error) {
+		console.log(error);
 	}
 
-	res.json({ id, name, email });
+	res.json({ token, id, name, email });
+	await client.close();
 };
 
 const signIn: RequestHandler = async (req, res, next) => {
 	const { email, password } = req.body;
 
-	const uri =
-		'mongodb+srv://michel:OJzkF3ALZkZeAoWh@cluster0.oy9ya.mongodb.net/test?retryWrites=true&w=majority';
-	const client = new MongoClient(uri);
+	const client = new MongoClient(process.env.SERVER_URI);
 
-	let foundUser;
+	let existingUser;
+	let token;
+
+	// CONNECTING TO DB
+	await client.connect();
+	const database = await client.db('six-dev');
+	const testCollection = await database.collection('test');
+
+	// FINDING USER
+	const query = {
+		email,
+	};
+	const result = await testCollection.findOne(query);
+	let samePasswords = false;
+	// COMPARING ENTERED PASSWORD AND HASHED PASSWORD
 	try {
-		await client.connect();
-		const database = await client.db('six-dev');
-		const testCollection = await database.collection('test');
-		const query = {
-			email,
-		};
-		const result = await testCollection.findOne(query);
-		let samePasswords = false;
-		try {
-			samePasswords = await bcrypt.compare(password, result.password);
-		} catch (error) {
-			return;
-		}
-		if (samePasswords) {
-			console.log('logged in');
-			foundUser = {
-				id: result._id.toString(),
-				name: result.name,
-				email: email,
-			};
-		} else {
-			console.log('wrong credentials');
-			return;
-		}
-	} finally {
-		await client.close();
+		samePasswords = await bcrypt.compare(password, result.password);
+	} catch (error) {
+		throw new Error('Something went wrong when comparing password');
 	}
 
-	res.json(foundUser);
+	if (samePasswords) {
+		console.log('logged in');
+		existingUser = {
+			id: result._id.toString(),
+			name: result.name,
+			email: email,
+		};
+	} else {
+		throw new Error('Incorrect password, please try again.');
+	}
+
+	token = await jwt.sign(
+		{ userId: existingUser.id, email: existingUser.email },
+		'je-mange-du-pain-blanc-enola',
+		{
+			expiresIn: '1h',
+		}
+	);
+
+	res.json({
+		token: token,
+		id: existingUser.id,
+		name: existingUser.name,
+		email: existingUser.email,
+	});
+
+	await client.close();
 };
 
 exports.signUp = signUp;
