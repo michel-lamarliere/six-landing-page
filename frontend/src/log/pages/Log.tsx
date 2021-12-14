@@ -1,43 +1,67 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import { getWeek, startOfWeek, addDays } from 'date-fns';
+import React, { useEffect } from 'react';
+import { getISOWeek, startOfWeek, lastDayOfWeek, addDays } from 'date-fns';
 import classes from './Log.module.scss';
 
 import WeekView from '../components/WeekView';
+import { useSelector } from 'react-redux';
+
+import { RootState } from '../../shared/store/store';
 
 const Log: React.FC = () => {
-	const userId = useParams().userId;
-
+	const userState = useSelector((state: RootState) => state);
 	const currentDate = new Date();
-	const modifiedDate = addDays(currentDate, 0);
+	const modifiedDate = addDays(currentDate, -1);
+
 	console.log({ currentDate });
 
 	const currentDay = currentDate.getDay();
 	console.log({ currentDay });
 
-	const weekNumber = getWeek(modifiedDate, {
-		weekStartsOn: 1,
-		firstWeekContainsDate: 4,
-	});
+	const weekNumber = getISOWeek(modifiedDate);
 	console.log({ weekNumber });
 
-	let firstDayOfWeek = startOfWeek(currentDate, { weekStartsOn: 1 });
-	console.log({ firstDayOfWeek });
+	let firstOfWeek = startOfWeek(currentDate, { weekStartsOn: 1 });
+	let lastOfWeek = lastDayOfWeek(currentDate, { weekStartsOn: 1 });
+
+	let firstOfWeekISO = startOfWeek(currentDate, { weekStartsOn: 1 })
+		.toISOString()
+		.slice(0, 10);
+	let lastOfWeekISO = lastDayOfWeek(currentDate, { weekStartsOn: 1 })
+		.toISOString()
+		.slice(0, 10);
+	console.log({ firstOfWeek });
+	console.log({ lastOfWeek });
+
+	const calendarView = () => {
+		fetch('/api/log/weekly', {
+			method: 'GET',
+			body: JSON.stringify({
+				email: userState.email,
+				startDate: firstOfWeekISO,
+				endDate: lastOfWeekISO,
+			}),
+		});
+	};
+
+	useEffect(() => {}, []);
 
 	return (
 		<div className={classes.wrapper}>
-			<h1>Log {userId}</h1>
-			<button>Choose view</button>
-			<WeekView
-				weekNumber={weekNumber}
-				monday={firstDayOfWeek.getDate()}
-				tuesday={addDays(firstDayOfWeek, 1).getDate()}
-				wednesday={addDays(firstDayOfWeek, 2).getDate()}
-				thursday={addDays(firstDayOfWeek, 3).getDate()}
-				friday={addDays(firstDayOfWeek, 4).getDate()}
-				saturday={addDays(firstDayOfWeek, 5).getDate()}
-				sunday={addDays(firstDayOfWeek, 6).getDate()}
-			/>
+			{userState.id && (
+				<>
+					<h1>Journal | Vue Semaine</h1>
+					<WeekView
+						weekNumber={weekNumber}
+						monday={firstOfWeek.getDate()}
+						tuesday={addDays(firstOfWeek, 1).getDate()}
+						wednesday={addDays(firstOfWeek, 2).getDate()}
+						thursday={addDays(firstOfWeek, 3).getDate()}
+						friday={addDays(firstOfWeek, 4).getDate()}
+						saturday={addDays(firstOfWeek, 5).getDate()}
+						sunday={addDays(firstOfWeek, 6).getDate()}
+					/>
+				</>
+			)}
 		</div>
 	);
 };

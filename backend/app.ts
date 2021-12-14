@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction } from 'express';
 import bodyParser from 'body-parser';
 
 const userRoutes = require('./routes/users-routes');
@@ -25,3 +25,15 @@ app.use('/api/logs', logsRoutes);
 app.listen(8080, () => {
 	console.log('listening on port 8080');
 });
+
+// ERROR HANDLING: RETURN IN JSON FORMAT
+app.use(
+	(
+		error: { message: string },
+		req: express.Request,
+		res: express.Response,
+		next: express.NextFunction
+	) => {
+		res.json({ message: error.message });
+	}
+);

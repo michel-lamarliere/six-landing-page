@@ -76,6 +76,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 		console.log(error);
 	}
 
+	// END
 	res.json({ token, id, name, email });
 	await client.close();
 };
@@ -125,13 +126,13 @@ const signIn: RequestHandler = async (req, res, next) => {
 		}
 	);
 
+	// END
 	res.json({
 		token: token,
 		id: existingUser.id,
 		name: existingUser.name,
 		email: existingUser.email,
 	});
-
 	await client.close();
 };
 

@@ -4,6 +4,8 @@ const logsControllers = require('../controllers/logs-controllers');
 
 const router = Router();
 
-router.post('/:userId/:date/:six', logsControllers.addData);
+router.get('/weekly', logsControllers.getWeekly);
+
+router.post('/six', logsControllers.addData);
 
 module.exports = router;

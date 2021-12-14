@@ -61,7 +61,7 @@ const Header: React.FC = () => {
 		const { token, id, name, email } = responseData;
 		dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
 		resetFormInputs();
-		navigate(`/${id}/log`);
+		navigate(`/log/weekly`);
 	};
 
 	const signupFormHandler = async (event: FormEvent) => {
@@ -82,6 +82,7 @@ const Header: React.FC = () => {
 		const { token, id, name, email } = responseData;
 		dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
 		resetFormInputs();
+		navigate(`/log/weekly`);
 	};
 
 	const logoutBtnHandler = () => {
@@ -95,11 +96,11 @@ const Header: React.FC = () => {
 			<div className={classes.nav}>
 				{userState.token === null && (
 					<button onClick={signUpBtnHandler}>
-						{loginMode ? 'Switch to Sign Up' : 'Switch to Log In'}
+						Basculer sur {loginMode ? "s'inscrire" : 'se connecter'}
 					</button>
 				)}
 				{userState.token !== null && (
-					<button onClick={logoutBtnHandler}>Log Out</button>
+					<button onClick={logoutBtnHandler}>Se déconnecter</button>
 				)}
 			</div>
 			{userState.token === null && (
@@ -109,7 +110,7 @@ const Header: React.FC = () => {
 				>
 					{!loginMode && (
 						<FormInput
-							id='Name'
+							id='Nom'
 							type='text'
 							placeholder='John'
 							value={nameInput}
@@ -124,18 +125,18 @@ const Header: React.FC = () => {
 						onChange={emailOnChangeHander}
 					/>
 					<FormInput
-						id='password'
+						id='mot de passe'
 						type='password'
 						placeholder='********'
 						value={passwordInput}
 						onChange={passwordOnChangeHander}
 					/>
-					<button>{loginMode ? 'Login' : 'Sign Up'}</button>
+					<button>{loginMode ? 'Connexion' : 'Inscription'}</button>
 				</form>
 			)}
 			<div>token:{userState.token}</div>
-			<div>Id:{userState.id}</div>
-			<div>Name:{userState.name}</div>
+			<div>id:{userState.id}</div>
+			<div>Nom:{userState.name}</div>
 			<div>Email:{userState.email}</div>
 		</div>
 	);

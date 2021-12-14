@@ -14,7 +14,7 @@ const App: React.FC = () => {
 			<BrowserRouter>
 				<Navigation />
 				<Routes>
-					<Route path='/:userId/log' element={<Log />} />
+					<Route path='/log/weekly' element={<Log />} />
 				</Routes>
 			</BrowserRouter>
 		</Provider>

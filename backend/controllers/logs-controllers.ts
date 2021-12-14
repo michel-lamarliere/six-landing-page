@@ -1,34 +1,92 @@
-import { RequestHandler } from 'express';
+import { log } from 'console';
+import { query, RequestHandler } from 'express';
 const { MongoClient } = require('mongodb');
 
 const addData: RequestHandler = async (req, res, next) => {
-	const { ntoken, ndate, ntask, nlevelOfCompletion } = await req.body;
+	const {
+		userEmail: reqUserEmail,
+		date: reqDate,
+		task: reqTask,
+		levelOfCompletion: reqLevelOfCompletion,
+	} = await req.body;
 
 	const client = new MongoClient(process.env.SERVER_URI);
 
-	// DECODE TOKEN
-	let userEmail = 'michel@test.com';
-	let date = '2021-12-12';
-	let task = 'sleep';
-	let levelOfCompletion = 2;
+	// DB CONNECTION
+	await client.connect();
+	const database = await client.db('six-dev');
+	const testCollection = await database.collection('test');
 
+	// USER QUERY
+	const filter = {
+		email: reqUserEmail,
+	};
+
+	// FINDING THE USER
+	let user;
 	try {
-		await client.connect();
-		const database = await client.db('six-dev');
-		const testCollection = await database.collection('test');
-
-		const query = {
-			email: userEmail,
-		};
-
-		let user = await testCollection.findOne(query);
-
-		let newTask = await testCollection.insertOne();
-	} finally {
-		await client.close();
+		user = await testCollection.findOne(filter);
+		if (user === null) {
+			throw new Error('User not found');
+		}
+	} catch (error) {
+		return next(error);
 	}
 
+	// ADDING THE SIX TO THE USER
+	const update = {
+		$set: {
+			log: [
+				{
+					date: reqDate,
+					six: {
+						[reqTask]: reqLevelOfCompletion,
+					},
+				},
+			],
+		},
+	};
+	await testCollection.update(filter, update, { upsert: true });
+
+	let updatedUser = await testCollection.findOne(filter);
+
+	// END
+	res.json({ message: 'success', updatedUser });
+	await client.close();
+};
+
+const getWeekly: RequestHandler = async (req, res, next) => {
+	const {
+		userEmail: reqUserEmail,
+		startDate: reqStartDate,
+		endDate: reqEndDate,
+	} = await req.body;
+
+	const client = new MongoClient(process.env.SERVER_URI);
+
+	// DB CONNECTION
+	await client.connect();
+	const database = await client.db('six-dev');
+	const testCollection = await database.collection('test');
+
+	const query = {
+		email: reqUserEmail,
+	};
+
+	let user;
+	try {
+		user = testCollection.findOne(query);
+		if (!user) {
+			throw new Error('User not found.');
+		}
+	} catch (error) {
+		next(error);
+	}
+
+	// END
 	res.json({ message: 'success' });
+	await client.close();
 };
 
 exports.addData = addData;
+exports.getWeekly = getWeekly;

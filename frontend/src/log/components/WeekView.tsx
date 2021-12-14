@@ -34,7 +34,7 @@ const WeekView: React.FC<{
 
 	return (
 		<>
-			<h2>This Week: {props.weekNumber}</h2>
+			<h2>Semaine: {props.weekNumber}</h2>
 			<div>
 				<table>
 					<tr>
@@ -48,12 +48,12 @@ const WeekView: React.FC<{
 						<th>Dimanche {props.sunday}</th>
 					</tr>
 
-					<WeekViewButtons header='Sport' onClick={addColor} />
-					<WeekViewButtons header='Sommeil' onClick={addColor} />
 					<WeekViewButtons header='Alimentation' onClick={addColor} />
+					<WeekViewButtons header='Sommeil' onClick={addColor} />
+					<WeekViewButtons header='Activité Physique' onClick={addColor} />
 					<WeekViewButtons header='Détente' onClick={addColor} />
-					<WeekViewButtons header='Travail' onClick={addColor} />
-					<WeekViewButtons header='Social' onClick={addColor} />
+					<WeekViewButtons header='Projets' onClick={addColor} />
+					<WeekViewButtons header='Vie Sociale' onClick={addColor} />
 				</table>
 			</div>
 		</>

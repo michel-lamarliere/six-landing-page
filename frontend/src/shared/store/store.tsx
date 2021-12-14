@@ -25,15 +25,15 @@ interface Action extends State {
 const LOG_IN = 'LOG_IN';
 const LOG_OUT = 'LOG_OUT';
 
-const login = (token: string, id: string, name: string, email: string) => {
-	return {
-		type: LOG_IN,
-		token,
-		id,
-		name,
-		email,
-	};
-};
+// const login = (token: string, id: string, name: string, email: string) => {
+// 	return {
+// 		type: LOG_IN,
+// 		token,
+// 		id,
+// 		name,
+// 		email,
+// 	};
+// };
 
 const storeReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
