@@ -1,5 +1,6 @@
 import express, { NextFunction } from 'express';
 import bodyParser from 'body-parser';
+const database = require('./util/db-connect');
 
 const userRoutes = require('./routes/users-routes');
 const logsRoutes = require('./routes/logs-routes');
@@ -23,6 +24,9 @@ app.use('/api/users', userRoutes);
 app.use('/api/logs', logsRoutes);
 
 app.listen(8080, () => {
+	database.connectToServer((error: {}) => {
+		if (error) console.error(error);
+	});
 	console.log('listening on port 8080');
 });
 
