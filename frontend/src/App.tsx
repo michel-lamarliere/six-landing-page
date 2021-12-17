@@ -1,23 +1,57 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import React, { useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Log from './log/pages/Log';
 
-import store from './shared/store/store';
+import { RootState } from './shared/store/store';
 
 import Navigation from './shared/components/layout/Navigation';
 
 const App: React.FC = () => {
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const userState = useSelector((state: RootState) => state);
+
+	useEffect(() => {
+		const fn = async () => {
+			const credentials = localStorage.getItem('credentials');
+			let parsedCredentials: { email: string; password: string };
+			if (credentials) {
+				parsedCredentials = JSON.parse(credentials);
+
+				const response = await fetch('http://localhost:8080/api/users/signin', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						email: parsedCredentials.email,
+						password: parsedCredentials.password,
+					}),
+				});
+				const responseJson = await response.json();
+
+				dispatch({
+					type: 'LOG_IN',
+					token: responseJson.token,
+					id: responseJson.id,
+					email: responseJson.email,
+					name: responseJson.name,
+				});
+				navigate('/log/weekly');
+			}
+		};
+		fn();
+	}, [userState.id]);
+
 	return (
-		<Provider store={store}>
-			<BrowserRouter>
-				<Navigation />
-				<Routes>
-					<Route path='/log/weekly' element={<Log />} />
-				</Routes>
-			</BrowserRouter>
-		</Provider>
+		<>
+			<Navigation />
+			<Routes>
+				<Route path='/log/weekly' element={<Log />} />
+			</Routes>
+		</>
 	);
 };
 

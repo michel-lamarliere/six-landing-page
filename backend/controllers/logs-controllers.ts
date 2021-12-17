@@ -1,5 +1,6 @@
 import { query, RequestHandler } from 'express';
 const { MongoClient, ObjectId } = require('mongodb');
+const { addDays, format } = require('date-fns');
 const database = require('../util/db-connect');
 
 const addData: RequestHandler = async (req, res, next) => {
@@ -165,36 +166,59 @@ const addData: RequestHandler = async (req, res, next) => {
 };
 
 const getWeekly: RequestHandler = async (req, res, next) => {
-	const {
-		userEmail: reqUserEmail,
-		startDate: reqStartDate,
-		endDate: reqEndDate,
-	} = await req.body;
+	const reqIdStr = req.params.id;
+	console.log({ reqIdStr });
+	const reqStartDate = req.params.startofweek;
 
-	const client = new MongoClient(process.env.SERVER_URI);
+	const reqId = new ObjectId(reqIdStr);
 
-	// DB CONNECTION
-	await client.connect();
-	const database = await client.db('six-dev');
-	const testCollection = await database.collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('test');
 
-	const query = {
-		email: reqUserEmail,
+	const getDates = (startingDate: string) => {
+		let dateArray = [];
+		for (let i = 0; i < 7; i++) {
+			let date = addDays(new Date(startingDate), i).toISOString().slice(0, 10);
+			dateArray.push(date);
+		}
+		return dateArray;
 	};
 
-	let user;
-	try {
-		user = testCollection.findOne(query);
-		if (!user) {
-			throw new Error('User not found.');
-		}
-	} catch (error) {
-		next(error);
-	}
+	databaseConnect.findOne(
+		{ _id: reqId },
+		(error: {}, result: { log: { date: string }[] }) => {
+			if (!result) {
+				console.log('User not found!');
+				res.json({ message: 'User not found!' });
+				return;
+			}
+			const datesArray = getDates(reqStartDate);
+			console.log({ datesArray });
+			console.log('User found!');
+			const userResultArray = result.log;
+			console.log({ userResultArray });
 
-	// END
-	res.json({ message: 'success' });
-	await client.close();
+			let foundDatesIndex = [];
+			let matchingLogArray = [];
+
+			for (let y = 0; y < datesArray.length; y++) {
+				for (let i = 0; i < result.log.length; i++) {
+					if (datesArray[y] === result.log[i].date) {
+						matchingLogArray.push(result.log[i]);
+						foundDatesIndex.push(i);
+					}
+				}
+			}
+
+			console.log({ matchingLogArray });
+
+			let resultsArray = [];
+			for (let i = 0; i < foundDatesIndex.length; i++) {
+				resultsArray.push(matchingLogArray[i]);
+			}
+			console.log({ resultsArray });
+			res.json(resultsArray);
+		}
+	);
 };
 
 exports.addData = addData;

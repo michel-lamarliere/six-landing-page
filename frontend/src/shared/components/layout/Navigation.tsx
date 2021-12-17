@@ -57,11 +57,17 @@ const Header: React.FC = () => {
 		});
 
 		const responseData = await response.json();
-		console.log(responseData);
 		const { token, id, name, email } = responseData;
 		dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
 		resetFormInputs();
 		navigate(`/log/weekly`);
+		localStorage.setItem(
+			'credentials',
+			JSON.stringify({
+				email: email,
+				password: 'tester',
+			})
+		);
 	};
 
 	const signupFormHandler = async (event: FormEvent) => {
@@ -88,6 +94,7 @@ const Header: React.FC = () => {
 	const logoutBtnHandler = () => {
 		dispatch({ type: 'LOG_OUT' });
 		navigate('/');
+		localStorage.removeItem('credentials');
 	};
 
 	return (
