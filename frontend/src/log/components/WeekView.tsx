@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { addDays, getISOWeek, startOfWeek, format } from 'date-fns';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../shared/store/store';
@@ -16,8 +16,8 @@ const WeekView: React.FC<{
 	sunday?: number;
 }> = (props) => {
 	const userStateId = useSelector((state: RootState) => state.id);
-	// const [weekData, setWeekData] = useState<{ six: {} }[]>();
-	const [weekData, setWeekData] = useState<any[]>();
+	const [weekData, setWeekData] = useState<{ date: string; six: {} }[]>([]);
+	const [mappingArray, setMappingArray] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	const currentDate = addDays(new Date(), 0);
@@ -42,6 +42,41 @@ const WeekView: React.FC<{
 		}
 	};
 
+	const getMappingArray = useCallback(
+		(weekData: { date: string; six: {} }[], firstOfWeek: Date) => {
+			let emptySix = {
+				food: 0,
+				sleep: 0,
+				sport: 0,
+				relaxation: 0,
+				work: 0,
+				social: 0,
+			};
+			let array = [];
+			let y = 0;
+			for (let i = 0; i < 7; i++) {
+				if (
+					weekData[i] &&
+					weekData[i].date === format(addDays(firstOfWeek, i + y), 'yyyy-MM-dd')
+				) {
+					array.push(weekData[i].six);
+					console.log(weekData[i].date);
+					console.log('matched');
+				} else {
+					if (weekData[i]) console.log(weekData[i].date);
+					y++;
+					console.log(format(addDays(firstOfWeek, i), 'yyyy-MM-dd'));
+					array.push(emptySix);
+					console.log('not matched');
+				}
+			}
+			console.log(array);
+			setMappingArray(array);
+			return array;
+		},
+		[]
+	);
+
 	useEffect(() => {
 		const getWeekData = async () => {
 			const response = await fetch(
@@ -52,11 +87,14 @@ const WeekView: React.FC<{
 				}
 			);
 			const responseJson = await response.json();
+			console.log(responseJson);
 			setIsLoading(false);
 			setWeekData(responseJson);
 		};
+
+		getMappingArray(weekData, firstOfWeek);
 		getWeekData();
-	}, [userStateId]);
+	}, [userStateId, isLoading]);
 
 	// FOOD
 	// SLEEP
@@ -68,79 +106,30 @@ const WeekView: React.FC<{
 	return (
 		<div>
 			<h2>Semaine: {weekNumber}</h2>
-			{/* {weekData && weekData.length > 0 && console.log(weekData[0].six)} */}
-			<div></div>
 			<div>
 				<th></th>
-				<th>Lundi {props.monday}</th>
-				<th>Mardi {props.tuesday}</th>
-				<th>Mercredi {props.wednesday}</th>
-				<th>Jeudi {props.thursday}</th>
-				<th>Vendredi {props.friday}</th>
-				<th>Samedi {props.saturday}</th>
-				<th>Dimanche {props.sunday}</th>
-				<div style={{ display: 'flex' }}>
-					<div className={classes.test}>
-						{weekData &&
-							weekData.length > 0 &&
-							Object.entries(weekData[0].six).map((array: any[]) => (
-								<button key={Math.random()}>
-									{array}
-									{console.log({ array })}
-								</button>
-							))}
-					</div>
-					<div className={classes.test}>
-						{weekData &&
-							weekData.length > 0 &&
-							Object.entries(weekData[1].six).map((array: any[]) => (
-								<button key={Math.random()}>
-									{array}
-									{console.log({ array })}
-								</button>
-							))}
-					</div>
-					<div className={classes.test}>
-						{weekData &&
-							weekData.length > 0 &&
-							Object.entries(weekData[2].six).map((array: any[]) => (
-								<button key={Math.random()}>
-									{array}
-									{console.log({ array })}
-								</button>
-							))}
-					</div>
-					<div className={classes.test}>
-						{weekData &&
-							weekData.length > 0 &&
-							Object.entries(weekData[3].six).map((array: any[]) => (
-								<button key={Math.random()}>
-									{array}
-									{console.log({ array })}
-								</button>
-							))}
-					</div>
-					<div className={classes.test}>
-						{weekData &&
-							weekData.length > 0 &&
-							Object.entries(weekData[4].six).map((array: any[]) => (
-								<button key={Math.random()}>
-									{array}
-									{console.log({ array })}
-								</button>
-							))}
-					</div>
-					<div className={classes.test}>
-						{weekData &&
-							weekData.length > 0 &&
-							Object.entries(weekData[5].six).map((array: any[]) => (
-								<button key={Math.random()}>
-									{array}
-									{console.log({ array })}
-								</button>
-							))}
-					</div>
-				</div>
+				<th>Lundi {addDays(firstOfWeek, 0).getDate()}</th>
+				<th>Mardi {addDays(firstOfWeek, 1).getDate()}</th>
+				<th>Mercredi {addDays(firstOfWeek, 2).getDate()}</th>
+				<th>Jeudi {addDays(firstOfWeek, 3).getDate()}</th>
+				<th>Vendredi {addDays(firstOfWeek, 4).getDate()}</th>
+				<th>Samedi {addDays(firstOfWeek, 5).getDate()}</th>
+				<th>Dimanche {addDays(firstOfWeek, 6).getDate()}</th>
+			</div>
+			{/* <div>{weekData && !isLoading && weekData.length > 0 && weekData.map(Object.entries(item)).map(key, value, array => <div>{key} {console.log(key)}</div>)}</div> */}
+			<div>
+				{mappingArray &&
+					!isLoading &&
+					mappingArray
+						.map((item) => Object.entries(item))
+						.map((item) => (
+							// Object.entries((key: any, value: any) => (
+							<div>
+								{' '}
+								{/* {key} {value} {console.log(key)} */}
+								{item}
+							</div>
+						))}
 			</div>
 		</div>
 	);
