@@ -4,7 +4,7 @@ type StringOrNull = null | string;
 
 interface State {
 	token: StringOrNull;
-	id: StringOrNull | number | boolean | string;
+	id: StringOrNull;
 	name: StringOrNull;
 	email: StringOrNull;
 }

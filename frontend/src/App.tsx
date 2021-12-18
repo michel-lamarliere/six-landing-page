@@ -13,35 +13,35 @@ const App: React.FC = () => {
 	const dispatch = useDispatch();
 	const userState = useSelector((state: RootState) => state);
 
+	const fn = async () => {
+		const credentials = localStorage.getItem('credentials');
+		let parsedCredentials: { email: string; password: string };
+		if (credentials) {
+			parsedCredentials = JSON.parse(credentials);
+
+			const response = await fetch('http://localhost:8080/api/users/signin', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					email: parsedCredentials.email,
+					password: parsedCredentials.password,
+				}),
+			});
+			const responseJson = await response.json();
+
+			dispatch({
+				type: 'LOG_IN',
+				token: responseJson.token,
+				id: responseJson.id,
+				email: responseJson.email,
+				name: responseJson.name,
+			});
+			navigate('/log/weekly');
+		}
+	};
 	useEffect(() => {
-		const fn = async () => {
-			const credentials = localStorage.getItem('credentials');
-			let parsedCredentials: { email: string; password: string };
-			if (credentials) {
-				parsedCredentials = JSON.parse(credentials);
-
-				const response = await fetch('http://localhost:8080/api/users/signin', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({
-						email: parsedCredentials.email,
-						password: parsedCredentials.password,
-					}),
-				});
-				const responseJson = await response.json();
-
-				dispatch({
-					type: 'LOG_IN',
-					token: responseJson.token,
-					id: responseJson.id,
-					email: responseJson.email,
-					name: responseJson.name,
-				});
-				navigate('/log/weekly');
-			}
-		};
 		fn();
 	}, [userState.id]);
 

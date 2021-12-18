@@ -1,21 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { addDays, getISOWeek, startOfWeek, format } from 'date-fns';
+import React, { useState, useEffect } from 'react';
+import { addDays, getISOWeek, startOfWeek, format, compareAsc } from 'date-fns';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../shared/store/store';
 
 import classes from './WeekView.module.scss';
-import WeekViewButtons from './WeekViewButtons';
 
-const WeekView: React.FC<{
-	monday?: number;
-	tuesday?: number;
-	wednesday?: number;
-	thursday?: number;
-	friday?: number;
-	saturday?: number;
-	sunday?: number;
-}> = (props) => {
-	const userStateId = useSelector((state: RootState) => state.id);
+const WeekView: React.FC = () => {
+	const userState = useSelector((state: RootState) => state);
 	const [weekData, setWeekData] = useState<{ date: string; six: {} }[]>([]);
 	const [mappingArray, setMappingArray] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -25,83 +16,81 @@ const WeekView: React.FC<{
 	const firstOfWeek = startOfWeek(currentDate, { weekStartsOn: 1 });
 	const formattedFirstOfWeek = format(firstOfWeek, 'yyyy-MM-dd');
 
-	const addColor = (event: React.MouseEvent<HTMLTableElement>) => {
-		const target = event.target as HTMLElement;
-		if (target.classList.contains(classes.two)) {
-			target.classList.remove(classes.two);
-		} else if (target.classList.contains(classes.one)) {
-			console.log('2');
-			target.classList.remove(classes.one);
-			target.classList.add(classes.two);
-		} else if (
-			!target.classList.contains(classes.one) ||
-			!target.classList.contains(classes.two)
-		) {
-			console.log('1');
-			target.classList.add(classes.one);
-		}
+	const getWeekData = async (userId: string, formattedFirstOfWeekStr: string) => {
+		const response = await fetch(
+			`http://localhost:8080/api/logs/${userId}/${formattedFirstOfWeekStr}/weekly`,
+			{
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' },
+			}
+		);
+		setIsLoading(false);
+		const responseJson = await response.json();
+		console.log(responseJson);
+
+		setWeekData(responseJson);
+		getMappingArray(responseJson, firstOfWeek);
 	};
 
-	const getMappingArray = useCallback(
-		(weekData: { date: string; six: {} }[], firstOfWeek: Date) => {
-			let emptySix = {
-				food: 0,
-				sleep: 0,
-				sport: 0,
-				relaxation: 0,
-				work: 0,
-				social: 0,
-			};
-			let array = [];
-			let y = 0;
-			for (let i = 0; i < 7; i++) {
-				if (
-					weekData[i] &&
-					weekData[i].date === format(addDays(firstOfWeek, i + y), 'yyyy-MM-dd')
-				) {
-					array.push(weekData[i].six);
-					console.log(weekData[i].date);
-					console.log('matched');
-				} else {
-					if (weekData[i]) console.log(weekData[i].date);
-					y++;
-					console.log(format(addDays(firstOfWeek, i), 'yyyy-MM-dd'));
-					array.push(emptySix);
-					console.log('not matched');
-				}
+	const getMappingArray = (
+		weekData: { date: string; six: {} }[],
+		firstOfWeek: Date
+	) => {
+		let emptySix = {
+			food: 0,
+			sleep: 0,
+			sport: 0,
+			relaxation: 0,
+			work: 0,
+			social: 0,
+		};
+		let array = [];
+		let i = 0;
+		let y = 0;
+		do {
+			if (
+				weekData[i] &&
+				weekData[i].date === format(addDays(firstOfWeek, y), 'yyyy-MM-dd')
+			) {
+				array.push(weekData[i].six);
+				// console.log('matched');
+
+				i++;
+			} else {
+				// }
+
+				y++;
+				// console.log(format(addDays(firstOfWeek, i), 'yyyy-MM-dd'));
+				array.push(emptySix);
+				// console.log('not matched');
 			}
-			console.log(array);
-			setMappingArray(array);
-			return array;
-		},
-		[]
-	);
+		} while (i < weekData.length);
+		setMappingArray(array);
+	};
+
+	// const addColor = (event: React.MouseEvent<HTMLTableElement>) => {
+	// 	const target = event.target as HTMLElement;
+	// 	if (target.classList.contains(classes.two)) {
+	// 		target.classList.remove(classes.two);
+	// 	} else if (target.classList.contains(classes.one)) {
+	// 		console.log('2');
+	// 		target.classList.remove(classes.one);
+	// 		target.classList.add(classes.two);
+	// 	} else if (
+	// 		!target.classList.contains(classes.one) ||
+	// 		!target.classList.contains(classes.two)
+	// 	) {
+	// 		console.log('1');
+	// 		target.classList.add(classes.one);
+	// 	}
+	// };
 
 	useEffect(() => {
-		const getWeekData = async () => {
-			const response = await fetch(
-				`http://localhost:8080/api/logs/${userStateId}/${formattedFirstOfWeek}/weekly`,
-				{
-					method: 'GET',
-					headers: { 'Content-Type': 'application/json' },
-				}
-			);
-			const responseJson = await response.json();
-			console.log(responseJson);
-			setIsLoading(false);
-			setWeekData(responseJson);
-		};
-
-		getMappingArray(weekData, firstOfWeek);
-		getWeekData();
-	}, [userStateId, isLoading]);
-
-	// FOOD
-	// SLEEP
-	// SPORT
-	// RELAXATION
-	// WORK
-	// SOCIAL
+		if (typeof userState.id === 'string') {
+			getWeekData(userState.id, formattedFirstOfWeek);
+			getMappingArray(weekData, firstOfWeek);
+		}
+	}, [userState.id]);
 
 	return (
 		<div>
@@ -116,20 +105,43 @@ const WeekView: React.FC<{
 				<th>Samedi {addDays(firstOfWeek, 5).getDate()}</th>
 				<th>Dimanche {addDays(firstOfWeek, 6).getDate()}</th>
 			</div>
-			{/* <div>{weekData && !isLoading && weekData.length > 0 && weekData.map(Object.entries(item)).map(key, value, array => <div>{key} {console.log(key)}</div>)}</div> */}
-			<div>
-				{mappingArray &&
-					!isLoading &&
-					mappingArray
-						.map((item) => Object.entries(item))
-						.map((item) => (
-							// Object.entries((key: any, value: any) => (
-							<div>
-								{' '}
-								{/* {key} {value} {console.log(key)} */}
-								{item}
-							</div>
-						))}
+			<div style={{ display: 'flex', gap: '2rem' }}>
+				<div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+					<li>Food</li>
+					<li>Sleep</li>
+					<li>Sport</li>
+					<li>Relaxation</li>
+					<li>Work</li>
+					<li>Social</li>
+				</div>
+				<div style={{ display: 'flex', flexDirection: 'column' }}>
+					<div style={{ display: 'flex' }}>
+						{!isLoading &&
+							mappingArray.map((item) => <button>{item.food}</button>)}
+					</div>
+					<div style={{ display: 'flex' }}>
+						{!isLoading &&
+							mappingArray.map((item) => <button>{item.sleep}</button>)}
+					</div>
+					<div style={{ display: 'flex' }}>
+						{!isLoading &&
+							mappingArray.map((item) => <button>{item.sport}</button>)}
+					</div>
+					<div style={{ display: 'flex' }}>
+						{!isLoading &&
+							mappingArray.map((item) => (
+								<button>{item.relaxation}</button>
+							))}
+					</div>
+					<div style={{ display: 'flex' }}>
+						{!isLoading &&
+							mappingArray.map((item) => <button>{item.work}</button>)}
+					</div>
+					<div style={{ display: 'flex' }}>
+						{!isLoading &&
+							mappingArray.map((item) => <button>{item.social}</button>)}
+					</div>
+				</div>
 			</div>
 		</div>
 	);
