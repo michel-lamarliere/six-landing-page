@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useInput } from '../../hooks/useInput';
@@ -10,6 +10,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import type { RootState, AppDispatch } from '../../store/store';
 
 const Header: React.FC = () => {
+	const [responseMessage, setResponseMessage] = useState('');
+
 	const userState = useSelector((state: RootState) => state);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -44,6 +46,7 @@ const Header: React.FC = () => {
 	};
 
 	const loginFormHandler = async (event: FormEvent) => {
+		console.log('login handler');
 		event.preventDefault();
 		const response = await fetch('http://localhost:8080/api/users/signin', {
 			method: 'POST',
@@ -57,6 +60,10 @@ const Header: React.FC = () => {
 		});
 
 		const responseData = await response.json();
+		if (responseData.message) {
+			setResponseMessage(responseData.message);
+			return;
+		}
 		const { token, id, name, email } = responseData;
 		dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
 		resetFormInputs();
@@ -71,6 +78,7 @@ const Header: React.FC = () => {
 	};
 
 	const signupFormHandler = async (event: FormEvent) => {
+		console.log('sign up handler');
 		event.preventDefault();
 		const response = await fetch('http://localhost:8080/api/users/signup', {
 			method: 'POST',
@@ -85,10 +93,10 @@ const Header: React.FC = () => {
 		});
 
 		const responseData = await response.json();
-		const { token, id, name, email } = responseData;
-		dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
-		resetFormInputs();
-		navigate(`/log/weekly`);
+		console.log(responseData.message);
+		setResponseMessage(responseData.message);
+
+		console.log(userState.id);
 	};
 
 	const logoutBtnHandler = () => {
@@ -139,6 +147,7 @@ const Header: React.FC = () => {
 						onChange={passwordOnChangeHander}
 					/>
 					<button>{loginMode ? 'Connexion' : 'Inscription'}</button>
+					<h1>{responseMessage}</h1>
 				</form>
 			)}
 			<div>token:{userState.token}</div>

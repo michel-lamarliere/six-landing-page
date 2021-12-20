@@ -6,6 +6,6 @@ const router = Router();
 
 router.post('/six', logsControllers.addData);
 
-router.get('/:id/:startofweek/weekly', logsControllers.getWeekly);
+router.get('/weekly/:id/:startofweek', logsControllers.getWeekly);
 
 module.exports = router;

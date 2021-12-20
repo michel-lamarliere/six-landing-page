@@ -13,7 +13,7 @@ const App: React.FC = () => {
 	const dispatch = useDispatch();
 	const userState = useSelector((state: RootState) => state);
 
-	const fn = async () => {
+	const autoLogIn = async () => {
 		const credentials = localStorage.getItem('credentials');
 		let parsedCredentials: { email: string; password: string };
 		if (credentials) {
@@ -42,7 +42,7 @@ const App: React.FC = () => {
 		}
 	};
 	useEffect(() => {
-		fn();
+		autoLogIn();
 	}, [userState.id]);
 
 	return (

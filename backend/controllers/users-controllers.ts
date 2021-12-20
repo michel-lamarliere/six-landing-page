@@ -10,10 +10,12 @@ const signUp: RequestHandler = async (req, res, next) => {
 
 	databaseConnect.findOne({ email: reqEmail }, (error: {}, result: {}) => {
 		if (error) {
-			console.log('User not found, creating new user!');
 		}
 		if (result) {
-			console.log('User already exists, please log in!');
+			res.json({
+				message:
+					'Adresse email déjà utilisée, veuillez en choisir une autre ou vous connecter.',
+			});
 		}
 	});
 
@@ -21,9 +23,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 	let hashedPassword;
 	try {
 		hashedPassword = await bcrypt.hash(reqPassword, 12);
-	} catch (error) {
-		console.log('Password hash has failed!');
-	}
+	} catch (error) {}
 
 	const newUser = {
 		name: reqName,
@@ -39,12 +39,10 @@ const signUp: RequestHandler = async (req, res, next) => {
 	}
 
 	// GETS THE ID
-	let idStr;
 	let token: string;
 	databaseConnect.findOne(
 		{ email: reqEmail },
 		async (error: any, result: { _id: {} }) => {
-			// idStr = result._id.toString();
 			if (result) {
 				// CREATES THE TOKEN
 				try {
@@ -55,11 +53,9 @@ const signUp: RequestHandler = async (req, res, next) => {
 							expiresIn: '1h',
 						}
 					);
-				} catch (error) {
-					console.log('Token creation failed!');
-				}
+				} catch (error) {}
 			}
-			res.json({ token, id: result._id, name: reqName, email: reqEmail });
+			res.json({ message: 'Compte créé, veuillez-vous connecter.' });
 		}
 	);
 };
@@ -87,7 +83,6 @@ const signIn: RequestHandler = async (req, res, next) => {
 				result: { _id: string; name: string; email: string; password: string }
 			) => {
 				if (!result) {
-					console.log('User not found, please sign up!');
 					return;
 				}
 
@@ -117,8 +112,7 @@ const signIn: RequestHandler = async (req, res, next) => {
 								email: user.email,
 							});
 						} else {
-							console.log('Incorrect password, please try again!');
-							res.json({ message: 'Incorrect password!' });
+							res.json({ message: 'Mot de passe incorrect.' });
 						}
 					}
 				);
