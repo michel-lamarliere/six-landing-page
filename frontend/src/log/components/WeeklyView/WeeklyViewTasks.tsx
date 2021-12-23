@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from './WeekViewButtons.module.scss';
+import classes from './WeeklyViewTasks.module.scss';
 
 interface Props {
 	className?: (event: React.MouseEvent<HTMLButtonElement>) => string;

@@ -1,6 +1,8 @@
 .wrapper {
 	display: flex;
-	gap: 5.5rem;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
 }
 
 .button {
@@ -9,6 +11,10 @@
 	background-color: white;
 	border: none;
 	border-radius: 0.1rem;
+
+	&:active {
+		border: 0.1rem solid black;
+	}
 }
 
 .zero {

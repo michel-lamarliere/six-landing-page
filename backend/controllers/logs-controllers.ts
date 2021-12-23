@@ -142,9 +142,40 @@ const addData: RequestHandler = async (req, res, next) => {
 	});
 };
 
+const getDaily: RequestHandler = async (req, res, next) => {
+	const reqIdStr = req.params.id;
+	const reqDate = req.params.date;
+
+	const reqId = new ObjectId(reqIdStr);
+
+	const databaseConnect = await database.getDb('six-dev').collection('test');
+
+	databaseConnect.findOne(
+		{
+			_id: reqId,
+			'log.date': reqDate,
+		},
+		(error: {}, result: { log: { date: string }[] }) => {
+			if (result) {
+				console.log('user found!');
+				for (let i = 0; i < result.log.length; i++) {
+					if (result.log[i].date === reqDate) {
+						let foundDailyLog = result.log[i];
+						res.json(foundDailyLog);
+						return;
+					}
+				}
+				res.json({ message: 'No matching date found!' });
+			} else {
+				console.log('date not found!');
+				res.json({ message: 'date not found' });
+			}
+		}
+	);
+};
+
 const getWeekly: RequestHandler = async (req, res, next) => {
 	const reqIdStr = req.params.id;
-	console.log({ reqIdStr });
 	const reqStartDate = req.params.startofweek;
 
 	const reqId = new ObjectId(reqIdStr);
@@ -191,4 +222,5 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 };
 
 exports.addData = addData;
+exports.getDaily = getDaily;
 exports.getWeekly = getWeekly;

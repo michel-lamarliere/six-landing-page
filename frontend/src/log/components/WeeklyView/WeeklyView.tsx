@@ -3,9 +3,10 @@ import { addDays, getISOWeek, startOfWeek, format } from 'date-fns';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../shared/store/store';
 
-import classes from './WeekView.module.scss';
+import classes from './WeeklyView.module.scss';
 
-import WeekViewButtons from './WeekViewButtons';
+import WeekViewTasks from './WeeklyViewTasks';
+import WeekViewButtons from './WeeklyViewButtons';
 
 const WeekView: React.FC = () => {
 	const userState = useSelector((state: RootState) => state);
@@ -13,10 +14,17 @@ const WeekView: React.FC = () => {
 	const [mappingArray, setMappingArray] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
-	const currentDate = addDays(new Date(), 0);
-	const weekNumber = getISOWeek(currentDate);
+	const [currentDate, setCurrentDate] = useState(addDays(new Date(), 0));
 	const firstOfWeek = startOfWeek(currentDate, { weekStartsOn: 1 });
 	const formattedFirstOfWeek = format(firstOfWeek, 'yyyy-MM-dd');
+
+	const previousWeekHandler = () => {
+		setCurrentDate(addDays(currentDate, -7));
+	};
+
+	const nextWeekHandler = () => {
+		setCurrentDate(addDays(currentDate, 7));
+	};
 
 	const getWeekData = async (userId: string, formattedFirstOfWeekStr: string) => {
 		const response = await fetch(
@@ -28,7 +36,6 @@ const WeekView: React.FC = () => {
 		);
 		setIsLoading(false);
 		const responseJson = await response.json();
-		console.log(responseJson);
 
 		setWeekData(responseJson);
 		getMappingArray(responseJson, firstOfWeek);
@@ -70,17 +77,13 @@ const WeekView: React.FC = () => {
 				y++;
 			}
 		} while (array.length < 7);
-		console.log(array);
 		setMappingArray(array);
 	};
 
 	const taskLevelHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		let date = (event.target as HTMLElement).id.split('_')[0];
 		let task = (event.target as HTMLButtonElement).id.split('_')[1];
-		console.log(date, task);
 		let prevLevel = parseInt((event.target as HTMLButtonElement).value);
-
-		console.log(date, task);
 
 		await fetch(`http://localhost:8080/api/logs/six`, {
 			method: 'POST',
@@ -106,29 +109,15 @@ const WeekView: React.FC = () => {
 			getWeekData(userState.id, formattedFirstOfWeek);
 			getMappingArray(weekData, firstOfWeek);
 		}
-	}, [userState.id]);
-
-	// const getButtonColor = (event: React.MouseEvent<HTMLButtonElement>) => {
-	// 	let className;
-
-	// 	switch ((event.target as HTMLButtonElement).value) {
-	// 		case '0':
-	// 			className = classes.zero;
-	// 			break;
-	// 		case '1':
-	// 			className = classes.one;
-	// 			break;
-	// 		case '2':
-	// 			className = classes.two;
-	// 			break;
-	// 	}
-
-	// 	return className;
-	// };
+	}, [userState.id, currentDate]);
 
 	return (
 		<div className={classes.wrapper}>
-			<h2>Semaine: {weekNumber}</h2>
+			<WeekViewButtons
+				weekNumber={getISOWeek(currentDate)}
+				previousWeekHandler={previousWeekHandler}
+				nextWeekHandler={nextWeekHandler}
+			/>
 			<div className={classes.days}>
 				<th>Lundi {addDays(firstOfWeek, 0).getDate()}</th>
 				<th>Mardi {addDays(firstOfWeek, 1).getDate()}</th>
@@ -148,7 +137,7 @@ const WeekView: React.FC = () => {
 					<li>Social</li>
 				</div>
 				<div className={classes.list}>
-					<WeekViewButtons
+					<WeekViewTasks
 						isLoading={isLoading}
 						array={mappingArray}
 						onClick={taskLevelHandler}
@@ -157,31 +146,31 @@ const WeekView: React.FC = () => {
 						two={classes.two}
 						zero={classes.zero}
 					/>
-					<WeekViewButtons
+					<WeekViewTasks
 						isLoading={isLoading}
 						array={mappingArray}
 						onClick={taskLevelHandler}
 						taskName='sleep'
 					/>
-					<WeekViewButtons
+					<WeekViewTasks
 						isLoading={isLoading}
 						array={mappingArray}
 						onClick={taskLevelHandler}
 						taskName='sport'
 					/>
-					<WeekViewButtons
+					<WeekViewTasks
 						isLoading={isLoading}
 						array={mappingArray}
 						onClick={taskLevelHandler}
 						taskName='relaxation'
 					/>
-					<WeekViewButtons
+					<WeekViewTasks
 						isLoading={isLoading}
 						array={mappingArray}
 						onClick={taskLevelHandler}
 						taskName='work'
 					/>
-					<WeekViewButtons
+					<WeekViewTasks
 						isLoading={isLoading}
 						array={mappingArray}
 						onClick={taskLevelHandler}
