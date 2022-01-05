@@ -5,7 +5,7 @@ import { RootState } from '../../../shared/store/store';
 import classes from './DailyView.module.scss';
 
 const DailyView: React.FC = () => {
-	const userState = useSelector((state: RootState) => state);
+	const userState = useSelector((state: RootState) => state.user);
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [chosenDate, setChosenDate] = useState(new Date());
@@ -52,7 +52,7 @@ const DailyView: React.FC = () => {
 		let task = (event.target as HTMLButtonElement).id.split('_')[1];
 		let prevLevel = parseInt((event.target as HTMLButtonElement).value);
 
-		await fetch(`http://localhost:8080/api/logs/six`, {
+		await fetch(`http://localhost:8080/api/logs/task`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

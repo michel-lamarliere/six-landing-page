@@ -1,6 +1,17 @@
+import { AnyNsRecord } from 'dns';
 import { query, RequestHandler } from 'express';
 const { MongoClient, ObjectId } = require('mongodb');
-const { addDays, format } = require('date-fns');
+const {
+	addDays,
+	addHours,
+	startOfMonth,
+	endOfMonth,
+	isBefore,
+	isAfter,
+	parseISO,
+	getDaysInMonth,
+	compareAsc,
+} = require('date-fns');
 const database = require('../util/db-connect');
 
 const addData: RequestHandler = async (req, res, next) => {
@@ -94,6 +105,17 @@ const addData: RequestHandler = async (req, res, next) => {
 					}
 				}
 				if (!foundSameDate) {
+					// TO ORDER LOG
+					// const thisDate = addHours(parseISO(reqDate), 1);
+					// console.log(thisDate);
+					// for (let i = 0; i < result.log.length; i++) {
+					// 	if (
+					// 		isBefore(thisDate, result.log[i].date) &&
+					// 		isAfter(thisDate, result.log[i + 1].date)
+					// 	) {
+					// 		console.log('here!!!');
+					// 	}
+					// }
 					databaseConnect.updateOne(
 						filter,
 						{
@@ -199,24 +221,95 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 				return;
 			}
 			const datesArray = getDates(reqStartDate);
-			const userResultArray = result.log;
 
 			let foundDatesIndex = [];
 			let matchingLogArray = [];
 
-			for (let y = 0; y < datesArray.length; y++) {
-				for (let i = 0; i < result.log.length; i++) {
-					if (datesArray[y] === result.log[i].date) {
-						matchingLogArray.push(result.log[i]);
-						foundDatesIndex.push(i);
+			for (let i = 0; i < datesArray.length; i++) {
+				for (let y = 0; y < result.log.length; y++) {
+					if (datesArray[i] === result.log[y].date) {
+						foundDatesIndex.push(y);
+						matchingLogArray.push(result.log[y]);
 					}
 				}
 			}
+
 			let resultsArray = [];
+
 			for (let i = 0; i < foundDatesIndex.length; i++) {
 				resultsArray.push(matchingLogArray[i]);
 			}
+
 			res.json(resultsArray);
+		}
+	);
+};
+
+const getMonthly: RequestHandler = async (req, res, next) => {
+	const reqIdStr = req.params.id;
+	const reqId = ObjectId(reqIdStr);
+	const reqDateStr = req.params.date;
+	const reqDate = addHours(parseISO(reqDateStr), 1);
+	const reqTask = req.params.task;
+
+	const databaseConnect = await database.getDb('six-dev').collection('test');
+
+	databaseConnect.findOne(
+		{
+			_id: reqId,
+		},
+		(
+			error: {},
+			result: {
+				log: [
+					{
+						date: string;
+						six: any;
+					}
+				];
+			}
+		) => {
+			if (result) {
+				let numberOfDays: number = getDaysInMonth(reqDate);
+				let datesArray = [];
+				for (let i = 1; i < numberOfDays + 1; i++) {
+					let testDate =
+						i < 10
+							? reqDate.toISOString().slice(0, 7) + '-0' + i.toString()
+							: reqDate.toISOString().slice(0, 7) + '-' + i.toString();
+					datesArray.push(testDate);
+				}
+				console.log({ datesArray });
+
+				let responseArray: any[] = [];
+				for (let i = 0; i < datesArray.length; i++) {
+					let matched = false;
+					let y = 0;
+					for (let y = 0; y < datesArray.length; y++) {
+						if (result.log[y] && datesArray[i] === result.log[y].date) {
+							// responseArray.push({
+							// 	date: datesArray[i],
+							// 	[reqTask]: result.log[y].six[reqTask],
+							// });
+							responseArray.push(result.log[y].six[reqTask]);
+							matched = true;
+						}
+					}
+					if (y > result.log.length) {
+						matched = false;
+					}
+					if (!matched) {
+						// responseArray.push({
+						// 	date: datesArray[i],
+						// 	[reqTask]: 0,
+						// });
+						responseArray.push(0);
+					}
+				}
+
+				console.log({ responseArray });
+				res.json({ datesArray, responseArray });
+			}
 		}
 	);
 };
@@ -224,3 +317,4 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 exports.addData = addData;
 exports.getDaily = getDaily;
 exports.getWeekly = getWeekly;
+exports.getMonthly = getMonthly;

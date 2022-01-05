@@ -12,7 +12,8 @@ import type { RootState, AppDispatch } from '../../store/store';
 const Header: React.FC = () => {
 	const [responseMessage, setResponseMessage] = useState('');
 
-	const userState = useSelector((state: RootState) => state);
+	const userState = useSelector((state: RootState) => state.user);
+	const viewState = useSelector((state: RootState) => state.view.view);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -67,7 +68,6 @@ const Header: React.FC = () => {
 		const { token, id, name, email } = responseData;
 		dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
 		resetFormInputs();
-		navigate(`/log/weekly`);
 		localStorage.setItem(
 			'credentials',
 			JSON.stringify({
@@ -95,8 +95,6 @@ const Header: React.FC = () => {
 		const responseData = await response.json();
 		console.log(responseData.message);
 		setResponseMessage(responseData.message);
-
-		console.log(userState.id);
 	};
 
 	const logoutBtnHandler = () => {
@@ -117,6 +115,26 @@ const Header: React.FC = () => {
 				{userState.token !== null && (
 					<button onClick={logoutBtnHandler}>Se déconnecter</button>
 				)}
+			</div>
+			<div className={classes.view}>
+				<button
+					disabled={viewState === 'DAILY'}
+					onClick={() => dispatch({ type: 'DAILY' })}
+				>
+					Jour
+				</button>
+				<button
+					disabled={viewState === 'WEEKLY'}
+					onClick={() => dispatch({ type: 'WEEKLY' })}
+				>
+					Semaine
+				</button>
+				<button
+					disabled={viewState === 'MONTHLY'}
+					onClick={() => dispatch({ type: 'MONTHLY' })}
+				>
+					Mois
+				</button>
 			</div>
 			{userState.token === null && (
 				<form

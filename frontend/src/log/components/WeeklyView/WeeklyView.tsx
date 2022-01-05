@@ -9,7 +9,7 @@ import WeekViewTasks from './WeeklyViewTasks';
 import WeekViewButtons from './WeeklyViewButtons';
 
 const WeekView: React.FC = () => {
-	const userState = useSelector((state: RootState) => state);
+	const userState = useSelector((state: RootState) => state.user);
 	const [weekData, setWeekData] = useState<{ date: string; six: {} }[]>([]);
 	const [mappingArray, setMappingArray] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -85,7 +85,7 @@ const WeekView: React.FC = () => {
 		let task = (event.target as HTMLButtonElement).id.split('_')[1];
 		let prevLevel = parseInt((event.target as HTMLButtonElement).value);
 
-		await fetch(`http://localhost:8080/api/logs/six`, {
+		await fetch(`http://localhost:8080/api/logs/task`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -115,6 +115,7 @@ const WeekView: React.FC = () => {
 		<div className={classes.wrapper}>
 			<WeekViewButtons
 				weekNumber={getISOWeek(currentDate)}
+				month={currentDate}
 				previousWeekHandler={previousWeekHandler}
 				nextWeekHandler={nextWeekHandler}
 			/>

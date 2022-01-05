@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Log from './log/pages/Log';
@@ -9,9 +8,8 @@ import { RootState } from './shared/store/store';
 import Navigation from './shared/components/layout/Navigation';
 
 const App: React.FC = () => {
-	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const userState = useSelector((state: RootState) => state);
+	const userState = useSelector((state: RootState) => state.user);
 
 	const autoLogIn = async () => {
 		const credentials = localStorage.getItem('credentials');
@@ -38,7 +36,6 @@ const App: React.FC = () => {
 				email: responseJson.email,
 				name: responseJson.name,
 			});
-			navigate('/log/weekly');
 		}
 	};
 	useEffect(() => {
@@ -48,9 +45,7 @@ const App: React.FC = () => {
 	return (
 		<>
 			<Navigation />
-			<Routes>
-				<Route path='/log/weekly' element={<Log />} />
-			</Routes>
+			<Log />
 		</>
 	);
 };
