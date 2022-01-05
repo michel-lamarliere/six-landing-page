@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { addDays } from 'date-fns';
+import { addDays, getDate, getDay, getYear, isAfter } from 'date-fns';
 import { RootState } from '../../../shared/store/store';
 import classes from './DailyView.module.scss';
+
+import { DataButton } from '../../../shared/components/UIElements/Buttons';
 
 const DailyView: React.FC = () => {
 	const userState = useSelector((state: RootState) => state.user);
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [chosenDate, setChosenDate] = useState(new Date());
+	const [fullDate, setFullDate] = useState({
+		day: '',
+		month: '',
+		year: '',
+	});
 	const [dailyData, setDailyData] = useState<any>([]);
 
 	const getDailyData = async (userId: string, date: string) => {
@@ -35,7 +42,6 @@ const DailyView: React.FC = () => {
 			};
 		}
 		setDailyData(responseData);
-		console.log(responseData);
 		setIsLoading(false);
 	};
 
@@ -44,7 +50,9 @@ const DailyView: React.FC = () => {
 	};
 
 	const nextDayHandler = () => {
-		setChosenDate(addDays(chosenDate, 1));
+		if (!isAfter(addDays(chosenDate, 1), new Date())) {
+			setChosenDate(addDays(chosenDate, 1));
+		}
 	};
 
 	const taskLevelHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -74,35 +82,160 @@ const DailyView: React.FC = () => {
 	useEffect(() => {
 		if (typeof userState.id === 'string') {
 			getDailyData(userState.id, chosenDate.toISOString().slice(0, 10));
-			console.log(dailyData);
 		}
 	}, [chosenDate, userState]);
+
+	useEffect(() => {
+		switch (getDay(chosenDate)) {
+			case 1:
+				setFullDate((prev) => ({
+					...prev,
+					day: 'Lundi',
+				}));
+				break;
+			case 2:
+				setFullDate((prev) => ({
+					...prev,
+					day: 'Mardi',
+				}));
+				break;
+			case 3:
+				setFullDate((prev) => ({
+					...prev,
+					day: 'Mercredi',
+				}));
+				break;
+			case 4:
+				setFullDate((prev) => ({
+					...prev,
+					day: 'Jeudi',
+				}));
+				break;
+			case 5:
+				setFullDate((prev) => ({
+					...prev,
+					day: 'Vendredi',
+				}));
+				break;
+			case 6:
+				setFullDate((prev) => ({
+					...prev,
+					day: 'Samedi',
+				}));
+				break;
+			case 0:
+				setFullDate((prev) => ({
+					...prev,
+					day: 'Dimanche',
+				}));
+				break;
+		}
+
+		switch (chosenDate.getMonth()) {
+			case 0:
+				setFullDate((prev) => ({
+					...prev,
+					month: 'Janvier',
+				}));
+				break;
+			case 1:
+				setFullDate((prev) => ({
+					...prev,
+					month: 'Février',
+				}));
+				break;
+			case 2:
+				setFullDate((prev) => ({
+					...prev,
+					month: 'Mars',
+				}));
+				break;
+			case 3:
+				setFullDate((prev) => ({
+					...prev,
+					month: 'Avril',
+				}));
+				break;
+			case 4:
+				setFullDate((prev) => ({
+					...prev,
+					month: 'Mai',
+				}));
+				break;
+			case 5:
+				setFullDate((prev) => ({
+					...prev,
+					month: 'Juin',
+				}));
+				break;
+			case 6:
+				setFullDate((prev) => ({
+					...prev,
+					month: 'Janvier',
+				}));
+				break;
+			case 7:
+				setFullDate((prev) => ({
+					...prev,
+					month: 'Août',
+				}));
+				break;
+			case 8:
+				setFullDate((prev) => ({
+					...prev,
+					month: 'Septembre',
+				}));
+				break;
+			case 9:
+				setFullDate((prev) => ({
+					...prev,
+					month: 'Octobre',
+				}));
+				break;
+			case 10:
+				setFullDate((prev) => ({
+					...prev,
+					month: 'Novembre',
+				}));
+				break;
+			case 11:
+				setFullDate((prev) => ({
+					...prev,
+					month: 'Décembre',
+				}));
+				break;
+			default:
+				break;
+		}
+	}, [chosenDate]);
 
 	return (
 		<>
 			<div className={classes.wrapper}>
 				<button onClick={previousDayHandler}>Jour précédent</button>
-				<div>{chosenDate.toISOString().slice(0, 10)}</div>
-				<button onClick={nextDayHandler}>Jour suivant</button>
+				<div>
+					{fullDate.day} {getDate(chosenDate)} {fullDate.month}{' '}
+					{getYear(chosenDate)}
+				</div>
+				<button
+					onClick={nextDayHandler}
+					disabled={isAfter(addDays(chosenDate, 1), new Date())}
+				>
+					Jour suivant
+				</button>
 			</div>
 			{!isLoading &&
 				dailyData &&
 				Object.entries(dailyData.six).map((item: any) => (
-					<>
+					<div key={`${chosenDate.toISOString().slice(0, 10)}_${item[0]}_task`}>
 						<div>{item[0]}</div>
-						<button
+						<DataButton
 							id={`${chosenDate.toISOString().slice(0, 10)}_${item[0]}`}
 							onClick={taskLevelHandler}
 							value={item[1]}
-							className={`${classes.button} ${
-								item[1] === 0 ? classes.zero : ''
-							}
-							${item[1] === 1 ? classes.one : ''} 
-							
-							${item[1] === 2 ? classes.two : ''}
-						`}
-						></button>
-					</>
+							disabled={true}
+						/>
+					</div>
 				))}
 		</>
 	);

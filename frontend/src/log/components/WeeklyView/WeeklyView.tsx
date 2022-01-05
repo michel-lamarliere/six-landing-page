@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { addDays, getISOWeek, startOfWeek, format } from 'date-fns';
+import { addDays, getISOWeek, startOfWeek, format, getYear, isAfter } from 'date-fns';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../shared/store/store';
 
 import classes from './WeeklyView.module.scss';
 
 import WeekViewTasks from './WeeklyViewTasks';
-import WeekViewButtons from './WeeklyViewButtons';
 
 const WeekView: React.FC = () => {
 	const userState = useSelector((state: RootState) => state.user);
@@ -14,16 +13,19 @@ const WeekView: React.FC = () => {
 	const [mappingArray, setMappingArray] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
-	const [currentDate, setCurrentDate] = useState(addDays(new Date(), 0));
-	const firstOfWeek = startOfWeek(currentDate, { weekStartsOn: 1 });
+	const [chosenDate, setchosenDate] = useState(addDays(new Date(), 0));
+	const [month, setMonth] = useState('');
+	const firstOfWeek = startOfWeek(chosenDate, { weekStartsOn: 1 });
 	const formattedFirstOfWeek = format(firstOfWeek, 'yyyy-MM-dd');
 
 	const previousWeekHandler = () => {
-		setCurrentDate(addDays(currentDate, -7));
+		setchosenDate(addDays(chosenDate, -7));
 	};
 
 	const nextWeekHandler = () => {
-		setCurrentDate(addDays(currentDate, 7));
+		if (!isAfter(addDays(chosenDate, 7), new Date())) {
+			setchosenDate(addDays(chosenDate, 7));
+		}
 	};
 
 	const getWeekData = async (userId: string, formattedFirstOfWeekStr: string) => {
@@ -80,24 +82,32 @@ const WeekView: React.FC = () => {
 		setMappingArray(array);
 	};
 
-	const taskLevelHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
-		let date = (event.target as HTMLElement).id.split('_')[0];
-		let task = (event.target as HTMLButtonElement).id.split('_')[1];
-		let prevLevel = parseInt((event.target as HTMLButtonElement).value);
+	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
+		const date = (event.target as HTMLElement).id.split('_')[0];
+		const task = (event.target as HTMLButtonElement).id.split('_')[1];
+		const prevLevel = parseInt((event.target as HTMLButtonElement).value);
 
-		await fetch(`http://localhost:8080/api/logs/task`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				_id: userState.id,
-				email: userState.email,
-				date: date,
-				task: task,
-				levelOfCompletion: prevLevel !== 2 ? prevLevel + 1 : 0,
-			}),
-		});
+		const dateFormat = new Date(
+			+date.slice(0, 4),
+			+date.slice(5, 7) === 12 ? 11 : +date.slice(5, 7) - 1,
+			+date.slice(8, 10)
+		);
+
+		if (!isAfter(dateFormat, new Date())) {
+			await fetch(`http://localhost:8080/api/logs/task`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					_id: userState.id,
+					email: userState.email,
+					date: date,
+					task: task,
+					levelOfCompletion: prevLevel !== 2 ? prevLevel + 1 : 0,
+				}),
+			});
+		}
 
 		if (typeof userState.id === 'string') {
 			getWeekData(userState.id, formattedFirstOfWeek);
@@ -109,16 +119,65 @@ const WeekView: React.FC = () => {
 			getWeekData(userState.id, formattedFirstOfWeek);
 			getMappingArray(weekData, firstOfWeek);
 		}
-	}, [userState.id, currentDate]);
+	}, [userState.id, chosenDate]);
+
+	useEffect(() => {
+		switch (chosenDate.getMonth()) {
+			case 0:
+				setMonth('Janvier');
+				break;
+			case 1:
+				setMonth('Février');
+				break;
+			case 2:
+				setMonth('Mars');
+				break;
+			case 3:
+				setMonth('Avril');
+				break;
+			case 4:
+				setMonth('Mai');
+				break;
+			case 5:
+				setMonth('Juin');
+				break;
+			case 6:
+				setMonth('Juillet');
+				break;
+			case 7:
+				setMonth('Août');
+				break;
+			case 8:
+				setMonth('Septembre');
+				break;
+			case 9:
+				setMonth('Octobre');
+				break;
+			case 10:
+				setMonth('Novembre');
+				break;
+			case 11:
+				setMonth('Décembre');
+				break;
+			default:
+				break;
+		}
+	}, [chosenDate]);
 
 	return (
 		<div className={classes.wrapper}>
-			<WeekViewButtons
-				weekNumber={getISOWeek(currentDate)}
-				month={currentDate}
-				previousWeekHandler={previousWeekHandler}
-				nextWeekHandler={nextWeekHandler}
-			/>
+			<div className={classes.buttons}>
+				<button onClick={previousWeekHandler}>Semaine précédente</button>
+				<div>
+					Semaine: {getISOWeek(chosenDate)} | {month} {getYear(chosenDate)}
+				</div>
+				<button
+					onClick={nextWeekHandler}
+					disabled={isAfter(addDays(chosenDate, 7), new Date())}
+				>
+					Semaine suivante
+				</button>
+			</div>
 			<div className={classes.days}>
 				<th>Lundi {addDays(firstOfWeek, 0).getDate()}</th>
 				<th>Mardi {addDays(firstOfWeek, 1).getDate()}</th>
@@ -141,40 +200,37 @@ const WeekView: React.FC = () => {
 					<WeekViewTasks
 						isLoading={isLoading}
 						array={mappingArray}
-						onClick={taskLevelHandler}
+						onClick={addData}
 						taskName='food'
-						one={classes.one}
-						two={classes.two}
-						zero={classes.zero}
 					/>
 					<WeekViewTasks
 						isLoading={isLoading}
 						array={mappingArray}
-						onClick={taskLevelHandler}
+						onClick={addData}
 						taskName='sleep'
 					/>
 					<WeekViewTasks
 						isLoading={isLoading}
 						array={mappingArray}
-						onClick={taskLevelHandler}
+						onClick={addData}
 						taskName='sport'
 					/>
 					<WeekViewTasks
 						isLoading={isLoading}
 						array={mappingArray}
-						onClick={taskLevelHandler}
+						onClick={addData}
 						taskName='relaxation'
 					/>
 					<WeekViewTasks
 						isLoading={isLoading}
 						array={mappingArray}
-						onClick={taskLevelHandler}
+						onClick={addData}
 						taskName='work'
 					/>
 					<WeekViewTasks
 						isLoading={isLoading}
 						array={mappingArray}
-						onClick={taskLevelHandler}
+						onClick={addData}
 						taskName='social'
 					/>
 				</div>

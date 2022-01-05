@@ -4,27 +4,3 @@
 	align-items: center;
 	gap: 1rem;
 }
-
-.button {
-	width: 2rem;
-	height: 2rem;
-	background-color: white;
-	border: none;
-	border-radius: 0.1rem;
-
-	&:active {
-		border: 0.1rem solid black;
-	}
-}
-
-.zero {
-	background-color: white;
-}
-
-.one {
-	background-color: yellow;
-}
-
-.two {
-	background-color: green;
-}
