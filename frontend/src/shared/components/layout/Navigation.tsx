@@ -1,4 +1,4 @@
-import React, { FormEvent, useState, useEffect, useRef } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useInput } from '../../hooks/useInput';
@@ -18,7 +18,7 @@ const Header: React.FC = () => {
 
 	const [loginMode, setLoginMode] = useState(false);
 
-	const signUpBtnHandler = () => {
+	const switchModeHandler = () => {
 		setLoginMode((prev) => !prev);
 	};
 
@@ -28,44 +28,26 @@ const Header: React.FC = () => {
 		localStorage.removeItem('credentials');
 	};
 
-	// const {
-	// 	input: nameInput,
-	// 	setInput: setNameInput,
-	// 	inputOnChangeHandler: nameOnChangeHandler,
-	// 	inputOnBlurHandler: nameOnBlurHandler,
-	// } = useInput('NAME');
+	const {
+		input: nameInput,
+		setInput: setNameInput,
+		inputOnChangeHandler: nameOnChangeHandler,
+		inputOnBlurHandler: nameOnBlurHandler,
+	} = useInput('NAME', loginMode);
 
-	// const {
-	// 	input: emailInput,
-	// 	setInput: setEmailInput,
-	// 	inputOnChangeHandler: emailOnChangeHandler,
-	// 	inputOnBlurHandler: emailOnBlurHandler,
-	// } = useInput('EMAIL');
+	const {
+		input: emailInput,
+		setInput: setEmailInput,
+		inputOnChangeHandler: emailOnChangeHandler,
+		inputOnBlurHandler: emailOnBlurHandler,
+	} = useInput('EMAIL', loginMode);
 
-	// const {
-	// 	input: passwordInput,
-	// 	setInput: setPasswordInput,
-	// 	inputOnChangeHandler: passwordOnChangeHandler,
-	// 	inputOnBlurHandler: passwordOnBlurHandler,
-	// } = useInput('PASSWORD');
-
-	const [nameInput, setNameInput] = useState({
-		value: '',
-		isValid: false,
-		isTouched: false,
-	});
-
-	const [emailInput, setEmailInput] = useState({
-		value: '',
-		isValid: false,
-		isTouched: false,
-	});
-
-	const [passwordInput, setPasswordInput] = useState({
-		value: '',
-		isValid: false,
-		isTouched: false,
-	});
+	const {
+		input: passwordInput,
+		setInput: setPasswordInput,
+		inputOnChangeHandler: passwordOnChangeHandler,
+		inputOnBlurHandler: passwordOnBlurHandler,
+	} = useInput('PASSWORD', loginMode);
 
 	const resetFormInputs = () => {
 		setNameInput({ value: '', isValid: false, isTouched: false });
@@ -79,47 +61,6 @@ const Header: React.FC = () => {
 			isValid: false,
 			isTouched: false,
 		});
-	};
-
-	const onChangeHandler = (
-		event: React.ChangeEvent<HTMLInputElement>,
-		type: 'NAME' | 'EMAIL' | 'PASSWORD'
-	) => {
-		if (type === 'NAME') {
-			setNameInput((prev) => ({ ...prev, value: event.target.value }));
-
-			event.target.value.trim().length > 2
-				? setNameInput((prev) => ({ ...prev, isValid: true }))
-				: setNameInput((prev) => ({ ...prev, isValid: false }));
-		} else if (type === 'EMAIL') {
-			setEmailInput((prev) => ({ ...prev, value: event.target.value }));
-
-			event.target.value.match(
-				/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-			)
-				? setEmailInput((prev) => ({ ...prev, isValid: true }))
-				: setEmailInput((prev) => ({ ...prev, isValid: false }));
-		} else if (type === 'PASSWORD') {
-			setPasswordInput((prev) => ({ ...prev, value: event.target.value }));
-
-			event.target.value.match(
-				/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
-			)
-				? setPasswordInput((prev) => ({ ...prev, isValid: true }))
-				: setPasswordInput((prev) => ({ ...prev, isValid: false }));
-		}
-	};
-
-	const onBlurHandler = (type: 'NAME' | 'EMAIL' | 'PASSWORD') => {
-		if (type === 'NAME') {
-			setNameInput((prev) => ({ ...prev, isTouched: true }));
-		}
-		if (type === 'EMAIL') {
-			setEmailInput((prev) => ({ ...prev, isTouched: true }));
-		}
-		if (type === 'PASSWORD') {
-			setPasswordInput((prev) => ({ ...prev, isTouched: true }));
-		}
 	};
 
 	const signupFormHandler = async (event: FormEvent) => {
@@ -179,7 +120,7 @@ const Header: React.FC = () => {
 			<Link to='/users' />
 			<div className={classes.nav}>
 				{userState.token === null && (
-					<button onClick={signUpBtnHandler}>
+					<button onClick={switchModeHandler}>
 						Basculer sur {loginMode ? "s'inscrire" : 'se connecter'}
 					</button>
 				)}
@@ -202,8 +143,10 @@ const Header: React.FC = () => {
 								value={nameInput.value}
 								isValid={nameInput.isValid}
 								isTouched={nameInput.isTouched}
-								onChange={(event) => onChangeHandler(event, 'NAME')}
-								onBlur={() => onBlurHandler('NAME')}
+								// onChange={(event) => onChangeHandler(event, 'NAME')}
+								// onBlur={() => onBlurHandler('NAME')}
+								onChange={nameOnChangeHandler}
+								onBlur={nameOnBlurHandler}
 							/>
 						</>
 					)}
@@ -215,8 +158,10 @@ const Header: React.FC = () => {
 						errorText='Adresse mail non valide.'
 						isValid={emailInput.isValid}
 						isTouched={emailInput.isTouched}
-						onChange={(event) => onChangeHandler(event, 'EMAIL')}
-						onBlur={() => onBlurHandler('EMAIL')}
+						// onChange={(event) => onChangeHandler(event, 'EMAIL')}
+						// onBlur={() => onBlurHandler('EMAIL')}
+						onChange={emailOnChangeHandler}
+						onBlur={emailOnBlurHandler}
 					/>
 					<FormInput
 						id='mot de passe'
@@ -226,8 +171,10 @@ const Header: React.FC = () => {
 						isValid={passwordInput.isValid}
 						isTouched={passwordInput.isTouched}
 						errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
-						onChange={(event) => onChangeHandler(event, 'PASSWORD')}
-						onBlur={() => onBlurHandler('PASSWORD')}
+						// onChange={(event) => onChangeHandler(event, 'PASSWORD')}
+						// onBlur={() => onBlurHandler('PASSWORD')}
+						onChange={passwordOnChangeHandler}
+						onBlur={passwordOnBlurHandler}
 					/>
 					<button>{loginMode ? 'Connexion' : 'Inscription'}</button>
 					<h1>{responseMessage}</h1>
