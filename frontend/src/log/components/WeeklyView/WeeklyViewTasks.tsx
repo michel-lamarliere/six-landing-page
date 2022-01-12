@@ -10,35 +10,37 @@ interface Props {
 	isLoading: boolean;
 	array: {
 		date: string;
-		six: {};
+		six: any;
 	}[];
 	onClick: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
-	taskName: string;
 }
 
 const WeekViewButtons: React.FC<Props> = (props) => {
 	return (
 		<div className={classes.wrapper}>
-			{!props.isLoading &&
-				props.array.map((item: { date: string; six: any }) => (
-					<DataButton
-						id={`${item.date}_${props.taskName}`}
-						onClick={props.onClick}
-						value={item.six[props.taskName]}
-						disabled={
-							!isAfter(
-								new Date(
-									+item.date.slice(0, 4),
-									+item.date.slice(5, 7) === 12
-										? 11
-										: +item.date.slice(5, 7) - 1,
-									+item.date.slice(8, 10)
-								),
-								new Date()
-							)
-						}
-					/>
-				))}
+			{props.array.map((item: { date: string; six: number }, index: number) => (
+				<>
+					{Object.entries(item.six).map((item2) => (
+						<DataButton
+							id={`${item.date}_${item2[0]}`}
+							onClick={props.onClick}
+							value={item2[1]}
+							disabled={
+								!isAfter(
+									new Date(
+										+item.date.slice(0, 4),
+										+item.date.slice(5, 7) === 12
+											? 11
+											: +item.date.slice(5, 7) - 1,
+										+item.date.slice(8, 10)
+									),
+									new Date()
+								)
+							}
+						/>
+					))}
+				</>
+			))}
 		</div>
 	);
 };

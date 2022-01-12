@@ -155,8 +155,10 @@ const addData: RequestHandler = async (req, res, next) => {
 			},
 			(error: {}, result: {}) => {
 				if (result) {
+					console.log('added data');
 					res.json(result);
 				} else {
+					console.log('added data');
 					return { message: 'Failed to update the user!' };
 				}
 			}
@@ -187,9 +189,10 @@ const getDaily: RequestHandler = async (req, res, next) => {
 						return;
 					}
 				}
+				console.log('get daily');
 				res.json({ message: 'No matching date found!' });
 			} else {
-				console.log('date not found!');
+				console.log('get daily');
 				res.json({ message: 'date not found' });
 			}
 		}
@@ -239,7 +242,7 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 			for (let i = 0; i < foundDatesIndex.length; i++) {
 				resultsArray.push(matchingLogArray[i]);
 			}
-
+			console.log('get weekly');
 			res.json(resultsArray);
 		}
 	);
@@ -270,8 +273,8 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 			}
 		) => {
 			if (result) {
-				let numberOfDays: number = getDaysInMonth(reqDate);
-				let datesArray = [];
+				const numberOfDays: number = getDaysInMonth(reqDate);
+				const datesArray = [];
 				for (let i = 1; i < numberOfDays + 1; i++) {
 					let testDate =
 						i < 10
@@ -279,9 +282,9 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 							: reqDate.toISOString().slice(0, 7) + '-' + i.toString();
 					datesArray.push(testDate);
 				}
-				console.log({ datesArray });
+				// console.log({ datesArray });
 
-				let responseArray: any[] = [];
+				const responseArray: any[] = [];
 				for (let i = 0; i < datesArray.length; i++) {
 					let matched = false;
 					let y = 0;
@@ -306,7 +309,7 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 						responseArray.push(0);
 					}
 				}
-
+				console.log({ datesArray });
 				console.log({ responseArray });
 				res.json({ datesArray, responseArray });
 			}

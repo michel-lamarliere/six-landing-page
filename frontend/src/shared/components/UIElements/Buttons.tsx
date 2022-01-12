@@ -20,3 +20,9 @@ export const DataButton: React.FC<{
 		/>
 	);
 };
+
+export const PlaceHolderDataButton: React.FC<{
+	disabled: boolean;
+}> = (props) => {
+	return <button className={classes.button} disabled={!props.disabled} />;
+};

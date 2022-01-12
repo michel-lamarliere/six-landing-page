@@ -79,6 +79,7 @@ const WeekView: React.FC = () => {
 				y++;
 			}
 		} while (array.length < 7);
+		console.log(array);
 		setMappingArray(array);
 	};
 
@@ -178,60 +179,29 @@ const WeekView: React.FC = () => {
 					Semaine suivante
 				</button>
 			</div>
-			<div className={classes.days}>
-				<th>Lundi {addDays(firstOfWeek, 0).getDate()}</th>
-				<th>Mardi {addDays(firstOfWeek, 1).getDate()}</th>
-				<th>Mercredi {addDays(firstOfWeek, 2).getDate()}</th>
-				<th>Jeudi {addDays(firstOfWeek, 3).getDate()}</th>
-				<th>Vendredi {addDays(firstOfWeek, 4).getDate()}</th>
-				<th>Samedi {addDays(firstOfWeek, 5).getDate()}</th>
-				<th>Dimanche {addDays(firstOfWeek, 6).getDate()}</th>
-			</div>
-			<div className={classes.six}>
-				<div className={classes.titles}>
-					<li>Food</li>
-					<li>Sleep</li>
-					<li>Sport</li>
-					<li>Relaxation</li>
-					<li>Work</li>
-					<li>Social</li>
+			<div>
+				<div className={classes.days}>
+					<li>Lundi {addDays(firstOfWeek, 0).getDate()}</li>
+					<li>Mardi {addDays(firstOfWeek, 1).getDate()}</li>
+					<li>Mercredi {addDays(firstOfWeek, 2).getDate()}</li>
+					<li>Jeudi {addDays(firstOfWeek, 3).getDate()}</li>
+					<li>Vendredi {addDays(firstOfWeek, 4).getDate()}</li>
+					<li>Samedi {addDays(firstOfWeek, 5).getDate()}</li>
+					<li>Dimanche {addDays(firstOfWeek, 6).getDate()}</li>
 				</div>
-				<div className={classes.list}>
+				<div className={classes.six}>
+					<div className={classes.six_titles}>
+						<li>Food</li>
+						<li>Sleep</li>
+						<li>Sport</li>
+						<li>Relaxation</li>
+						<li>Work</li>
+						<li>Social</li>
+					</div>
 					<WeekViewTasks
 						isLoading={isLoading}
 						array={mappingArray}
 						onClick={addData}
-						taskName='food'
-					/>
-					<WeekViewTasks
-						isLoading={isLoading}
-						array={mappingArray}
-						onClick={addData}
-						taskName='sleep'
-					/>
-					<WeekViewTasks
-						isLoading={isLoading}
-						array={mappingArray}
-						onClick={addData}
-						taskName='sport'
-					/>
-					<WeekViewTasks
-						isLoading={isLoading}
-						array={mappingArray}
-						onClick={addData}
-						taskName='relaxation'
-					/>
-					<WeekViewTasks
-						isLoading={isLoading}
-						array={mappingArray}
-						onClick={addData}
-						taskName='work'
-					/>
-					<WeekViewTasks
-						isLoading={isLoading}
-						array={mappingArray}
-						onClick={addData}
-						taskName='social'
 					/>
 				</div>
 			</div>

@@ -9,7 +9,7 @@
 	justify-items: center;
 	grid-template-columns: repeat(7, 1fr);
 	gap: 0.5rem;
-	width: 50%;
+	width: 60%;
 	margin: 0 auto;
 }
 
@@ -22,4 +22,13 @@
 	display: flex;
 	justify-content: center;
 	gap: 1rem;
+}
+
+.days {
+	display: grid;
+	justify-items: center;
+	grid-template-columns: repeat(7, 1fr);
+	width: 60%;
+	margin: 0 auto;
+	font-size: 16px;
 }

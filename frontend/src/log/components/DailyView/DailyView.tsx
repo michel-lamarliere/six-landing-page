@@ -83,7 +83,8 @@ const DailyView: React.FC = () => {
 		if (typeof userState.id === 'string') {
 			getDailyData(userState.id, chosenDate.toISOString().slice(0, 10));
 		}
-	}, [chosenDate, userState]);
+		// }, [chosenDate, userState]);
+	}, [chosenDate]);
 
 	useEffect(() => {
 		switch (getDay(chosenDate)) {

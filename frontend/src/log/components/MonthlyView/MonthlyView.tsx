@@ -1,9 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { addMonths, getYear, format, isAfter } from 'date-fns';
+import {
+	addMonths,
+	getDay,
+	getYear,
+	format,
+	isAfter,
+	getDaysInMonth,
+	startOfMonth,
+} from 'date-fns';
 import classes from './MonthlyView.module.scss';
 import { RootState } from '../../../shared/store/store';
 import { useSelector } from 'react-redux';
-import { DataButton } from '../../../shared/components/UIElements/Buttons';
+import {
+	DataButton,
+	PlaceHolderDataButton,
+} from '../../../shared/components/UIElements/Buttons';
 
 const MonthlyView: React.FC = () => {
 	const userState = useSelector((state: RootState) => state.user);
@@ -12,19 +23,26 @@ const MonthlyView: React.FC = () => {
 	const [monthlyArray, setMonthlyArray] = useState<number[]>([]);
 	const [datesArray, setDatesArray] = useState<string[]>([]);
 	const selectSixRef = useRef<HTMLSelectElement>(null);
-	const [currentTask, setCurrentTask] = useState(selectSixRef.current?.value);
+	const [currentTask, setCurrentTask] = useState('food');
+	const [isLoading, setIsLoading] = useState(true);
+	const [numberArrayPlaceholder, setNumberArrayPlaceholder] = useState<number[]>([]);
+	const [datesArrayPlaceholder, setDatesArrayPlaceholder] = useState<string[]>([]);
+	const [emptyBoxes, setEmptyBoxes] = useState<0[]>([]);
 
 	const selectHandler = () => {
+		setIsLoading(false);
 		if (selectSixRef.current) {
 			setCurrentTask(selectSixRef.current?.value);
 		}
 	};
 
 	const previousMonthHandler = () => {
+		setIsLoading(false);
 		setChosenDate(addMonths(chosenDate, -1));
 	};
 
 	const nextMonthHandler = () => {
+		setIsLoading(false);
 		if (!isAfter(addMonths(chosenDate, 1), new Date())) {
 			setChosenDate(addMonths(chosenDate, 1));
 		}
@@ -46,6 +64,8 @@ const MonthlyView: React.FC = () => {
 			setDatesArray(responseDatesArray);
 			setMonthlyArray(responseArray);
 		}
+		setIsLoading(true);
+		getFirstDayOfWeek(chosenDate);
 	};
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -69,55 +89,95 @@ const MonthlyView: React.FC = () => {
 		getMonthlyData();
 	};
 
-	useEffect(() => {
-		if (typeof selectSixRef.current?.value === 'string') {
-			setCurrentTask(selectSixRef.current?.value);
-			getMonthlyData();
+	const placeholderCalendar = (date: Date) => {
+		const numberOfDaysInMonth = getDaysInMonth(date);
+
+		const array: number[] = [];
+
+		for (let i = 0; i < numberOfDaysInMonth; i++) {
+			array.push(0);
 		}
-	}, [userState.id, chosenDate, currentTask]);
+		setNumberArrayPlaceholder(array);
+	};
+
+	const getDatesArrayPlaceholder = (date: Date) => {
+		const numberOfDays: number = getDaysInMonth(date);
+		const datesArray: string[] = [];
+		for (let i = 1; i < numberOfDays + 1; i++) {
+			let testDate =
+				i < 10
+					? date.toISOString().slice(0, 7) + '-0' + i.toString()
+					: date.toISOString().slice(0, 7) + '-' + i.toString();
+			datesArray.push(testDate);
+		}
+
+		setDatesArrayPlaceholder(datesArray);
+	};
+
+	const getFirstDayOfWeek = (date: Date) => {
+		let dayOfFirstOfMonth: number = getDay(startOfMonth(date));
+
+		dayOfFirstOfMonth =
+			dayOfFirstOfMonth === 0
+				? (dayOfFirstOfMonth = 7)
+				: (dayOfFirstOfMonth = dayOfFirstOfMonth - 1);
+
+		const emptyArray: 0[] = [];
+		for (let i = 0; i < dayOfFirstOfMonth; i++) {
+			emptyArray.push(0);
+		}
+
+		setEmptyBoxes(emptyArray);
+	};
 
 	useEffect(() => {
-		switch (chosenDate.getMonth()) {
-			case 0:
-				setMonthStr('Janvier');
-				break;
-			case 1:
-				setMonthStr('Février');
-				break;
-			case 2:
-				setMonthStr('Mars');
-				break;
-			case 3:
-				setMonthStr('Avril');
-				break;
-			case 4:
-				setMonthStr('Mai');
-				break;
-			case 5:
-				setMonthStr('Juin');
-				break;
-			case 6:
-				setMonthStr('Juillet');
-				break;
-			case 7:
-				setMonthStr('Août');
-				break;
-			case 8:
-				setMonthStr('Septembre');
-				break;
-			case 9:
-				setMonthStr('Octobre');
-				break;
-			case 10:
-				setMonthStr('Novembre');
-				break;
-			case 11:
-				setMonthStr('Décembre');
-				break;
-			default:
-				break;
+		if (typeof selectSixRef.current?.value === 'string' && userState.id !== null) {
+			setCurrentTask(selectSixRef.current.value);
+			getDatesArrayPlaceholder(chosenDate);
+			getMonthlyData();
+			placeholderCalendar(chosenDate);
+			switch (chosenDate.getMonth()) {
+				case 0:
+					setMonthStr('Janvier');
+					break;
+				case 1:
+					setMonthStr('Février');
+					break;
+				case 2:
+					setMonthStr('Mars');
+					break;
+				case 3:
+					setMonthStr('Avril');
+					break;
+				case 4:
+					setMonthStr('Mai');
+					break;
+				case 5:
+					setMonthStr('Juin');
+					break;
+				case 6:
+					setMonthStr('Juillet');
+					break;
+				case 7:
+					setMonthStr('Août');
+					break;
+				case 8:
+					setMonthStr('Septembre');
+					break;
+				case 9:
+					setMonthStr('Octobre');
+					break;
+				case 10:
+					setMonthStr('Novembre');
+					break;
+				case 11:
+					setMonthStr('Décembre');
+					break;
+				default:
+					break;
+			}
 		}
-	}, [chosenDate]);
+	}, [chosenDate, currentTask]);
 
 	return (
 		<div className={classes.wrapper}>
@@ -148,32 +208,68 @@ const MonthlyView: React.FC = () => {
 					<option value='social'>Vie Sociale</option>
 				</select>
 			</div>
+			<div className={classes.days}>
+				<li>Lundi</li>
+				<li>Mardi</li>
+				<li>Mercredi</li>
+				<li>Jeudi</li>
+				<li>Vendredi</li>
+				<li>Samedi</li>
+				<li>Dimanche</li>
+			</div>
 			<div className={classes.calendar_wrapper}>
-				{monthlyArray.map((item, index) => (
-					<div
-						key={`${datesArray[index]}_${currentTask}_div`}
-						className={classes.button_wrapper}
-					>
-						<div>{index + 1}</div>
-						<DataButton
-							id={`${datesArray[index]}_${currentTask}`}
-							onClick={addData}
-							value={item}
-							disabled={
-								!isAfter(
-									new Date(
-										+datesArray[index].slice(0, 4),
-										+datesArray[index].slice(5, 7) === 12
-											? 11
-											: +datesArray[index].slice(5, 7) - 1,
-										+datesArray[index].slice(8, 10)
-									),
-									new Date()
-								)
-							}
-						/>
-					</div>
-				))}
+				{emptyBoxes.length > 0 && emptyBoxes.map((item) => <div></div>)}
+				{isLoading
+					? monthlyArray.map((item, index) => (
+							<div
+								key={`${datesArray[index]}_${currentTask}_div`}
+								className={classes.button_wrapper}
+							>
+								<div>{index + 1}</div>
+								<DataButton
+									id={`${datesArray[index]}_${currentTask}`}
+									onClick={addData}
+									value={item}
+									disabled={
+										!isAfter(
+											new Date(
+												+datesArray[index].slice(0, 4),
+												+datesArray[index].slice(5, 7) === 12
+													? 11
+													: +datesArray[index].slice(5, 7) - 1,
+												+datesArray[index].slice(8, 10)
+											),
+											new Date()
+										)
+									}
+								></DataButton>
+							</div>
+					  ))
+					: numberArrayPlaceholder.map((item, index) => (
+							<div className={classes.button_wrapper}>
+								<div>{index + 1}</div>
+								<PlaceHolderDataButton
+									disabled={
+										!isAfter(
+											new Date(
+												+datesArrayPlaceholder[index].slice(0, 4),
+												+datesArrayPlaceholder[index].slice(
+													5,
+													7
+												) === 12
+													? 11
+													: +datesArrayPlaceholder[index].slice(
+															5,
+															7
+													  ) - 1,
+												+datesArrayPlaceholder[index].slice(8, 10)
+											),
+											new Date()
+										)
+									}
+								></PlaceHolderDataButton>
+							</div>
+					  ))}
 			</div>
 		</div>
 	);

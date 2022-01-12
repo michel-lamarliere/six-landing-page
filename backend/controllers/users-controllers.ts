@@ -8,58 +8,65 @@ const signUp: RequestHandler = async (req, res, next) => {
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
-	databaseConnect.findOne({ email: reqEmail }, (error: {}, result: {}) => {
-		if (error) {
-		}
-		if (result) {
-			res.json({
-				message:
-					'Adresse email déjà utilisée, veuillez en choisir une autre ou vous connecter.',
-			});
-		}
-	});
+	let existingUser = await databaseConnect.findOne({ email: reqEmail });
 
-	// HASHING PASSWORD
-	let hashedPassword;
-	try {
-		hashedPassword = await bcrypt.hash(reqPassword, 12);
-	} catch (error) {}
-
-	const newUser = {
-		name: reqName,
-		email: reqEmail,
-		password: hashedPassword,
-		log: [],
-	};
-	// CREATES NEW USER
-	try {
-		databaseConnect.insertOne(newUser);
-	} catch (error) {
-		throw new Error('Failed to create new user!');
+	if (existingUser) {
+		res.json({
+			message:
+				'Adresse email déjà utilisée, veuillez en choisir une autre ou vous connecter.',
+		});
 	}
 
-	// GETS THE ID
-	let token: string;
-	databaseConnect.findOne(
-		{ email: reqEmail },
-		async (error: any, result: { _id: {} }) => {
-			if (result) {
-				// CREATES THE TOKEN
-				try {
-					token = await jwt.sign(
-						{ id: result._id, email: reqEmail },
-						'je-mange-du-pain-blanc-enola',
-						{
-							expiresIn: '1h',
-						}
-					);
-				} catch (error) {}
-			}
-			res.json({ message: 'Compte créé, veuillez-vous connecter.' });
-		}
-	);
-};
+	// HASHING PASSWORD
+	if (!existingUser) {
+		let hashedPassword;
+		try {
+			hashedPassword = await bcrypt.hash(reqPassword, 12);
+		} catch (error) {}
 
+		const newUser = {
+			name: reqName,
+			email: reqEmail,
+			password: hashedPassword,
+			log: [],
+		};
+		// CREATES NEW USER
+		try {
+			databaseConnect.insertOne(newUser);
+		} catch (error) {
+			throw new Error('Failed to create new user!');
+		}
+
+		// GETS THE ID
+
+		let findingNewUser = await databaseConnect.findOne({
+			email: reqEmail,
+		});
+
+		let token: string;
+		if (findingNewUser) {
+			// CREATES THE TOKEN
+			try {
+				token = await jwt.sign(
+					{ id: findingNewUser._id, email: reqEmail },
+					'je-mange-du-pain-blanc-enola',
+					{
+						expiresIn: '1h',
+					}
+				);
+				res.json({
+					message: 'Compte créé !',
+					token: token,
+					id: findingNewUser._id,
+					email: findingNewUser.email,
+					name: findingNewUser.name,
+				});
+			} catch (error) {
+				res.json({ message: 'Erreur, veuillez réessayer plus tard.' });
+			}
+		}
+	}
+};
 const signIn: RequestHandler = async (req, res, next) => {
 	const { email: reqEmail, password: reqPassword } = req.body;
 	const databaseConnect = database.getDb('six-dev');
