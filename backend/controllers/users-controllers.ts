@@ -32,7 +32,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 		};
 		// CREATES NEW USER
 		try {
-			databaseConnect.insertOne(newUser);
+			await databaseConnect.insertOne(newUser);
 		} catch (error) {
 			throw new Error('Failed to create new user!');
 		}
@@ -90,6 +90,9 @@ const signIn: RequestHandler = async (req, res, next) => {
 				result: { _id: string; name: string; email: string; password: string }
 			) => {
 				if (!result) {
+					res.json({
+						message: 'Adresse email non trouvée, veuillez créer un compte.',
+					});
 					return;
 				}
 

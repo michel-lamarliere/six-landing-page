@@ -12,6 +12,7 @@ const FormInput: React.FC<{
 	isTouched: boolean;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
+	onPaste?: (event: React.ClipboardEvent<HTMLInputElement>) => void;
 }> = (props) => {
 	const {
 		id,
@@ -23,6 +24,7 @@ const FormInput: React.FC<{
 		isTouched,
 		onChange,
 		onBlur,
+		onPaste,
 	} = props;
 
 	return (
@@ -38,6 +40,7 @@ const FormInput: React.FC<{
 				value={value}
 				onChange={onChange}
 				onBlur={onBlur}
+				onPaste={onPaste}
 			/>
 		</div>
 	);

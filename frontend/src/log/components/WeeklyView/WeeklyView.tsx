@@ -5,9 +5,12 @@ import { RootState } from '../../../shared/store/store';
 
 import classes from './WeeklyView.module.scss';
 
+import { useRequest } from '../../../shared/hooks/http-hook';
 import WeekViewTasks from './WeeklyViewTasks';
 
 const WeekView: React.FC = () => {
+	const { sendRequest, sendData } = useRequest();
+
 	const userState = useSelector((state: RootState) => state.user);
 	const [weekData, setWeekData] = useState<{ date: string; six: {} }[]>([]);
 	const [mappingArray, setMappingArray] = useState<any[]>([]);
@@ -29,18 +32,14 @@ const WeekView: React.FC = () => {
 	};
 
 	const getWeekData = async (userId: string, formattedFirstOfWeekStr: string) => {
-		const response = await fetch(
+		const responseData = await sendRequest(
 			`http://localhost:8080/api/logs/weekly/${userId}/${formattedFirstOfWeekStr}`,
-			{
-				method: 'GET',
-				headers: { 'Content-Type': 'application/json' },
-			}
+			'GET'
 		);
-		setIsLoading(false);
-		const responseJson = await response.json();
 
-		setWeekData(responseJson);
-		getMappingArray(responseJson, firstOfWeek);
+		setIsLoading(false);
+		setWeekData(responseData);
+		getMappingArray(responseData, firstOfWeek);
 	};
 
 	const setEmptyArray = (logDate: string) => {
@@ -66,6 +65,7 @@ const WeekView: React.FC = () => {
 		let array = [];
 		let i = 0;
 		let y = 0;
+
 		do {
 			if (
 				weekData[i] &&
@@ -79,7 +79,7 @@ const WeekView: React.FC = () => {
 				y++;
 			}
 		} while (array.length < 7);
-		console.log(array);
+
 		setMappingArray(array);
 	};
 
@@ -95,19 +95,9 @@ const WeekView: React.FC = () => {
 		);
 
 		if (!isAfter(dateFormat, new Date())) {
-			await fetch(`http://localhost:8080/api/logs/task`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					_id: userState.id,
-					email: userState.email,
-					date: date,
-					task: task,
-					levelOfCompletion: prevLevel !== 2 ? prevLevel + 1 : 0,
-				}),
-			});
+			userState.id &&
+				userState.email &&
+				(await sendData(userState.id, userState.email, date, task, prevLevel));
 		}
 
 		if (typeof userState.id === 'string') {

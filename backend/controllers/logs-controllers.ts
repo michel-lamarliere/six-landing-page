@@ -23,6 +23,20 @@ const addData: RequestHandler = async (req, res, next) => {
 		levelOfCompletion: reqLevelOfCompletion,
 	} = await req.body;
 
+	console.log(reqDate);
+
+	const dateFormat = new Date(
+		+reqDate.slice(0, 4),
+		+reqDate.slice(5, 7) === 12 ? 11 : +reqDate.slice(5, 7) - 1,
+		+reqDate.slice(8, 10)
+	);
+
+	if (isAfter(dateFormat, new Date())) {
+		console.log('Erreur, date dans le futur');
+		res.json({ message: 'Erreur, date dans le futur' });
+		return;
+	}
+
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
 	const reqId = ObjectId(reqIdStr);
@@ -105,17 +119,6 @@ const addData: RequestHandler = async (req, res, next) => {
 					}
 				}
 				if (!foundSameDate) {
-					// TO ORDER LOG
-					// const thisDate = addHours(parseISO(reqDate), 1);
-					// console.log(thisDate);
-					// for (let i = 0; i < result.log.length; i++) {
-					// 	if (
-					// 		isBefore(thisDate, result.log[i].date) &&
-					// 		isAfter(thisDate, result.log[i + 1].date)
-					// 	) {
-					// 		console.log('here!!!');
-					// 	}
-					// }
 					databaseConnect.updateOne(
 						filter,
 						{
@@ -132,7 +135,6 @@ const addData: RequestHandler = async (req, res, next) => {
 										[reqTask]: reqLevelOfCompletion,
 									},
 								},
-								// ],
 							},
 						},
 						(error: any, result: any) => {
@@ -282,7 +284,6 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 							: reqDate.toISOString().slice(0, 7) + '-' + i.toString();
 					datesArray.push(testDate);
 				}
-				// console.log({ datesArray });
 
 				const responseArray: any[] = [];
 				for (let i = 0; i < datesArray.length; i++) {
@@ -290,10 +291,6 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 					let y = 0;
 					for (let y = 0; y < datesArray.length; y++) {
 						if (result.log[y] && datesArray[i] === result.log[y].date) {
-							// responseArray.push({
-							// 	date: datesArray[i],
-							// 	[reqTask]: result.log[y].six[reqTask],
-							// });
 							responseArray.push(result.log[y].six[reqTask]);
 							matched = true;
 						}
@@ -302,15 +299,9 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 						matched = false;
 					}
 					if (!matched) {
-						// responseArray.push({
-						// 	date: datesArray[i],
-						// 	[reqTask]: 0,
-						// });
 						responseArray.push(0);
 					}
 				}
-				console.log({ datesArray });
-				console.log({ responseArray });
 				res.json({ datesArray, responseArray });
 			}
 		}

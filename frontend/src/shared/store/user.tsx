@@ -17,7 +17,6 @@ const initialStateReducer: State = {
 interface Action extends State {
 	type: 'LOG_IN' | 'LOG_OUT';
 	login: any;
-	payload: any;
 }
 
 const LOG_IN = 'LOG_IN';

@@ -1,8 +1,9 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useInput } from '../../hooks/useInput';
-import FormInput from '../FormElements/Input';
+import { useRequest } from '../../hooks/http-hook';
+import { useInput } from '../../hooks/input-hook';
+import Input from '../FormElements/Input';
 
 import classes from './Navigation.module.scss';
 
@@ -12,14 +13,42 @@ import type { RootState, AppDispatch } from '../../store/store';
 const Header: React.FC = () => {
 	const [responseMessage, setResponseMessage] = useState('');
 
+	const { sendRequest } = useRequest();
+
 	const userState = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const [loginMode, setLoginMode] = useState(false);
+	const [formIsValid, setFormIsValid] = useState(false);
+
+	const {
+		input: nameInput,
+		setInput: setNameInput,
+		inputOnChangeHandler: nameOnChangeHandler,
+		inputOnBlurHandler: nameOnBlurHandler,
+		inputOnPasteHandler: nameOnPasteHandler,
+	} = useInput('NAME', loginMode);
+
+	const {
+		input: emailInput,
+		setInput: setEmailInput,
+		inputOnChangeHandler: emailOnChangeHandler,
+		inputOnBlurHandler: emailOnBlurHandler,
+		inputOnPasteHandler: emailOnPasteHandler,
+	} = useInput('EMAIL', loginMode);
+
+	const {
+		input: passwordInput,
+		setInput: setPasswordInput,
+		inputOnChangeHandler: passwordOnChangeHandler,
+		inputOnBlurHandler: passwordOnBlurHandler,
+		inputOnPasteHandler: passwordOnPasteHandler,
+	} = useInput('PASSWORD', loginMode);
 
 	const switchModeHandler = () => {
 		setLoginMode((prev) => !prev);
+		resetFormInputs();
 	};
 
 	const logoutBtnHandler = () => {
@@ -28,34 +57,15 @@ const Header: React.FC = () => {
 		localStorage.removeItem('credentials');
 	};
 
-	const {
-		input: nameInput,
-		setInput: setNameInput,
-		inputOnChangeHandler: nameOnChangeHandler,
-		inputOnBlurHandler: nameOnBlurHandler,
-	} = useInput('NAME', loginMode);
-
-	const {
-		input: emailInput,
-		setInput: setEmailInput,
-		inputOnChangeHandler: emailOnChangeHandler,
-		inputOnBlurHandler: emailOnBlurHandler,
-	} = useInput('EMAIL', loginMode);
-
-	const {
-		input: passwordInput,
-		setInput: setPasswordInput,
-		inputOnChangeHandler: passwordOnChangeHandler,
-		inputOnBlurHandler: passwordOnBlurHandler,
-	} = useInput('PASSWORD', loginMode);
-
 	const resetFormInputs = () => {
 		setNameInput({ value: '', isValid: false, isTouched: false });
+
 		setEmailInput({
 			value: '',
 			isValid: false,
 			isTouched: false,
 		});
+
 		setPasswordInput({
 			value: '',
 			isValid: false,
@@ -65,21 +75,29 @@ const Header: React.FC = () => {
 
 	const signupFormHandler = async (event: FormEvent) => {
 		event.preventDefault();
-		const response = await fetch('http://localhost:8080/api/users/signup', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				name: nameInput,
-				email: emailInput,
-				password: passwordInput,
-			}),
-		});
 
-		const { message, token, id, email, name } = await response.json();
+		const responseData = await sendRequest(
+			'http://localhost:8080/api/users/signup',
+			'POST',
+			JSON.stringify({
+				name: nameInput.value.trim().toLowerCase(),
+				email: emailInput.value.trim().toLowerCase(),
+				password: passwordInput.value,
+			})
+		);
+
+		const { message, token, id, email, name } = responseData;
+
 		if (token) {
 			dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
+
+			localStorage.setItem(
+				'credentials',
+				JSON.stringify({
+					email: email,
+					password: 'Tester1@@',
+				})
+			);
 		} else {
 			setResponseMessage(message);
 		}
@@ -87,33 +105,54 @@ const Header: React.FC = () => {
 
 	const loginFormHandler = async (event: FormEvent) => {
 		event.preventDefault();
-		const response = await fetch('http://localhost:8080/api/users/signin', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				email: emailInput,
-				password: passwordInput,
-			}),
-		});
 
-		const responseData = await response.json();
+		const responseData = await sendRequest(
+			'http://localhost:8080/api/users/signin',
+			'POST',
+			JSON.stringify({
+				email: emailInput.value.trim().toLowerCase(),
+				password: passwordInput.value,
+			})
+		);
+
 		if (responseData.message) {
 			setResponseMessage(responseData.message);
 			return;
 		}
 		const { token, id, name, email } = responseData;
+
 		dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
+
 		resetFormInputs();
+
 		localStorage.setItem(
 			'credentials',
 			JSON.stringify({
 				email: email,
-				password: 'tester',
+				password: 'Tester1@',
 			})
 		);
 	};
+
+	useEffect(() => {
+		setResponseMessage('');
+		if (loginMode) {
+			if (
+				emailInput.value.trim().length > 0 &&
+				passwordInput.value.trim().length > 0
+			) {
+				setFormIsValid(true);
+			} else {
+				setFormIsValid(false);
+			}
+		} else {
+			if (nameInput.isValid && emailInput.isValid && passwordInput.isValid) {
+				setFormIsValid(true);
+			} else {
+				setFormIsValid(false);
+			}
+		}
+	}, [nameInput.value, emailInput.value, passwordInput.value]);
 
 	return (
 		<div className={classes.wrapper}>
@@ -134,23 +173,20 @@ const Header: React.FC = () => {
 					className={classes.form}
 				>
 					{!loginMode && (
-						<>
-							<FormInput
-								id='Nom'
-								type='text'
-								placeholder='Jean'
-								errorText='Nom trop court.'
-								value={nameInput.value}
-								isValid={nameInput.isValid}
-								isTouched={nameInput.isTouched}
-								// onChange={(event) => onChangeHandler(event, 'NAME')}
-								// onBlur={() => onBlurHandler('NAME')}
-								onChange={nameOnChangeHandler}
-								onBlur={nameOnBlurHandler}
-							/>
-						</>
+						<Input
+							id='Nom'
+							type='text'
+							placeholder='Jean'
+							errorText='Nom trop court.'
+							value={nameInput.value}
+							isValid={nameInput.isValid}
+							isTouched={nameInput.isTouched}
+							onChange={nameOnChangeHandler}
+							onBlur={nameOnBlurHandler}
+							onPaste={nameOnPasteHandler}
+						/>
 					)}
-					<FormInput
+					<Input
 						id='Email'
 						type='text'
 						placeholder='jean@email.fr'
@@ -158,12 +194,11 @@ const Header: React.FC = () => {
 						errorText='Adresse mail non valide.'
 						isValid={emailInput.isValid}
 						isTouched={emailInput.isTouched}
-						// onChange={(event) => onChangeHandler(event, 'EMAIL')}
-						// onBlur={() => onBlurHandler('EMAIL')}
 						onChange={emailOnChangeHandler}
 						onBlur={emailOnBlurHandler}
+						onPaste={emailOnPasteHandler}
 					/>
-					<FormInput
+					<Input
 						id='mot de passe'
 						type='password'
 						placeholder='********'
@@ -171,12 +206,14 @@ const Header: React.FC = () => {
 						isValid={passwordInput.isValid}
 						isTouched={passwordInput.isTouched}
 						errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
-						// onChange={(event) => onChangeHandler(event, 'PASSWORD')}
-						// onBlur={() => onBlurHandler('PASSWORD')}
 						onChange={passwordOnChangeHandler}
 						onBlur={passwordOnBlurHandler}
+						onPaste={passwordOnPasteHandler}
 					/>
-					<button>{loginMode ? 'Connexion' : 'Inscription'}</button>
+					<button disabled={!formIsValid}>
+						{loginMode ? 'Connexion' : 'Inscription'}
+					</button>
+					<h1>Tester1@</h1>
 					<h1>{responseMessage}</h1>
 				</form>
 			)}

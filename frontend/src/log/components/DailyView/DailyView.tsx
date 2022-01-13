@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { addDays, getDate, getDay, getYear, isAfter } from 'date-fns';
-import { RootState } from '../../../shared/store/store';
 import classes from './DailyView.module.scss';
 
+import { useRequest } from '../../../shared/hooks/http-hook';
 import { DataButton } from '../../../shared/components/UIElements/Buttons';
+import { RootState } from '../../../shared/store/store';
 
 const DailyView: React.FC = () => {
+	const { sendRequest, sendData } = useRequest();
 	const userState = useSelector((state: RootState) => state.user);
 
 	const [isLoading, setIsLoading] = useState(true);
@@ -19,15 +21,11 @@ const DailyView: React.FC = () => {
 	const [dailyData, setDailyData] = useState<any>([]);
 
 	const getDailyData = async (userId: string, date: string) => {
-		const response = await fetch(
+		let responseData = await sendRequest(
 			`http://localhost:8080/api/logs/daily/${userId}/${date}`,
-			{
-				method: 'GET',
-				headers: { 'Content-Type': 'application/json' },
-			}
+			'GET'
 		);
 
-		let responseData = await response.json();
 		if (responseData.message) {
 			responseData = {
 				date: chosenDate.toISOString().slice(0, 10),
@@ -41,6 +39,7 @@ const DailyView: React.FC = () => {
 				},
 			};
 		}
+
 		setDailyData(responseData);
 		setIsLoading(false);
 	};
@@ -55,24 +54,14 @@ const DailyView: React.FC = () => {
 		}
 	};
 
-	const taskLevelHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
+	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		let date = (event.target as HTMLElement).id.split('_')[0];
 		let task = (event.target as HTMLButtonElement).id.split('_')[1];
 		let prevLevel = parseInt((event.target as HTMLButtonElement).value);
 
-		await fetch(`http://localhost:8080/api/logs/task`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				_id: userState.id,
-				email: userState.email,
-				date: date,
-				task: task,
-				levelOfCompletion: prevLevel !== 2 ? prevLevel + 1 : 0,
-			}),
-		});
+		userState.id &&
+			userState.email &&
+			(await sendData(userState.id, userState.email, date, task, prevLevel));
 
 		if (typeof userState.id === 'string') {
 			getDailyData(userState.id, chosenDate.toISOString().slice(0, 10));
@@ -83,7 +72,6 @@ const DailyView: React.FC = () => {
 		if (typeof userState.id === 'string') {
 			getDailyData(userState.id, chosenDate.toISOString().slice(0, 10));
 		}
-		// }, [chosenDate, userState]);
 	}, [chosenDate]);
 
 	useEffect(() => {
@@ -232,7 +220,7 @@ const DailyView: React.FC = () => {
 						<div>{item[0]}</div>
 						<DataButton
 							id={`${chosenDate.toISOString().slice(0, 10)}_${item[0]}`}
-							onClick={taskLevelHandler}
+							onClick={addData}
 							value={item[1]}
 							disabled={true}
 						/>
