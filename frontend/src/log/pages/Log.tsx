@@ -25,37 +25,37 @@ const Log: React.FC = () => {
 		<>
 			<div className={classes.view}>
 				<button
-					disabled={viewState === 'DAILY'}
-					onClick={() => dispatch({ type: 'DAILY' })}
+					disabled={viewState === 'DAILY-VIEW'}
+					onClick={() => dispatch({ type: 'DAILY-VIEW' })}
 				>
 					Jour
 				</button>
 				<button
-					disabled={viewState === 'WEEKLY'}
-					onClick={() => dispatch({ type: 'WEEKLY' })}
+					disabled={viewState === 'WEEKLY-VIEW'}
+					onClick={() => dispatch({ type: 'WEEKLY-VIEW' })}
 				>
 					Semaine
 				</button>
 				<button
-					disabled={viewState === 'MONTHLY'}
-					onClick={() => dispatch({ type: 'MONTHLY' })}
+					disabled={viewState === 'MONTHLY-VIEW'}
+					onClick={() => dispatch({ type: 'MONTHLY-VIEW' })}
 				>
 					Mois
 				</button>
 			</div>
-			{userState.id && viewState === 'DAILY' && (
+			{userState.id && viewState === 'DAILY-VIEW' && (
 				<div className={classes.wrapper}>
 					<h1>Journal | Vue Quotidienne</h1>
 					<DailyView />
 				</div>
 			)}
-			{userState.id && viewState === 'WEEKLY' && (
+			{userState.id && viewState === 'WEEKLY-VIEW' && (
 				<div className={classes.wrapper}>
 					<h1>Journal | Vue Semaine</h1>
 					<WeeklyView />
 				</div>
 			)}
-			{userState.id && viewState === 'MONTHLY' && (
+			{userState.id && viewState === 'MONTHLY-VIEW' && (
 				<div className={classes.wrapper}>
 					<h1>Journal | Vue Mois</h1>
 					<MonthlyView />

@@ -16,6 +16,7 @@ const Header: React.FC = () => {
 	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
+	const errorState = useSelector((state: RootState) => state.error);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -119,6 +120,7 @@ const Header: React.FC = () => {
 			setResponseMessage(responseData.message);
 			return;
 		}
+
 		const { token, id, name, email } = responseData;
 
 		dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });

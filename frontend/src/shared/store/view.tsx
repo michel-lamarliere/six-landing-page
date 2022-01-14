@@ -3,11 +3,11 @@ interface State {
 }
 
 const initialStateReducer: State = {
-	view: 'DAILY',
+	view: 'DAILY-VIEW',
 };
 
 interface Action extends State {
-	type: 'DAILY' | 'WEEKLY' | 'MONTHLY';
+	type: 'DAILY-VIEW' | 'WEEKLY-VIEW' | 'MONTHLY-VIEW';
 	login: any;
 	payload: any;
 }
@@ -18,15 +18,15 @@ const setLocalStorage = (type: string) => {
 
 const viewReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		case 'DAILY':
+		case 'DAILY-VIEW':
 			setLocalStorage(action.type);
-			return { view: 'DAILY' };
-		case 'WEEKLY':
+			return { view: 'DAILY-VIEW' };
+		case 'WEEKLY-VIEW':
 			setLocalStorage(action.type);
-			return { view: 'WEEKLY' };
-		case 'MONTHLY':
+			return { view: 'WEEKLY-VIEW' };
+		case 'MONTHLY-VIEW':
 			setLocalStorage(action.type);
-			return { view: 'MONTHLY' };
+			return { view: 'MONTHLY-VIEW' };
 		default:
 			return state;
 	}

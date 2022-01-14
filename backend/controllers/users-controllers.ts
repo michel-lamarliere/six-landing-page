@@ -8,6 +8,38 @@ const signUp: RequestHandler = async (req, res, next) => {
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
+	let inputsAreValid = {
+		all: false,
+		name: false,
+		email: false,
+		password: false,
+	};
+
+	// VALIDATION
+	if (reqName.trim().length > 2) inputsAreValid.name = true;
+	if (
+		reqEmail.match(
+			/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+		)
+	)
+		inputsAreValid.email = true;
+
+	if (
+		reqPassword.match(
+			/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
+		)
+	)
+		inputsAreValid.password = true;
+
+	if (inputsAreValid.name && inputsAreValid.email && inputsAreValid.password) {
+		inputsAreValid.all = true;
+	}
+
+	if (!inputsAreValid.all) {
+		res.json({ message: 'Erreur lors de la création de compte.' });
+		return;
+	}
+
 	let existingUser = await databaseConnect.findOne({ email: reqEmail });
 
 	if (existingUser) {

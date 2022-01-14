@@ -1,8 +1,13 @@
 import { createStore, combineReducers } from 'redux';
 import userReducer from './user';
 import viewReducer from './view';
+import errorReducer from './error';
 
-const rootReducer = combineReducers({ user: userReducer, view: viewReducer });
+const rootReducer = combineReducers({
+	user: userReducer,
+	view: viewReducer,
+	error: errorReducer,
+});
 
 const store = createStore(rootReducer);
 

@@ -23,7 +23,22 @@ const addData: RequestHandler = async (req, res, next) => {
 		levelOfCompletion: reqLevelOfCompletion,
 	} = await req.body;
 
-	console.log(reqDate);
+	// VALIDATION
+	let inputsAreValid = {
+		all: false,
+		_id: true,
+		email: true,
+		date: {
+			valid: false,
+			format: false,
+			pastOrPresent: false,
+		},
+		task: false,
+		levelOfCompletion: false,
+	};
+
+	if (reqDate.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/))
+		inputsAreValid.date.format = true;
 
 	const dateFormat = new Date(
 		+reqDate.slice(0, 4),
@@ -32,8 +47,37 @@ const addData: RequestHandler = async (req, res, next) => {
 	);
 
 	if (isAfter(dateFormat, new Date())) {
-		console.log('Erreur, date dans le futur');
-		res.json({ message: 'Erreur, date dans le futur' });
+		res.json({
+			message:
+				"Impossible d'enregistrer des données dont la date est dans le futur",
+		});
+		return;
+	} else inputsAreValid.date.pastOrPresent = true;
+
+	if (inputsAreValid.date.format && inputsAreValid.date.pastOrPresent)
+		inputsAreValid.date.valid = true;
+
+	const taskNames = ['food', 'sleep', 'sport', 'relaxation', 'work', 'social'];
+
+	if (taskNames.includes(reqTask)) inputsAreValid.task = true;
+
+	const taskLevels = [0, 1, 2];
+
+	if (taskLevels.includes(reqLevelOfCompletion))
+		inputsAreValid.levelOfCompletion = true;
+
+	if (
+		inputsAreValid._id &&
+		inputsAreValid.email &&
+		inputsAreValid.date.valid &&
+		inputsAreValid.task &&
+		inputsAreValid.levelOfCompletion
+	) {
+		inputsAreValid.all = true;
+	}
+
+	if (!inputsAreValid.all) {
+		res.json({ message: "Erreur lors de l'enregistrement de données" });
 		return;
 	}
 

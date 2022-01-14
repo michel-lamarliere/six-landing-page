@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { addDays, getISOWeek, startOfWeek, format, getYear, isAfter } from 'date-fns';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../shared/store/store';
 
 import classes from './WeeklyView.module.scss';
@@ -10,6 +10,7 @@ import WeekViewTasks from './WeeklyViewTasks';
 
 const WeekView: React.FC = () => {
 	const { sendRequest, sendData } = useRequest();
+	const dispatch = useDispatch();
 
 	const userState = useSelector((state: RootState) => state.user);
 	const [weekData, setWeekData] = useState<{ date: string; six: {} }[]>([]);
@@ -94,10 +95,19 @@ const WeekView: React.FC = () => {
 			+date.slice(8, 10)
 		);
 
-		if (!isAfter(dateFormat, new Date())) {
-			userState.id &&
-				userState.email &&
-				(await sendData(userState.id, userState.email, date, task, prevLevel));
+		if (!isAfter(dateFormat, new Date()) && userState.id && userState.email) {
+			const responseData = await sendData(
+				userState.id,
+				userState.email,
+				date,
+				task,
+				prevLevel
+			);
+
+			if (responseData.message) {
+				console.log(typeof responseData.message);
+				dispatch({ type: 'SET', message: responseData.message });
+			}
 		}
 
 		if (typeof userState.id === 'string') {
