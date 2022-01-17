@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addDays, getDate, getDay, getYear, isAfter } from 'date-fns';
 import classes from './DailyView.module.scss';
 
@@ -8,6 +8,7 @@ import { DataButton } from '../../../shared/components/UIElements/Buttons';
 import { RootState } from '../../../shared/store/store';
 
 const DailyView: React.FC = () => {
+	const dispatch = useDispatch();
 	const { sendRequest, sendData } = useRequest();
 	const userState = useSelector((state: RootState) => state.user);
 
@@ -26,7 +27,7 @@ const DailyView: React.FC = () => {
 			'GET'
 		);
 
-		if (responseData.message) {
+		if (responseData.error) {
 			responseData = {
 				date: chosenDate.toISOString().slice(0, 10),
 				six: {
@@ -59,9 +60,19 @@ const DailyView: React.FC = () => {
 		let task = (event.target as HTMLButtonElement).id.split('_')[1];
 		let prevLevel = parseInt((event.target as HTMLButtonElement).value);
 
-		userState.id &&
-			userState.email &&
-			(await sendData(userState.id, userState.email, date, task, prevLevel));
+		if (userState.id && userState.email) {
+			const responseData = await sendData(
+				userState.id,
+				userState.email,
+				date,
+				task,
+				prevLevel
+			);
+
+			if (responseData.error) {
+				dispatch({ type: 'SET-ERROR', message: responseData.error });
+			}
+		}
 
 		if (typeof userState.id === 'string') {
 			getDailyData(userState.id, chosenDate.toISOString().slice(0, 10));

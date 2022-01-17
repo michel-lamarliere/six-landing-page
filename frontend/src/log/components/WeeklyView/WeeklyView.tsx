@@ -104,9 +104,8 @@ const WeekView: React.FC = () => {
 				prevLevel
 			);
 
-			if (responseData.message) {
-				console.log(typeof responseData.message);
-				dispatch({ type: 'SET', message: responseData.message });
+			if (responseData.error) {
+				dispatch({ type: 'SET-ERROR', message: responseData.error });
 			}
 		}
 

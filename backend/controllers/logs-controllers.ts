@@ -48,8 +48,7 @@ const addData: RequestHandler = async (req, res, next) => {
 
 	if (isAfter(dateFormat, new Date())) {
 		res.json({
-			message:
-				"Impossible d'enregistrer des données dont la date est dans le futur",
+			error: "Impossible d'enregistrer des données dont la date est dans le futur",
 		});
 		return;
 	} else inputsAreValid.date.pastOrPresent = true;
@@ -77,7 +76,7 @@ const addData: RequestHandler = async (req, res, next) => {
 	}
 
 	if (!inputsAreValid.all) {
-		res.json({ message: "Erreur lors de l'enregistrement de données" });
+		res.json({ error: "Erreur lors de l'enregistrement de données" });
 		return;
 	}
 
@@ -205,7 +204,7 @@ const addData: RequestHandler = async (req, res, next) => {
 					res.json(result);
 				} else {
 					console.log('added data');
-					return { message: 'Failed to update the user!' };
+					return { error: 'Failed to update the user!' };
 				}
 			}
 		);
@@ -236,10 +235,10 @@ const getDaily: RequestHandler = async (req, res, next) => {
 					}
 				}
 				console.log('get daily');
-				res.json({ message: 'No matching date found!' });
+				res.json({ error: 'No matching date found!' });
 			} else {
 				console.log('get daily');
-				res.json({ message: 'date not found' });
+				res.json({ error: 'date not found' });
 			}
 		}
 	);
@@ -266,7 +265,7 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 		{ _id: reqId },
 		(error: {}, result: { log: { date: string }[] }) => {
 			if (!result) {
-				res.json({ message: 'User not found!' });
+				res.json({ error: 'User not found!' });
 				return;
 			}
 			const datesArray = getDates(reqStartDate);
@@ -346,6 +345,7 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 						responseArray.push(0);
 					}
 				}
+				console.log('get monthly');
 				res.json({ datesArray, responseArray });
 			}
 		}

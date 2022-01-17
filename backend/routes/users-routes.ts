@@ -8,4 +8,6 @@ router.post('/signin', usersController.signIn);
 
 router.post('/signup', usersController.signUp);
 
+router.post('/modify/name', usersController.changeName);
+
 module.exports = router;

@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { ObjectId } = require('mongodb');
 const database = require('../util/db-connect');
 
 const signUp: RequestHandler = async (req, res, next) => {
@@ -16,7 +17,8 @@ const signUp: RequestHandler = async (req, res, next) => {
 	};
 
 	// VALIDATION
-	if (reqName.trim().length > 2) inputsAreValid.name = true;
+	if (reqName.trim().length >= 2 && reqName.trim().match(/^[-'a-zA-ZÀ-ÖØ-öø-ÿ]+$/))
+		inputsAreValid.name = true;
 	if (
 		reqEmail.match(
 			/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -36,7 +38,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 	}
 
 	if (!inputsAreValid.all) {
-		res.json({ message: 'Erreur lors de la création de compte.' });
+		res.json({ error: 'Erreur lors de la création de compte.' });
 		return;
 	}
 
@@ -44,8 +46,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 
 	if (existingUser) {
 		res.json({
-			message:
-				'Adresse email déjà utilisée, veuillez en choisir une autre ou vous connecter.',
+			error: 'Adresse email déjà utilisée, veuillez en choisir une autre ou vous connecter.',
 		});
 	}
 
@@ -87,18 +88,19 @@ const signUp: RequestHandler = async (req, res, next) => {
 					}
 				);
 				res.json({
-					message: 'Compte créé !',
+					success: 'Compte créé !',
 					token: token,
 					id: findingNewUser._id,
 					email: findingNewUser.email,
 					name: findingNewUser.name,
 				});
 			} catch (error) {
-				res.json({ message: 'Erreur, veuillez réessayer plus tard.' });
+				res.json({ error: 'Erreur, veuillez réessayer plus tard.' });
 			}
 		}
 	}
 };
+
 const signIn: RequestHandler = async (req, res, next) => {
 	const { email: reqEmail, password: reqPassword } = req.body;
 	const databaseConnect = database.getDb('six-dev');
@@ -123,7 +125,7 @@ const signIn: RequestHandler = async (req, res, next) => {
 			) => {
 				if (!result) {
 					res.json({
-						message: 'Adresse email non trouvée, veuillez créer un compte.',
+						error: 'Adresse email non trouvée, veuillez créer un compte.',
 					});
 					return;
 				}
@@ -154,7 +156,7 @@ const signIn: RequestHandler = async (req, res, next) => {
 								email: user.email,
 							});
 						} else {
-							res.json({ message: 'Mot de passe incorrect.' });
+							res.json({ error: 'Mot de passe incorrect.' });
 						}
 					}
 				);
@@ -162,5 +164,42 @@ const signIn: RequestHandler = async (req, res, next) => {
 		);
 };
 
+const changeName: RequestHandler = async (req, res, next) => {
+	const { id: reqIdStr, email: reqEmail, newName: reqNewName } = req.body;
+	let validateNewName = false;
+
+	if (
+		reqNewName.trim().length >= 2 &&
+		reqNewName.trim().match(/^[-'a-zA-ZÀ-ÖØ-öø-ÿ]+$/)
+	) {
+		validateNewName = true;
+	}
+
+	if (!validateNewName) {
+		res.json({ error: 'Nouveau Nom Invalide !' });
+		return;
+	}
+
+	const databaseConnect = database.getDb('six-dev');
+
+	const reqId = new ObjectId(reqIdStr);
+
+	const filter = { _id: reqId, email: reqEmail };
+
+	databaseConnect.collection('test').findOne(filter, (error: {}, result: {}) => {
+		if (result) {
+			databaseConnect.collection('test').updateOne(filter, {
+				$set: {
+					name: reqNewName,
+				},
+			});
+			res.json({ success: 'Nom modifié !' });
+		} else {
+			res.json({ error: 'Erreur' });
+		}
+	});
+};
+
 exports.signUp = signUp;
 exports.signIn = signIn;
+exports.changeName = changeName;

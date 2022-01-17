@@ -12,13 +12,14 @@ import {
 
 import { useRequest } from '../../../shared/hooks/http-hook';
 import { RootState } from '../../../shared/store/store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	DataButton,
 	PlaceHolderDataButton,
 } from '../../../shared/components/UIElements/Buttons';
 
 const MonthlyView: React.FC = () => {
+	const dispatch = useDispatch();
 	const { sendRequest, sendData } = useRequest();
 	const userState = useSelector((state: RootState) => state.user);
 	const [chosenDate, setChosenDate] = useState<Date>(new Date());
@@ -76,10 +77,19 @@ const MonthlyView: React.FC = () => {
 		let task = (event.target as HTMLButtonElement).id.split('_')[1];
 		let prevLevel = parseInt((event.target as HTMLButtonElement).value);
 
-		userState.id &&
-			userState.email &&
-			(await sendData(userState.id, userState.email, date, task, prevLevel));
+		if (userState.id && userState.email) {
+			const responseData = await sendData(
+				userState.id,
+				userState.email,
+				date,
+				task,
+				prevLevel
+			);
 
+			if (responseData.error) {
+				dispatch({ type: 'SET-ERROR', message: responseData.error });
+			}
+		}
 		getMonthlyData();
 	};
 

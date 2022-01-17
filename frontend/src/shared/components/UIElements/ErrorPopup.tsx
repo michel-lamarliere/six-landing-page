@@ -6,7 +6,7 @@ const ErrorPopup: React.FC<{ message: string }> = (props) => {
 	const dispatch = useDispatch();
 
 	const closePopup = () => {
-		dispatch({ type: 'REMOVE' });
+		dispatch({ type: 'REMOVE-ERROR' });
 	};
 
 	return (

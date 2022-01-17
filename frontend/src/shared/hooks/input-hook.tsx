@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 export const useInput = (
 	condition: 'NAME' | 'EMAIL' | 'PASSWORD' | 'NONE',
-	loginMode: boolean
+	loginMode?: boolean
 ) => {
 	const [input, setInput] = useState({
 		value: '',
@@ -15,7 +15,8 @@ export const useInput = (
 
 		if (!loginMode) {
 			if (condition === 'NAME') {
-				typedValue.trim().length > 2
+				typedValue.trim().length >= 2 &&
+				typedValue.trim().match(/^[-'a-zA-ZÀ-ÖØ-öø-ÿ]+$/)
 					? setInput((prev) => ({ ...prev, isValid: true }))
 					: setInput((prev) => ({ ...prev, isValid: false }));
 			}

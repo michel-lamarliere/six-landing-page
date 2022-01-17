@@ -87,7 +87,7 @@ const Header: React.FC = () => {
 			})
 		);
 
-		const { message, token, id, email, name } = responseData;
+		const { success, token, id, email, name } = responseData;
 
 		if (token) {
 			dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
@@ -96,12 +96,13 @@ const Header: React.FC = () => {
 				'credentials',
 				JSON.stringify({
 					email: email,
-					password: 'Tester1@@',
+					password: 'Tester1@',
 				})
 			);
 		} else {
-			setResponseMessage(message);
+			setResponseMessage(success);
 		}
+		navigate('/log');
 	};
 
 	const loginFormHandler = async (event: FormEvent) => {
@@ -116,8 +117,8 @@ const Header: React.FC = () => {
 			})
 		);
 
-		if (responseData.message) {
-			setResponseMessage(responseData.message);
+		if (responseData.success) {
+			setResponseMessage(responseData.success);
 			return;
 		}
 
@@ -134,6 +135,7 @@ const Header: React.FC = () => {
 				password: 'Tester1@',
 			})
 		);
+		navigate('/log');
 	};
 
 	useEffect(() => {
@@ -215,14 +217,25 @@ const Header: React.FC = () => {
 					<button disabled={!formIsValid}>
 						{loginMode ? 'Connexion' : 'Inscription'}
 					</button>
+					<h1>michel@test.com</h1>
 					<h1>Tester1@</h1>
 					<h1>{responseMessage}</h1>
 				</form>
 			)}
-			<div>token:{userState.token}</div>
-			<div>id:{userState.id}</div>
-			<div>Nom:{userState.name}</div>
-			<div>Email:{userState.email}</div>
+			{userState.token && (
+				<>
+					<Link to='/log'>Log</Link>
+					<Link to='/profile'>Profile</Link>
+				</>
+			)}
+			{userState.token && (
+				<>
+					<div>token:{userState.token}</div>
+					<div>id:{userState.id}</div>
+					<div>Nom:{userState.name}</div>
+					<div>Email:{userState.email}</div>
+				</>
+			)}
 		</div>
 	);
 };

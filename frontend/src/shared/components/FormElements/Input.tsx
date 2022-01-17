@@ -29,7 +29,6 @@ const FormInput: React.FC<{
 
 	return (
 		<div className={classes.wrapper}>
-			<p>{!isValid && isTouched && errorText}</p>
 			<label htmlFor={id}>{id}</label>
 			<input
 				className={!isValid && isTouched ? classes.invalid : ''}
@@ -42,6 +41,7 @@ const FormInput: React.FC<{
 				onBlur={onBlur}
 				onPaste={onPaste}
 			/>
+			<p>{!isValid && isTouched && errorText}</p>
 		</div>
 	);
 };
