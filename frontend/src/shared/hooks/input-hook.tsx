@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react';
 
 export const useInput = (
-	condition: 'NAME' | 'EMAIL' | 'PASSWORD' | 'NONE',
-	loginMode?: boolean
+	condition:
+		| 'NAME'
+		| 'EMAIL'
+		| 'PASSWORD'
+		| 'PASSWORD_COMPARISON'
+		| 'OLD_PASSWORD'
+		| 'NONE',
+	loginMode?: boolean | null,
+	compareTo?: string | null,
+	additionalOnBlurHandler?: () => void
 ) => {
 	const [input, setInput] = useState({
 		value: '',
@@ -36,12 +44,25 @@ export const useInput = (
 					? setInput((prev) => ({ ...prev, isValid: true }))
 					: setInput((prev) => ({ ...prev, isValid: false }));
 			}
+
+			if (condition === 'PASSWORD_COMPARISON') {
+				typedValue === compareTo
+					? setInput((prev) => ({ ...prev, isValid: true }))
+					: setInput((prev) => ({ ...prev, isValid: false }));
+			}
+
+			if (condition === 'NONE') {
+				setInput((prev) => ({ ...prev, isValid: true }));
+			}
 		}
 		setInput((prev) => ({ ...prev, value: event.target.value }));
 	};
 
 	const inputOnBlurHandler = () => {
 		setInput((prev) => ({ ...prev, isTouched: true }));
+		if (additionalOnBlurHandler) {
+			additionalOnBlurHandler();
+		}
 	};
 
 	const inputOnPasteHandler = (event: React.ClipboardEvent<HTMLInputElement>) => {
@@ -70,6 +91,16 @@ export const useInput = (
 				)
 					? setInput((prev) => ({ ...prev, isValid: true }))
 					: setInput((prev) => ({ ...prev, isValid: false }));
+			}
+
+			if (condition === 'PASSWORD_COMPARISON') {
+				pastedValue === compareTo
+					? setInput((prev) => ({ ...prev, isValid: true }))
+					: setInput((prev) => ({ ...prev, isValid: false }));
+			}
+
+			if (condition === 'NONE') {
+				setInput((prev) => ({ ...prev, isValid: true }));
 			}
 		}
 	};

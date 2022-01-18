@@ -34,7 +34,7 @@ const WeekView: React.FC = () => {
 
 	const getWeekData = async (userId: string, formattedFirstOfWeekStr: string) => {
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/logs/weekly/${userId}/${formattedFirstOfWeekStr}`,
+			`http://localhost:8080/api/log/weekly/${userId}/${formattedFirstOfWeekStr}`,
 			'GET'
 		);
 
@@ -105,7 +105,7 @@ const WeekView: React.FC = () => {
 			);
 
 			if (responseData.error) {
-				dispatch({ type: 'SET-ERROR', message: responseData.error });
+				dispatch({ type: 'SET_ERROR', message: responseData.error });
 			}
 		}
 

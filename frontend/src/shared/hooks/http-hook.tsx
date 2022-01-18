@@ -23,7 +23,7 @@ export const useRequest = () => {
 		task: string,
 		prevLevel: number
 	) => {
-		const response = await fetch('http://localhost:8080/api/logs/task', {
+		const response = await fetch('http://localhost:8080/api/log/task', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({

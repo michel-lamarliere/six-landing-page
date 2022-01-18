@@ -3,7 +3,7 @@ interface State {
 }
 
 interface Action {
-	type: 'SET-ERROR' | 'REMOVE-ERROR';
+	type: 'SET_ERROR' | 'REMOVE_ERROR';
 	message: string;
 }
 
@@ -13,12 +13,12 @@ const initialStateReducer: State = {
 
 const ErrorReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		case 'SET-ERROR': {
+		case 'SET_ERROR': {
 			return {
 				message: action.message,
 			};
 		}
-		case 'REMOVE-ERROR': {
+		case 'REMOVE_ERROR': {
 			return {
 				message: null,
 			};

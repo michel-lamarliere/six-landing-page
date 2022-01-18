@@ -8,7 +8,7 @@ import Input from '../FormElements/Input';
 import classes from './Navigation.module.scss';
 
 import { useSelector, useDispatch } from 'react-redux';
-import type { RootState, AppDispatch } from '../../store/store';
+import type { RootState } from '../../store/store';
 
 const Header: React.FC = () => {
 	const [responseMessage, setResponseMessage] = useState('');
@@ -78,7 +78,7 @@ const Header: React.FC = () => {
 		event.preventDefault();
 
 		const responseData = await sendRequest(
-			'http://localhost:8080/api/users/signup',
+			'http://localhost:8080/api/user/signup',
 			'POST',
 			JSON.stringify({
 				name: nameInput.value.trim().toLowerCase(),
@@ -102,6 +102,9 @@ const Header: React.FC = () => {
 		} else {
 			setResponseMessage(success);
 		}
+
+		resetFormInputs();
+
 		navigate('/log');
 	};
 
@@ -109,7 +112,7 @@ const Header: React.FC = () => {
 		event.preventDefault();
 
 		const responseData = await sendRequest(
-			'http://localhost:8080/api/users/signin',
+			'http://localhost:8080/api/user/signin',
 			'POST',
 			JSON.stringify({
 				email: emailInput.value.trim().toLowerCase(),
@@ -117,8 +120,8 @@ const Header: React.FC = () => {
 			})
 		);
 
-		if (responseData.success) {
-			setResponseMessage(responseData.success);
+		if (responseData.error) {
+			setResponseMessage(responseData.error);
 			return;
 		}
 
@@ -135,6 +138,7 @@ const Header: React.FC = () => {
 				password: 'Tester1@',
 			})
 		);
+
 		navigate('/log');
 	};
 
@@ -181,7 +185,7 @@ const Header: React.FC = () => {
 							id='Nom'
 							type='text'
 							placeholder='Jean'
-							errorText='Nom trop court.'
+							errorText='Nom invalide'
 							value={nameInput.value}
 							isValid={nameInput.isValid}
 							isTouched={nameInput.isTouched}

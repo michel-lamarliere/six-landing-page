@@ -23,11 +23,11 @@ const DailyView: React.FC = () => {
 
 	const getDailyData = async (userId: string, date: string) => {
 		let responseData = await sendRequest(
-			`http://localhost:8080/api/logs/daily/${userId}/${date}`,
+			`http://localhost:8080/api/log/daily/${userId}/${date}`,
 			'GET'
 		);
 
-		if (responseData.error) {
+		if (responseData.message) {
 			responseData = {
 				date: chosenDate.toISOString().slice(0, 10),
 				six: {
@@ -70,7 +70,7 @@ const DailyView: React.FC = () => {
 			);
 
 			if (responseData.error) {
-				dispatch({ type: 'SET-ERROR', message: responseData.error });
+				dispatch({ type: 'SET_ERROR', message: responseData.error });
 			}
 		}
 

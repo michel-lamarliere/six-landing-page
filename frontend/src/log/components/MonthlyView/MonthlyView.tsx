@@ -59,7 +59,7 @@ const MonthlyView: React.FC = () => {
 
 		if (selectSixRef.current) {
 			const responseData = await sendRequest(
-				`http://localhost:8080/api/logs/monthly/${userState.id}/${chosenMonthStr}/${currentTask}`,
+				`http://localhost:8080/api/log/monthly/${userState.id}/${chosenMonthStr}/${currentTask}`,
 				'GET'
 			);
 
@@ -87,7 +87,7 @@ const MonthlyView: React.FC = () => {
 			);
 
 			if (responseData.error) {
-				dispatch({ type: 'SET-ERROR', message: responseData.error });
+				dispatch({ type: 'SET_ERROR', message: responseData.error });
 			}
 		}
 		getMonthlyData();

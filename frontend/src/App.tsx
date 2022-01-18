@@ -26,7 +26,7 @@ const App: React.FC = () => {
 			parsedCredentials = JSON.parse(credentials);
 
 			const responseData = await sendRequest(
-				'http://localhost:8080/api/users/signin',
+				'http://localhost:8080/api/user/signin',
 				'POST',
 				JSON.stringify({
 					email: parsedCredentials.email,
@@ -35,7 +35,7 @@ const App: React.FC = () => {
 			);
 
 			if (responseData.error) {
-				dispatch({ type: 'SET-ERROR', message: responseData.error });
+				dispatch({ type: 'SET_ERROR', message: responseData.error });
 				return;
 			}
 
@@ -58,7 +58,7 @@ const App: React.FC = () => {
 	useEffect(() => {
 		if (errorState.message) {
 			setTimeout(() => {
-				dispatch({ type: 'REMOVE-ERROR' });
+				dispatch({ type: 'REMOVE_ERROR' });
 			}, 5000);
 		}
 	}, [errorState]);

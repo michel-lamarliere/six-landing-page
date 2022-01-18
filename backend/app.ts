@@ -2,8 +2,8 @@ import express, { NextFunction } from 'express';
 import bodyParser from 'body-parser';
 const database = require('./util/db-connect');
 
-const userRoutes = require('./routes/users-routes');
-const logsRoutes = require('./routes/logs-routes');
+const userRoutes = require('./routes/user-routes');
+const logRoutes = require('./routes/log-routes');
 
 const app = express();
 
@@ -20,8 +20,8 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.use('/api/users', userRoutes);
-app.use('/api/logs', logsRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/log', logRoutes);
 
 app.listen(8080, () => {
 	database.connectToServer((error: {}) => {
