@@ -1,5 +1,4 @@
-import id from 'date-fns/esm/locale/id/index.js';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import classes from './Input.module.scss';
 
 const FormInput: React.FC<{
@@ -13,6 +12,7 @@ const FormInput: React.FC<{
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
 	onPaste?: (event: React.ClipboardEvent<HTMLInputElement>) => void;
+	password?: boolean;
 }> = (props) => {
 	const {
 		id,
@@ -25,14 +25,22 @@ const FormInput: React.FC<{
 		onChange,
 		onBlur,
 		onPaste,
+		password,
 	} = props;
+
+	const [showPassword, setShowPassword] = useState(false);
+
+	const showPasswordHandler = (event: React.FormEvent) => {
+		event.preventDefault();
+		setShowPassword((prev) => !prev);
+	};
 
 	return (
 		<div className={classes.wrapper}>
 			<label htmlFor={id}>{id}</label>
 			<input
 				className={!isValid && isTouched ? classes.invalid : ''}
-				type={type}
+				type={showPassword ? 'text' : type}
 				name={id}
 				placeholder={placeholder}
 				id={id}
@@ -41,6 +49,11 @@ const FormInput: React.FC<{
 				onBlur={onBlur}
 				onPaste={onPaste}
 			/>
+			{password && (
+				<button onClick={showPasswordHandler}>
+					{showPassword ? 'Cacher' : 'Afficher'}
+				</button>
+			)}
 			<p>{!isValid && isTouched && errorText}</p>
 		</div>
 	);

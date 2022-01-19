@@ -16,7 +16,6 @@ const Header: React.FC = () => {
 	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
-	const errorState = useSelector((state: RootState) => state.error);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -28,7 +27,7 @@ const Header: React.FC = () => {
 		setInput: setNameInput,
 		inputOnChangeHandler: nameOnChangeHandler,
 		inputOnBlurHandler: nameOnBlurHandler,
-		inputOnPasteHandler: nameOnPasteHandler,
+		// inputOnPasteHandler: nameOnPasteHandler,
 	} = useInput('NAME', loginMode);
 
 	const {
@@ -36,7 +35,7 @@ const Header: React.FC = () => {
 		setInput: setEmailInput,
 		inputOnChangeHandler: emailOnChangeHandler,
 		inputOnBlurHandler: emailOnBlurHandler,
-		inputOnPasteHandler: emailOnPasteHandler,
+		// inputOnPasteHandler: emailOnPasteHandler,
 	} = useInput('EMAIL', loginMode);
 
 	const {
@@ -44,7 +43,7 @@ const Header: React.FC = () => {
 		setInput: setPasswordInput,
 		inputOnChangeHandler: passwordOnChangeHandler,
 		inputOnBlurHandler: passwordOnBlurHandler,
-		inputOnPasteHandler: passwordOnPasteHandler,
+		// inputOnPasteHandler: passwordOnPasteHandler,
 	} = useInput('PASSWORD', loginMode);
 
 	const switchModeHandler = () => {
@@ -53,6 +52,10 @@ const Header: React.FC = () => {
 	};
 
 	const logoutBtnHandler = () => {
+		if (!loginMode) {
+			switchModeHandler();
+		}
+
 		dispatch({ type: 'LOG_OUT' });
 		navigate('/');
 		localStorage.removeItem('credentials');
@@ -87,21 +90,22 @@ const Header: React.FC = () => {
 			})
 		);
 
+		if (responseData.error) {
+			setResponseMessage(responseData.error);
+			return;
+		}
+
 		const { success, token, id, email, name } = responseData;
 
-		if (token) {
-			dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
+		dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
 
-			localStorage.setItem(
-				'credentials',
-				JSON.stringify({
-					email: email,
-					password: 'Tester1@',
-				})
-			);
-		} else {
-			setResponseMessage(success);
-		}
+		localStorage.setItem(
+			'credentials',
+			JSON.stringify({
+				email: email,
+				password: 'Tester1@',
+			})
+		);
 
 		resetFormInputs();
 
@@ -160,7 +164,7 @@ const Header: React.FC = () => {
 				setFormIsValid(false);
 			}
 		}
-	}, [nameInput.value, emailInput.value, passwordInput.value]);
+	}, [nameInput, emailInput, passwordInput]);
 
 	return (
 		<div className={classes.wrapper}>
@@ -191,7 +195,7 @@ const Header: React.FC = () => {
 							isTouched={nameInput.isTouched}
 							onChange={nameOnChangeHandler}
 							onBlur={nameOnBlurHandler}
-							onPaste={nameOnPasteHandler}
+							// onPaste={nameOnPasteHandler}
 						/>
 					)}
 					<Input
@@ -204,7 +208,7 @@ const Header: React.FC = () => {
 						isTouched={emailInput.isTouched}
 						onChange={emailOnChangeHandler}
 						onBlur={emailOnBlurHandler}
-						onPaste={emailOnPasteHandler}
+						// onPaste={emailOnPasteHandler}
 					/>
 					<Input
 						id='mot de passe'
@@ -216,7 +220,8 @@ const Header: React.FC = () => {
 						errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
 						onChange={passwordOnChangeHandler}
 						onBlur={passwordOnBlurHandler}
-						onPaste={passwordOnPasteHandler}
+						// onPaste={passwordOnPasteHandler}
+						password={true}
 					/>
 					<button disabled={!formIsValid}>
 						{loginMode ? 'Connexion' : 'Inscription'}

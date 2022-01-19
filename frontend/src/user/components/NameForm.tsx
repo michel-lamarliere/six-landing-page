@@ -34,8 +34,8 @@ const NameForm: React.FC<{
 		props.setResponse(responseData.success);
 
 		dispatch({ type: 'CHANGE_NAME', name: responseData.name });
-		props.setShowChangeName(false);
 		setNewName({ value: '', isValid: false, isTouched: false });
+		props.setShowChangeName(false);
 	};
 
 	const {
@@ -43,7 +43,7 @@ const NameForm: React.FC<{
 		setInput: setNewName,
 		inputOnChangeHandler: newNameOnChangeHandler,
 		inputOnBlurHandler: newNameOnBlurHandler,
-		inputOnPasteHandler: newNameOnPasteHandler,
+		// inputOnPasteHandler: newNameOnPasteHandler,
 	} = useInput('NAME');
 	return (
 		<>
@@ -57,7 +57,7 @@ const NameForm: React.FC<{
 				isTouched={newName.isTouched}
 				onChange={newNameOnChangeHandler}
 				onBlur={newNameOnBlurHandler}
-				onPaste={newNameOnPasteHandler}
+				// onPaste={newNameOnPasteHandler}
 			/>
 			<button onClick={changeNameHandler} disabled={!newName.isValid}>
 				Changer Nom
