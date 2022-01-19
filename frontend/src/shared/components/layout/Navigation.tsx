@@ -20,7 +20,7 @@ const Header: React.FC = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const [loginMode, setLoginMode] = useState(false);
+	const [loginMode, setLoginMode] = useState(true);
 	const [formIsValid, setFormIsValid] = useState(false);
 
 	const {
@@ -63,13 +63,13 @@ const Header: React.FC = () => {
 
 		setEmailInput({
 			value: '',
-			isValid: false,
+			isValid: true,
 			isTouched: false,
 		});
 
 		setPasswordInput({
 			value: '',
-			isValid: false,
+			isValid: true,
 			isTouched: false,
 		});
 	};

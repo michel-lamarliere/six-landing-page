@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const bcryptjs = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const { ObjectId } = require('mongodb');
 const database = require('../util/db-connect');
 
@@ -52,7 +53,8 @@ const signUp: RequestHandler = async (req, res, next) => {
 	}
 
 	// HASHING PASSWORD
-	let hashedPassword = await bcrypt.hash(reqPassword, 10);
+	const hashedPassword = await bcrypt.hash(reqPassword, 10);
+	console.log(hashedPassword);
 
 	const newUser = {
 		name: reqName,
@@ -102,9 +104,9 @@ const signIn: RequestHandler = async (req, res, next) => {
 	console.log('---SIGN-IN');
 	console.log({ reqEmail, reqPassword });
 
-	const databaseConnect = await database.getDb('six-dev');
+	const databaseConnect = await database.getDb('six-dev').collection('test');
 
-	const result = await databaseConnect.collection('test').findOne({ email: reqEmail });
+	const result = await databaseConnect.findOne({ email: reqEmail });
 
 	if (!result) {
 		res.json({
@@ -184,6 +186,8 @@ const comparePasswords: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
 	const reqPassword = req.params.password;
 
+	console.log({ reqPassword });
+
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
 	const result = await databaseConnect.findOne({ _id: reqId });
@@ -194,10 +198,13 @@ const comparePasswords: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	const matchingPasswords = await bcrypt.compare(
-		reqPassword,
-		result.password.toString()
-	);
+	console.log(reqPassword);
+	console.log(result.password);
+
+	const matchingPasswordsjs = await bcryptjs.compare(reqPassword, result.password);
+	console.log({ matchingPasswordsjs });
+
+	const matchingPasswords = await bcrypt.compare(reqPassword, result.password);
 	console.log({ matchingPasswords });
 
 	if (!matchingPasswords) {
