@@ -1,8 +1,11 @@
 import { Router } from 'express';
 
+const checkAuth = require('../middleware/check-auth');
 const logControllers = require('../controllers/log-controllers');
 
 const router = Router();
+
+router.use(checkAuth);
 
 router.post('/task', logControllers.addData);
 

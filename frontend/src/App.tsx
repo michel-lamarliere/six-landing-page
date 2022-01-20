@@ -1,59 +1,80 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { isBefore } from 'date-fns';
 
-import Log from './log/pages/Log';
+import './index.scss';
 
 import { RootState } from './shared/store/store';
-import { useRequest } from './shared/hooks/http-hook';
 
+import LoginSignupForms from './app/components/LoginSignupForms';
+import Log from './log/pages/Log';
 import Profile from './user/pages/Profile';
-import Navigation from './shared/components/layout/Navigation';
 import ErrorPopup from './shared/components/UIElements/ErrorPopup';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
-	const { sendRequest } = useRequest();
 	const dispatch = useDispatch();
+
 	const userState = useSelector((state: RootState) => state.user);
 	const errorState = useSelector((state: RootState) => state.error);
 
 	const autoLogIn = async () => {
-		const credentials = localStorage.getItem('credentials');
-		let parsedCredentials: { email: string; password: string };
+		const storedUserData = localStorage.getItem('userData');
 
-		if (credentials) {
-			parsedCredentials = JSON.parse(credentials);
+		let userData: {
+			id: string;
+			token: string;
+			expiration: string;
+			email: string;
+			name: string;
+		};
 
-			const responseData = await sendRequest(
-				'http://localhost:8080/api/user/signin',
-				'POST',
-				JSON.stringify({
-					email: parsedCredentials.email,
-					password: parsedCredentials.password,
-				})
-			);
+		if (!storedUserData) return;
 
-			if (responseData.error) {
-				dispatch({ type: 'SET_ERROR', message: responseData.error });
-				return;
-			}
+		userData = JSON.parse(storedUserData);
 
-			dispatch({
-				type: 'LOG_IN',
-				token: responseData.token,
-				id: responseData.id,
-				email: responseData.email,
-				name: responseData.name,
-			});
-
-			navigate('/log');
+		if (isBefore(new Date(userData.expiration), new Date())) {
+			dispatch({ type: 'LOG_OUT' });
+			navigate('/');
+			return;
 		}
+
+		dispatch({
+			type: 'LOG_IN',
+			token: userData.token,
+			expiration: userData.expiration,
+			id: userData.id,
+			email: userData.email,
+			name: userData.name,
+		});
+
+		navigate('/log');
 	};
 
 	useEffect(() => {
 		autoLogIn();
-	}, [userState.id]);
+		console.log(userState.id);
+	}, []);
+
+	useEffect(() => {
+		if (!userState.expiration) {
+			return;
+		}
+
+		let remainingTime =
+			new Date(userState.expiration).getTime() - new Date().getTime();
+
+		setTimeout(() => {
+			dispatch({
+				type: 'SET_ERROR',
+				message: 'Votre session a expiré, veuillez vous reconnecter.',
+			});
+			localStorage.removeItem('userData');
+			dispatch({ type: 'LOG_OUT' });
+			navigate('/');
+		}, remainingTime);
+	}, [userState.expiration]);
 
 	useEffect(() => {
 		if (errorState.message) {
@@ -65,7 +86,7 @@ const App: React.FC = () => {
 
 	return (
 		<>
-			<Navigation />
+			<LoginSignupForms />
 			<Routes>
 				<Route path='/log' element={<Log />} />
 				<Route path='/profile' element={<Profile />} />

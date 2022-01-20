@@ -64,39 +64,30 @@ const signUp: RequestHandler = async (req, res, next) => {
 	};
 
 	// CREATES NEW USER
-	try {
-		await databaseConnect.insertOne(newUser);
-	} catch (error) {
-		throw new Error('Failed to create new user!');
-	}
+	await databaseConnect.insertOne(newUser);
 
 	// GETS THE ID
-	let findingNewUser = await databaseConnect.findOne({
-		email: reqEmail,
-	});
+	let findingNewUser = await databaseConnect.findOne({ email: reqEmail });
+
+	if (!findingNewUser) {
+		res.json({ error: 'Erreur, veuillez réessayer plus tard.' });
+		return;
+	}
 
 	// CREATES THE TOKEN
-	if (findingNewUser) {
-		try {
-			let token = await jwt.sign(
-				{ id: findingNewUser._id, email: reqEmail },
-				'je-mange-du-pain-blanc-enola',
-				{
-					expiresIn: '1h',
-				}
-			);
+	let token = await jwt.sign(
+		{ id: findingNewUser._id, email: findingNewUser.email },
+		'je_mange_du_pain_blanc_enola',
+		{ expiresIn: '1h' }
+	);
 
-			res.json({
-				success: 'Compte créé !',
-				token: token,
-				id: findingNewUser._id,
-				email: findingNewUser.email,
-				name: findingNewUser.name,
-			});
-		} catch (error) {
-			res.json({ error: 'Erreur, veuillez réessayer plus tard.' });
-		}
-	}
+	res.json({
+		success: 'Compte créé !',
+		token: token,
+		id: findingNewUser._id,
+		name: findingNewUser.name,
+		email: findingNewUser.email,
+	});
 };
 
 const signIn: RequestHandler = async (req, res, next) => {
@@ -128,10 +119,8 @@ const signIn: RequestHandler = async (req, res, next) => {
 
 	const token = await jwt.sign(
 		{ userId: result._id, email: result.email },
-		'je-mange-du-pain-blanc-enola',
-		{
-			expiresIn: '1h',
-		}
+		'je_mange_du_pain_blanc_enola',
+		{ expiresIn: '1h' }
 	);
 
 	res.json({

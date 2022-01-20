@@ -1,14 +1,15 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { addHours, addSeconds } from 'date-fns';
 
-import { useRequest } from '../../hooks/http-hook';
-import { useInput } from '../../hooks/input-hook';
-import Input from '../FormElements/Input';
+import { useRequest } from '../../shared/hooks/http-hook';
+import { useInput } from '../../shared/hooks/input-hook';
+import Input from '../../shared/components/FormElements/Input';
 
-import classes from './Navigation.module.scss';
+import classes from './LoginSignupForms.module.scss';
 
 import { useSelector, useDispatch } from 'react-redux';
-import type { RootState } from '../../store/store';
+import type { RootState } from '../../shared/store/store';
 
 const Header: React.FC = () => {
 	const [responseMessage, setResponseMessage] = useState('');
@@ -27,7 +28,6 @@ const Header: React.FC = () => {
 		setInput: setNameInput,
 		inputOnChangeHandler: nameOnChangeHandler,
 		inputOnBlurHandler: nameOnBlurHandler,
-		// inputOnPasteHandler: nameOnPasteHandler,
 	} = useInput('NAME', loginMode);
 
 	const {
@@ -35,7 +35,6 @@ const Header: React.FC = () => {
 		setInput: setEmailInput,
 		inputOnChangeHandler: emailOnChangeHandler,
 		inputOnBlurHandler: emailOnBlurHandler,
-		// inputOnPasteHandler: emailOnPasteHandler,
 	} = useInput('EMAIL', loginMode);
 
 	const {
@@ -43,7 +42,6 @@ const Header: React.FC = () => {
 		setInput: setPasswordInput,
 		inputOnChangeHandler: passwordOnChangeHandler,
 		inputOnBlurHandler: passwordOnBlurHandler,
-		// inputOnPasteHandler: passwordOnPasteHandler,
 	} = useInput('PASSWORD', loginMode);
 
 	const switchModeHandler = () => {
@@ -58,7 +56,7 @@ const Header: React.FC = () => {
 
 		dispatch({ type: 'LOG_OUT' });
 		navigate('/');
-		localStorage.removeItem('credentials');
+		localStorage.removeItem('userData');
 	};
 
 	const resetFormInputs = () => {
@@ -97,13 +95,25 @@ const Header: React.FC = () => {
 
 		const { success, token, id, email, name } = responseData;
 
-		dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
+		const tokenExpiration = addHours(new Date(), 1);
+
+		dispatch({
+			type: 'LOG_IN',
+			token: token,
+			expiration: tokenExpiration.toISOString(),
+			id: id,
+			name: name,
+			email: email,
+		});
 
 		localStorage.setItem(
-			'credentials',
+			'userData',
 			JSON.stringify({
+				token: token,
+				expiration: tokenExpiration.toISOString(),
+				id: id,
 				email: email,
-				password: 'Tester1@',
+				name: name,
 			})
 		);
 
@@ -131,18 +141,30 @@ const Header: React.FC = () => {
 
 		const { token, id, name, email } = responseData;
 
-		dispatch({ type: 'LOG_IN', token: token, id: id, name: name, email: email });
+		const tokenExpiration = addHours(new Date(), 1);
+		// const tokenExpiration = addSeconds(new Date(), 5);
 
-		resetFormInputs();
+		dispatch({
+			type: 'LOG_IN',
+			token: token,
+			expiration: tokenExpiration.toISOString(),
+			id: id,
+			name: name,
+			email: email,
+		});
 
 		localStorage.setItem(
-			'credentials',
+			'userData',
 			JSON.stringify({
+				token: token,
+				expiration: tokenExpiration.toISOString(),
+				id: id,
 				email: email,
-				password: 'Tester1@',
+				name: name,
 			})
 		);
 
+		resetFormInputs();
 		navigate('/log');
 	};
 
@@ -195,7 +217,6 @@ const Header: React.FC = () => {
 							isTouched={nameInput.isTouched}
 							onChange={nameOnChangeHandler}
 							onBlur={nameOnBlurHandler}
-							// onPaste={nameOnPasteHandler}
 						/>
 					)}
 					<Input
@@ -208,7 +229,6 @@ const Header: React.FC = () => {
 						isTouched={emailInput.isTouched}
 						onChange={emailOnChangeHandler}
 						onBlur={emailOnBlurHandler}
-						// onPaste={emailOnPasteHandler}
 					/>
 					<Input
 						id='mot de passe'
@@ -220,7 +240,6 @@ const Header: React.FC = () => {
 						errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
 						onChange={passwordOnChangeHandler}
 						onBlur={passwordOnBlurHandler}
-						// onPaste={passwordOnPasteHandler}
 						password={true}
 					/>
 					<button disabled={!formIsValid}>
@@ -240,6 +259,7 @@ const Header: React.FC = () => {
 			{userState.token && (
 				<>
 					<div>token:{userState.token}</div>
+					<div>Expiration:{userState.expiration}</div>
 					<div>id:{userState.id}</div>
 					<div>Nom:{userState.name}</div>
 					<div>Email:{userState.email}</div>

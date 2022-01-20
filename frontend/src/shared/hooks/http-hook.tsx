@@ -1,4 +1,9 @@
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+
 export const useRequest = () => {
+	const userData = useSelector((state: RootState) => state.user);
+
 	const sendRequest = async (
 		url: string,
 		method: string,
@@ -8,6 +13,7 @@ export const useRequest = () => {
 			method,
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: `BEARER ${userData.token}`,
 			},
 			body,
 		});
@@ -25,7 +31,10 @@ export const useRequest = () => {
 	) => {
 		const response = await fetch('http://localhost:8080/api/log/task', {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `BEARER ${userData.token}`,
+			},
 			body: JSON.stringify({
 				_id,
 				email,

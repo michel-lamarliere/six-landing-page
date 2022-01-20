@@ -2,6 +2,8 @@ type StringOrNull = null | string;
 
 interface State {
 	token: StringOrNull;
+	expiration: any;
+	// expiration: Date | null;
 	id: StringOrNull;
 	name: StringOrNull;
 	email: StringOrNull;
@@ -9,6 +11,7 @@ interface State {
 
 const initialStateReducer: State = {
 	token: null,
+	expiration: null,
 	id: null,
 	name: null,
 	email: null,
@@ -24,6 +27,7 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 		case 'LOG_IN':
 			return {
 				token: action.token,
+				expiration: action.expiration,
 				id: action.id,
 				name: action.name,
 				email: action.email,
@@ -31,6 +35,7 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 		case 'LOG_OUT':
 			return {
 				token: null,
+				expiration: null,
 				id: null,
 				name: null,
 				email: null,
