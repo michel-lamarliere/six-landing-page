@@ -1,16 +1,22 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 .days {
 	display: grid;
 	grid-template-columns: repeat(8, 1fr);
 	place-content: center;
 	font-size: 16px;
-	width: 70%;
-	margin: 2rem auto 0 auto;
+	width: 100%;
+	margin: 2rem auto 0 2.5rem;
 }
 
 .six {
 	display: flex;
-	width: 70%;
-	margin: 2rem 0 0 6.5rem;
+	width: 100%;
+	margin: 2rem 0 0 -2rem;
 	gap: 1rem;
 
 	&_titles {

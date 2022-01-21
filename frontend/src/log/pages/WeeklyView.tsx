@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { addDays, getISOWeek, startOfWeek, format, getYear, isAfter } from 'date-fns';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../shared/store/store';
+import { RootState } from '../../shared/store/store';
 
 import classes from './WeeklyView.module.scss';
 
-import { useRequest } from '../../../shared/hooks/http-hook';
-import WeekViewTasks from './WeeklyViewTasks';
+import { useRequest } from '../../shared/hooks/http-hook';
+import WeekViewTasks from '../components/WeeklyViewTasks';
 
 const WeekView: React.FC = () => {
 	const { sendRequest, sendData } = useRequest();
@@ -166,6 +166,7 @@ const WeekView: React.FC = () => {
 
 	return (
 		<div className={classes.wrapper}>
+			<h1>Journal | Vue Semaine</h1>
 			<div className={classes.buttons}>
 				<button onClick={previousWeekHandler}>Semaine précédente</button>
 				<div>

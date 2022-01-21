@@ -20,7 +20,7 @@ const NameForm: React.FC<{
 		event.preventDefault();
 		const responseData = await sendRequest(
 			'http://localhost:8080/api/user/modify/name',
-			'POST',
+			'PATCH',
 			JSON.stringify({
 				id: userState.id,
 				newName: newName.value.trim().toLowerCase(),

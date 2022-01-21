@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addDays, getDate, getDay, getYear, isAfter } from 'date-fns';
 import classes from './DailyView.module.scss';
 
-import { useRequest } from '../../../shared/hooks/http-hook';
-import { DataButton } from '../../../shared/components/UIElements/Buttons';
-import { RootState } from '../../../shared/store/store';
+import { useRequest } from '../../shared/hooks/http-hook';
+import { DataButton } from '../../shared/components/UIElements/Buttons';
+import { RootState } from '../../shared/store/store';
 
 const DailyView: React.FC = () => {
 	const dispatch = useDispatch();
@@ -210,8 +210,9 @@ const DailyView: React.FC = () => {
 	}, [chosenDate]);
 
 	return (
-		<>
-			<div className={classes.wrapper}>
+		<div className={classes.wrapper}>
+			<h1>Journal | Vue Quotidienne</h1>
+			<div className={classes.buttons}>
 				<button onClick={previousDayHandler}>Jour précédent</button>
 				<div>
 					{fullDate.day} {getDate(chosenDate)} {fullDate.month}{' '}
@@ -227,7 +228,10 @@ const DailyView: React.FC = () => {
 			{!isLoading &&
 				dailyData &&
 				Object.entries(dailyData.six).map((item: any) => (
-					<div key={`${chosenDate.toISOString().slice(0, 10)}_${item[0]}_task`}>
+					<div
+						className={classes.task}
+						key={`${chosenDate.toISOString().slice(0, 10)}_${item[0]}_task`}
+					>
 						<div>{item[0]}</div>
 						<DataButton
 							id={`${chosenDate.toISOString().slice(0, 10)}_${item[0]}`}
@@ -237,7 +241,7 @@ const DailyView: React.FC = () => {
 						/>
 					</div>
 				))}
-		</>
+		</div>
 	);
 };
 

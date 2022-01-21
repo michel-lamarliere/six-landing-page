@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { isBefore } from 'date-fns';
 
-import './index.scss';
-
 import { RootState } from './shared/store/store';
 
 import LoginSignupForms from './app/components/LoginSignupForms';
-import Log from './log/pages/Log';
+import Sidebar from './shared/components/layout/Sidebar';
+import DailyView from './log/pages/DailyView';
+import WeeklyView from './log/pages/WeeklyView';
+import MonthlyView from './log/pages/MonthlyView';
 import Profile from './user/pages/Profile';
 import ErrorPopup from './shared/components/UIElements/ErrorPopup';
 
@@ -48,8 +49,6 @@ const App: React.FC = () => {
 			email: userData.email,
 			name: userData.name,
 		});
-
-		navigate('/log');
 	};
 
 	useEffect(() => {
@@ -87,10 +86,17 @@ const App: React.FC = () => {
 	return (
 		<>
 			<LoginSignupForms />
-			<Routes>
-				<Route path='/log' element={<Log />} />
-				<Route path='/profile' element={<Profile />} />
-			</Routes>
+			<Sidebar />
+			{userState.token && (
+				<div className='main'>
+					<Routes>
+						<Route path='/log/daily' element={<DailyView />} />
+						<Route path='/log/weekly' element={<WeeklyView />} />
+						<Route path='/log/monthly' element={<MonthlyView />} />
+						<Route path='/profile' element={<Profile />} />
+					</Routes>
+				</div>
+			)}
 			{errorState.message && <ErrorPopup message={errorState.message} />}
 		</>
 	);

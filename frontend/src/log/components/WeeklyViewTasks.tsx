@@ -3,7 +3,7 @@ import classes from './WeeklyViewTasks.module.scss';
 
 import { isAfter } from 'date-fns';
 
-import { DataButton } from '../../../shared/components/UIElements/Buttons';
+import { DataButton } from '../../shared/components/UIElements/Buttons';
 
 interface Props {
 	className?: (event: React.MouseEvent<HTMLButtonElement>) => string;

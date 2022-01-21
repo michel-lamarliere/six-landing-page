@@ -10,13 +10,13 @@ import {
 	startOfMonth,
 } from 'date-fns';
 
-import { useRequest } from '../../../shared/hooks/http-hook';
-import { RootState } from '../../../shared/store/store';
+import { useRequest } from '../../shared/hooks/http-hook';
+import { RootState } from '../../shared/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	DataButton,
 	PlaceHolderDataButton,
-} from '../../../shared/components/UIElements/Buttons';
+} from '../../shared/components/UIElements/Buttons';
 
 const MonthlyView: React.FC = () => {
 	const dispatch = useDispatch();
@@ -187,6 +187,7 @@ const MonthlyView: React.FC = () => {
 
 	return (
 		<div className={classes.wrapper}>
+			<h1>Journal | Vue Mois</h1>
 			<div className={classes.month}>
 				<button onClick={previousMonthHandler}>Mois précédent</button>
 				<div>

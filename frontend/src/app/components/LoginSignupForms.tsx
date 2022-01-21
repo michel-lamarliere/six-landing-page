@@ -119,7 +119,7 @@ const Header: React.FC = () => {
 
 		resetFormInputs();
 
-		navigate('/log');
+		navigate('/log/daily');
 	};
 
 	const loginFormHandler = async (event: FormEvent) => {
@@ -165,7 +165,7 @@ const Header: React.FC = () => {
 		);
 
 		resetFormInputs();
-		navigate('/log');
+		navigate('/log/daily');
 	};
 
 	useEffect(() => {
@@ -196,9 +196,6 @@ const Header: React.FC = () => {
 					<button onClick={switchModeHandler}>
 						Basculer sur {loginMode ? "s'inscrire" : 'se connecter'}
 					</button>
-				)}
-				{userState.token !== null && (
-					<button onClick={logoutBtnHandler}>Se déconnecter</button>
 				)}
 			</div>
 			{userState.token === null && (
@@ -249,21 +246,6 @@ const Header: React.FC = () => {
 					<h1>Tester1@</h1>
 					<h1>{responseMessage}</h1>
 				</form>
-			)}
-			{userState.token && (
-				<>
-					<Link to='/log'>Log</Link>
-					<Link to='/profile'>Profile</Link>
-				</>
-			)}
-			{userState.token && (
-				<>
-					<div>token:{userState.token}</div>
-					<div>Expiration:{userState.expiration}</div>
-					<div>id:{userState.id}</div>
-					<div>Nom:{userState.name}</div>
-					<div>Email:{userState.email}</div>
-				</>
 			)}
 		</div>
 	);

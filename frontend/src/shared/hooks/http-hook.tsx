@@ -6,7 +6,7 @@ export const useRequest = () => {
 
 	const sendRequest = async (
 		url: string,
-		method: string,
+		method: 'POST' | 'GET' | 'PATCH',
 		body: string | null = null
 	) => {
 		const response = await fetch(url, {

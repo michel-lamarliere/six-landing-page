@@ -1,0 +1,45 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	justify-content: flex-start;
+}
+
+.title {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	width: 50%;
+	margin: auto;
+
+	&_img {
+		width: 1.5rem;
+		height: 1.5rem;
+		background-color: black;
+		border: 0;
+		border-radius: 1.5rem;
+	}
+}
+
+.button {
+	width: 1rem;
+	height: 1rem;
+}
+
+.links {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 50%;
+	margin: auto;
+}
+
+.link {
+	color: rgb(56, 56, 56);
+	cursor: pointer;
+	text-decoration: none;
+
+	&:hover {
+		color: black;
+	}
+}

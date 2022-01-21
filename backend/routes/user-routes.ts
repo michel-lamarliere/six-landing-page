@@ -11,10 +11,10 @@ router.post('/signin', userController.signIn);
 
 router.use(checkAuth);
 
-router.post('/modify/name', userController.changeName);
+router.patch('/modify/name', userController.changeName);
 
 router.get('/compare/passwords/:id/:password', userController.comparePasswords);
 
-router.post('/modify/password/', userController.changePassword);
+router.patch('/modify/password/', userController.changePassword);
 
 module.exports = router;
