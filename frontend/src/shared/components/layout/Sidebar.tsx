@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
@@ -42,11 +43,12 @@ const Sidebar: React.FC = () => {
 		},
 	];
 
-	return (
+	return ReactDOM.createPortal(
 		<div className={classes.wrapper}>
 			<SidebarTitle title={userState.name!} links={nameLinks} />
 			<SidebarTitle title='Historique' links={logLinks} />
-		</div>
+		</div>,
+		document.getElementById('sidebar')!
 	);
 };
 
