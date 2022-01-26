@@ -193,7 +193,7 @@ const Header: React.FC = () => {
 			console.log('test-empty');
 			console.log(rememberEmail);
 		}
-	}, [userState.token]);
+	}, [userState.token, loginMode]);
 
 	useEffect(() => {
 		setResponseMessage('');
@@ -266,16 +266,18 @@ const Header: React.FC = () => {
 						onBlur={passwordOnBlurHandler}
 						password={true}
 					/>
-					<div className={classes.remember_me}>
-						<label htmlFor='remember_me'>Se souvenir de moi</label>
-						<input
-							type='checkbox'
-							id='remember_me'
-							name='remember_me'
-							onChange={checkboxHandler}
-							checked={rememberEmail}
-						/>
-					</div>
+					{loginMode && (
+						<div className={classes.remember_me}>
+							<label htmlFor='remember_me'>Se souvenir de moi</label>
+							<input
+								type='checkbox'
+								id='remember_me'
+								name='remember_me'
+								onChange={checkboxHandler}
+								checked={rememberEmail}
+							/>
+						</div>
+					)}
 					<button disabled={!formIsValid}>
 						{loginMode ? 'Connexion' : 'Inscription'}
 					</button>
