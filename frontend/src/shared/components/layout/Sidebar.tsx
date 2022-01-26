@@ -43,14 +43,10 @@ const Sidebar: React.FC = () => {
 	];
 
 	return (
-		<>
-			{userState.token && (
-				<div className={classes.wrapper}>
-					<SidebarTitle title={userState.name!} links={nameLinks} />
-					<SidebarTitle title='Historique' links={logLinks} />
-				</div>
-			)}
-		</>
+		<div className={classes.wrapper}>
+			<SidebarTitle title={userState.name!} links={nameLinks} />
+			<SidebarTitle title='Historique' links={logLinks} />
+		</div>
 	);
 };
 

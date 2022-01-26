@@ -23,8 +23,20 @@ button {
 }
 
 .main {
-	float: right;
-	width: 70%;
 	height: 100vh;
+	width: 100%;
 	background-color: darkgrey;
+
+	&_right {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+
+		&_logged-in {
+			display: flex;
+			justify-content: center;
+			width: 70%;
+			float: right;
+		}
+	}
 }

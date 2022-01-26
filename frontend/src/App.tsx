@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { isBefore } from 'date-fns';
 
@@ -11,11 +11,13 @@ import DailyView from './log/pages/DailyView';
 import WeeklyView from './log/pages/WeeklyView';
 import MonthlyView from './log/pages/MonthlyView';
 import Profile from './user/pages/Profile';
+import Error404 from './shared/error404/pages/Error404';
 import ErrorPopup from './shared/components/UIElements/ErrorPopup';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const location = useLocation();
 
 	const userState = useSelector((state: RootState) => state.user);
 	const errorState = useSelector((state: RootState) => state.error);
@@ -52,12 +54,6 @@ const App: React.FC = () => {
 	};
 
 	useEffect(() => {
-		// const storedUserData = localStorage.getItem('userData');
-
-		// if (!storedUserData) {
-		// 	navigate('/');
-		// 	return;
-		// }
 		autoLogIn();
 	}, []);
 
@@ -89,22 +85,30 @@ const App: React.FC = () => {
 		}
 	}, [errorState]);
 
+	const main_right_loggedIn = userState.token ? 'main_right_logged-in' : 'main_right';
+
 	return (
-		<>
-			<LoginSignupForms />
-			<Sidebar />
-			{userState.token && (
-				<div className='main'>
-					<Routes>
-						<Route path='/log/daily' element={<DailyView />} />
-						<Route path='/log/weekly' element={<WeeklyView />} />
-						<Route path='/log/monthly' element={<MonthlyView />} />
-						<Route path='/profile' element={<Profile />} />
-					</Routes>
-				</div>
-			)}
+		<div className='main'>
+			{userState.token && <Sidebar />}
+			<div className={main_right_loggedIn}>
+				<Routes>
+					{!userState.token && (
+						<Route path='/' element={<LoginSignupForms />} />
+					)}
+					{userState.token && (
+						<>
+							<Route path='/' element={<DailyView />} />
+							<Route path='/log/daily' element={<DailyView />} />
+							<Route path='/log/weekly' element={<WeeklyView />} />
+							<Route path='/log/monthly' element={<MonthlyView />} />
+							<Route path='/profile' element={<Profile />} />
+						</>
+					)}
+					<Route path='*' element={<Error404 />} />
+				</Routes>
+			</div>
 			{errorState.message && <ErrorPopup message={errorState.message} />}
-		</>
+		</div>
 	);
 };
 
