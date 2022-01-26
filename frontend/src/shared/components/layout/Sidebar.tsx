@@ -24,6 +24,7 @@ const Sidebar: React.FC = () => {
 				dispatch({ type: 'LOG_OUT' });
 				navigate('/');
 				localStorage.removeItem('userData');
+				sessionStorage.removeItem('confirmedEmail');
 			},
 		},
 	];

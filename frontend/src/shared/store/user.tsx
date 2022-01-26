@@ -7,6 +7,7 @@ interface State {
 	id: StringOrNull;
 	name: StringOrNull;
 	email: StringOrNull;
+	confirmedEmail: boolean | null;
 }
 
 const initialStateReducer: State = {
@@ -15,6 +16,7 @@ const initialStateReducer: State = {
 	id: null,
 	name: null,
 	email: null,
+	confirmedEmail: null,
 };
 
 // interface Action extends State {
@@ -44,6 +46,7 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 				id: action.id,
 				name: action.name,
 				email: action.email,
+				confirmedEmail: action.confirmedEmail,
 			};
 		// case ActionType.Logout:
 		case 'LOG_OUT':
@@ -53,6 +56,7 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 				id: null,
 				name: null,
 				email: null,
+				confirmedEmail: null,
 			};
 		case 'CHANGE_NAME':
 			return { ...state, name: action.name };

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { isBefore } from 'date-fns';
 
@@ -13,14 +13,15 @@ import MonthlyView from './log/pages/MonthlyView';
 import Profile from './user/pages/Profile';
 import Error404 from './shared/error404/pages/Error404';
 import ErrorPopup from './shared/components/UIElements/ErrorPopup';
+import EmailPopup from './shared/components/UIElements/EmailPopup';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const location = useLocation();
 
 	const userState = useSelector((state: RootState) => state.user);
 	const errorState = useSelector((state: RootState) => state.error);
+	const emailState = useSelector((state: RootState) => state.email);
 
 	const autoLogIn = async () => {
 		const storedUserData = localStorage.getItem('userData');
@@ -30,6 +31,7 @@ const App: React.FC = () => {
 			token: string;
 			expiration: string;
 			email: string;
+			confirmedEmail: boolean;
 			name: string;
 		};
 
@@ -49,12 +51,17 @@ const App: React.FC = () => {
 			expiration: userData.expiration,
 			id: userData.id,
 			email: userData.email,
+			confirmedEmail: userData.confirmedEmail,
 			name: userData.name,
 		});
 	};
 
 	useEffect(() => {
 		autoLogIn();
+		const confirmedEmail = sessionStorage.getItem('confirmedEmail');
+		if (confirmedEmail) {
+			dispatch({ type: 'SHOW' });
+		}
 	}, []);
 
 	useEffect(() => {
@@ -108,6 +115,7 @@ const App: React.FC = () => {
 				</Routes>
 			</div>
 			{errorState.message && <ErrorPopup message={errorState.message} />}
+			{emailState.show && <EmailPopup />}
 		</div>
 	);
 };

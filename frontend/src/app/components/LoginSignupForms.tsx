@@ -18,6 +18,7 @@ const Header: React.FC = () => {
 	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
+	const emailState = useSelector((state: RootState) => state.email);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -84,7 +85,7 @@ const Header: React.FC = () => {
 			return;
 		}
 
-		const { success, token, id, email, name } = responseData;
+		const { success, token, id, email, name, confirmedEmail } = responseData;
 
 		const tokenExpiration = addHours(new Date(), 1);
 
@@ -95,6 +96,7 @@ const Header: React.FC = () => {
 			id: id,
 			name: name,
 			email: email,
+			confirmedEmail: confirmedEmail,
 		});
 
 		localStorage.setItem(
@@ -105,12 +107,19 @@ const Header: React.FC = () => {
 				id: id,
 				email: email,
 				name: name,
+				confirmedEmail: confirmedEmail,
 			})
 		);
 
 		resetFormInputs();
 
 		navigate('/log/daily');
+
+		if (!confirmedEmail) {
+			dispatch({ type: 'SHOW' });
+
+			sessionStorage.setItem('confirmedEmail', confirmedEmail);
+		}
 	};
 
 	const loginFormHandler = async (event: FormEvent) => {
@@ -130,12 +139,11 @@ const Header: React.FC = () => {
 			return;
 		}
 
-		const { token, id, name, email } = responseData;
+		const { token, id, name, email, confirmedEmail } = responseData;
 
 		const tokenExpiration = addHours(new Date(), 1);
 		// const tokenExpiration = addSeconds(new Date(), 5);
 
-		console.log({ rememberEmail });
 		if (rememberEmail) {
 			localStorage.setItem('rememberEmail', email);
 		} else if (!rememberEmail) {
@@ -150,6 +158,7 @@ const Header: React.FC = () => {
 				id: id,
 				email: email,
 				name: name,
+				confirmedEmail: confirmedEmail,
 			})
 		);
 
@@ -160,38 +169,28 @@ const Header: React.FC = () => {
 			id: id,
 			name: name,
 			email: email,
+			confirmedEmail: confirmedEmail,
 		});
 
 		resetFormInputs();
 		navigate('/log/daily');
+
+		if (!confirmedEmail) {
+			dispatch({ type: 'SHOW' });
+
+			sessionStorage.setItem('confirmedEmail', confirmedEmail);
+		}
 	};
 
 	const checkboxHandler = () => {
-		console.log(rememberEmail);
 		setRememberEmail((prev) => !prev);
 	};
 
-	// useEffect(() => {
-	// 	const rememberEmailStorage = localStorage.getItem('rememberEmail');
-	// 	console.log(rememberEmailStorage);
-	// 	console.log({ rememberEmail });
-	// 	if (loginMode && rememberEmailStorage) {
-	// 		setEmailInput((prev) => ({ ...prev, value: rememberEmailStorage }));
-	// 		setRememberEmail(true);
-	// 		console.log('test-empty');
-	// 		console.log(rememberEmail);
-	// 	}
-	// }, []);
-
 	useEffect(() => {
 		const rememberEmailStorage = localStorage.getItem('rememberEmail');
-		console.log(rememberEmailStorage);
-		console.log({ rememberEmail });
 		if (loginMode && rememberEmailStorage) {
 			setEmailInput((prev) => ({ ...prev, value: rememberEmailStorage }));
 			setRememberEmail(true);
-			console.log('test-empty');
-			console.log(rememberEmail);
 		}
 	}, [userState.token, loginMode]);
 

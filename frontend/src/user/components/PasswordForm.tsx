@@ -64,7 +64,6 @@ const PasswordForm: React.FC<{
 		setInput: setOldPassword,
 		inputOnChangeHandler: oldPasswordOnChangeHandler,
 		inputOnBlurHandler: oldPasswordOnBlurHandler,
-		// inputOnPasteHandler: oldPasswordOnPasteHandler,
 	} = useInput('OLD_PASSWORD', null, null, fetchOldPassword);
 
 	const {
@@ -72,7 +71,6 @@ const PasswordForm: React.FC<{
 		setInput: setNewPassword,
 		inputOnChangeHandler: newPasswordOnChangeHandler,
 		inputOnBlurHandler: newPasswordOnBlurHandler,
-		// inputOnPasteHandler: newPasswordOnPasteHandler,
 	} = useInput('PASSWORD', null, oldPassword.value);
 
 	const {
@@ -80,7 +78,6 @@ const PasswordForm: React.FC<{
 		setInput: setNewPasswordConfirmation,
 		inputOnChangeHandler: newPasswordConfirmationOnChangeHandler,
 		inputOnBlurHandler: newPasswordConfirmationOnBlurHandler,
-		// inputOnPasteHandler: newPasswordConfirmationOnPasteHandler,
 	} = useInput('PASSWORD_COMPARISON', null, newPassword.value);
 
 	useEffect(() => {
@@ -121,7 +118,6 @@ const PasswordForm: React.FC<{
 				isTouched={oldPassword.isTouched}
 				onChange={oldPasswordOnChangeHandler}
 				onBlur={oldPasswordOnBlurHandler}
-				// onPaste={oldPasswordOnPasteHandler}
 				password={true}
 			/>
 			<Input
@@ -134,7 +130,6 @@ const PasswordForm: React.FC<{
 				isTouched={newPassword.isTouched}
 				onChange={newPasswordOnChangeHandler}
 				onBlur={newPasswordOnBlurHandler}
-				// onPaste={newPasswordOnPasteHandler}
 				password={true}
 			/>
 			<Input
@@ -147,7 +142,6 @@ const PasswordForm: React.FC<{
 				isTouched={newPasswordConfirmation.isTouched}
 				onChange={newPasswordConfirmationOnChangeHandler}
 				onBlur={newPasswordConfirmationOnBlurHandler}
-				// onPaste={newPasswordConfirmationOnPasteHandler}
 				password={true}
 			/>
 			<h1>{errorMessage}</h1>

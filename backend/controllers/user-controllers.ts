@@ -60,6 +60,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 		name: reqName,
 		email: reqEmail,
 		password: hashedPassword,
+		confirmedEmail: false,
 		log: [],
 	};
 
@@ -87,6 +88,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 		id: findingNewUser._id,
 		name: findingNewUser.name,
 		email: findingNewUser.email,
+		confirmedEmail: findingNewUser.confirmedEmail,
 	});
 };
 
