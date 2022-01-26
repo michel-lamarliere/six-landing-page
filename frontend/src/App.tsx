@@ -52,8 +52,13 @@ const App: React.FC = () => {
 	};
 
 	useEffect(() => {
+		// const storedUserData = localStorage.getItem('userData');
+
+		// if (!storedUserData) {
+		// 	navigate('/');
+		// 	return;
+		// }
 		autoLogIn();
-		console.log(userState.id);
 	}, []);
 
 	useEffect(() => {
@@ -71,6 +76,7 @@ const App: React.FC = () => {
 			});
 			localStorage.removeItem('userData');
 			dispatch({ type: 'LOG_OUT' });
+			// dispatch({ type: ActionType.Logout });
 			navigate('/');
 		}, remainingTime);
 	}, [userState.expiration]);

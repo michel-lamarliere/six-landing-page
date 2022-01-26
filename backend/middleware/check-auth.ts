@@ -10,17 +10,13 @@ const checkAuth: RequestHandler = (
 	if (req.method === 'OPTIONS') {
 		return next();
 	}
-	console.log(req.headers.authorization);
 	if (!req.headers.authorization) {
-		// console.log('Pas de req.header.authorization');
 		res.json({ error: 'Pas de req.header.authorization' });
 		return;
 	}
 
 	try {
 		const token = req.headers.authorization.split(' ')[1];
-		console.log(req.headers.authorization);
-		console.log(token);
 
 		if (!token) {
 			console.log("Vous n'êtes pas autorisé à effectuer cette action.");

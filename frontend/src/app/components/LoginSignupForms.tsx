@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { addHours, addSeconds } from 'date-fns';
 
@@ -13,6 +13,7 @@ import type { RootState } from '../../shared/store/store';
 
 const Header: React.FC = () => {
 	const [responseMessage, setResponseMessage] = useState('');
+	const [rememberEmail, setRememberEmail] = useState(false);
 
 	const { sendRequest } = useRequest();
 
@@ -47,16 +48,6 @@ const Header: React.FC = () => {
 	const switchModeHandler = () => {
 		setLoginMode((prev) => !prev);
 		resetFormInputs();
-	};
-
-	const logoutBtnHandler = () => {
-		if (!loginMode) {
-			switchModeHandler();
-		}
-
-		dispatch({ type: 'LOG_OUT' });
-		navigate('/');
-		localStorage.removeItem('userData');
 	};
 
 	const resetFormInputs = () => {
@@ -144,14 +135,12 @@ const Header: React.FC = () => {
 		const tokenExpiration = addHours(new Date(), 1);
 		// const tokenExpiration = addSeconds(new Date(), 5);
 
-		dispatch({
-			type: 'LOG_IN',
-			token: token,
-			expiration: tokenExpiration.toISOString(),
-			id: id,
-			name: name,
-			email: email,
-		});
+		console.log({ rememberEmail });
+		if (rememberEmail) {
+			localStorage.setItem('rememberEmail', email);
+		} else if (!rememberEmail) {
+			localStorage.removeItem('rememberEmail');
+		}
 
 		localStorage.setItem(
 			'userData',
@@ -164,9 +153,47 @@ const Header: React.FC = () => {
 			})
 		);
 
+		dispatch({
+			type: 'LOG_IN',
+			token: token,
+			expiration: tokenExpiration.toISOString(),
+			id: id,
+			name: name,
+			email: email,
+		});
+
 		resetFormInputs();
 		navigate('/log/daily');
 	};
+
+	const checkboxHandler = () => {
+		console.log(rememberEmail);
+		setRememberEmail((prev) => !prev);
+	};
+
+	// useEffect(() => {
+	// 	const rememberEmailStorage = localStorage.getItem('rememberEmail');
+	// 	console.log(rememberEmailStorage);
+	// 	console.log({ rememberEmail });
+	// 	if (loginMode && rememberEmailStorage) {
+	// 		setEmailInput((prev) => ({ ...prev, value: rememberEmailStorage }));
+	// 		setRememberEmail(true);
+	// 		console.log('test-empty');
+	// 		console.log(rememberEmail);
+	// 	}
+	// }, []);
+
+	useEffect(() => {
+		const rememberEmailStorage = localStorage.getItem('rememberEmail');
+		console.log(rememberEmailStorage);
+		console.log({ rememberEmail });
+		if (loginMode && rememberEmailStorage) {
+			setEmailInput((prev) => ({ ...prev, value: rememberEmailStorage }));
+			setRememberEmail(true);
+			console.log('test-empty');
+			console.log(rememberEmail);
+		}
+	}, [userState.token]);
 
 	useEffect(() => {
 		setResponseMessage('');
@@ -239,6 +266,16 @@ const Header: React.FC = () => {
 						onBlur={passwordOnBlurHandler}
 						password={true}
 					/>
+					<div className={classes.remember_me}>
+						<label htmlFor='remember_me'>Se souvenir de moi</label>
+						<input
+							type='checkbox'
+							id='remember_me'
+							name='remember_me'
+							onChange={checkboxHandler}
+							checked={rememberEmail}
+						/>
+					</div>
 					<button disabled={!formIsValid}>
 						{loginMode ? 'Connexion' : 'Inscription'}
 					</button>

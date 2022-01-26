@@ -17,13 +17,26 @@ const initialStateReducer: State = {
 	email: null,
 };
 
+// interface Action extends State {
+// 	// type: 'LOG_IN' | 'LOG_OUT' | 'CHANGE_NAME';
+// 	type: ActionType;
+// 	login: any;
+// }
+
 interface Action extends State {
 	type: 'LOG_IN' | 'LOG_OUT' | 'CHANGE_NAME';
 	login: any;
 }
 
+// enum ActionType {
+// 	LogIn = 'LOG_IN',
+// 	LogOut = 'LOG_OUT',
+// 	ChangeName = 'CHANGE_NAME',
+// }
+
 const userReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
+		// case ActionType.LogIn
 		case 'LOG_IN':
 			return {
 				token: action.token,
@@ -32,6 +45,7 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 				name: action.name,
 				email: action.email,
 			};
+		// case ActionType.Logout:
 		case 'LOG_OUT':
 			return {
 				token: null,

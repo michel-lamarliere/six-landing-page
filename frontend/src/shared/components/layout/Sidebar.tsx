@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 
@@ -8,7 +9,7 @@ import classes from './Sidebar.module.scss';
 
 const Sidebar: React.FC = () => {
 	const dispatch = useDispatch();
-
+	const navigate = useNavigate();
 	const userState = useSelector((state: RootState) => state.user);
 
 	const nameLinks = [
@@ -18,7 +19,11 @@ const Sidebar: React.FC = () => {
 		},
 		{
 			text: 'Déconnexion',
-			onClick: () => dispatch({ type: 'LOG_OUT' }),
+			onClick: () => {
+				dispatch({ type: 'LOG_OUT' });
+				navigate('/');
+				localStorage.removeItem('userData');
+			},
 		},
 	];
 
