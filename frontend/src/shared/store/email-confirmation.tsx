@@ -2,20 +2,25 @@ interface State {
 	show: boolean;
 }
 
+interface Action extends State {
+	type: EmailConfirmationActionTypes;
+}
+
 const initialState: State = {
 	show: false,
 };
 
-interface Action {
-	type: 'SHOW' | 'HIDE';
+export const enum EmailConfirmationActionTypes {
+	SHOW = 'SHOW_EMAIL_CONFIRMATION_POPUP',
+	HIDE = 'HIDE_EMAIL_CONFIRMATION_POPUP',
 }
 
 const emailReducer = (state = initialState, action: Action) => {
 	switch (action.type) {
-		case 'SHOW': {
+		case EmailConfirmationActionTypes.SHOW: {
 			return { show: true };
 		}
-		case 'HIDE': {
+		case EmailConfirmationActionTypes.HIDE: {
 			sessionStorage.removeItem('confirmedEmail');
 			return { show: false };
 		}

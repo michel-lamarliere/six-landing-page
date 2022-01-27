@@ -3,7 +3,7 @@ interface State {
 }
 
 interface Action {
-	type: 'SET_ERROR' | 'REMOVE_ERROR';
+	type: ErrorPopupActionTypes;
 	message: string;
 }
 
@@ -11,14 +11,19 @@ const initialStateReducer: State = {
 	message: null,
 };
 
+export const enum ErrorPopupActionTypes {
+	SET_ERROR = 'SET_ERROR',
+	REMOVE_ERROR = 'REMOVE_ERROR',
+}
+
 const ErrorReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		case 'SET_ERROR': {
+		case ErrorPopupActionTypes.SET_ERROR: {
 			return {
 				message: action.message,
 			};
 		}
-		case 'REMOVE_ERROR': {
+		case ErrorPopupActionTypes.REMOVE_ERROR: {
 			return {
 				message: null,
 			};

@@ -1,13 +1,15 @@
-type StringOrNull = null | string;
-
 interface State {
-	token: StringOrNull;
+	token: null | string;
 	expiration: any;
 	// expiration: Date | null;
-	id: StringOrNull;
-	name: StringOrNull;
-	email: StringOrNull;
+	id: null | string;
+	name: null | string;
+	email: null | string;
 	confirmedEmail: boolean | null;
+}
+
+interface Action extends State {
+	type: UserActionTypes;
 }
 
 const initialStateReducer: State = {
@@ -19,27 +21,15 @@ const initialStateReducer: State = {
 	confirmedEmail: null,
 };
 
-// interface Action extends State {
-// 	// type: 'LOG_IN' | 'LOG_OUT' | 'CHANGE_NAME';
-// 	type: ActionType;
-// 	login: any;
-// }
-
-interface Action extends State {
-	type: 'LOG_IN' | 'LOG_OUT' | 'CHANGE_NAME';
-	login: any;
+export const enum UserActionTypes {
+	LOG_IN = 'LOG_IN',
+	LOG_OUT = 'LOG_OUT',
+	CHANGE_NAME = 'CHANGE_NAME',
 }
-
-// enum ActionType {
-// 	LogIn = 'LOG_IN',
-// 	LogOut = 'LOG_OUT',
-// 	ChangeName = 'CHANGE_NAME',
-// }
 
 const userReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		// case ActionType.LogIn
-		case 'LOG_IN':
+		case UserActionTypes.LOG_IN:
 			return {
 				token: action.token,
 				expiration: action.expiration,
@@ -48,8 +38,7 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 				email: action.email,
 				confirmedEmail: action.confirmedEmail,
 			};
-		// case ActionType.Logout:
-		case 'LOG_OUT':
+		case UserActionTypes.LOG_OUT:
 			return {
 				token: null,
 				expiration: null,
@@ -58,7 +47,7 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 				email: null,
 				confirmedEmail: null,
 			};
-		case 'CHANGE_NAME':
+		case UserActionTypes.CHANGE_NAME:
 			return { ...state, name: action.name };
 		default:
 			return state;

@@ -7,6 +7,7 @@ import { RootState } from '../../shared/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Input from '../../shared/components/FormElements/Input';
+import { ErrorPopupActionTypes } from '../../shared/store/error';
 
 const PasswordForm: React.FC<{
 	setShowChangePassword: (arg0: boolean) => void;
@@ -44,7 +45,10 @@ const PasswordForm: React.FC<{
 		);
 
 		if (responseData.error) {
-			dispatch({ type: 'SET_ERROR', message: responseData.error });
+			dispatch({
+				type: ErrorPopupActionTypes.SET_ERROR,
+				message: responseData.error,
+			});
 			return;
 		}
 		resetForm();

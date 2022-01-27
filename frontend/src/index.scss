@@ -27,20 +27,16 @@ button {
 }
 
 .main {
+	position: relative;
 	height: 100vh;
-	width: 100%;
 	background-color: darkgrey;
+	display: flex;
+	justify-content: center;
 
-	&_right {
-		width: 100%;
+	&_logged-in {
 		display: flex;
 		justify-content: center;
-
-		&_logged-in {
-			display: flex;
-			justify-content: center;
-			width: 70%;
-			float: right;
-		}
+		width: 70%;
+		float: right;
 	}
 }

@@ -1,12 +1,10 @@
 import { createStore, combineReducers } from 'redux';
 import userReducer from './user';
-import viewReducer from './view';
 import errorReducer from './error';
-import emailReducer from './email';
+import emailReducer from './email-confirmation';
 
 const rootReducer = combineReducers({
 	user: userReducer,
-	view: viewReducer,
 	error: errorReducer,
 	email: emailReducer,
 });

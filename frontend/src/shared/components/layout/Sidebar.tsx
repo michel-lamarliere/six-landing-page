@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
+import { EmailConfirmationActionTypes } from '../../store/email-confirmation';
 
 import SidebarTitle from './SidebarTitle';
 
 import classes from './Sidebar.module.scss';
+import { UserActionTypes } from '../../store/user';
 
 const Sidebar: React.FC = () => {
 	const dispatch = useDispatch();
@@ -21,7 +23,10 @@ const Sidebar: React.FC = () => {
 		{
 			text: 'Déconnexion',
 			onClick: () => {
-				dispatch({ type: 'LOG_OUT' });
+				dispatch({ type: UserActionTypes.LOG_OUT });
+				dispatch({
+					type: EmailConfirmationActionTypes.HIDE,
+				});
 				navigate('/');
 				localStorage.removeItem('userData');
 				sessionStorage.removeItem('confirmedEmail');

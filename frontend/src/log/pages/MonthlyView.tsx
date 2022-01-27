@@ -17,6 +17,7 @@ import {
 	DataButton,
 	PlaceHolderDataButton,
 } from '../../shared/components/UIElements/Buttons';
+import { ErrorPopupActionTypes } from '../../shared/store/error';
 
 const MonthlyView: React.FC = () => {
 	const dispatch = useDispatch();
@@ -87,7 +88,10 @@ const MonthlyView: React.FC = () => {
 			);
 
 			if (responseData.error) {
-				dispatch({ type: 'SET_ERROR', message: responseData.error });
+				dispatch({
+					type: ErrorPopupActionTypes.SET_ERROR,
+					message: responseData.error,
+				});
 			}
 		}
 		getMonthlyData();

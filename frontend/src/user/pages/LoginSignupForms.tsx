@@ -10,6 +10,8 @@ import classes from './LoginSignupForms.module.scss';
 
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../shared/store/store';
+import { UserActionTypes } from '../../shared/store/user';
+import { EmailConfirmationActionTypes } from '../../shared/store/email-confirmation';
 
 const Header: React.FC = () => {
 	const [responseMessage, setResponseMessage] = useState('');
@@ -90,7 +92,7 @@ const Header: React.FC = () => {
 		const tokenExpiration = addHours(new Date(), 1);
 
 		dispatch({
-			type: 'LOG_IN',
+			type: UserActionTypes.LOG_IN,
 			token: token,
 			expiration: tokenExpiration.toISOString(),
 			id: id,
@@ -116,7 +118,7 @@ const Header: React.FC = () => {
 		navigate('/log/daily');
 
 		if (!confirmedEmail) {
-			dispatch({ type: 'SHOW' });
+			dispatch({ type: EmailConfirmationActionTypes.SHOW });
 
 			sessionStorage.setItem('confirmedEmail', confirmedEmail);
 		}
@@ -163,7 +165,7 @@ const Header: React.FC = () => {
 		);
 
 		dispatch({
-			type: 'LOG_IN',
+			type: UserActionTypes.LOG_IN,
 			token: token,
 			expiration: tokenExpiration.toISOString(),
 			id: id,
@@ -176,7 +178,7 @@ const Header: React.FC = () => {
 		navigate('/log/daily');
 
 		if (!confirmedEmail) {
-			dispatch({ type: 'SHOW' });
+			dispatch({ type: EmailConfirmationActionTypes.SHOW });
 
 			sessionStorage.setItem('confirmedEmail', confirmedEmail);
 		}

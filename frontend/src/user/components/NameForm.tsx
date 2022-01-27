@@ -7,6 +7,7 @@ import { RootState } from '../../shared/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Input from '../../shared/components/FormElements/Input';
+import { UserActionTypes } from '../../shared/store/user';
 
 const NameForm: React.FC<{
 	setShowChangeName: (arg0: boolean) => void;
@@ -33,7 +34,7 @@ const NameForm: React.FC<{
 
 		props.setResponse(responseData.success);
 
-		dispatch({ type: 'CHANGE_NAME', name: responseData.name });
+		dispatch({ type: UserActionTypes.CHANGE_NAME, name: responseData.name });
 		setNewName({ value: '', isValid: false, isTouched: false });
 		props.setShowChangeName(false);
 	};

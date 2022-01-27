@@ -7,6 +7,7 @@ import classes from './WeeklyView.module.scss';
 
 import { useRequest } from '../../shared/hooks/http-hook';
 import WeekViewTasks from '../components/WeeklyViewTasks';
+import { ErrorPopupActionTypes } from '../../shared/store/error';
 
 const WeekView: React.FC = () => {
 	const { sendRequest, sendData } = useRequest();
@@ -105,7 +106,10 @@ const WeekView: React.FC = () => {
 			);
 
 			if (responseData.error) {
-				dispatch({ type: 'SET_ERROR', message: responseData.error });
+				dispatch({
+					type: ErrorPopupActionTypes.SET_ERROR,
+					message: responseData.error,
+				});
 			}
 		}
 

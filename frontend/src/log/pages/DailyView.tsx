@@ -6,6 +6,8 @@ import classes from './DailyView.module.scss';
 import { useRequest } from '../../shared/hooks/http-hook';
 import { DataButton } from '../../shared/components/UIElements/Buttons';
 import { RootState } from '../../shared/store/store';
+import ErrorPopup from '../../shared/components/UIElements/ErrorPopup';
+import { ErrorPopupActionTypes } from '../../shared/store/error';
 
 const DailyView: React.FC = () => {
 	const dispatch = useDispatch();
@@ -70,7 +72,7 @@ const DailyView: React.FC = () => {
 			);
 
 			if (responseData.error) {
-				dispatch({ type: 'SET_ERROR', message: responseData.error });
+				dispatch({ type: ErrorPopupActionTypes.SET_ERROR, message: responseData.error });
 			}
 		}
 
