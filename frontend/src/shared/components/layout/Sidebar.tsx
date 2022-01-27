@@ -19,6 +19,7 @@ const Sidebar: React.FC = () => {
 		{
 			text: 'Éditer profil',
 			url: '/profile',
+			key: 'profile-key',
 		},
 		{
 			text: 'Déconnexion',
@@ -31,6 +32,7 @@ const Sidebar: React.FC = () => {
 				localStorage.removeItem('userData');
 				sessionStorage.removeItem('confirmedEmail');
 			},
+			key: 'logout-key',
 		},
 	];
 
@@ -38,14 +40,17 @@ const Sidebar: React.FC = () => {
 		{
 			text: 'Jour',
 			url: '/log/daily',
+			key: 'log-daily-key',
 		},
 		{
 			text: 'Semaine',
 			url: '/log/weekly',
+			key: 'log-weekly-key',
 		},
 		{
 			text: 'Mois',
 			url: '/log/monthly',
+			key: 'log-monthly-key',
 		},
 	];
 

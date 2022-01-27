@@ -5,7 +5,7 @@ import classes from './SidebarTitle.module.scss';
 
 const SidebarTitle: React.FC<{
 	title: string;
-	links: { text: string; url?: string; onClick?: any }[];
+	links: { text: string; url?: string; onClick?: any; key: string }[];
 }> = (props) => {
 	const [showLinks, setShowLinks] = useState(true);
 
@@ -24,7 +24,7 @@ const SidebarTitle: React.FC<{
 			{showLinks && (
 				<div className={classes.links}>
 					{props.links.map((link) => (
-						<>
+						<React.Fragment key={link.key}>
 							{link.url && (
 								<Link className={classes.link} to={link.url}>
 									{link.text}
@@ -35,7 +35,7 @@ const SidebarTitle: React.FC<{
 									{link.text}
 								</div>
 							)}
-						</>
+						</React.Fragment>
 					))}
 				</div>
 			)}

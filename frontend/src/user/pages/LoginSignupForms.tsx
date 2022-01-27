@@ -183,6 +183,7 @@ const Header: React.FC = () => {
 
 	useEffect(() => {
 		const rememberEmailStorage = localStorage.getItem('rememberEmail');
+
 		if (loginMode && rememberEmailStorage) {
 			setEmailInput((prev) => ({ ...prev, value: rememberEmailStorage }));
 			setRememberEmail(true);
