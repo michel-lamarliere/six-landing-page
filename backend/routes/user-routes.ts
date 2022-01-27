@@ -9,6 +9,8 @@ router.post('/signup', userController.signUp);
 
 router.post('/signin', userController.signIn);
 
+router.patch('/confirm/email', userController.confirmEmailAddress);
+
 router.use(checkAuth);
 
 router.patch('/modify/name', userController.changeName);

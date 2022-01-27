@@ -17,6 +17,7 @@ import EmailPopup from './shared/components/UIElements/EmailPopup';
 import { UserActionTypes } from './shared/store/user';
 import { EmailConfirmationActionTypes } from './shared/store/email-confirmation';
 import { ErrorPopupActionTypes } from './shared/store/error';
+import ConfirmEmailAddress from './user/pages/ConfirmEmailAddress';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
@@ -118,6 +119,10 @@ const App: React.FC = () => {
 								<Route path='/profile' element={<Profile />} />
 							</>
 						)}
+						<Route
+							path='/profile/confirm/:email/:code'
+							element={<ConfirmEmailAddress />}
+						/>
 						<Route path='*' element={<Error404 />} />
 					</Routes>
 				</div>

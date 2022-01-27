@@ -4,6 +4,8 @@ const bcryptjs = require('bcryptjs');
 const bcrypt = require('bcrypt');
 const { ObjectId } = require('mongodb');
 const database = require('../util/db-connect');
+const nodemailer = require('nodemailer');
+const { v5: uuidv5 } = require('uuid');
 
 const signUp: RequestHandler = async (req, res, next) => {
 	const { name: reqName, email: reqEmail, password: reqPassword } = await req.body;
@@ -54,13 +56,17 @@ const signUp: RequestHandler = async (req, res, next) => {
 
 	// HASHING PASSWORD
 	const hashedPassword = await bcrypt.hash(reqPassword, 10);
-	console.log(hashedPassword);
+	const hashedConfirmationCode = uuidv5(reqEmail, process.env.UUID_NAMESPACE);
+	console.log(hashedConfirmationCode);
 
 	const newUser = {
 		name: reqName,
 		email: reqEmail,
 		password: hashedPassword,
-		confirmedEmail: false,
+		confirmation: {
+			confirmed: false,
+			code: hashedConfirmationCode,
+		},
 		log: [],
 	};
 
@@ -82,13 +88,36 @@ const signUp: RequestHandler = async (req, res, next) => {
 		{ expiresIn: '1h' }
 	);
 
+	const transporter = nodemailer.createTransport({
+		host: 'smtp.hostinger.com',
+		port: 465,
+		secure: true,
+		auth: {
+			user: process.env.NODEMAILER_EMAIL,
+			pass: process.env.NODEMAILER_PASSWORD,
+		},
+	});
+
+	try {
+		const info = await transporter.sendMail({
+			from: '"Six App" <contact@michel-lamarliere.com>',
+			to: 'lamarliere.michel@icloud.com',
+			subject: "Confirmation de l'adresse mail. ",
+			text: 'Veuillez confirmer votre adresse mail en cliquant sur ce lien.',
+			html: `<div><b>Bien ou quoi?</b><a href="http://localhost:3000/profile/confirm/${findingNewUser.email}/${findingNewUser.confirmation.code}"> Cliquez ici pour confirmer votre adresse mail.</a></div>`,
+		});
+		console.log('Message sent: %s', info.messageId);
+	} catch (error) {
+		console.log(error);
+	}
+
 	res.json({
 		success: 'Compte créé !',
 		token: token,
 		id: findingNewUser._id,
 		name: findingNewUser.name,
 		email: findingNewUser.email,
-		confirmedEmail: findingNewUser.confirmedEmail,
+		confirmedEmail: findingNewUser.confirmation.confirmed,
 	});
 };
 
@@ -130,8 +159,39 @@ const signIn: RequestHandler = async (req, res, next) => {
 		id: result._id,
 		name: result.name,
 		email: result.email,
+		confirmedEmail: result.confirmation.confirmed,
 	});
 	console.log('SIGN-IN---');
+};
+
+const confirmEmailAddress: RequestHandler = async (req, res, next) => {
+	const email = req.body.email;
+	const code = req.body.code;
+
+	console.log(email, code);
+
+	const databaseConnect = await database.getDb('six-dev').collection('test');
+
+	const user = await databaseConnect.findOne({
+		email: email,
+		'confirmation.code': code,
+	});
+
+	if (!user) {
+		res.json({ error: 'Code invalide' });
+		return;
+	}
+
+	await databaseConnect.updateOne(
+		{ email: email },
+		{
+			$set: {
+				'confirmation.confirmed': true,
+			},
+		}
+	);
+
+	res.json({ success: 'Compte confirmé.' });
 };
 
 const changeName: RequestHandler = async (req, res, next) => {
@@ -251,6 +311,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
 
 exports.signUp = signUp;
 exports.signIn = signIn;
+exports.confirmEmailAddress = confirmEmailAddress;
 exports.changeName = changeName;
 exports.comparePasswords = comparePasswords;
 exports.changePassword = changePassword;
