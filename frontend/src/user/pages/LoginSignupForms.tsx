@@ -1,6 +1,6 @@
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { addHours, addSeconds } from 'date-fns';
+import { addHours } from 'date-fns';
 
 import { useRequest } from '../../shared/hooks/http-hook';
 import { useInput } from '../../shared/hooks/input-hook';
@@ -50,10 +50,7 @@ const Header: React.FC = () => {
 
 	const switchModeHandler = () => {
 		setLoginMode((prev) => !prev);
-		resetFormInputs();
-	};
 
-	const resetFormInputs = () => {
 		setNameInput({ value: '', isValid: false, isTouched: false });
 
 		setEmailInput({
@@ -113,15 +110,13 @@ const Header: React.FC = () => {
 			})
 		);
 
-		resetFormInputs();
-
-		navigate('/log/daily');
-
 		if (!confirmedEmail) {
 			dispatch({ type: EmailConfirmationActionTypes.SHOW });
 
 			sessionStorage.setItem('confirmedEmail', confirmedEmail);
 		}
+
+		navigate('/log/daily');
 	};
 
 	const loginFormHandler = async (event: FormEvent) => {
@@ -144,7 +139,6 @@ const Header: React.FC = () => {
 		const { token, id, name, email, confirmedEmail } = responseData;
 
 		const tokenExpiration = addHours(new Date(), 1);
-		// const tokenExpiration = addSeconds(new Date(), 5);
 
 		if (rememberEmail) {
 			localStorage.setItem('rememberEmail', email);
@@ -174,7 +168,6 @@ const Header: React.FC = () => {
 			confirmedEmail: confirmedEmail,
 		});
 
-		resetFormInputs();
 		navigate('/log/daily');
 
 		if (!confirmedEmail) {
@@ -198,6 +191,7 @@ const Header: React.FC = () => {
 
 	useEffect(() => {
 		setResponseMessage('');
+
 		if (loginMode) {
 			if (
 				emailInput.value.trim().length > 0 &&

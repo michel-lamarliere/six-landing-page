@@ -61,7 +61,9 @@ const App: React.FC = () => {
 
 	useEffect(() => {
 		autoLogIn();
+
 		const confirmedEmail = sessionStorage.getItem('confirmedEmail');
+
 		if (confirmedEmail) {
 			dispatch({
 				type: EmailConfirmationActionTypes.SHOW,
