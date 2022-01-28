@@ -10,6 +10,7 @@ import classes from './Sidebar.module.scss';
 import { UserActionTypes } from '../../store/user';
 import { useRequest } from '../../hooks/http-hook';
 import { ErrorPopupActionTypes } from '../../store/error';
+import { EmailConfirmationActionTypes } from '../../store/email-confirmation';
 
 const Sidebar: React.FC = () => {
 	const { sendRequest } = useRequest();
@@ -54,6 +55,7 @@ const Sidebar: React.FC = () => {
 			text: 'Déconnexion',
 			onClick: () => {
 				dispatch({ type: UserActionTypes.LOG_OUT });
+				dispatch({ type: EmailConfirmationActionTypes.HIDE });
 				navigate('/');
 			},
 			key: 'logout-key',
