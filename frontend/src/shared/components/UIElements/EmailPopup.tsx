@@ -18,7 +18,7 @@ const EmailPopup: React.FC = () => {
 		} else {
 			dispatch({ type: EmailConfirmationActionTypes.SHOW });
 		}
-	}, [userState.token]);
+	}, [userState.confirmedEmail]);
 
 	return ReactDOM.createPortal(
 		<div className={classes.wrapper}>
