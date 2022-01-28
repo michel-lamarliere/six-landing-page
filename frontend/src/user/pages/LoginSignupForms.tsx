@@ -66,71 +66,7 @@ const Header: React.FC = () => {
 		});
 	};
 
-	const signupFormHandler = async (event: FormEvent) => {
-		event.preventDefault();
-
-		const responseData = await sendRequest(
-			'http://localhost:8080/api/user/signup',
-			'POST',
-			JSON.stringify({
-				name: nameInput.value.trim().toLowerCase(),
-				email: emailInput.value.trim().toLowerCase(),
-				password: passwordInput.value,
-			})
-		);
-
-		if (responseData.error) {
-			setResponseMessage(responseData.error);
-			return;
-		}
-
-		const { success, token, id, email, name, confirmedEmail } = responseData;
-
-		const tokenExpiration = addHours(new Date(), 1);
-
-		dispatch({
-			type: UserActionTypes.LOG_IN,
-			token: token,
-			expiration: tokenExpiration.toISOString(),
-			id: id,
-			name: name,
-			email: email,
-			confirmedEmail: confirmedEmail,
-		});
-
-		localStorage.setItem(
-			'userData',
-			JSON.stringify({
-				token: token,
-				expiration: tokenExpiration.toISOString(),
-				id: id,
-				email: email,
-				name: name,
-				confirmedEmail: confirmedEmail,
-			})
-		);
-
-		if (!confirmedEmail) {
-			dispatch({ type: EmailConfirmationActionTypes.SHOW });
-
-			sessionStorage.setItem('confirmedEmail', confirmedEmail);
-		}
-
-		navigate('/log/daily');
-	};
-
-	const loginFormHandler = async (event: FormEvent) => {
-		event.preventDefault();
-
-		const responseData = await sendRequest(
-			'http://localhost:8080/api/user/signin',
-			'POST',
-			JSON.stringify({
-				email: emailInput.value.trim().toLowerCase(),
-				password: passwordInput.value,
-			})
-		);
-
+	const logInUser = (responseData: any) => {
 		if (responseData.error) {
 			setResponseMessage(responseData.error);
 			return;
@@ -146,18 +82,6 @@ const Header: React.FC = () => {
 			localStorage.removeItem('rememberEmail');
 		}
 
-		localStorage.setItem(
-			'userData',
-			JSON.stringify({
-				token: token,
-				expiration: tokenExpiration.toISOString(),
-				id: id,
-				email: email,
-				name: name,
-				confirmedEmail: confirmedEmail,
-			})
-		);
-
 		dispatch({
 			type: UserActionTypes.LOG_IN,
 			token: token,
@@ -169,12 +93,37 @@ const Header: React.FC = () => {
 		});
 
 		navigate('/log/daily');
+	};
 
-		if (!confirmedEmail) {
-			dispatch({ type: EmailConfirmationActionTypes.SHOW });
+	const signupFormHandler = async (event: FormEvent) => {
+		event.preventDefault();
 
-			sessionStorage.setItem('confirmedEmail', confirmedEmail);
-		}
+		const responseData = await sendRequest(
+			'http://localhost:8080/api/user/signup',
+			'POST',
+			JSON.stringify({
+				name: nameInput.value.trim().toLowerCase(),
+				email: emailInput.value.trim().toLowerCase(),
+				password: passwordInput.value,
+			})
+		);
+
+		logInUser(responseData);
+	};
+
+	const loginFormHandler = async (event: FormEvent) => {
+		event.preventDefault();
+
+		const responseData = await sendRequest(
+			'http://localhost:8080/api/user/signin',
+			'POST',
+			JSON.stringify({
+				email: emailInput.value.trim().toLowerCase(),
+				password: passwordInput.value,
+			})
+		);
+
+		logInUser(responseData);
 	};
 
 	const checkboxHandler = () => {
@@ -182,10 +131,10 @@ const Header: React.FC = () => {
 	};
 
 	useEffect(() => {
-		const rememberEmailStorage = localStorage.getItem('rememberEmail');
+		const emailStorage = localStorage.getItem('userData');
 
-		if (loginMode && rememberEmailStorage) {
-			setEmailInput((prev) => ({ ...prev, value: rememberEmailStorage }));
+		if (loginMode && emailStorage) {
+			setEmailInput((prev) => ({ ...prev, value: emailStorage }));
 			setRememberEmail(true);
 		}
 	}, [userState.token, loginMode]);

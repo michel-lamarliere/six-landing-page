@@ -214,20 +214,21 @@ const changeName: RequestHandler = async (req, res, next) => {
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
-	const filter = { _id: reqId };
+	const user = await databaseConnect.findOne({ _id: reqId });
 
-	const result = await databaseConnect.findOne(filter);
-
-	if (!result) {
-		res.json({ error: 'Erreur' });
+	if (!user) {
+		res.json({ fatal: true });
 		return;
 	}
 
-	await databaseConnect.updateOne(filter, {
-		$set: {
-			name: reqNewName,
-		},
-	});
+	await databaseConnect.updateOne(
+		{ _id: reqId },
+		{
+			$set: {
+				name: reqNewName,
+			},
+		}
+	);
 
 	res.json({ success: 'Nom modifié !', name: reqNewName });
 };
@@ -241,21 +242,20 @@ const comparePasswords: RequestHandler = async (req, res, next) => {
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
-	const result = await databaseConnect.findOne({ _id: reqId });
+	const user = await databaseConnect.findOne({ _id: reqId });
 
-	if (!result) {
-		res.json({ error: 'Un problème est survenu.' });
-		console.log('error');
+	if (!user) {
+		res.json({ fatal: true });
 		return;
 	}
 
 	console.log(reqPassword);
-	console.log(result.password);
+	console.log(user.password);
 
-	const matchingPasswordsjs = await bcryptjs.compare(reqPassword, result.password);
+	const matchingPasswordsjs = await bcryptjs.compare(reqPassword, user.password);
 	console.log({ matchingPasswordsjs });
 
-	const matchingPasswords = await bcrypt.compare(reqPassword, result.password);
+	const matchingPasswords = await bcrypt.compare(reqPassword, user.password);
 	console.log({ matchingPasswords });
 
 	if (!matchingPasswords) {
@@ -277,12 +277,10 @@ const changePassword: RequestHandler = async (req, res, next) => {
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
-	const filter = { _id: reqId };
+	const user = await databaseConnect.findOne({ _id: reqId });
 
-	const result = await databaseConnect.findOne(filter);
-
-	if (!result) {
-		res.json({ error: 'Une erreur est survenue.' });
+	if (!user) {
+		res.json({ fatal: true });
 		return;
 	}
 
@@ -298,15 +296,34 @@ const changePassword: RequestHandler = async (req, res, next) => {
 	const hashedNewPassword = await bcrypt.hash(reqNewPassword, 10);
 	console.log(hashedNewPassword);
 
-	await databaseConnect.updateOne(filter, {
-		$set: {
-			password: hashedNewPassword,
-		},
-	});
+	await databaseConnect.updateOne(
+		{ _id: reqId },
+		{
+			$set: {
+				password: hashedNewPassword,
+			},
+		}
+	);
 
 	res.json({ success: 'Mot de passe modifié.' });
 
 	console.log('CHANGE_PASSWORDS---');
+};
+
+const refreshData: RequestHandler = async (req, res, next) => {
+	const id = new ObjectId(req.params.userId);
+	console.log(id);
+
+	const databaseConnect = await database.getDb('six-dev').collection('test');
+
+	const user = await databaseConnect.findOne({ _id: id });
+
+	if (!user) {
+		res.json({ fatal: true });
+		return;
+	}
+
+	res.json({ success: 'Données rafraichies', user });
 };
 
 exports.signUp = signUp;
@@ -315,3 +332,4 @@ exports.confirmEmailAddress = confirmEmailAddress;
 exports.changeName = changeName;
 exports.comparePasswords = comparePasswords;
 exports.changePassword = changePassword;
+exports.refreshData = refreshData;

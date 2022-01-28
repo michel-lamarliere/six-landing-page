@@ -11,6 +11,8 @@ const addData: RequestHandler = async (req, res, next) => {
 		levelOfCompletion: reqLevelOfCompletion,
 	} = await req.body;
 
+	console.log(req.body);
+
 	// VALIDATION
 	let inputsAreValid = {
 		all: false,
@@ -80,6 +82,7 @@ const addData: RequestHandler = async (req, res, next) => {
 	const result = await databaseConnect.findOne(filter);
 
 	if (!result) {
+		res.json({ fatal: true });
 		return;
 	}
 
@@ -164,6 +167,13 @@ const getDaily: RequestHandler = async (req, res, next) => {
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
+	const user = await databaseConnect.findOne({ _id: reqId });
+
+	if (!user) {
+		res.json({ fatal: true });
+		return;
+	}
+
 	const result = await databaseConnect.findOne({
 		_id: reqId,
 		'log.date': reqDate,
@@ -189,6 +199,13 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
+	const user = await databaseConnect.findOne({ _id: reqId });
+
+	if (!user) {
+		res.json({ fatal: true });
+		return;
+	}
+
 	const getDates = (startingDate: string) => {
 		let dateArray = [];
 
@@ -200,23 +217,16 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 		return dateArray;
 	};
 
-	const result = await databaseConnect.findOne({ _id: reqId });
-
-	if (!result) {
-		res.json({ error: 'User not found!' });
-		return;
-	}
-
 	const datesArray = getDates(reqStartDate);
 
 	let foundDatesIndex = [];
 	let matchingLogArray = [];
 
 	for (let i = 0; i < datesArray.length; i++) {
-		for (let y = 0; y < result.log.length; y++) {
-			if (datesArray[i] === result.log[y].date) {
+		for (let y = 0; y < user.log.length; y++) {
+			if (datesArray[i] === user.log[y].date) {
 				foundDatesIndex.push(y);
-				matchingLogArray.push(result.log[y]);
+				matchingLogArray.push(user.log[y]);
 			}
 		}
 	}
@@ -239,11 +249,10 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
-	const result = await databaseConnect.findOne({
-		_id: reqId,
-	});
+	const user = await databaseConnect.findOne({ _id: reqId });
 
-	if (!result) {
+	if (!user) {
+		res.json({ fatal: true });
 		return;
 	}
 
@@ -265,13 +274,13 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 		let y = 0;
 
 		for (let y = 0; y < datesArray.length; y++) {
-			if (result.log[y] && datesArray[i] === result.log[y].date) {
-				responseArray.push(result.log[y].six[reqTask]);
+			if (user.log[y] && datesArray[i] === user.log[y].date) {
+				responseArray.push(user.log[y].six[reqTask]);
 				matched = true;
 			}
 		}
 
-		if (y > result.log.length) {
+		if (y > user.log.length) {
 			matched = false;
 		}
 

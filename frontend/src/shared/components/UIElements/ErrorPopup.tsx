@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ErrorPopupActionTypes } from '../../store/error';
+import { RootState } from '../../store/store';
 import classes from './ErrorPopup.module.scss';
 
 const ErrorPopup: React.FC<{ message: string }> = (props) => {
 	const dispatch = useDispatch();
+	const errorState = useSelector((state: RootState) => state.error);
 
 	const closePopup = () => {
 		dispatch({ type: ErrorPopupActionTypes.REMOVE_ERROR });
 	};
+
+	useEffect(() => {
+		if (errorState.message) {
+			setTimeout(() => {
+				dispatch({ type: ErrorPopupActionTypes.REMOVE_ERROR });
+			}, 5000);
+		}
+	}, [errorState]);
 
 	return ReactDOM.createPortal(
 		<div className={classes.wrapper}>

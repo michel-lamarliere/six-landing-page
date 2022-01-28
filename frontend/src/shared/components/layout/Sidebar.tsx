@@ -9,11 +9,40 @@ import SidebarTitle from './SidebarTitle';
 
 import classes from './Sidebar.module.scss';
 import { UserActionTypes } from '../../store/user';
+import { useRequest } from '../../hooks/http-hook';
+import { ErrorPopupActionTypes } from '../../store/error';
 
 const Sidebar: React.FC = () => {
+	const { sendRequest } = useRequest();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
 	const userState = useSelector((state: RootState) => state.user);
+
+	const refreshDataHandler = async () => {
+		const responseData = await sendRequest(
+			`http://localhost:8080/api/user/${userState.id}`,
+			'GET'
+		);
+
+		console.log(responseData);
+
+		if (responseData.error) {
+			dispatch({
+				type: ErrorPopupActionTypes.SET_ERROR,
+				message: responseData.error,
+			});
+			console.log('error');
+			return;
+		}
+
+		dispatch({
+			type: UserActionTypes.REFRESH_DATA,
+			name: responseData.user.name,
+			email: responseData.user.email,
+			confirmedEmail: responseData.user.confirmation.confirmed,
+		});
+	};
 
 	const nameLinks = [
 		{
@@ -25,12 +54,7 @@ const Sidebar: React.FC = () => {
 			text: 'Déconnexion',
 			onClick: () => {
 				dispatch({ type: UserActionTypes.LOG_OUT });
-				dispatch({
-					type: EmailConfirmationActionTypes.HIDE,
-				});
 				navigate('/');
-				localStorage.removeItem('userData');
-				sessionStorage.removeItem('confirmedEmail');
 			},
 			key: 'logout-key',
 		},
@@ -58,6 +82,7 @@ const Sidebar: React.FC = () => {
 		<div className={classes.wrapper}>
 			<SidebarTitle title={userState.name!} links={nameLinks} />
 			<SidebarTitle title='Historique' links={logLinks} />
+			<button onClick={refreshDataHandler}>Refresh</button>
 		</div>,
 		document.getElementById('sidebar')!
 	);

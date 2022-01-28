@@ -19,4 +19,6 @@ router.get('/compare/passwords/:id/:password', userController.comparePasswords);
 
 router.patch('/modify/password/', userController.changePassword);
 
+router.get('/:userId', userController.refreshData);
+
 module.exports = router;

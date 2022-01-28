@@ -1,7 +1,13 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { ErrorPopupActionTypes } from '../store/error';
 import { RootState } from '../store/store';
+import { UserActionTypes } from '../store/user';
 
 export const useRequest = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
 	const userData = useSelector((state: RootState) => state.user);
 
 	const sendRequest = async (
@@ -19,6 +25,18 @@ export const useRequest = () => {
 		});
 
 		const responseData = await response.json();
+
+		if (responseData.fatal) {
+			dispatch({ type: UserActionTypes.LOG_OUT });
+			dispatch({
+				type: ErrorPopupActionTypes.SET_ERROR,
+				message:
+					"Il semble que votre compte n'existe plus, veuillez en créer un autre ou nous contacter.",
+			});
+
+			navigate('/');
+		}
+
 		return responseData;
 	};
 
@@ -45,6 +63,17 @@ export const useRequest = () => {
 		});
 
 		const responseData = await response.json();
+
+		if (responseData.fatal) {
+			dispatch({ type: UserActionTypes.LOG_OUT });
+			dispatch({
+				type: ErrorPopupActionTypes.SET_ERROR,
+				message:
+					"Il semble que votre compte n'existe plus, veuillez en créer un autre ou nous contacter.",
+			});
+
+			navigate('/');
+		}
 		return responseData;
 	};
 

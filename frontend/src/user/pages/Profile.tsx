@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classes from './Profile.module.scss';
 
 import NameForm from '../components/NameForm';
 import PasswordForm from '../components/PasswordForm';
+import { RootState } from '../../shared/store/store';
+import { useSelector } from 'react-redux';
 
 const Profile: React.FC = () => {
+	const userState = useSelector((state: RootState) => state.user);
+
 	const [showChangeName, setShowChangeName] = useState(false);
 	const [showChangePassword, setShowChangePassword] = useState(false);
 	const [response, setResponse] = useState('');
@@ -27,6 +31,11 @@ const Profile: React.FC = () => {
 
 	return (
 		<div className={classes.wrapper}>
+			<div>
+				{userState.confirmedEmail
+					? 'Adresse Mail Confirmée'
+					: 'Adresse Email Non-Confirmée.'}
+			</div>
 			<button className={classes.button} onClick={showChangeNameHandler}>
 				Modifier Mon Nom
 			</button>

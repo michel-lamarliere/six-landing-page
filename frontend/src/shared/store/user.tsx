@@ -24,12 +24,30 @@ const initialStateReducer: State = {
 export const enum UserActionTypes {
 	LOG_IN = 'LOG_IN',
 	LOG_OUT = 'LOG_OUT',
-	CHANGE_NAME = 'CHANGE_NAME',
+	REFRESH_NAME = 'REFRESH_NAME',
+	REFRESH_DATA = 'REFRESH_DATA',
 }
 
 const userReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		case UserActionTypes.LOG_IN:
+		case UserActionTypes.LOG_IN: {
+			localStorage.setItem(
+				'userData',
+				JSON.stringify({
+					token: action.token,
+					expiration: action.expiration,
+					id: action.id,
+					name: action.name,
+					email: action.email,
+					confirmedEmail: action.confirmedEmail,
+				})
+			);
+
+			sessionStorage.setItem(
+				'showEmailConfirmationPopup',
+				JSON.stringify(!action.confirmedEmail)
+			);
+
 			return {
 				token: action.token,
 				expiration: action.expiration,
@@ -38,7 +56,12 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 				email: action.email,
 				confirmedEmail: action.confirmedEmail,
 			};
-		case UserActionTypes.LOG_OUT:
+		}
+
+		case UserActionTypes.LOG_OUT: {
+			localStorage.removeItem('userData');
+			sessionStorage.removeItem('showEmailConfirmationPopup');
+
 			return {
 				token: null,
 				expiration: null,
@@ -47,8 +70,31 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 				email: null,
 				confirmedEmail: null,
 			};
-		case UserActionTypes.CHANGE_NAME:
+		}
+
+		case UserActionTypes.REFRESH_NAME:
 			return { ...state, name: action.name };
+
+		case UserActionTypes.REFRESH_DATA: {
+			localStorage.setItem(
+				'userData',
+				JSON.stringify({
+					token: state.token,
+					expiration: state.expiration,
+					id: state.id,
+					name: action.name,
+					email: action.email,
+					confirmedEmail: action.confirmedEmail,
+				})
+			);
+
+			sessionStorage.setItem(
+				'showEmailConfirmationPopup',
+				JSON.stringify(!action.confirmedEmail)
+			);
+			return { ...state, name: action.name, confirmedEmail: action.confirmedEmail };
+		}
+
 		default:
 			return state;
 	}

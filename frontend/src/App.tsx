@@ -29,19 +29,15 @@ const App: React.FC = () => {
 
 	const autoLogIn = async () => {
 		const storedUserData = localStorage.getItem('userData');
+		let storedConfirmedEmail = sessionStorage.getItem('showEmailConfirmationPopup');
 
-		let userData: {
-			id: string;
-			token: string;
-			expiration: string;
-			email: string;
-			confirmedEmail: boolean;
-			name: string;
-		};
+		if (storedConfirmedEmail) {
+			storedConfirmedEmail = JSON.parse(storedConfirmedEmail);
+		}
 
 		if (!storedUserData) return;
 
-		userData = JSON.parse(storedUserData);
+		let userData = JSON.parse(storedUserData);
 
 		if (isBefore(new Date(userData.expiration), new Date())) {
 			dispatch({ type: UserActionTypes.LOG_OUT });
@@ -58,18 +54,23 @@ const App: React.FC = () => {
 			confirmedEmail: userData.confirmedEmail,
 			name: userData.name,
 		});
-	};
 
-	useEffect(() => {
-		autoLogIn();
+		if (userData.confirmedEmail) {
+			sessionStorage.setItem(
+				'showEmailConfirmationPopup',
+				JSON.stringify(!userData.confirmedEmail)
+			);
+		}
 
-		const confirmedEmail = sessionStorage.getItem('confirmedEmail');
-
-		if (confirmedEmail) {
+		if (storedConfirmedEmail) {
 			dispatch({
 				type: EmailConfirmationActionTypes.SHOW,
 			});
 		}
+	};
+
+	useEffect(() => {
+		autoLogIn();
 	}, []);
 
 	useEffect(() => {
@@ -85,19 +86,12 @@ const App: React.FC = () => {
 				type: ErrorPopupActionTypes.SET_ERROR,
 				message: 'Votre session a expiré, veuillez vous reconnecter.',
 			});
-			localStorage.removeItem('userData');
+
 			dispatch({ type: UserActionTypes.LOG_OUT });
+
 			navigate('/');
 		}, remainingTime);
 	}, [userState.expiration]);
-
-	useEffect(() => {
-		if (errorState.message) {
-			setTimeout(() => {
-				dispatch({ type: ErrorPopupActionTypes.REMOVE_ERROR });
-			}, 5000);
-		}
-	}, [errorState]);
 
 	const main_loggedIn = userState.token ? 'main_logged-in' : 'main_right';
 

@@ -21,7 +21,7 @@ const emailReducer = (state = initialState, action: Action) => {
 			return { show: true };
 		}
 		case EmailConfirmationActionTypes.HIDE: {
-			sessionStorage.removeItem('confirmedEmail');
+			sessionStorage.setItem('showEmailConfirmationPopup', JSON.stringify(false));
 			return { show: false };
 		}
 		default:

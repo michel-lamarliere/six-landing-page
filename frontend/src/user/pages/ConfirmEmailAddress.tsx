@@ -28,11 +28,7 @@ const ConfirmEmailAddress: React.FC = () => {
 		confirmationHandler();
 	}, []);
 
-	return (
-		<div>
-			{response} {code}
-		</div>
-	);
+	return <div>{response}</div>;
 };
 
 export default ConfirmEmailAddress;
