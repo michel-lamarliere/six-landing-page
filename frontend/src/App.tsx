@@ -29,11 +29,14 @@ const App: React.FC = () => {
 
 	const autoLogIn = async () => {
 		const storedUserData = localStorage.getItem('userData');
-		let storedConfirmedEmail = sessionStorage.getItem('showEmailConfirmationPopup');
+		let showEmailConfirmationPopup = sessionStorage.getItem(
+			'showEmailConfirmationPopup'
+		);
 
-		if (storedConfirmedEmail) {
-			storedConfirmedEmail = JSON.parse(storedConfirmedEmail);
+		if (showEmailConfirmationPopup) {
+			showEmailConfirmationPopup = JSON.parse(showEmailConfirmationPopup);
 		}
+		console.log(showEmailConfirmationPopup);
 
 		if (!storedUserData) return;
 
@@ -55,14 +58,7 @@ const App: React.FC = () => {
 			name: userData.name,
 		});
 
-		if (userData.confirmedEmail) {
-			sessionStorage.setItem(
-				'showEmailConfirmationPopup',
-				JSON.stringify(!userData.confirmedEmail)
-			);
-		}
-
-		if (storedConfirmedEmail) {
+		if (!userData.confirmedEmail && showEmailConfirmationPopup) {
 			dispatch({
 				type: EmailConfirmationActionTypes.SHOW,
 			});

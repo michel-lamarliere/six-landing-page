@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import classes from './Profile.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { useRequest } from '../../shared/hooks/http-hook';
 
 import NameForm from '../components/NameForm';
 import PasswordForm from '../components/PasswordForm';
 import { RootState } from '../../shared/store/store';
-import { useSelector } from 'react-redux';
+
+import classes from './Profile.module.scss';
+import { EmailConfirmationActionTypes } from '../../shared/store/email-confirmation';
 
 const Profile: React.FC = () => {
+	const { sendRequest } = useRequest();
+	const dispatch = useDispatch();
+
 	const userState = useSelector((state: RootState) => state.user);
 
 	const [showChangeName, setShowChangeName] = useState(false);
@@ -29,12 +36,37 @@ const Profile: React.FC = () => {
 		}, 3000);
 	};
 
+	const resendEmail = async () => {
+		const responseData = await sendRequest(
+			'http://localhost:8080/api/user/email/email-confirmation',
+			'POST',
+			JSON.stringify({ id: userState.id })
+		);
+
+		if (responseData.error) {
+			setResponse(responseData.error);
+		} else if (responseData.success) {
+			setResponse(responseData.success);
+		}
+
+		setTimeout(() => {
+			setResponse('');
+		}, 5000);
+	};
+
 	return (
 		<div className={classes.wrapper}>
 			<div>
-				{userState.confirmedEmail
-					? 'Adresse Mail Confirmée'
-					: 'Adresse Email Non-Confirmée.'}
+				{userState.confirmedEmail ? (
+					<p>Adresse Mail Confirmée</p>
+				) : (
+					<>
+						<p>Adresse Mail Non Confirmée</p>
+						<button onClick={resendEmail}>
+							Renvoyer un mail de confirmation.
+						</button>
+					</>
+				)}
 			</div>
 			<button className={classes.button} onClick={showChangeNameHandler}>
 				Modifier Mon Nom

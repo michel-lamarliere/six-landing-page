@@ -4,8 +4,9 @@ const bcryptjs = require('bcryptjs');
 const bcrypt = require('bcrypt');
 const { ObjectId } = require('mongodb');
 const database = require('../util/db-connect');
-const nodemailer = require('nodemailer');
 const { v5: uuidv5 } = require('uuid');
+
+const { emailConfirmationEmail } = require('../util/email-confirmation');
 
 const signUp: RequestHandler = async (req, res, next) => {
 	const { name: reqName, email: reqEmail, password: reqPassword } = await req.body;
@@ -88,28 +89,8 @@ const signUp: RequestHandler = async (req, res, next) => {
 		{ expiresIn: '1h' }
 	);
 
-	const transporter = nodemailer.createTransport({
-		host: 'smtp.hostinger.com',
-		port: 465,
-		secure: true,
-		auth: {
-			user: process.env.NODEMAILER_EMAIL,
-			pass: process.env.NODEMAILER_PASSWORD,
-		},
-	});
-
-	try {
-		const info = await transporter.sendMail({
-			from: '"Six App" <contact@michel-lamarliere.com>',
-			to: 'lamarliere.michel@icloud.com',
-			subject: "Confirmation de l'adresse mail. ",
-			text: 'Veuillez confirmer votre adresse mail en cliquant sur ce lien.',
-			html: `<div><b>Bien ou quoi?</b><a href="http://localhost:3000/profile/confirm/${findingNewUser.email}/${findingNewUser.confirmation.code}"> Cliquez ici pour confirmer votre adresse mail.</a></div>`,
-		});
-		console.log('Message sent: %s', info.messageId);
-	} catch (error) {
-		console.log(error);
-	}
+	// EMAIL
+	emailConfirmationEmail(reqEmail, hashedConfirmationCode);
 
 	res.json({
 		success: 'Compte créé !',
@@ -326,6 +307,33 @@ const refreshData: RequestHandler = async (req, res, next) => {
 	res.json({ success: 'Données rafraichies', user });
 };
 
+const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
+	const id = new ObjectId(req.body.id);
+	console.log(id);
+
+	const databaseConnect = await database.getDb('six-dev').collection('test');
+
+	const user = await databaseConnect.findOne({ _id: id });
+
+	if (!user) {
+		res.json({ fatal: true });
+		return;
+	}
+
+	try {
+		await emailConfirmationEmail(user.email, user.confirmation.code);
+	} catch (error) {
+		res.json({ error: 'Une erreur est survenue.' });
+		console.log('error');
+		return;
+	}
+
+	res.json({
+		success:
+			'Email envoyé ! Veuillez vérifier votre boîte de réception ou votre dossier spam.',
+	});
+};
+
 exports.signUp = signUp;
 exports.signIn = signIn;
 exports.confirmEmailAddress = confirmEmailAddress;
@@ -333,3 +341,4 @@ exports.changeName = changeName;
 exports.comparePasswords = comparePasswords;
 exports.changePassword = changePassword;
 exports.refreshData = refreshData;
+exports.resendEmailConfirmation = resendEmailConfirmation;

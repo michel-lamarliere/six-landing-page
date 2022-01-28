@@ -43,11 +43,6 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 				})
 			);
 
-			sessionStorage.setItem(
-				'showEmailConfirmationPopup',
-				JSON.stringify(!action.confirmedEmail)
-			);
-
 			return {
 				token: action.token,
 				expiration: action.expiration,

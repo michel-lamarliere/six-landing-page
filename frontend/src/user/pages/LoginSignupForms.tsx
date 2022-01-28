@@ -92,6 +92,11 @@ const Header: React.FC = () => {
 			confirmedEmail: confirmedEmail,
 		});
 
+		sessionStorage.setItem(
+			'showEmailConfirmationPopup',
+			JSON.stringify(!confirmedEmail)
+		);
+
 		if (!confirmedEmail) {
 			dispatch({ type: EmailConfirmationActionTypes.SHOW });
 		}

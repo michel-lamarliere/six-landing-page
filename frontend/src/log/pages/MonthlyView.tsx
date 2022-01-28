@@ -91,6 +91,10 @@ const MonthlyView: React.FC = () => {
 				prevLevel
 			);
 
+			if (!responseData) {
+				return;
+			}
+
 			if (responseData.error) {
 				dispatch({
 					type: ErrorPopupActionTypes.SET_ERROR,
