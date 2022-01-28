@@ -39,6 +39,10 @@ const WeekView: React.FC = () => {
 			'GET'
 		);
 
+		if (!responseData) {
+			return;
+		}
+
 		setIsLoading(false);
 		setWeekData(responseData);
 		getMappingArray(responseData, firstOfWeek);

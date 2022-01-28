@@ -92,6 +92,10 @@ const Header: React.FC = () => {
 			confirmedEmail: confirmedEmail,
 		});
 
+		if (!confirmedEmail) {
+			dispatch({ type: EmailConfirmationActionTypes.SHOW });
+		}
+
 		navigate('/log/daily');
 	};
 
@@ -131,7 +135,7 @@ const Header: React.FC = () => {
 	};
 
 	useEffect(() => {
-		const emailStorage = localStorage.getItem('userData');
+		const emailStorage = localStorage.getItem('rememberEmail');
 
 		if (loginMode && emailStorage) {
 			setEmailInput((prev) => ({ ...prev, value: emailStorage }));

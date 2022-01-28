@@ -28,6 +28,10 @@ const NameForm: React.FC<{
 			})
 		);
 
+		if (!responseData) {
+			return;
+		}
+
 		if (responseData.error) {
 			return;
 		}

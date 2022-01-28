@@ -5,6 +5,7 @@ import { useRequest } from '../../shared/hooks/http-hook';
 
 const ConfirmEmailAddress: React.FC = () => {
 	const { sendRequest } = useRequest();
+
 	const { email, code } = useParams();
 
 	const [response, setResponse] = useState();

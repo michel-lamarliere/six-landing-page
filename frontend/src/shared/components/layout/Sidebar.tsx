@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
-import { EmailConfirmationActionTypes } from '../../store/email-confirmation';
 
 import SidebarTitle from './SidebarTitle';
 
@@ -25,14 +24,15 @@ const Sidebar: React.FC = () => {
 			'GET'
 		);
 
-		console.log(responseData);
+		if (!responseData) {
+			return;
+		}
 
 		if (responseData.error) {
 			dispatch({
 				type: ErrorPopupActionTypes.SET_ERROR,
 				message: responseData.error,
 			});
-			console.log('error');
 			return;
 		}
 

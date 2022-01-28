@@ -35,6 +35,7 @@ export const useRequest = () => {
 			});
 
 			navigate('/');
+			return;
 		}
 
 		return responseData;
@@ -73,7 +74,9 @@ export const useRequest = () => {
 			});
 
 			navigate('/');
+			return;
 		}
+
 		return responseData;
 	};
 

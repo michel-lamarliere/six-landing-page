@@ -44,6 +44,10 @@ const PasswordForm: React.FC<{
 			JSON.stringify({ id: userState.id, newPassword: newPassword.value })
 		);
 
+		if (!responseData) {
+			return;
+		}
+
 		if (responseData.error) {
 			dispatch({
 				type: ErrorPopupActionTypes.SET_ERROR,

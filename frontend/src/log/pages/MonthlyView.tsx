@@ -64,6 +64,10 @@ const MonthlyView: React.FC = () => {
 				'GET'
 			);
 
+			if (!responseData) {
+				return;
+			}
+
 			const { datesArray: responseDatesArray, responseArray } = responseData;
 			setDatesArray(responseDatesArray);
 			setMonthlyArray(responseArray);

@@ -29,6 +29,10 @@ const DailyView: React.FC = () => {
 			'GET'
 		);
 
+		if (!responseData) {
+			return;
+		}
+
 		if (responseData.message) {
 			responseData = {
 				date: chosenDate.toISOString().slice(0, 10),
