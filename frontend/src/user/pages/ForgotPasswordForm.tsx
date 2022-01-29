@@ -14,7 +14,7 @@ const ForgotPasswordForm: React.FC = () => {
 	const { sendRequest } = useRequest();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const { email } = useParams();
+	const { email, uniqueId } = useParams();
 
 	const userState = useSelector((state: RootState) => state.user);
 
@@ -35,7 +35,7 @@ const ForgotPasswordForm: React.FC = () => {
 		}
 
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/user/${email}`,
+			`http://localhost:8080/api/user/${email}/${uniqueId}`,
 			'GET'
 		);
 

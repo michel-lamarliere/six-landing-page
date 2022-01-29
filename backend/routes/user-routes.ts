@@ -13,7 +13,7 @@ router.patch('/confirm/email', userController.confirmEmailAddress);
 
 router.get('/email/forgot-password/:email', userController.sendEmailForgotPassword);
 
-router.get('/:email', userController.checkEmail);
+router.get('/:email/:uniqueId', userController.checkForgotPasswordAuth);
 
 router.patch('/modify/password/', userController.changePassword);
 

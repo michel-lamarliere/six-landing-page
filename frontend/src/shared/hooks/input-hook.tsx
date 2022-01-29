@@ -40,7 +40,7 @@ export const useInput = (
 	}, [input.value]);
 
 	useEffect(() => {
-		if (condition === 'EMAIL') {
+		if (condition === 'EMAIL' && !loginMode) {
 			input.value.match(
 				/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 			)
@@ -50,7 +50,7 @@ export const useInput = (
 	}, [input.value]);
 
 	useEffect(() => {
-		if (condition === 'PASSWORD') {
+		if (condition === 'PASSWORD' && !loginMode) {
 			input.value.match(
 				/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
 			)

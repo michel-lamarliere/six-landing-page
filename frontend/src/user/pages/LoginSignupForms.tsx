@@ -26,6 +26,7 @@ const Header: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [loginMode, setLoginMode] = useState(true);
+	console.log(loginMode);
 	const [formIsValid, setFormIsValid] = useState(false);
 
 	const {
@@ -269,9 +270,11 @@ const Header: React.FC = () => {
 							</button>
 						</>
 					)}
-					<button onClick={forgotPasswordHandler}>
-						{forgotPassword ? 'Revenir' : 'Mot de passe oublié?'}
-					</button>
+					{loginMode && (
+						<button onClick={forgotPasswordHandler}>
+							{forgotPassword ? 'Revenir' : 'Mot de passe oublié?'}
+						</button>
+					)}
 					{!forgotPassword && (
 						<button disabled={!formIsValid}>
 							{loginMode ? 'Connexion' : 'Inscription'}

@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const { ObjectId } = require('mongodb');
 const database = require('../util/db-connect');
 const { v5: uuidv5 } = require('uuid');
+var crypto = require('crypto');
 
 const { createNodemailerTransporter } = require('../util/nodemailer-transporter');
 const { emailConfirmationEmail } = require('../util/email-confirmation');
@@ -65,6 +66,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 		name: reqName,
 		email: reqEmail,
 		password: hashedPassword,
+		forgotPasswordCode: null,
 		confirmation: {
 			confirmed: false,
 			code: hashedConfirmationCode,
@@ -349,6 +351,22 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
+	if (!user.confirmation.confirmed) {
+		res.json({
+			error: "Cette adresse mail n'est pas confirmée. Envoi de mail impossible.",
+		});
+		return;
+	}
+
+	const generatedForgotPasswordCode = crypto.randomBytes(20).toString('hex');
+
+	console.log(generatedForgotPasswordCode);
+
+	await databaseConnect.updateOne(
+		{ email: reqEmail },
+		{ $set: { forgotPasswordCode: generatedForgotPasswordCode } }
+	);
+
 	const transporter = createNodemailerTransporter();
 
 	try {
@@ -357,7 +375,7 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 			to: 'lamarliere.michel@icloud.com',
 			subject: 'Modification de votre mot de passe',
 			text: 'Pour modifier votre mot de passe, cliquez sur ce lien.',
-			html: `<div><b>Mot de passe oublié?</b><a href="http://localhost:3000/modify/password/${reqEmail}">Cliquez ici !</a></div>`,
+			html: `<div><b>Mot de passe oublié?</b><a href="http://localhost:3000/modify/password/${reqEmail}/${generatedForgotPasswordCode}">Cliquez ici !</a></div>`,
 		});
 		console.log('Message sent: %s', info.messageId);
 	} catch (error) {
@@ -367,19 +385,23 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 	res.json({ success: 'Email envoyé, veuillez consulter votre boite de réception.' });
 };
 
-const checkEmail: RequestHandler = async (req, res, next) => {
-	const email = req.params.email;
+const checkForgotPasswordAuth: RequestHandler = async (req, res, next) => {
+	const reqEmail = req.params.email;
+	const reqUniqueId = req.params.uniqueId;
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
-	const user = await databaseConnect.findOne({ email: email });
+	const user = await databaseConnect.findOne({
+		email: reqEmail,
+		forgotPasswordCode: reqUniqueId,
+	});
 
 	if (!user) {
-		res.json({ error: 'Adresse email inexistante' });
+		res.json({ error: 'Non autorisé' });
 		return;
 	}
 
-	res.json({ success: 'Adresse email trouvée.', id: user._id });
+	res.json({ success: 'Autorisé !', id: user._id });
 };
 
 exports.signUp = signUp;
@@ -391,4 +413,4 @@ exports.changePassword = changePassword;
 exports.refreshData = refreshData;
 exports.resendEmailConfirmation = resendEmailConfirmation;
 exports.sendEmailForgotPassword = sendEmailForgotPassword;
-exports.checkEmail = checkEmail;
+exports.checkForgotPasswordAuth = checkForgotPasswordAuth;
