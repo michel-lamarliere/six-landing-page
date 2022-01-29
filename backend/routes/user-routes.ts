@@ -11,13 +11,17 @@ router.post('/signin', userController.signIn);
 
 router.patch('/confirm/email', userController.confirmEmailAddress);
 
+router.get('/email/forgot-password/:email', userController.sendEmailForgotPassword);
+
+router.get('/:email', userController.checkEmail);
+
+router.patch('/modify/password/', userController.changePassword);
+
 router.use(checkAuth);
 
 router.patch('/modify/name', userController.changeName);
 
 router.get('/compare/passwords/:id/:password', userController.comparePasswords);
-
-router.patch('/modify/password/', userController.changePassword);
 
 router.get('/:userId', userController.refreshData);
 

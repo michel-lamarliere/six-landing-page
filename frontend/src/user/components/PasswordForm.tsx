@@ -12,6 +12,9 @@ import { ErrorPopupActionTypes } from '../../shared/store/error';
 const PasswordForm: React.FC<{
 	setShowChangePassword: (arg0: boolean) => void;
 	setResponse: (arg0: string) => void;
+	forgotForm?: boolean;
+	userId?: string;
+	redirect?: () => void;
 }> = (props) => {
 	const dispatch = useDispatch();
 	const { sendRequest } = useRequest();
@@ -41,7 +44,10 @@ const PasswordForm: React.FC<{
 		const responseData = await sendRequest(
 			'http://localhost:8080/api/user/modify/password',
 			'PATCH',
-			JSON.stringify({ id: userState.id, newPassword: newPassword.value })
+			JSON.stringify({
+				id: props.forgotForm ? props.userId : userState.id,
+				newPassword: newPassword.value,
+			})
 		);
 
 		if (!responseData) {
@@ -59,10 +65,16 @@ const PasswordForm: React.FC<{
 
 		props.setResponse('Mot de passe modifié!');
 		props.setShowChangePassword(false);
+
+		if (props.redirect) {
+			props.redirect();
+		}
 	};
 
 	const resetForm = () => {
-		setOldPassword({ value: '', isValid: false, isTouched: false });
+		if (!props.forgotForm) {
+			setOldPassword({ value: '', isValid: false, isTouched: false });
+		}
 		setNewPassword({ value: '', isValid: false, isTouched: false });
 		setNewPasswordConfirmation({ value: '', isValid: false, isTouched: false });
 	};
@@ -89,45 +101,68 @@ const PasswordForm: React.FC<{
 	} = useInput('PASSWORD_COMPARISON', null, newPassword.value);
 
 	useEffect(() => {
-		if (
-			oldPassword.isValid &&
-			newPassword.isValid &&
-			newPasswordConfirmation.isValid &&
-			oldPassword.value !== newPassword.value
-		) {
-			setPasswordFormIsValid(true);
-		} else {
-			setPasswordFormIsValid(false);
-		}
+		if (props.forgotForm) {
+			if (
+				newPassword.isValid &&
+				newPasswordConfirmation.isValid &&
+				oldPassword.value !== newPassword.value
+			) {
+				setPasswordFormIsValid(true);
+			} else {
+				setPasswordFormIsValid(false);
+			}
 
-		if (
-			oldPassword.isValid &&
-			newPassword.isValid &&
-			oldPassword.value === newPassword.value
-		) {
-			setPasswordFormIsValid(false);
-			setErrorMessage(
-				"Le nouveau mot de passe ne peut pas être identique à l'ancien."
-			);
-			return;
+			if (newPassword.isValid && oldPassword.value === newPassword.value) {
+				setPasswordFormIsValid(false);
+				setErrorMessage(
+					"Le nouveau mot de passe ne peut pas être identique à l'ancien."
+				);
+				return;
+			}
+			setErrorMessage('');
+		} else {
+			if (
+				oldPassword.isValid &&
+				newPassword.isValid &&
+				newPasswordConfirmation.isValid &&
+				oldPassword.value !== newPassword.value
+			) {
+				setPasswordFormIsValid(true);
+			} else {
+				setPasswordFormIsValid(false);
+			}
+
+			if (
+				oldPassword.isValid &&
+				newPassword.isValid &&
+				oldPassword.value === newPassword.value
+			) {
+				setPasswordFormIsValid(false);
+				setErrorMessage(
+					"Le nouveau mot de passe ne peut pas être identique à l'ancien."
+				);
+				return;
+			}
+			setErrorMessage('');
 		}
-		setErrorMessage('');
 	}, [oldPassword, newPassword, newPasswordConfirmation]);
 
 	return (
 		<>
-			<Input
-				id='Ancien Mot de Passe'
-				type='password'
-				placeholder='********'
-				errorText='Ancien mot de passe incorrect'
-				value={oldPassword.value}
-				isValid={oldPassword.isValid}
-				isTouched={oldPassword.isTouched}
-				onChange={oldPasswordOnChangeHandler}
-				onBlur={oldPasswordOnBlurHandler}
-				password={true}
-			/>
+			{!props.forgotForm && (
+				<Input
+					id='Ancien Mot de Passe'
+					type='password'
+					placeholder='********'
+					errorText='Ancien mot de passe incorrect'
+					value={oldPassword.value}
+					isValid={oldPassword.isValid}
+					isTouched={oldPassword.isTouched}
+					onChange={oldPasswordOnChangeHandler}
+					onBlur={oldPasswordOnBlurHandler}
+					password={true}
+				/>
+			)}
 			<Input
 				id='Nouveau Mot de Passe'
 				type='password'

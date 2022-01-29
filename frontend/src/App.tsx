@@ -18,6 +18,7 @@ import { UserActionTypes } from './shared/store/user';
 import { EmailConfirmationActionTypes } from './shared/store/email-confirmation';
 import { ErrorPopupActionTypes } from './shared/store/error';
 import ConfirmEmailAddress from './user/pages/ConfirmEmailAddress';
+import ForgotPasswordForm from './user/pages/ForgotPasswordForm';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
@@ -112,6 +113,10 @@ const App: React.FC = () => {
 						<Route
 							path='/profile/confirm/:email/:code'
 							element={<ConfirmEmailAddress />}
+						/>
+						<Route
+							path='/modify/password/:email'
+							element={<ForgotPasswordForm />}
 						/>
 						<Route path='*' element={<Error404 />} />
 					</Routes>

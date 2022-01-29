@@ -16,6 +16,7 @@ import { EmailConfirmationActionTypes } from '../../shared/store/email-confirmat
 const Header: React.FC = () => {
 	const [responseMessage, setResponseMessage] = useState('');
 	const [rememberEmail, setRememberEmail] = useState(false);
+	const [forgotPassword, setForgotPassword] = useState(false);
 
 	const { sendRequest } = useRequest();
 
@@ -139,6 +140,32 @@ const Header: React.FC = () => {
 		setRememberEmail((prev) => !prev);
 	};
 
+	const forgotPasswordHandler = async (event: FormEvent) => {
+		event.preventDefault();
+		setForgotPassword((prev) => !prev);
+	};
+
+	const sendEmailForgotPassword = async (event: FormEvent) => {
+		event.preventDefault();
+		const responseData = await sendRequest(
+			`http://localhost:8080/api/user/email/forgot-password/${emailInput.value}`,
+			'GET'
+		);
+
+		if (!responseData) {
+			return;
+		}
+
+		if (responseData.error) {
+			setResponseMessage(responseData.error);
+			return;
+		}
+
+		setResponseMessage(responseData.success);
+
+		setForgotPassword(false);
+	};
+
 	useEffect(() => {
 		const emailStorage = localStorage.getItem('rememberEmail');
 
@@ -173,7 +200,7 @@ const Header: React.FC = () => {
 		<div className={classes.wrapper}>
 			<Link to='/users' />
 			<div className={classes.nav}>
-				{userState.token === null && (
+				{userState.token === null && !forgotPassword && (
 					<button onClick={switchModeHandler}>
 						Basculer sur {loginMode ? "s'inscrire" : 'se connecter'}
 					</button>
@@ -208,19 +235,21 @@ const Header: React.FC = () => {
 						onChange={emailOnChangeHandler}
 						onBlur={emailOnBlurHandler}
 					/>
-					<Input
-						id='mot de passe'
-						type='password'
-						placeholder='********'
-						value={passwordInput.value}
-						isValid={passwordInput.isValid}
-						isTouched={passwordInput.isTouched}
-						errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
-						onChange={passwordOnChangeHandler}
-						onBlur={passwordOnBlurHandler}
-						password={true}
-					/>
-					{loginMode && (
+					{!forgotPassword && (
+						<Input
+							id='mot de passe'
+							type='password'
+							placeholder='********'
+							value={passwordInput.value}
+							isValid={passwordInput.isValid}
+							isTouched={passwordInput.isTouched}
+							errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
+							onChange={passwordOnChangeHandler}
+							onBlur={passwordOnBlurHandler}
+							password={true}
+						/>
+					)}
+					{loginMode && !forgotPassword && (
 						<div className={classes.remember_me}>
 							<label htmlFor='remember_me'>Se souvenir de moi</label>
 							<input
@@ -232,9 +261,22 @@ const Header: React.FC = () => {
 							/>
 						</div>
 					)}
-					<button disabled={!formIsValid}>
-						{loginMode ? 'Connexion' : 'Inscription'}
+					{forgotPassword && (
+						<>
+							<p>Envoyer un email pour changer mon mot de passe.</p>
+							<button onClick={sendEmailForgotPassword}>
+								Envoyer un email.
+							</button>
+						</>
+					)}
+					<button onClick={forgotPasswordHandler}>
+						{forgotPassword ? 'Revenir' : 'Mot de passe oublié?'}
 					</button>
+					{!forgotPassword && (
+						<button disabled={!formIsValid}>
+							{loginMode ? 'Connexion' : 'Inscription'}
+						</button>
+					)}
 					<h1>michel@test.com</h1>
 					<h1>Tester1@</h1>
 					<h1>{responseMessage}</h1>
