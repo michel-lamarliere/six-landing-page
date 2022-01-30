@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 const database = require('./util/db-connect');
 
 const userRoutes = require('./routes/user-routes');
+const userModifyRoutes = require('./routes/user_modify-routes');
 const logRoutes = require('./routes/log-routes');
 
 const app = express();
@@ -21,6 +22,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/user', userRoutes);
+app.use('/api/user_modify', userModifyRoutes);
 app.use('/api/log', logRoutes);
 
 app.listen(8080, () => {
@@ -38,6 +40,6 @@ app.use(
 		res: express.Response,
 		next: express.NextFunction
 	) => {
-		res.json({ message: error.message });
+		res.status(400).json({ message: error.message });
 	}
 );

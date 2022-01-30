@@ -149,7 +149,7 @@ const Header: React.FC = () => {
 	const sendEmailForgotPassword = async (event: FormEvent) => {
 		event.preventDefault();
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/user/email/forgot-password/${emailInput.value}`,
+			`http://localhost:8080/api/user_modify/email/forgot-password/${emailInput.value}`,
 			'GET'
 		);
 

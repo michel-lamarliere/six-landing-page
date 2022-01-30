@@ -17,8 +17,6 @@ export const emailConfirmationEmail = async (email: string, code: string) => {
 				code
 			)}"> Cliquez ici pour confirmer votre adresse mail.</a></div>`,
 		});
-		console.log(encodeURI(email));
-		console.log(encodeURI(code));
 		console.log('Message sent: %s', info.messageId);
 	} catch (error) {
 		console.log(error);

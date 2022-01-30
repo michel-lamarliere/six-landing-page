@@ -44,14 +44,14 @@ const signUp: RequestHandler = async (req, res, next) => {
 	}
 
 	if (!inputsAreValid.all) {
-		res.json({ error: 'Erreur lors de la création de compte.' });
+		res.status(400).json({ error: 'Erreur lors de la création de compte.' });
 		return;
 	}
 
 	let existingUser = await databaseConnect.findOne({ email: reqEmail });
 
 	if (existingUser) {
-		res.json({
+		res.status(400).json({
 			error: 'Adresse email déjà utilisée, veuillez en choisir une autre ou vous connecter.',
 		});
 		return;
@@ -81,7 +81,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 	let findingNewUser = await databaseConnect.findOne({ email: reqEmail });
 
 	if (!findingNewUser) {
-		res.json({ error: 'Erreur, veuillez réessayer plus tard.' });
+		res.status(404).json({ error: 'Erreur, veuillez réessayer plus tard.' });
 		return;
 	}
 
@@ -95,7 +95,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 	// EMAIL
 	emailConfirmationEmail(reqEmail, hashedConfirmationCode);
 
-	res.json({
+	res.status(201).json({
 		success: 'Compte créé !',
 		token: token,
 		id: findingNewUser._id,
@@ -115,7 +115,7 @@ const signIn: RequestHandler = async (req, res, next) => {
 	const result = await databaseConnect.findOne({ email: reqEmail });
 
 	if (!result) {
-		res.json({
+		res.status(404).json({
 			error: 'Adresse email non trouvée, veuillez créer un compte.',
 		});
 		return;
@@ -128,7 +128,7 @@ const signIn: RequestHandler = async (req, res, next) => {
 	console.log({ matchingPasswords });
 
 	if (!matchingPasswords) {
-		res.json({ error: 'Mot de passe incorrect.' });
+		res.status(400).json({ error: 'Mot de passe incorrect.' });
 		return;
 	}
 
@@ -138,7 +138,7 @@ const signIn: RequestHandler = async (req, res, next) => {
 		{ expiresIn: '1h' }
 	);
 
-	res.json({
+	res.status(200).json({
 		token,
 		id: result._id,
 		name: result.name,
@@ -162,7 +162,7 @@ const confirmEmailAddress: RequestHandler = async (req, res, next) => {
 	});
 
 	if (!user) {
-		res.json({ error: 'Code invalide' });
+		res.status(400).json({ error: 'Code invalide' });
 		return;
 	}
 
@@ -175,123 +175,7 @@ const confirmEmailAddress: RequestHandler = async (req, res, next) => {
 		}
 	);
 
-	res.json({ success: 'Compte confirmé.' });
-};
-
-const changeName: RequestHandler = async (req, res, next) => {
-	const { id: reqIdStr, newName: reqNewName } = req.body;
-	const reqId = new ObjectId(reqIdStr);
-
-	let validateNewName = false;
-
-	if (
-		reqNewName.trim().length >= 2 &&
-		reqNewName.trim().match(/^[-'a-zA-ZÀ-ÖØ-öø-ÿ]+$/)
-	) {
-		validateNewName = true;
-	}
-
-	if (!validateNewName) {
-		res.json({ error: 'Nouveau Nom Invalide !' });
-		return;
-	}
-
-	const databaseConnect = await database.getDb('six-dev').collection('test');
-
-	const user = await databaseConnect.findOne({ _id: reqId });
-
-	if (!user) {
-		res.json({ fatal: true });
-		return;
-	}
-
-	await databaseConnect.updateOne(
-		{ _id: reqId },
-		{
-			$set: {
-				name: reqNewName,
-			},
-		}
-	);
-
-	res.json({ success: 'Nom modifié !', name: reqNewName });
-};
-
-const comparePasswords: RequestHandler = async (req, res, next) => {
-	console.log('---COMPARE_PASSWORDS');
-	const reqId = new ObjectId(req.params.id);
-	const reqPassword = req.params.password;
-
-	console.log({ reqPassword });
-
-	const databaseConnect = await database.getDb('six-dev').collection('test');
-
-	const user = await databaseConnect.findOne({ _id: reqId });
-
-	if (!user) {
-		res.json({ fatal: true });
-		return;
-	}
-
-	console.log(reqPassword);
-	console.log(user.password);
-
-	const matchingPasswordsjs = await bcryptjs.compare(reqPassword, user.password);
-	console.log({ matchingPasswordsjs });
-
-	const matchingPasswords = await bcrypt.compare(reqPassword, user.password);
-	console.log({ matchingPasswords });
-
-	if (!matchingPasswords) {
-		res.json({ error: 'Mots de passe non identiques' });
-		return;
-	}
-
-	res.json({ success: 'Mots de passe identiques' });
-
-	console.log('COMPARE_PASSWORDS---');
-};
-
-const changePassword: RequestHandler = async (req, res, next) => {
-	console.log('---CHANGE_PASSWORDS');
-	const { id: reqIdStr, newPassword: reqNewPassword } = req.body;
-	console.log({ reqIdStr, reqNewPassword });
-
-	const reqId = new ObjectId(reqIdStr);
-
-	const databaseConnect = await database.getDb('six-dev').collection('test');
-
-	const user = await databaseConnect.findOne({ _id: reqId });
-
-	if (!user) {
-		res.json({ fatal: true });
-		return;
-	}
-
-	const newPasswordIsValid = reqNewPassword.match(
-		/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
-	);
-
-	if (!newPasswordIsValid) {
-		res.json({ error: 'Nouveau Mot de Passe Invalide.' });
-		return;
-	}
-
-	const hashedNewPassword = await bcrypt.hash(reqNewPassword, 10);
-	console.log(hashedNewPassword);
-
-	await databaseConnect.updateOne(
-		{ _id: reqId },
-		{
-			$set: {
-				password: hashedNewPassword,
-			},
-		}
-	);
-
-	res.json({ success: 'Mot de passe modifié.' });
-
-	console.log('CHANGE_PASSWORDS---');
+	res.status(200).json({ success: 'Compte confirmé.' });
 };
 
 const refreshData: RequestHandler = async (req, res, next) => {
@@ -303,11 +187,11 @@ const refreshData: RequestHandler = async (req, res, next) => {
 	const user = await databaseConnect.findOne({ _id: id });
 
 	if (!user) {
-		res.json({ fatal: true });
+		res.status(404).json({ fatal: true });
 		return;
 	}
 
-	res.json({ success: 'Données rafraichies', user });
+	res.status(200).json({ success: 'Données rafraichies', user });
 };
 
 const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
@@ -319,107 +203,33 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 	const user = await databaseConnect.findOne({ _id: id });
 
 	if (!user) {
-		res.json({ fatal: true });
+		res.status(404).json({ fatal: true });
 		return;
 	}
 
 	if (user.confirmation.confirmed) {
-		res.json({ error: 'Compte déjà confirmé, veuillez rafraichir vos données.' });
+		res.status(400).json({
+			error: 'Compte déjà confirmé, veuillez rafraichir vos données.',
+		});
 		return;
 	}
 
 	try {
 		await emailConfirmationEmail(user.email, user.confirmation.code);
 	} catch (error) {
-		res.json({ error: 'Une erreur est survenue.' });
+		res.status(500).json({ error: 'Une erreur est survenue.' });
 		console.log('error');
 		return;
 	}
 
-	res.json({
+	res.status(200).json({
 		success:
 			'Email envoyé ! Veuillez vérifier votre boîte de réception ou votre dossier spam.',
 	});
 };
 
-const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
-	const reqEmail = req.params.email;
-
-	console.log(reqEmail);
-
-	const databaseConnect = await database.getDb('six-dev').collection('test');
-
-	const user = await databaseConnect.findOne({ email: reqEmail });
-
-	if (!user) {
-		res.json({ error: 'Cette adresse mail introuvable, veuillez créer un compte.' });
-		return;
-	}
-
-	if (!user.confirmation.confirmed) {
-		res.json({
-			error: "Cette adresse mail n'est pas confirmée. Envoi de mail impossible.",
-		});
-		return;
-	}
-
-	const generatedForgotPasswordCode = crypto.randomBytes(20).toString('hex');
-
-	console.log(generatedForgotPasswordCode);
-
-	await databaseConnect.updateOne(
-		{ email: reqEmail },
-		{ $set: { forgotPasswordCode: generatedForgotPasswordCode } }
-	);
-
-	const transporter = createNodemailerTransporter();
-
-	try {
-		const info = await transporter.sendMail({
-			from: '"Six App" <contact@michel-lamarliere.com>',
-			to: 'lamarliere.michel@icloud.com',
-			subject: 'Modification de votre mot de passe',
-			text: 'Pour modifier votre mot de passe, cliquez sur ce lien.',
-			html: `<div><b>Mot de passe oublié?</b><a href="http://localhost:3000/modify/password/${encodeURI(
-				reqEmail
-			)}/${encodeURI(generatedForgotPasswordCode)}">Cliquez ici !</a></div>`,
-		});
-		console.log(encodeURI(reqEmail));
-		console.log(encodeURI(generatedForgotPasswordCode));
-		console.log('Message sent: %s', info.messageId);
-	} catch (error) {
-		console.log(error);
-	}
-
-	res.json({ success: 'Email envoyé, veuillez consulter votre boite de réception.' });
-};
-
-const checkForgotPasswordAuth: RequestHandler = async (req, res, next) => {
-	const reqEmail = req.params.email;
-	const reqUniqueId = req.params.uniqueId;
-
-	const databaseConnect = await database.getDb('six-dev').collection('test');
-
-	const user = await databaseConnect.findOne({
-		email: reqEmail,
-		forgotPasswordCode: reqUniqueId,
-	});
-
-	if (!user) {
-		res.json({ error: 'Non autorisé' });
-		return;
-	}
-
-	res.json({ success: 'Autorisé !', id: user._id });
-};
-
 exports.signUp = signUp;
 exports.signIn = signIn;
 exports.confirmEmailAddress = confirmEmailAddress;
-exports.changeName = changeName;
-exports.comparePasswords = comparePasswords;
-exports.changePassword = changePassword;
 exports.refreshData = refreshData;
 exports.resendEmailConfirmation = resendEmailConfirmation;
-exports.sendEmailForgotPassword = sendEmailForgotPassword;
-exports.checkForgotPasswordAuth = checkForgotPasswordAuth;

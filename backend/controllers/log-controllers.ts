@@ -36,7 +36,7 @@ const addData: RequestHandler = async (req, res, next) => {
 	);
 
 	if (isAfter(dateFormat, new Date())) {
-		res.json({
+		res.status(400).json({
 			error: "Impossible d'enregistrer des données dont la date est dans le futur",
 		});
 
@@ -66,7 +66,7 @@ const addData: RequestHandler = async (req, res, next) => {
 	}
 
 	if (!inputsAreValid.all) {
-		res.json({ error: "Erreur lors de l'enregistrement de données" });
+		res.status(400).json({ error: "Erreur lors de l'enregistrement de données" });
 		return;
 	}
 
@@ -82,7 +82,7 @@ const addData: RequestHandler = async (req, res, next) => {
 	const result = await databaseConnect.findOne(filter);
 
 	if (!result) {
-		res.json({ fatal: true });
+		res.status(404).json({ fatal: true });
 		return;
 	}
 
@@ -158,7 +158,7 @@ const addData: RequestHandler = async (req, res, next) => {
 	}
 
 	console.log('added data');
-	res.json(result);
+	res.status(201).json(result);
 };
 
 const getDaily: RequestHandler = async (req, res, next) => {
@@ -170,7 +170,7 @@ const getDaily: RequestHandler = async (req, res, next) => {
 	const user = await databaseConnect.findOne({ _id: reqId });
 
 	if (!user) {
-		res.json({ fatal: true });
+		res.status(404).json({ fatal: true });
 		return;
 	}
 
@@ -180,7 +180,7 @@ const getDaily: RequestHandler = async (req, res, next) => {
 	});
 
 	if (!result) {
-		res.json({ message: "Date non trouvée, création de l'object." });
+		res.status(202).json({ message: "Date non trouvée, création de l'object." });
 		return;
 	}
 
@@ -188,7 +188,7 @@ const getDaily: RequestHandler = async (req, res, next) => {
 		if (result.log[i].date === reqDate) {
 			let foundDailyLog = result.log[i];
 			console.log('get daily');
-			res.json(foundDailyLog);
+			res.status(200).json(foundDailyLog);
 		}
 	}
 };
@@ -202,7 +202,7 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 	const user = await databaseConnect.findOne({ _id: reqId });
 
 	if (!user) {
-		res.json({ fatal: true });
+		res.status(404).json({ fatal: true });
 		return;
 	}
 
@@ -238,7 +238,7 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 	}
 
 	console.log('get weekly');
-	res.json(resultsArray);
+	res.status(200).json(resultsArray);
 };
 
 const getMonthly: RequestHandler = async (req, res, next) => {
@@ -252,7 +252,7 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 	const user = await databaseConnect.findOne({ _id: reqId });
 
 	if (!user) {
-		res.json({ fatal: true });
+		res.status(404).json({ fatal: true });
 		return;
 	}
 
@@ -289,7 +289,7 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 		}
 	}
 	console.log('get monthly');
-	res.json({ datesArray, responseArray });
+	res.status(200).json({ datesArray, responseArray });
 };
 
 exports.addData = addData;

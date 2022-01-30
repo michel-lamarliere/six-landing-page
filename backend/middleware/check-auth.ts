@@ -11,7 +11,7 @@ const checkAuth: RequestHandler = (
 		return next();
 	}
 	if (!req.headers.authorization) {
-		res.json({ error: 'Pas de req.header.authorization' });
+		res.status(403).json({ error: 'Pas de req.header.authorization' });
 		return;
 	}
 
@@ -20,7 +20,9 @@ const checkAuth: RequestHandler = (
 
 		if (!token) {
 			console.log("Vous n'êtes pas autorisé à effectuer cette action.");
-			res.json({ error: "Vous n'êtes pas autorisé à effectuer cette action." });
+			res.status(403).json({
+				error: "Vous n'êtes pas autorisé à effectuer cette action.",
+			});
 			return;
 		}
 
@@ -29,7 +31,7 @@ const checkAuth: RequestHandler = (
 		next();
 	} catch (error) {
 		console.log("Erreur lors de la vérification d'autorisation.");
-		res.json({ error: "Erreur lors de la vérification d'autorisation." });
+		res.status(500).json({ error: "Erreur lors de la vérification d'autorisation." });
 		return;
 	}
 };
