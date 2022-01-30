@@ -323,6 +323,11 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
+	if (user.confirmation.confirmed) {
+		res.json({ error: 'Compte déjà confirmé, veuillez rafraichir vos données.' });
+		return;
+	}
+
 	try {
 		await emailConfirmationEmail(user.email, user.confirmation.code);
 	} catch (error) {
@@ -375,8 +380,12 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 			to: 'lamarliere.michel@icloud.com',
 			subject: 'Modification de votre mot de passe',
 			text: 'Pour modifier votre mot de passe, cliquez sur ce lien.',
-			html: `<div><b>Mot de passe oublié?</b><a href="http://localhost:3000/modify/password/${reqEmail}/${generatedForgotPasswordCode}">Cliquez ici !</a></div>`,
+			html: `<div><b>Mot de passe oublié?</b><a href="http://localhost:3000/modify/password/${encodeURI(
+				reqEmail
+			)}/${encodeURI(generatedForgotPasswordCode)}">Cliquez ici !</a></div>`,
 		});
+		console.log(encodeURI(reqEmail));
+		console.log(encodeURI(generatedForgotPasswordCode));
 		console.log('Message sent: %s', info.messageId);
 	} catch (error) {
 		console.log(error);
