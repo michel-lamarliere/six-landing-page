@@ -1,7 +1,8 @@
-import express, { RequestHandler } from 'express';
-const crypto = require('crypto');
+import { RequestHandler } from 'express';
 const { ObjectId } = require('mongodb');
+const crypto = require('crypto');
 const bcrypt = require('bcrypt');
+const { addSeconds, addMinutes, isBefore } = require('date-fns');
 
 const database = require('../util/db-connect');
 const { createNodemailerTransporter } = require('../util/nodemailer-transporter');
@@ -29,13 +30,31 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
+	if (
+		user.forgotPassword.nextEmail &&
+		!isBefore(user.forgotPassword.nextEmail, new Date())
+	) {
+		res.status(403).json({
+			error: 'Veuillez attendre 5 minutes entre chaque envoi de mail.',
+		});
+		return;
+	}
+
 	const generatedForgotPasswordCode = crypto.randomBytes(20).toString('hex');
 
-	console.log(generatedForgotPasswordCode);
+	// const nextEmail = addMinutes(new Date(), 5);
+	const nextEmail = addSeconds(new Date(), 10);
 
 	await databaseConnect.updateOne(
 		{ email: reqEmail },
-		{ $set: { forgotPasswordCode: generatedForgotPasswordCode } }
+		{
+			$set: {
+				forgotPassword: {
+					code: generatedForgotPasswordCode,
+					nextEmail: nextEmail,
+				},
+			},
+		}
 	);
 
 	const transporter = createNodemailerTransporter();

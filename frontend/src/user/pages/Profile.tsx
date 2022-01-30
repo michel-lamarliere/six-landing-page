@@ -43,6 +43,10 @@ const Profile: React.FC = () => {
 			JSON.stringify({ id: userState.id })
 		);
 
+		if (!responseData) {
+			return;
+		}
+
 		if (responseData.error) {
 			setResponse(responseData.error);
 		} else if (responseData.success) {

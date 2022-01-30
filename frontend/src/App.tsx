@@ -6,12 +6,12 @@ import { isBefore } from 'date-fns';
 import { RootState } from './shared/store/store';
 
 import LoginSignupForms from './user/pages/LoginSignupForms';
-import Sidebar from './shared/components/layout/Sidebar';
+import Sidebar from './layout/pages/Sidebar';
 import DailyView from './log/pages/DailyView';
 import WeeklyView from './log/pages/WeeklyView';
 import MonthlyView from './log/pages/MonthlyView';
 import Profile from './user/pages/Profile';
-import Error404 from './shared/error404/pages/Error404';
+import Error404 from './error404/pages/Error404';
 import ErrorPopup from './shared/components/UIElements/ErrorPopup';
 import EmailPopup from './shared/components/UIElements/EmailPopup';
 import { UserActionTypes } from './shared/store/user';

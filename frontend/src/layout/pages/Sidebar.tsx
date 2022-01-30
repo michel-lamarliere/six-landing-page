@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../store/store';
+import { RootState } from '../../shared/store/store';
 
-import SidebarTitle from './SidebarTitle';
+import SidebarTitle from '../components/SidebarTitle';
 
 import classes from './Sidebar.module.scss';
-import { UserActionTypes } from '../../store/user';
-import { useRequest } from '../../hooks/http-hook';
-import { ErrorPopupActionTypes } from '../../store/error';
-import { EmailConfirmationActionTypes } from '../../store/email-confirmation';
+import { UserActionTypes } from '../../shared/store/user';
+import { useRequest } from '../../shared/hooks/http-hook';
+import { ErrorPopupActionTypes } from '../../shared/store/error';
+import { EmailConfirmationActionTypes } from '../../shared/store/email-confirmation';
 
 const Sidebar: React.FC = () => {
 	const { sendRequest } = useRequest();

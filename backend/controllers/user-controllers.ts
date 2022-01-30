@@ -1,13 +1,11 @@
 import { RequestHandler } from 'express';
-const jwt = require('jsonwebtoken');
-const bcryptjs = require('bcryptjs');
-const bcrypt = require('bcrypt');
 const { ObjectId } = require('mongodb');
-const database = require('../util/db-connect');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const { v5: uuidv5 } = require('uuid');
-var crypto = require('crypto');
+const { addSeconds, addMinutes, isBefore } = require('date-fns');
 
-const { createNodemailerTransporter } = require('../util/nodemailer-transporter');
+const database = require('../util/db-connect');
 const { emailConfirmationEmail } = require('../util/email-confirmation');
 
 const signUp: RequestHandler = async (req, res, next) => {
@@ -66,10 +64,14 @@ const signUp: RequestHandler = async (req, res, next) => {
 		name: reqName,
 		email: reqEmail,
 		password: hashedPassword,
-		forgotPasswordCode: null,
+		forgotPassword: {
+			code: null,
+			nextEmail: null,
+		},
 		confirmation: {
 			confirmed: false,
 			code: hashedConfirmationCode,
+			nextEmail: null,
 		},
 		log: [],
 	};
@@ -178,22 +180,6 @@ const confirmEmailAddress: RequestHandler = async (req, res, next) => {
 	res.status(200).json({ success: 'Compte confirmé.' });
 };
 
-const refreshData: RequestHandler = async (req, res, next) => {
-	const id = new ObjectId(req.params.userId);
-	console.log(id);
-
-	const databaseConnect = await database.getDb('six-dev').collection('test');
-
-	const user = await databaseConnect.findOne({ _id: id });
-
-	if (!user) {
-		res.status(404).json({ fatal: true });
-		return;
-	}
-
-	res.status(200).json({ success: 'Données rafraichies', user });
-};
-
 const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 	const id = new ObjectId(req.body.id);
 	console.log(id);
@@ -214,6 +200,22 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
+	if (user.confirmation.nextEmail) {
+		const fiveMinutesBetweenSends = !isBefore(
+			user.confirmation.nextEmail,
+			new Date()
+		);
+
+		console.log(user.confirmation.nextEmail);
+
+		if (fiveMinutesBetweenSends) {
+			res.status(403).json({
+				error: "Veuillez attendre 5 minutes entre chaque demande d'envoi de mail de confirmation.",
+			});
+			return;
+		}
+	}
+
 	try {
 		await emailConfirmationEmail(user.email, user.confirmation.code);
 	} catch (error) {
@@ -222,10 +224,37 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
+	const nextEmail = addMinutes(new Date(), 5);
+
+	await databaseConnect.updateOne(
+		{ _id: id },
+		{
+			$set: {
+				'confirmation.nextEmail': nextEmail,
+			},
+		}
+	);
+
 	res.status(200).json({
 		success:
 			'Email envoyé ! Veuillez vérifier votre boîte de réception ou votre dossier spam.',
 	});
+};
+
+const refreshData: RequestHandler = async (req, res, next) => {
+	const id = new ObjectId(req.params.userId);
+	console.log(id);
+
+	const databaseConnect = await database.getDb('six-dev').collection('test');
+
+	const user = await databaseConnect.findOne({ _id: id });
+
+	if (!user) {
+		res.status(404).json({ fatal: true });
+		return;
+	}
+
+	res.status(200).json({ success: 'Données rafraichies', user });
 };
 
 exports.signUp = signUp;
