@@ -5,7 +5,7 @@ import { useRequest } from '../../hooks/http-hook';
 import { EmailConfirmationActionTypes } from '../../store/email-confirmation';
 import { RootState } from '../../store/store';
 
-import classes from './EmailPopup.module.scss';
+import classes from './EmailConfirmationPopup.module.scss';
 
 const EmailPopup: React.FC = () => {
 	const dispatch = useDispatch();

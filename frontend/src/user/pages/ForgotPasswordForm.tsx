@@ -24,8 +24,16 @@ const ForgotPasswordForm: React.FC = () => {
 
 	const [id, setId] = useState('');
 
+	const userData =
+		userState.token &&
+		userState.expiration &&
+		userState.id &&
+		userState.name &&
+		userState.email &&
+		userState.confirmedEmail;
+
 	const checkEmail = async () => {
-		if (userState.token) {
+		if (userData) {
 			navigate('/');
 			dispatch({
 				type: ErrorPopupActionTypes.SET_ERROR,
@@ -39,7 +47,7 @@ const ForgotPasswordForm: React.FC = () => {
 			'GET'
 		);
 
-		console.log(userState.token);
+		console.log(userData);
 
 		if (responseData.error) {
 			navigate('/');

@@ -197,17 +197,25 @@ const Header: React.FC = () => {
 		}
 	}, [nameInput, emailInput, passwordInput]);
 
+	const userData =
+		userState.token &&
+		userState.expiration &&
+		userState.id &&
+		userState.name &&
+		userState.email &&
+		userState.confirmedEmail;
+
 	return (
 		<div className={classes.wrapper}>
 			<Link to='/users' />
 			<div className={classes.nav}>
-				{userState.token === null && !forgotPassword && (
+				{!userData && !forgotPassword && (
 					<button onClick={switchModeHandler}>
 						Basculer sur {loginMode ? "s'inscrire" : 'se connecter'}
 					</button>
 				)}
 			</div>
-			{userState.token === null && (
+			{!userData && (
 				<form
 					onSubmit={loginMode ? loginFormHandler : signupFormHandler}
 					className={classes.form}

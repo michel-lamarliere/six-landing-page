@@ -4,6 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isBefore } from 'date-fns';
 
 import { RootState } from './shared/store/store';
+import { UserActionTypes } from './shared/store/user';
+import { EmailConfirmationActionTypes } from './shared/store/email-confirmation';
+import { ErrorPopupActionTypes } from './shared/store/error';
+
+import { useRequest } from './shared/hooks/http-hook';
 
 import LoginSignupForms from './user/pages/LoginSignupForms';
 import Sidebar from './layout/pages/Sidebar';
@@ -13,16 +18,14 @@ import MonthlyView from './log/pages/MonthlyView';
 import Profile from './user/pages/Profile';
 import Error404 from './error404/pages/Error404';
 import ErrorPopup from './shared/components/UIElements/ErrorPopup';
-import EmailPopup from './shared/components/UIElements/EmailPopup';
-import { UserActionTypes } from './shared/store/user';
-import { EmailConfirmationActionTypes } from './shared/store/email-confirmation';
-import { ErrorPopupActionTypes } from './shared/store/error';
-import ConfirmEmailAddress from './user/pages/ConfirmEmailAddress';
+import EmailPopup from './shared/components/UIElements/EmailConfirmationPopup';
+import ConfirmEmailAddress from './user/pages/ConfirmedEmailAddress';
 import ForgotPasswordForm from './user/pages/ForgotPasswordForm';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
 	const errorState = useSelector((state: RootState) => state.error);
@@ -90,18 +93,24 @@ const App: React.FC = () => {
 		}, remainingTime);
 	}, [userState.expiration]);
 
-	const main_loggedIn = userState.token ? 'main_logged-in' : 'main_right';
+	const userData =
+		userState.token &&
+		userState.expiration &&
+		userState.id &&
+		userState.name &&
+		userState.email &&
+		userState.confirmedEmail;
+
+	const main_loggedIn = userData ? 'main_logged-in' : 'main_right';
 
 	return (
 		<>
-			{userState.token && <Sidebar />}
+			{userData && <Sidebar />}
 			<div className='main'>
 				<div className={main_loggedIn}>
 					<Routes>
-						{!userState.token && (
-							<Route path='/' element={<LoginSignupForms />} />
-						)}
-						{userState.token && (
+						{!userData && <Route path='/' element={<LoginSignupForms />} />}
+						{userData && (
 							<>
 								<Route path='/' element={<DailyView />} />
 								<Route path='/log/daily' element={<DailyView />} />

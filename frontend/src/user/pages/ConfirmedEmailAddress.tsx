@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import classes from './ConfirmEmailAddress.module.scss';
+import classes from './ConfirmedEmailAddress.module.scss';
 import { useRequest } from '../../shared/hooks/http-hook';
 
 const ConfirmEmailAddress: React.FC = () => {
