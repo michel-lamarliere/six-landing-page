@@ -3,7 +3,7 @@ import classes from './Buttons.module.scss';
 
 export const DataButton: React.FC<{
 	value: number;
-	id: string;
+	id?: string;
 	onClick: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 	disabled: boolean;
 }> = (props) => {

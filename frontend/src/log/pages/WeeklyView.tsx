@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { addDays, getISOWeek, startOfWeek, format, getYear, isAfter } from 'date-fns';
+import {
+	addDays,
+	getISOWeek,
+	startOfWeek,
+	format,
+	getYear,
+	isAfter,
+	isSameDay,
+} from 'date-fns';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../shared/store/store';
 
@@ -8,13 +16,14 @@ import classes from './WeeklyView.module.scss';
 import { useRequest } from '../../shared/hooks/http-hook';
 import WeekViewTasks from '../components/WeeklyViewTasks';
 import { ErrorPopupActionTypes } from '../../shared/store/error';
+import LogHeader from '../components/LogHeader';
 
 const WeekView: React.FC = () => {
 	const { sendRequest, sendData } = useRequest();
 	const dispatch = useDispatch();
 
 	const userState = useSelector((state: RootState) => state.user);
-	const [weekData, setWeekData] = useState<{ date: string; six: {} }[]>([]);
+	const [weekData, setWeekData] = useState<{ date: Date; six: {} }[]>([]);
 	const [mappingArray, setMappingArray] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -48,7 +57,7 @@ const WeekView: React.FC = () => {
 		getMappingArray(responseData, firstOfWeek);
 	};
 
-	const setEmptyArray = (logDate: string) => {
+	const setEmptyArray = (logDate: Date) => {
 		let emptySix = {
 			date: logDate,
 			six: {
@@ -64,10 +73,7 @@ const WeekView: React.FC = () => {
 		return emptySix;
 	};
 
-	const getMappingArray = (
-		weekData: { date: string; six: {} }[],
-		firstOfWeek: Date
-	) => {
+	const getMappingArray = (weekData: { date: Date; six: {} }[], firstOfWeek: Date) => {
 		let array = [];
 		let i = 0;
 		let y = 0;
@@ -75,13 +81,13 @@ const WeekView: React.FC = () => {
 		do {
 			if (
 				weekData[i] &&
-				weekData[i].date === format(addDays(firstOfWeek, y), 'yyyy-MM-dd')
+				isSameDay(new Date(weekData[i].date), addDays(firstOfWeek, y))
 			) {
 				array.push(weekData[i]);
 				i++;
 				y++;
 			} else {
-				array.push(setEmptyArray(format(addDays(firstOfWeek, y), 'yyyy-MM-dd')));
+				array.push(setEmptyArray(addDays(firstOfWeek, y)));
 				y++;
 			}
 		} while (array.length < 7);
@@ -178,19 +184,16 @@ const WeekView: React.FC = () => {
 
 	return (
 		<div className={classes.wrapper}>
-			<h1>Journal | Vue Semaine</h1>
-			<div className={classes.buttons}>
-				<button onClick={previousWeekHandler}>Semaine précédente</button>
-				<div>
-					Semaine: {getISOWeek(chosenDate)} | {month} {getYear(chosenDate)}
-				</div>
-				<button
-					onClick={nextWeekHandler}
-					disabled={isAfter(addDays(chosenDate, 7), new Date())}
-				>
-					Semaine suivante
-				</button>
-			</div>
+			<LogHeader
+				button_previous_text='Semaine précédente'
+				button_previous_handler={previousWeekHandler}
+				button_next_text='Semaine suivante'
+				button_next_handler={nextWeekHandler}
+				button_next_disabled={isAfter(addDays(chosenDate, 7), new Date())}
+				text={`Semaine: ${getISOWeek(chosenDate)} | ${month} ${getYear(
+					chosenDate
+				)}`}
+			/>
 			<div>
 				<div className={classes.days}>
 					<li>Lundi {addDays(firstOfWeek, 0).getDate()}</li>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useRequest } from '../../shared/hooks/http-hook';
@@ -72,6 +73,7 @@ const Profile: React.FC = () => {
 					</>
 				)}
 			</div>
+			<Link to='/recap'>Recapitulatif</Link>
 			<button className={classes.button} onClick={showChangeNameHandler}>
 				Modifier Mon Nom
 			</button>

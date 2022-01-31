@@ -13,11 +13,9 @@ import {
 import { useRequest } from '../../shared/hooks/http-hook';
 import { RootState } from '../../shared/store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-	DataButton,
-	PlaceHolderDataButton,
-} from '../../shared/components/UIElements/Buttons';
+import { DataButton, PlaceHolderDataButton } from '../components/Buttons';
 import { ErrorPopupActionTypes } from '../../shared/store/error';
+import LogHeader from '../components/LogHeader';
 
 const MonthlyView: React.FC = () => {
 	const dispatch = useDispatch();
@@ -199,34 +197,29 @@ const MonthlyView: React.FC = () => {
 
 	return (
 		<div className={classes.wrapper}>
-			<h1>Journal | Vue Mois</h1>
-			<div className={classes.month}>
-				<button onClick={previousMonthHandler}>Mois précédent</button>
-				<div>
-					{monthStr} {getYear(chosenDate)}
-				</div>
-				<button
-					onClick={nextMonthHandler}
-					disabled={isAfter(addMonths(chosenDate, 1), new Date())}
-				>
-					Mois suivant
-				</button>
-			</div>
-			<div>
-				<select
-					ref={selectSixRef}
-					name='six'
-					onChange={selectHandler}
-					defaultValue='food'
-				>
-					<option value='food'>Alimentation</option>
-					<option value='sleep'>Sommeil</option>
-					<option value='sport'>Activité Physique</option>
-					<option value='relaxation'>Détente</option>
-					<option value='work'>Projets</option>
-					<option value='social'>Vie Sociale</option>
-				</select>
-			</div>
+			<LogHeader
+				button_previous_text='Mois précédent'
+				button_previous_handler={previousMonthHandler}
+				button_next_text='Mois suivant'
+				button_next_handler={nextMonthHandler}
+				button_next_disabled={isAfter(addMonths(chosenDate, 1), new Date())}
+				text={`${monthStr} ${getYear(chosenDate)}`}
+				selector_task={
+					<select
+						ref={selectSixRef}
+						name='six'
+						onChange={selectHandler}
+						defaultValue='food'
+					>
+						<option value='food'>Alimentation</option>
+						<option value='sleep'>Sommeil</option>
+						<option value='sport'>Activité Physique</option>
+						<option value='relaxation'>Détente</option>
+						<option value='work'>Projets</option>
+						<option value='social'>Vie Sociale</option>
+					</select>
+				}
+			/>
 			<div className={classes.days}>
 				<li>Lundi</li>
 				<li>Mardi</li>

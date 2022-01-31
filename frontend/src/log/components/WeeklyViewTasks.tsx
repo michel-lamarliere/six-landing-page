@@ -1,15 +1,15 @@
 import React from 'react';
 import classes from './WeeklyViewTasks.module.scss';
 
-import { isAfter } from 'date-fns';
+import { format, isAfter } from 'date-fns';
 
-import { DataButton } from '../../shared/components/UIElements/Buttons';
+import { DataButton } from './Buttons';
 
 interface Props {
 	className?: (event: React.MouseEvent<HTMLButtonElement>) => string;
 	isLoading: boolean;
 	array: {
-		date: string;
+		date: Date;
 		six: any;
 	}[];
 	onClick: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
@@ -18,26 +18,19 @@ interface Props {
 const WeekViewButtons: React.FC<Props> = (props) => {
 	return (
 		<div className={classes.wrapper}>
-			{props.array.map((item: { date: string; six: number }, index: number) => (
-				<React.Fragment key={item.date}>
+			{props.array.map((item: { date: Date; six: number }) => (
+				<React.Fragment key={format(new Date(item.date), 'yyyy-MM-dd')}>
 					{Object.entries(item.six).map((item2) => (
 						<DataButton
-							id={`${item.date}_${item2[0]}`}
+							id={`${format(new Date(item.date), 'yyyy-MM-dd')}_${
+								item2[0]
+							}`}
 							onClick={props.onClick}
 							value={item2[1]}
-							key={`${item.date}_${item2[0]}`}
-							disabled={
-								!isAfter(
-									new Date(
-										+item.date.slice(0, 4),
-										+item.date.slice(5, 7) === 12
-											? 11
-											: +item.date.slice(5, 7) - 1,
-										+item.date.slice(8, 10)
-									),
-									new Date()
-								)
-							}
+							key={`${format(new Date(item.date), 'yyyy-MM-dd')}_${
+								item2[0]
+							}`}
+							disabled={!isAfter(item.date, new Date())}
 						/>
 					))}
 				</React.Fragment>

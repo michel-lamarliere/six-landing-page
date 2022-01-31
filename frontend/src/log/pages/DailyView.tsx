@@ -4,10 +4,11 @@ import { addDays, getDate, getDay, getYear, isAfter } from 'date-fns';
 import classes from './DailyView.module.scss';
 
 import { useRequest } from '../../shared/hooks/http-hook';
-import { DataButton } from '../../shared/components/UIElements/Buttons';
+import { DataButton } from '../components/Buttons';
 import { RootState } from '../../shared/store/store';
 import ErrorPopup from '../../shared/components/UIElements/ErrorPopup';
 import { ErrorPopupActionTypes } from '../../shared/store/error';
+import LogHeader from '../components/LogHeader';
 
 const DailyView: React.FC = () => {
 	const dispatch = useDispatch();
@@ -224,20 +225,15 @@ const DailyView: React.FC = () => {
 
 	return (
 		<div className={classes.wrapper}>
-			<h1>Journal | Vue Quotidienne</h1>
-			<div className={classes.buttons}>
-				<button onClick={previousDayHandler}>Jour précédent</button>
-				<div>
-					{fullDate.day} {getDate(chosenDate)} {fullDate.month}{' '}
-					{getYear(chosenDate)}
-				</div>
-				<button
-					onClick={nextDayHandler}
-					disabled={isAfter(addDays(chosenDate, 1), new Date())}
-				>
-					Jour suivant
-				</button>
-			</div>
+			<LogHeader
+				button_previous_text='Jour précédent'
+				button_previous_handler={previousDayHandler}
+				button_next_text='Jour suivant'
+				button_next_handler={nextDayHandler}
+				button_next_disabled={isAfter(addDays(chosenDate, 1), new Date())}
+				text={`${fullDate.day} ${getDate(chosenDate)} ${fullDate.month}
+					${getYear(chosenDate)}`}
+			/>
 			{!isLoading &&
 				dailyData &&
 				Object.entries(dailyData.six).map((item: any) => (

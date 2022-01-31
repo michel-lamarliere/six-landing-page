@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
-import classes from './SidebarTitle.module.scss';
+import classes from './SidebarGroup.module.scss';
 
-const SidebarTitle: React.FC<{
+const SidebarGroups: React.FC<{
 	title: string;
-	links: { text: string; url?: string; onClick?: any; key: string }[];
+	links: {
+		text: string;
+		url?: string;
+		onClick?: any;
+		key: string;
+		nav_link?: boolean;
+	}[];
 }> = (props) => {
 	const [showLinks, setShowLinks] = useState(true);
 
@@ -26,9 +32,23 @@ const SidebarTitle: React.FC<{
 					{props.links.map((link) => (
 						<React.Fragment key={link.key}>
 							{link.url && (
-								<Link className={classes.link} to={link.url}>
-									{link.text}
-								</Link>
+								<>
+									{link.nav_link ? (
+										<NavLink
+											className={classes.link}
+											style={({ isActive }) => ({
+												color: isActive ? 'grey' : 'black',
+											})}
+											to={link.url}
+										>
+											{link.text}
+										</NavLink>
+									) : (
+										<Link className={classes.link} to={link.url}>
+											{link.text}
+										</Link>
+									)}
+								</>
 							)}
 							{link.onClick && (
 								<div className={classes.link} onClick={link.onClick}>
@@ -43,4 +63,4 @@ const SidebarTitle: React.FC<{
 	);
 };
 
-export default SidebarTitle;
+export default SidebarGroups;

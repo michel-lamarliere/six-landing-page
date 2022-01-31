@@ -1,12 +1,12 @@
-.wrapper {
+.buttons {
 	display: flex;
-	flex-direction: column;
+	justify-content: center;
 	align-items: center;
-	gap: 1rem;
+	gap: 2rem;
+	margin: 0 auto;
 }
 
-.task {
+.selectors {
 	display: flex;
-	flex-direction: column;
 	align-items: center;
 }

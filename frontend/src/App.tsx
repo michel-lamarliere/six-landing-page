@@ -21,6 +21,7 @@ import ErrorPopup from './shared/components/UIElements/ErrorPopup';
 import EmailPopup from './shared/components/UIElements/EmailConfirmationPopup';
 import ConfirmEmailAddress from './user/pages/ConfirmedEmailAddress';
 import ForgotPasswordForm from './user/pages/ForgotPasswordForm';
+import AnnualGraph from './graphs/pages/AnnualGraph';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
@@ -116,6 +117,7 @@ const App: React.FC = () => {
 								<Route path='/log/daily' element={<DailyView />} />
 								<Route path='/log/weekly' element={<WeeklyView />} />
 								<Route path='/log/monthly' element={<MonthlyView />} />
+								<Route path='/recap' element={<AnnualGraph />} />
 								<Route path='/profile' element={<Profile />} />
 							</>
 						)}

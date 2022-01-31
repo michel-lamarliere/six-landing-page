@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../shared/store/store';
 
-import SidebarTitle from '../components/SidebarTitle';
+import SidebarGroup from '../components/SidebarGroup';
 
 import classes from './Sidebar.module.scss';
 import { UserActionTypes } from '../../shared/store/user';
@@ -47,7 +47,7 @@ const Sidebar: React.FC = () => {
 
 	const nameLinks = [
 		{
-			text: 'Éditer profil',
+			text: 'Profil',
 			url: '/profile',
 			key: 'profile-key',
 		},
@@ -67,23 +67,32 @@ const Sidebar: React.FC = () => {
 			text: 'Jour',
 			url: '/log/daily',
 			key: 'log-daily-key',
+			nav_link: true,
 		},
 		{
 			text: 'Semaine',
 			url: '/log/weekly',
 			key: 'log-weekly-key',
+			nav_link: true,
 		},
 		{
 			text: 'Mois',
 			url: '/log/monthly',
 			key: 'log-monthly-key',
+			nav_link: true,
+		},
+		{
+			text: 'Historique A enlever',
+			url: '/recap',
+			key: 'log-annual-key',
+			nav_link: true,
 		},
 	];
 
 	return ReactDOM.createPortal(
 		<div className={classes.wrapper}>
-			<SidebarTitle title={userState.name!} links={nameLinks} />
-			<SidebarTitle title='Historique' links={logLinks} />
+			<SidebarGroup title={userState.name!} links={nameLinks} />
+			<SidebarGroup title='Historique' links={logLinks} />
 			<button onClick={refreshDataHandler}>Refresh</button>
 		</div>,
 		document.getElementById('sidebar')!
