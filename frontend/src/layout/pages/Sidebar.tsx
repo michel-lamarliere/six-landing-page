@@ -82,7 +82,7 @@ const Sidebar: React.FC = () => {
 			nav_link: true,
 		},
 		{
-			text: 'Historique A enlever',
+			text: 'Historique à Enlever',
 			url: '/recap',
 			key: 'log-annual-key',
 			nav_link: true,

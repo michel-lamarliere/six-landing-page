@@ -7,6 +7,6 @@ const router = Router();
 
 router.use(checkAuth);
 
-router.get('/annual', graphsControllers.getAnnual);
+router.get('/annual/:id/:year/:task', graphsControllers.getAnnual);
 
 module.exports = router;
