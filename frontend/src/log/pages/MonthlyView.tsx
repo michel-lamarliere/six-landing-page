@@ -8,6 +8,8 @@ import {
 	isAfter,
 	getDaysInMonth,
 	startOfMonth,
+	addHours,
+	addDays,
 } from 'date-fns';
 
 import { useRequest } from '../../shared/hooks/http-hook';
@@ -24,7 +26,7 @@ const MonthlyView: React.FC = () => {
 	const [chosenDate, setChosenDate] = useState<Date>(new Date());
 	const [monthStr, setMonthStr] = useState('');
 	const [monthlyArray, setMonthlyArray] = useState<number[]>([]);
-	const [datesArray, setDatesArray] = useState<string[]>([]);
+	const [datesArray, setDatesArray] = useState<Date[]>([]);
 	const selectSixRef = useRef<HTMLSelectElement>(null);
 	const [currentTask, setCurrentTask] = useState('food');
 	const [isLoading, setIsLoading] = useState(true);
@@ -51,28 +53,6 @@ const MonthlyView: React.FC = () => {
 		if (!isAfter(addMonths(chosenDate, 1), new Date())) {
 			setChosenDate(addMonths(chosenDate, 1));
 		}
-	};
-
-	const getMonthlyData = async () => {
-		const chosenMonthStr = format(chosenDate, 'yyyy-MM-dd');
-
-		if (selectSixRef.current) {
-			const responseData = await sendRequest(
-				`http://localhost:8080/api/log/monthly/${userState.id}/${chosenMonthStr}/${currentTask}`,
-				'GET'
-			);
-
-			if (!responseData) {
-				return;
-			}
-
-			const { datesArray: responseDatesArray, responseArray } = responseData;
-			setDatesArray(responseDatesArray);
-			setMonthlyArray(responseArray);
-		}
-
-		setIsLoading(true);
-		getFirstDayOfWeek(chosenDate);
 	};
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -103,30 +83,28 @@ const MonthlyView: React.FC = () => {
 		getMonthlyData();
 	};
 
-	const placeholderCalendar = (date: Date) => {
-		const numberOfDaysInMonth = getDaysInMonth(date);
-		const array: number[] = [];
+	const getMonthlyData = async () => {
+		setIsLoading(true);
 
-		for (let i = 0; i < numberOfDaysInMonth; i++) {
-			array.push(0);
+		const chosenMonthStr = format(chosenDate, 'yyyy-MM-dd');
+
+		if (selectSixRef.current) {
+			const responseData = await sendRequest(
+				`http://localhost:8080/api/log/monthly/${userState.id}/${chosenMonthStr}/${currentTask}`,
+				'GET'
+			);
+
+			if (!responseData) {
+				return;
+			}
+
+			const { datesArray: responseDatesArray, responseArray } = responseData;
+
+			setDatesArray(responseDatesArray);
+			setMonthlyArray(responseArray);
 		}
 
-		setNumberArrayPlaceholder(array);
-	};
-
-	const getDatesArrayPlaceholder = (date: Date) => {
-		const numberOfDays: number = getDaysInMonth(date);
-		const datesArray: string[] = [];
-
-		for (let i = 1; i < numberOfDays + 1; i++) {
-			let testDate =
-				i < 10
-					? date.toISOString().slice(0, 7) + '-0' + i.toString()
-					: date.toISOString().slice(0, 7) + '-' + i.toString();
-			datesArray.push(testDate);
-		}
-
-		setDatesArrayPlaceholder(datesArray);
+		getFirstDayOfWeek(chosenDate);
 	};
 
 	const getFirstDayOfWeek = (date: Date) => {
@@ -144,6 +122,33 @@ const MonthlyView: React.FC = () => {
 		}
 
 		setEmptyBoxes(emptyArray);
+		setIsLoading(false);
+	};
+
+	const placeholderCalendar = (date: Date) => {
+		const numberOfDaysInMonth = getDaysInMonth(date);
+		const array: number[] = [];
+
+		for (let i = 0; i < numberOfDaysInMonth; i++) {
+			array.push(0);
+		}
+
+		setNumberArrayPlaceholder(array);
+	};
+
+	const getDatesArrayPlaceholder = (date: Date) => {
+		const numberOfDays: number = getDaysInMonth(date);
+		const datesArray: string[] = [];
+
+		for (let i = 1; i < numberOfDays + 1; i++) {
+			let dateItem = format(addDays(date, i), 'yyyy-MM-dd');
+			// i < 10
+			// 	? date.toISOString().slice(0, 7) + '-0' + i.toString()
+			// 	: date.toISOString().slice(0, 7) + '-' + i.toString();
+			datesArray.push(dateItem);
+		}
+
+		setDatesArrayPlaceholder(datesArray);
 	};
 
 	useEffect(() => {
@@ -194,7 +199,6 @@ const MonthlyView: React.FC = () => {
 			}
 		}
 	}, [chosenDate, currentTask]);
-
 	return (
 		<div className={classes.wrapper}>
 			<LogHeader
@@ -232,29 +236,29 @@ const MonthlyView: React.FC = () => {
 			<div className={classes.calendar_wrapper}>
 				{emptyBoxes.length > 0 &&
 					emptyBoxes.map((item) => <div key={item + Math.random()}></div>)}
-				{isLoading
+				{!isLoading
 					? monthlyArray.map((item, index) => (
 							<div
 								className={classes.button_wrapper}
-								key={`${datesArray[index]}_${currentTask}_div`}
+								key={`${format(
+									new Date(datesArray[index]),
+									'yyyy-MM-dd'
+								)}_${currentTask}_div`}
 							>
 								<div>{index + 1}</div>
 								<DataButton
-									id={`${datesArray[index]}_${currentTask}`}
+									id={`${format(
+										new Date(datesArray[index]),
+										'yyyy-MM-dd'
+									)}_${currentTask}`}
 									onClick={addData}
 									value={item}
-									key={`${datesArray[index]}_${currentTask}`}
+									key={`${format(
+										new Date(datesArray[index]),
+										'yyyy-MM-dd'
+									)}_${currentTask}`}
 									disabled={
-										!isAfter(
-											new Date(
-												+datesArray[index].slice(0, 4),
-												+datesArray[index].slice(5, 7) === 12
-													? 11
-													: +datesArray[index].slice(5, 7) - 1,
-												+datesArray[index].slice(8, 10)
-											),
-											new Date()
-										)
+										!isAfter(new Date(datesArray[index]), new Date())
 									}
 								/>
 							</div>
@@ -269,19 +273,7 @@ const MonthlyView: React.FC = () => {
 									key={`placeholderBtn_${index}`}
 									disabled={
 										!isAfter(
-											new Date(
-												+datesArrayPlaceholder[index].slice(0, 4),
-												+datesArrayPlaceholder[index].slice(
-													5,
-													7
-												) === 12
-													? 11
-													: +datesArrayPlaceholder[index].slice(
-															5,
-															7
-													  ) - 1,
-												+datesArrayPlaceholder[index].slice(8, 10)
-											),
+											new Date(datesArrayPlaceholder[index]),
 											new Date()
 										)
 									}

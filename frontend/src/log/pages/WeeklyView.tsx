@@ -57,7 +57,7 @@ const WeekView: React.FC = () => {
 		getMappingArray(responseData, firstOfWeek);
 	};
 
-	const setEmptyArray = (logDate: Date) => {
+	const emptySixObject = (logDate: Date) => {
 		let emptySix = {
 			date: logDate,
 			six: {
@@ -87,7 +87,7 @@ const WeekView: React.FC = () => {
 				i++;
 				y++;
 			} else {
-				array.push(setEmptyArray(addDays(firstOfWeek, y)));
+				array.push(emptySixObject(addDays(firstOfWeek, y)));
 				y++;
 			}
 		} while (array.length < 7);

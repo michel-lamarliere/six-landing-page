@@ -19,7 +19,7 @@ const WeekViewButtons: React.FC<Props> = (props) => {
 	return (
 		<div className={classes.wrapper}>
 			{props.array.map((item: { date: Date; six: number }) => (
-				<React.Fragment key={format(new Date(item.date), 'yyyy-MM-dd')}>
+				<React.Fragment key={`${format(new Date(item.date), 'yyyy-MM-dd')}_div`}>
 					{Object.entries(item.six).map((item2) => (
 						<DataButton
 							id={`${format(new Date(item.date), 'yyyy-MM-dd')}_${

@@ -15,7 +15,7 @@ const database = require('../util/db-connect');
 const getAnnual: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
 	// const reqYear = +req.params.year;
-	const reqYear = 2021;
+	const reqYear = 2022;
 	const reqTask = req.params.task;
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
@@ -31,6 +31,20 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 	console.log(firstDateOfYear);
 	const lastDateOfYear = new Date(reqYear, 11, 31);
 
+	const orderedLog: [] = [];
+
+	for (let i = 0; i < user.log.length; i++) {
+		if (user.log[i].date.getYear() === reqYear) {
+			for (let y = 0; y < orderedLog.length; y++) {
+				if (isBefore(user.log[i].date, orderedLog[y])) {
+					orderedLog.splice(y, 0, orderedLog[y]);
+				}
+			}
+		}
+	}
+
+	console.log(orderedLog);
+
 	const months = [];
 
 	for (let i = 0; i < 12; i++) {
@@ -41,19 +55,26 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 		console.log(getMonth(new Date()));
 	}
 
+	let searchArray: any = {};
+
+	for (let i = 0; i < months.length; i++) {
+		const monthLength = getDaysInMonth(new Date(reqYear, months[i], 1));
+		const allDatesInMonth = [];
+
+		for (let y = 1; y < monthLength + 1; y++) {
+			allDatesInMonth.push(addHours(new Date(reqYear, i, y), 1));
+		}
+		searchArray[i] = allDatesInMonth;
+	}
+
+	console.log(searchArray);
+
+	// for (let i = 0; i < searchArray.length; i++) {
+	// 	if ()
+	// }
+
 	console.log(months);
-
 	res.status(200).json({ success: 'Succès.' });
-
-	// for (let i = 0; i < 12; i++) {
-	// 	for (let y = 0; y < getDaysInMonth(firstDateOfYear); y++) {
-	// 		if (isSameDay(matchedArray[y], firstDateOfYear ))
-	// 	}
-	// }
-
-	// for (let i = 0; i < user.log.length; i++) {
-
-	// }
 };
 
 exports.getAnnual = getAnnual;

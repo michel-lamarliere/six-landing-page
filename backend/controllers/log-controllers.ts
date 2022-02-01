@@ -15,7 +15,7 @@ const database = require('../util/db-connect');
 const addData: RequestHandler = async (req, res, next) => {
 	const {
 		_id: reqIdStr,
-		date: reqDate,
+		date: reqDateStr,
 		task: reqTask,
 		levelOfCompletion: reqLevelOfCompletion,
 	} = await req.body;
@@ -33,19 +33,20 @@ const addData: RequestHandler = async (req, res, next) => {
 		levelOfCompletion: false,
 	};
 
-	if (reqDate.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/))
+	if (reqDateStr.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/))
 		inputsAreValid.date.format = true;
 
-	const dateFormat = addHours(
-		new Date(
-			+reqDate.slice(0, 4),
-			+reqDate.slice(5, 7) === 12 ? 11 : +reqDate.slice(5, 7) - 1,
-			+reqDate.slice(8, 10)
-		),
+	const reqDate = addHours(
+		// new Date(
+		// 	+reqDateStr.slice(0, 4),
+		// 	+reqDateStr.slice(5, 7) === 12 ? 11 : +reqDateStr.slice(5, 7) - 1,
+		// 	+reqDateStr.slice(8, 10)
+		// ),
+		new Date(reqDateStr),
 		1
 	);
 
-	if (isAfter(dateFormat, new Date())) {
+	if (isAfter(reqDate, new Date())) {
 		res.status(400).json({
 			error: "Impossible d'enregistrer des données dont la date est dans le futur.",
 		});
@@ -103,7 +104,7 @@ const addData: RequestHandler = async (req, res, next) => {
 			$set: {
 				log: [
 					{
-						date: dateFormat,
+						date: reqDate,
 						six: {
 							food: 0,
 							sleep: 0,
@@ -119,7 +120,7 @@ const addData: RequestHandler = async (req, res, next) => {
 		});
 	} else if (result.log.length > 0) {
 		for (let i = 0; i < result.log.length; i++) {
-			if (isSameDay(result.log[i].date, dateFormat)) {
+			if (isSameDay(result.log[i].date, reqDate)) {
 				foundSameDate = true;
 
 				for (let task in result.log[i].six) {
@@ -144,7 +145,7 @@ const addData: RequestHandler = async (req, res, next) => {
 			databaseConnect.updateOne(filter, {
 				$set: {
 					[`log.${result.log.length}`]: {
-						date: dateFormat,
+						date: reqDate,
 						six: {
 							food: 0,
 							sleep: 0,
@@ -184,11 +185,13 @@ const getDaily: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	const year = +reqDateStr.slice(0, 4);
-	const month = +reqDateStr.slice(5, 7) - 1;
-	const day = +reqDateStr.slice(8, 10);
+	// const year = +reqDateStr.slice(0, 4);
+	// const month = +reqDateStr.slice(5, 7) - 1;
+	// const day = +reqDateStr.slice(8, 10);
 
-	const reqDate = addHours(new Date(year, month, day), 1);
+	// const reqDate = addHours(new Date(year, month, day), 1);
+
+	const reqDate = addHours(reqDateStr, 1);
 
 	const result = await databaseConnect.findOne({
 		_id: reqId,
@@ -213,11 +216,13 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
 	const reqStartDateStr = req.params.startofweek;
 
-	const year = +reqStartDateStr.slice(0, 4);
-	const month = +reqStartDateStr.slice(5, 7) - 1;
-	const day = +reqStartDateStr.slice(8, 10);
+	// const year = +reqStartDateStr.slice(0, 4);
+	// const month = +reqStartDateStr.slice(5, 7) - 1;
+	// const day = +reqStartDateStr.slice(8, 10);
 
-	const reqStartDate = addHours(new Date(year, month, day), 1);
+	// const reqStartDate = addHours(new Date(year, month, day), 1);
+
+	const reqStartDate = addHours(reqStartDateStr, 1);
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
@@ -272,12 +277,14 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 
 	const user = await databaseConnect.findOne({ _id: reqId });
 
-	const year = +reqDateStr.slice(0, 4);
-	// JAN is 0, DEC is 11, 12 is JAN of next year
-	const month = +reqDateStr.slice(5, 7) - 1;
-	const day = +reqDateStr.slice(8, 10);
+	// const year = +reqDateStr.slice(0, 4);
+	// // JAN is 0, DEC is 11, 12 is JAN of next year
+	// const month = +reqDateStr.slice(5, 7) - 1;
+	// const day = +reqDateStr.slice(8, 10);
 
-	const reqDate = new Date(year, month, day);
+	// const reqDate = addHours(new Date(year, month, day), 1);
+
+	const reqDate = addHours(new Date(reqDateStr), 1);
 
 	if (!user) {
 		res.status(404).json({ fatal: true });
@@ -285,12 +292,12 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 	}
 
 	const numberOfDays: number = getDaysInMonth(reqDate);
-	const firstOfMonth = addHours(startOfMonth(reqDate), 1);
+	const firstOfMonth = startOfMonth(reqDate);
 	const datesArray = [];
 
 	for (let i = 0; i < numberOfDays; i++) {
-		let testDate = addDays(firstOfMonth, i);
-		datesArray.push(testDate);
+		const date = addDays(addHours(firstOfMonth, 1), i);
+		datesArray.push(date);
 	}
 
 	const responseArray: any[] = [];
@@ -314,27 +321,9 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 			responseArray.push(0);
 		}
 	}
+
 	console.log('get monthly');
 	res.status(200).json({ datesArray, responseArray });
-};
-
-const getAnnualGraph: RequestHandler = async (req, res, next) => {
-	const reqId = new ObjectId(req.params.id);
-	const reqYear = +req.params.year;
-	const reqTask = req.params.task;
-
-	const databaseConnect = await database.getDb('six-dev').collection('test');
-
-	const user = await databaseConnect.findOne({ _id: reqId });
-
-	if (!user) {
-		res.status(404).json({ fatal: true });
-	}
-
-	const firstDateOfYear = new Date(reqYear, 1, 1);
-	const lastDateOfYear = new Date(reqYear, 12, 31);
-
-	for (let i = 0; i < user.log.length; i++) {}
 };
 
 exports.addData = addData;

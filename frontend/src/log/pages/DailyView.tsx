@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addDays, getDate, getDay, getYear, isAfter } from 'date-fns';
+import { addDays, getDate, getDay, getYear, isAfter, format } from 'date-fns';
 import classes from './DailyView.module.scss';
 
 import { useRequest } from '../../shared/hooks/http-hook';
@@ -239,11 +239,11 @@ const DailyView: React.FC = () => {
 				Object.entries(dailyData.six).map((item: any) => (
 					<div
 						className={classes.task}
-						key={`${chosenDate.toISOString().slice(0, 10)}_${item[0]}_task`}
+						key={`${format(chosenDate, 'yyyy-MM-dd')}_${item[0]}_task`}
 					>
 						<div>{item[0]}</div>
 						<DataButton
-							id={`${chosenDate.toISOString().slice(0, 10)}_${item[0]}`}
+							id={`${format(chosenDate, 'yyyy-MM-dd')}_${item[0]}`}
 							onClick={addData}
 							value={item[1]}
 							disabled={true}

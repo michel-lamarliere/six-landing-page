@@ -24,19 +24,6 @@ const AnnualGraph: React.FC = () => {
 		setSelectedYear((prev: any) => addYears(prev, 1));
 	};
 
-	const test = [
-		{
-			1: {
-				0: 1,
-				2: 2,
-			},
-			2: {
-				0: 1,
-				2: 2,
-			},
-		},
-	];
-
 	const getGraph = async () => {
 		const responseData = await sendRequest(
 			`http://localhost:8080/api/graphs/annual/${userState.id}/${selectedYear}/${task}`,
