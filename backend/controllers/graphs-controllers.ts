@@ -8,15 +8,18 @@ import {
 	isAfter,
 	isSameMonth,
 	getDaysInMonth,
+	getYear,
 } from 'date-fns';
 
 const database = require('../util/db-connect');
 
 const getAnnual: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
-	// const reqYear = +req.params.year;
-	const reqYear = 2022;
+	const reqYear: number = +req.params.year;
 	const reqTask = req.params.task;
+
+	console.log(reqYear);
+	console.log(reqTask);
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
@@ -27,23 +30,31 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 	}
 
 	const firstDateOfYear = addHours(new Date(reqYear, 0, 1), 1);
-
-	console.log(firstDateOfYear);
 	const lastDateOfYear = new Date(reqYear, 11, 31);
 
-	const orderedLog: [] = [];
+	const thisYearsData: Date[] = [];
 
 	for (let i = 0; i < user.log.length; i++) {
-		if (user.log[i].date.getYear() === reqYear) {
-			for (let y = 0; y < orderedLog.length; y++) {
-				if (isBefore(user.log[i].date, orderedLog[y])) {
-					orderedLog.splice(y, 0, orderedLog[y]);
-				}
-			}
+		if (getYear(user.log[i].date) === reqYear) {
+			thisYearsData.push(user.log[i].date);
 		}
 	}
 
-	console.log(orderedLog);
+	thisYearsData.map((item: Date, index) => {
+		isBefore(item, thisYearsData[index + 1]);
+	});
+
+	const sortingFn = (a: Date, b: Date) => {
+		if (isBefore(a, b)) {
+			return -1;
+		} else {
+			return 1;
+		}
+	};
+
+	thisYearsData.sort(sortingFn);
+
+	console.log(thisYearsData);
 
 	const months = [];
 
@@ -51,8 +62,6 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 		if (isBefore(addMonths(firstDateOfYear, i), new Date())) {
 			months.push(i);
 		}
-		console.log(addMonths(firstDateOfYear, i));
-		console.log(getMonth(new Date()));
 	}
 
 	let searchArray: any = {};
@@ -69,9 +78,11 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 
 	console.log(searchArray);
 
-	// for (let i = 0; i < searchArray.length; i++) {
-	// 	if ()
-	// }
+	for (let i = 0; i < searchArray.length; i++) {
+		for (let y = 0; y < searchArray[i].length; y++) {
+			// if (searchArray[i][y] === )
+		}
+	}
 
 	console.log(months);
 	res.status(200).json({ success: 'Succès.' });

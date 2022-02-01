@@ -1,5 +1,5 @@
 import { json } from 'body-parser';
-import { startOfMonth } from 'date-fns';
+import { getHours, startOfMonth } from 'date-fns';
 import { RequestHandler } from 'express';
 const { ObjectId } = require('mongodb');
 const {
@@ -36,15 +36,16 @@ const addData: RequestHandler = async (req, res, next) => {
 	if (reqDateStr.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/))
 		inputsAreValid.date.format = true;
 
-	const reqDate = addHours(
+	const reqDate =
+		// addHours(
 		// new Date(
 		// 	+reqDateStr.slice(0, 4),
 		// 	+reqDateStr.slice(5, 7) === 12 ? 11 : +reqDateStr.slice(5, 7) - 1,
 		// 	+reqDateStr.slice(8, 10)
 		// ),
-		new Date(reqDateStr),
-		1
-	);
+		new Date(reqDateStr);
+	// ,1
+	// );
 
 	if (isAfter(reqDate, new Date())) {
 		res.status(400).json({
@@ -185,30 +186,22 @@ const getDaily: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	// const year = +reqDateStr.slice(0, 4);
-	// const month = +reqDateStr.slice(5, 7) - 1;
-	// const day = +reqDateStr.slice(8, 10);
+	let reqDate = new Date(reqDateStr);
+	let foundDate = false;
 
-	// const reqDate = addHours(new Date(year, month, day), 1);
-
-	const reqDate = addHours(reqDateStr, 1);
-
-	const result = await databaseConnect.findOne({
-		_id: reqId,
-		'log.date': reqDate,
-	});
-
-	if (!result) {
-		res.status(202).json({ message: "Date non trouvée, création de l'object." });
-		return;
+	for (let i = 0; i < user.log.length; i++) {
+		if (isSameDay(reqDate, user.log[i].date)) {
+			console.log('get daily');
+			console.log(user.log[i].date);
+			const dateData = user.log[i];
+			res.status(200).json(dateData);
+			foundDate = true;
+		}
 	}
 
-	for (let i = 0; i < result.log.length; i++) {
-		if (isSameDay(result.log[i].date, reqDate)) {
-			let foundDailyLog = result.log[i];
-			console.log('get daily');
-			res.status(200).json(foundDailyLog);
-		}
+	if (!foundDate) {
+		res.status(202).json({ message: "Date non trouvée, création de l'object." });
+		return;
 	}
 };
 
@@ -222,7 +215,8 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 
 	// const reqStartDate = addHours(new Date(year, month, day), 1);
 
-	const reqStartDate = addHours(reqStartDateStr, 1);
+	// const reqStartDate = addHours(new Date(reqStartDateStr), 1);
+	const reqStartDate = new Date(reqStartDateStr);
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
@@ -284,7 +278,8 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 
 	// const reqDate = addHours(new Date(year, month, day), 1);
 
-	const reqDate = addHours(new Date(reqDateStr), 1);
+	// const reqDate = addHours(new Date(reqDateStr), 1);
+	const reqDate = new Date(reqDateStr);
 
 	if (!user) {
 		res.status(404).json({ fatal: true });

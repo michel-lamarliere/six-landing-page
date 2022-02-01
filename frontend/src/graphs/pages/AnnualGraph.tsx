@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { isAfter, addYears } from 'date-fns';
+import { isAfter, addYears, getYear } from 'date-fns';
 
 import LogHeader from '../../log/components/LogHeader';
 
@@ -26,7 +26,9 @@ const AnnualGraph: React.FC = () => {
 
 	const getGraph = async () => {
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/graphs/annual/${userState.id}/${selectedYear}/${task}`,
+			`http://localhost:8080/api/graphs/annual/${userState.id}/${getYear(
+				selectedYear
+			)}/${task}`,
 			'GET'
 		);
 
@@ -35,7 +37,7 @@ const AnnualGraph: React.FC = () => {
 
 	useEffect(() => {
 		getGraph();
-	}, []);
+	}, [selectedYear]);
 
 	return (
 		<div>

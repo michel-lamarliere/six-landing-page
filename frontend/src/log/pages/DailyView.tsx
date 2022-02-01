@@ -185,7 +185,7 @@ const DailyView: React.FC = () => {
 			case 6:
 				setFullDate((prev) => ({
 					...prev,
-					month: 'Janvier',
+					month: 'Juillet',
 				}));
 				break;
 			case 7:
