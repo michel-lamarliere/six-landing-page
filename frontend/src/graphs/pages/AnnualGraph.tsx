@@ -8,6 +8,7 @@ import { useRequest } from '../../shared/hooks/http-hook';
 import LogHeader from '../../log/components/LogHeader';
 
 import classes from './AnnualGraph.module.scss';
+import AnnualGraphMonth from '../components/AnnualGraphMonth';
 
 const AnnualGraph: React.FC = () => {
 	const { sendRequest } = useRequest();
@@ -16,6 +17,8 @@ const AnnualGraph: React.FC = () => {
 
 	const [selectedYear, setSelectedYear] = useState<any>(new Date());
 	const [task, setTask] = useState('food');
+	const [responseArray, setResponseArray] = useState<any>([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const previousYearHandler = () => {
 		setSelectedYear((prev: any) => addYears(prev, -1));
@@ -33,7 +36,9 @@ const AnnualGraph: React.FC = () => {
 			'GET'
 		);
 
-		console.log(responseData);
+		setResponseArray(responseData.array);
+		console.log(responseData.array);
+		setIsLoading(false);
 	};
 
 	useEffect(() => {
@@ -60,12 +65,14 @@ const AnnualGraph: React.FC = () => {
 					</select>
 				}
 			/>
-			<div>
-				{/* {test.map((item: {}) =>
-					Object.entries(item).map((item2) => <div>
-						{item2[0]}
-					</div>)
-				)} */}
+			<div className={classes.month}>
+				{!isLoading &&
+					responseArray &&
+					responseArray.map((object: any) =>
+						Object.values(object).map((item: any) => (
+							<AnnualGraphMonth data={item} />
+						))
+					)}
 			</div>
 		</div>
 	);

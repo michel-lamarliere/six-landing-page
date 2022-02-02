@@ -59,38 +59,51 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 		}
 	}
 
-	let responseArray: any = {};
+	const finalData: any = [];
 
 	for (let i = 0; i < months.length; i++) {
 		const monthLength = getDaysInMonth(new Date(reqYear, months[i], 1));
-		const allDataInMonth: {}[] = [];
+		const thisMonthData = { empty: 0, half: 0, full: 0 };
 
 		for (let y = 1; y < monthLength + 1; y++) {
-			let sameDate = false;
-			for (let x = 0; x < thisYearsData.length; x++) {
-				if (
-					isSameDay(thisYearsData[x].date, addHours(new Date(reqYear, i, y), 1))
-				) {
-					allDataInMonth.push(thisYearsData[x]);
-					sameDate = true;
+			const loopingDay = addHours(new Date(reqYear, i, y), 1);
+
+			console.log(loopingDay);
+			if (isBefore(loopingDay, new Date())) {
+				let sameDate = false;
+
+				for (let x = 0; x < thisYearsData.length; x++) {
+					if (isSameDay(thisYearsData[x].date, loopingDay)) {
+						// console.log(thisYearsData[x].data);
+						sameDate = true;
+						thisYearsData[x].data === 1
+							? thisMonthData.half++
+							: thisMonthData.full++;
+					}
+				}
+				if (!sameDate) {
+					thisMonthData.empty++;
 				}
 			}
-			// STOP AFTER TODAY'S DATE
-			if (!sameDate && isBefore(addHours(new Date(reqYear, i, y), 1), new Date())) {
-				const data = {
-					date: addHours(new Date(reqYear, i, y), 1),
-					data: 0,
-				};
-				allDataInMonth.push(data);
-			}
 		}
-		responseArray[i] = allDataInMonth;
+		finalData.push({ [i]: thisMonthData });
 	}
 
-	console.log('responseArray');
-	console.log(responseArray);
+	console.log('finalData');
+	console.log(finalData);
 
-	res.status(200).json({ success: 'Succès.', responseArray });
+	const expectedResult = {
+		'0': { empty: 23, half: 7, full: 1 },
+		'1': { empty: 1, half: 0, full: 1 },
+	};
+
+	console.log('expectedResult');
+	console.log(expectedResult);
+
+	// console.log('completeArray');
+	// console.log(completeArray);
+
+	res.status(200).json({ success: 'Succès.', array: finalData });
 };
 
 exports.getAnnual = getAnnual;

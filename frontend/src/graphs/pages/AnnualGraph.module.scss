@@ -1,0 +1,23 @@
+.month {
+	display: flex;
+	flex-direction: row;
+	gap: 1rem;
+}
+
+.empty {
+	width: 2rem;
+	height: 1rem;
+	background-color: white;
+}
+
+.half {
+	width: 2rem;
+	height: 1rem;
+	background-color: yellow;
+}
+
+.full {
+	width: 2rem;
+	height: 1rem;
+	background-color: blue;
+}
