@@ -1,23 +1,22 @@
+.wrapper {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 .month {
 	display: flex;
 	flex-direction: row;
 	gap: 1rem;
 }
 
-.empty {
-	width: 2rem;
-	height: 1rem;
-	background-color: white;
+.chart {
+	height: 30rem;
+	width: 100%;
 }
 
-.half {
-	width: 2rem;
-	height: 1rem;
-	background-color: yellow;
-}
-
-.full {
-	width: 2rem;
-	height: 1rem;
-	background-color: blue;
+.test {
+	display: flex;
+	flex-wrap: wrap;
 }

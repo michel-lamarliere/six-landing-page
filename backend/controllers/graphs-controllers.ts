@@ -86,7 +86,7 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 				}
 			}
 		}
-		finalData.push({ [i]: thisMonthData });
+		finalData.push(thisMonthData);
 	}
 
 	console.log('finalData');

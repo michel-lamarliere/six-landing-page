@@ -8,7 +8,16 @@ import { useRequest } from '../../shared/hooks/http-hook';
 import LogHeader from '../../log/components/LogHeader';
 
 import classes from './AnnualGraph.module.scss';
-import AnnualGraphMonth from '../components/AnnualGraphMonth';
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Legend,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from 'recharts';
 
 const AnnualGraph: React.FC = () => {
 	const { sendRequest } = useRequest();
@@ -18,6 +27,7 @@ const AnnualGraph: React.FC = () => {
 	const [selectedYear, setSelectedYear] = useState<any>(new Date());
 	const [task, setTask] = useState('food');
 	const [responseArray, setResponseArray] = useState<any>([]);
+	const [data, setData] = useState<any>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	const previousYearHandler = () => {
@@ -39,6 +49,66 @@ const AnnualGraph: React.FC = () => {
 		setResponseArray(responseData.array);
 		console.log(responseData.array);
 		setIsLoading(false);
+		createChartData(responseData.array);
+	};
+
+	const createChartData = (array: any[]) => {
+		const data: any = [];
+
+		for (let i = 0; i < array.length; i++) {
+			console.log(array[i]);
+			let month = '';
+			switch (i) {
+				case 0:
+					month = 'Jan.';
+					break;
+				case 1:
+					month = 'Fév.';
+					break;
+				case 2:
+					month = 'Mars';
+					break;
+				case 3:
+					month = 'Avr.';
+					break;
+				case 4:
+					month = 'Mai';
+					break;
+				case 5:
+					month = 'Juin';
+					break;
+				case 6:
+					month = 'Juil.';
+					break;
+				case 7:
+					month = 'Août';
+					break;
+				case 8:
+					month = 'Sept.';
+					break;
+				case 9:
+					month = 'Oct.';
+					break;
+				case 10:
+					month = 'Nov.';
+					break;
+				case 11:
+					month = 'Déc.';
+					break;
+				default:
+					break;
+			}
+			const thisMonth = {
+				name: month,
+				empty: array[i].empty,
+				half: array[i].half,
+				full: array[i].full,
+			};
+			data.push(thisMonth);
+		}
+		console.log(data);
+		setData(data);
+		return data;
 	};
 
 	useEffect(() => {
@@ -46,7 +116,7 @@ const AnnualGraph: React.FC = () => {
 	}, [selectedYear]);
 
 	return (
-		<div>
+		<div className={classes.wrapper}>
 			<LogHeader
 				button_previous_text='Année Précédente'
 				button_previous_handler={previousYearHandler}
@@ -65,14 +135,27 @@ const AnnualGraph: React.FC = () => {
 					</select>
 				}
 			/>
-			<div className={classes.month}>
-				{!isLoading &&
-					responseArray &&
-					responseArray.map((object: any) =>
-						Object.values(object).map((item: any) => (
-							<AnnualGraphMonth data={item} />
-						))
-					)}
+			<div className={classes.chart}>
+				<ResponsiveContainer width='99%' height='100%' className={classes.test}>
+					<BarChart
+						width={600}
+						height={600}
+						data={data}
+						className={classes.test}
+					>
+						<XAxis
+							dataKey='name'
+							axisLine={false}
+							tickLine={false}
+							stroke='black'
+							style={{ fontSize: '16px' }}
+						/>
+						<YAxis tickCount={8} domain={['0', '31']} stroke='black' />
+						<Bar dataKey='empty' stackId='a' fill='#080e46' barSize={40} />
+						<Bar dataKey='half' stackId='a' fill='#3f4cbf' />
+						<Bar dataKey='full' stackId='a' fill='#36d5d6' />
+					</BarChart>
+				</ResponsiveContainer>
 			</div>
 		</div>
 	);
