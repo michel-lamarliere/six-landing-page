@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { isAfter, addYears, getYear } from 'date-fns';
 
-import LogHeader from '../../log/components/LogHeader';
-
-import classes from './AnnualGraph.module.scss';
 import { RootState } from '../../shared/store/store';
 import { useSelector } from 'react-redux';
 import { useRequest } from '../../shared/hooks/http-hook';
+
+import LogHeader from '../../log/components/LogHeader';
+
+import classes from './AnnualGraph.module.scss';
 
 const AnnualGraph: React.FC = () => {
 	const { sendRequest } = useRequest();

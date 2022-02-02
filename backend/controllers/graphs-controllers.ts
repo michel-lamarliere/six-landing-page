@@ -9,6 +9,7 @@ import {
 	isSameMonth,
 	getDaysInMonth,
 	getYear,
+	isSameDay,
 } from 'date-fns';
 
 const database = require('../util/db-connect');
@@ -30,22 +31,18 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 	}
 
 	const firstDateOfYear = addHours(new Date(reqYear, 0, 1), 1);
-	const lastDateOfYear = new Date(reqYear, 11, 31);
 
-	const thisYearsData: Date[] = [];
+	const thisYearsData = [];
 
 	for (let i = 0; i < user.log.length; i++) {
-		if (getYear(user.log[i].date) === reqYear) {
-			thisYearsData.push(user.log[i].date);
+		if (getYear(user.log[i].date) === reqYear && user.log[i].six[reqTask] !== 0) {
+			const data = { date: user.log[i].date, data: user.log[i].six[reqTask] };
+			thisYearsData[thisYearsData.length] = data;
 		}
 	}
 
-	thisYearsData.map((item: Date, index) => {
-		isBefore(item, thisYearsData[index + 1]);
-	});
-
-	const sortingFn = (a: Date, b: Date) => {
-		if (isBefore(a, b)) {
+	const sortingFn = (a: { date: Date }, b: { date: Date }) => {
+		if (isBefore(a.date, b.date)) {
 			return -1;
 		} else {
 			return 1;
@@ -53,8 +50,6 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 	};
 
 	thisYearsData.sort(sortingFn);
-
-	console.log(thisYearsData);
 
 	const months = [];
 
@@ -64,28 +59,38 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 		}
 	}
 
-	let searchArray: any = {};
+	let responseArray: any = {};
 
 	for (let i = 0; i < months.length; i++) {
 		const monthLength = getDaysInMonth(new Date(reqYear, months[i], 1));
-		const allDatesInMonth = [];
+		const allDataInMonth: {}[] = [];
 
 		for (let y = 1; y < monthLength + 1; y++) {
-			allDatesInMonth.push(addHours(new Date(reqYear, i, y), 1));
+			let sameDate = false;
+			for (let x = 0; x < thisYearsData.length; x++) {
+				if (
+					isSameDay(thisYearsData[x].date, addHours(new Date(reqYear, i, y), 1))
+				) {
+					allDataInMonth.push(thisYearsData[x]);
+					sameDate = true;
+				}
+			}
+			// STOP AFTER TODAY'S DATE
+			if (!sameDate && isBefore(addHours(new Date(reqYear, i, y), 1), new Date())) {
+				const data = {
+					date: addHours(new Date(reqYear, i, y), 1),
+					data: 0,
+				};
+				allDataInMonth.push(data);
+			}
 		}
-		searchArray[i] = allDatesInMonth;
+		responseArray[i] = allDataInMonth;
 	}
 
-	console.log(searchArray);
+	console.log('responseArray');
+	console.log(responseArray);
 
-	for (let i = 0; i < searchArray.length; i++) {
-		for (let y = 0; y < searchArray[i].length; y++) {
-			// if (searchArray[i][y] === )
-		}
-	}
-
-	console.log(months);
-	res.status(200).json({ success: 'Succès.' });
+	res.status(200).json({ success: 'Succès.', responseArray });
 };
 
 exports.getAnnual = getAnnual;
