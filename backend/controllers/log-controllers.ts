@@ -1,5 +1,5 @@
 import { json } from 'body-parser';
-import { getHours, startOfMonth } from 'date-fns';
+import { getHours, getYear, startOfMonth } from 'date-fns';
 import { RequestHandler } from 'express';
 const { ObjectId } = require('mongodb');
 const {
@@ -301,42 +301,69 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 
 	const numberOfDaysInMonth: number = getDaysInMonth(reqStartOfMonthDate);
 
-	const datesArray = [];
+	// const datesArray = [];
 
-	// CREATES AN ARRAY OF ALL THE DATES FOR THE REQUESTED MONTH
-	for (let i = 0; i < numberOfDaysInMonth; i++) {
-		const date = addDays(addHours(reqStartOfMonthDate, 1), i);
-		datesArray.push(date);
-	}
+	// // CREATES AN ARRAY OF ALL THE DATES FOR THE REQUESTED MONTH
+	// for (let i = 0; i < numberOfDaysInMonth; i++) {
+	// 	// const date = addDays(addHours(reqStartOfMonthDate, 1), i);
+	// 	const date = addDays(reqStartOfMonthDate, i);
+	// 	datesArray.push(date);
+	// }
 
-	const responseArray: any[] = [];
+	// const responseArray: any[] = [];
 
 	// CREATES AN ARRAY WITH ALL OF THE REQUESTED MONTH'S DATA
-	for (let i = 0; i < datesArray.length; i++) {
-		let matched = false;
-		let y;
+	// for (let i = 0; i < numberOfDaysInMonth; i++) {
+	// 	let matched = false;
+	// 	let y;
 
-		// IF THE DATE IS FOUND, PUSHES THE CORRECT DATA
-		for (y = 0; y < user.log.length; y++) {
-			if (user.log[y] && isSameDay(datesArray[i], user.log[y].date)) {
-				responseArray.push(user.log[y].six[reqTask]);
-				matched = true;
+	// 	const date = addDays(reqStartOfMonthDate, i);
+
+	// 	// IF THE DATE IS FOUND, PUSHES THE CORRECT DATA
+	// 	for (y = 0; y < user.log.length; y++) {
+	// 		if (user.log[y] && isSameDay(datesArray[i], user.log[y].date)) {
+	// 			responseArray.push(user.log[y].six[reqTask]);
+	// 			matched = true;
+	// 		}
+	// 	}
+
+	// 	//
+	// 	if (y > user.log.length) {
+	// 		matched = false;
+	// 	}
+
+	// 	// IF THE DATE ISN'T FOUND, PUSHES 0
+	// 	if (!matched) {
+	// 		responseArray.push({date: });
+	// 	}
+	// }
+	const responseArray: any[] = [];
+
+	for (let i = 0; i < numberOfDaysInMonth; i++) {
+		let loopingDate = addDays(reqStartOfMonthDate, i);
+		let sameDate = false;
+
+		for (let y = 0; y < user.log.length; y++) {
+			if (isSameDay(loopingDate, user.log[y].date)) {
+				sameDate = true;
+				responseArray.push({
+					date: loopingDate,
+					level: user.log[y].six[reqTask],
+				});
 			}
 		}
-
-		//
-		if (y > user.log.length) {
-			matched = false;
-		}
-
-		// IF THE DATE ISN'T FOUND, PUSHES 0
-		if (!matched) {
-			responseArray.push(0);
+		if (!sameDate) {
+			responseArray.push({
+				date: loopingDate,
+				level: 0,
+			});
 		}
 	}
 
+	console.log(responseArray);
+
 	console.log('get monthly');
-	res.status(200).json({ datesArray, responseArray });
+	res.status(200).json(responseArray);
 };
 
 exports.addData = addData;

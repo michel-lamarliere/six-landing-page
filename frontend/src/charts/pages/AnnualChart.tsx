@@ -50,7 +50,6 @@ const AnnualGraph: React.FC = () => {
 		);
 
 		setResponseArray(responseData.array);
-		console.log(responseData.array);
 		createChartData(responseData.array);
 	};
 
@@ -58,7 +57,6 @@ const AnnualGraph: React.FC = () => {
 		const data: any = [];
 
 		for (let i = 0; i < array.length; i++) {
-			console.log(array[i]);
 			let month = '';
 			switch (i) {
 				case 0:
@@ -108,7 +106,6 @@ const AnnualGraph: React.FC = () => {
 			};
 			data.push(thisMonth);
 		}
-		console.log(data);
 		setData(data);
 		return data;
 	};

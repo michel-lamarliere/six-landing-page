@@ -25,11 +25,8 @@ const MonthlyView: React.FC = () => {
 	const userState = useSelector((state: RootState) => state.user);
 	const [chosenDate, setChosenDate] = useState<Date>(startOfMonth(new Date()));
 	const [monthStr, setMonthStr] = useState('');
-	const [monthlyArray, setMonthlyArray] = useState<number[]>([]);
-	const [datesArray, setDatesArray] = useState<Date[]>([]);
+	const [monthlyArray, setMonthlyArray] = useState<any[]>([]);
 	const [currentTask, setCurrentTask] = useState('food');
-	const [numberArrayPlaceholder, setNumberArrayPlaceholder] = useState<number[]>([]);
-	const [datesArrayPlaceholder, setDatesArrayPlaceholder] = useState<string[]>([]);
 	const [emptyBoxes, setEmptyBoxes] = useState<0[]>([]);
 
 	const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -79,12 +76,13 @@ const MonthlyView: React.FC = () => {
 			return;
 		}
 
-		const { datesArray: responseDatesArray, responseArray } = responseData;
+		const array = responseData;
 
-		setDatesArray(responseDatesArray);
-		setMonthlyArray(responseArray);
+		setMonthlyArray(array);
 
 		getFirstDayOfWeek(chosenDate);
+
+		console.log(array);
 	};
 
 	const getFirstDayOfWeek = (date: Date) => {
@@ -183,30 +181,32 @@ const MonthlyView: React.FC = () => {
 			<div className={classes.calendar_wrapper}>
 				{emptyBoxes.length > 0 &&
 					emptyBoxes.map((item) => <div key={item + Math.random()}></div>)}
-				{monthlyArray.map((item, index) => (
-					<div
-						className={classes.button_wrapper}
-						key={`${format(
-							new Date(datesArray[index]),
-							'yyyy-MM-dd'
-						)}_${currentTask}_div`}
-					>
-						<div>{index + 1}</div>
-						<DataButton
-							id={`${format(
-								new Date(datesArray[index]),
-								'yyyy-MM-dd'
-							)}_${currentTask}`}
-							onClick={addData}
-							value={item}
+				{monthlyArray &&
+					monthlyArray.map((item: { date: number; level: 0 }, index) => (
+						<div
+							className={classes.button_wrapper}
 							key={`${format(
-								new Date(datesArray[index]),
+								new Date(item.date),
 								'yyyy-MM-dd'
-							)}_${currentTask}`}
-							disabled={!isAfter(new Date(datesArray[index]), new Date())}
-						/>
-					</div>
-				))}
+							)}_${currentTask}_div`}
+						>
+							<div>{index + 1}</div>
+
+							<DataButton
+								id={`${format(
+									new Date(item.date),
+									'yyyy-MM-dd'
+								)}_${currentTask}`}
+								onClick={addData}
+								value={item.level}
+								key={`${format(
+									new Date(item.date),
+									'yyyy-MM-dd'
+								)}_${currentTask}`}
+								disabled={!isAfter(new Date(item.date), new Date())}
+							/>
+						</div>
+					))}
 			</div>
 		</div>
 	);

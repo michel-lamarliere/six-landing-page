@@ -42,7 +42,6 @@ const App: React.FC = () => {
 		if (showEmailConfirmationPopup) {
 			showEmailConfirmationPopup = JSON.parse(showEmailConfirmationPopup);
 		}
-		console.log(showEmailConfirmationPopup);
 
 		if (!storedUserData) return;
 
