@@ -96,18 +96,11 @@ const WeekView: React.FC = () => {
 	};
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
-		const date = (event.target as HTMLElement).id.split('_')[0];
-		const task = (event.target as HTMLButtonElement).id.split('_')[1];
+		const dateAndTaskStr = (event.target as HTMLElement).id;
 		const prevLevel = parseInt((event.target as HTMLButtonElement).value);
 
-		const dateFormat = new Date(
-			+date.slice(0, 4),
-			+date.slice(5, 7) === 12 ? 11 : +date.slice(5, 7) - 1,
-			+date.slice(8, 10)
-		);
-
-		if (!isAfter(dateFormat, new Date()) && userState.id && userState.email) {
-			const responseData = await sendData(userState.id, date, task, prevLevel);
+		if (userState.id) {
+			const responseData = await sendData(userState.id, dateAndTaskStr, prevLevel);
 
 			if (!responseData) {
 				return;
@@ -119,15 +112,13 @@ const WeekView: React.FC = () => {
 					message: responseData.error,
 				});
 			}
-		}
 
-		if (typeof userState.id === 'string') {
 			getWeekData(userState.id, formattedFirstOfWeek);
 		}
 	};
 
 	useEffect(() => {
-		if (typeof userState.id === 'string') {
+		if (userState.id) {
 			getWeekData(userState.id, formattedFirstOfWeek);
 			getMappingArray(weekData, firstOfWeek);
 		}

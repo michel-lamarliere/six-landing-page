@@ -47,12 +47,11 @@ const MonthlyView: React.FC = () => {
 	};
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
-		let date = (event.target as HTMLElement).id.split('_')[0];
-		let task = (event.target as HTMLButtonElement).id.split('_')[1];
-		let prevLevel = parseInt((event.target as HTMLButtonElement).value);
+		const dateAndTaskStr = (event.target as HTMLElement).id;
+		const prevLevel = parseInt((event.target as HTMLButtonElement).value);
 
 		if (userState.id && userState.email) {
-			const responseData = await sendData(userState.id, date, task, prevLevel);
+			const responseData = await sendData(userState.id, dateAndTaskStr, prevLevel);
 
 			if (!responseData) {
 				return;

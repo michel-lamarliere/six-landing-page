@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { isAfter, addYears, getYear } from 'date-fns';
-
-import { RootState } from '../../shared/store/store';
-import { useSelector } from 'react-redux';
-import { useRequest } from '../../shared/hooks/http-hook';
-
-import LogHeader from '../../log/components/LogHeader';
-
-import classes from './AnnualGraph.module.scss';
 import {
 	Bar,
 	BarChart,
@@ -19,6 +11,14 @@ import {
 	YAxis,
 } from 'recharts';
 
+import { RootState } from '../../shared/store/store';
+import { useSelector } from 'react-redux';
+import { useRequest } from '../../shared/hooks/http-hook';
+
+import LogHeader from '../../log/components/LogHeader';
+
+import classes from './AnnualChart.module.scss';
+
 const AnnualGraph: React.FC = () => {
 	const { sendRequest } = useRequest();
 
@@ -28,7 +28,6 @@ const AnnualGraph: React.FC = () => {
 	const [task, setTask] = useState('food');
 	const [responseArray, setResponseArray] = useState<any>([]);
 	const [data, setData] = useState<any>([]);
-	const [isLoading, setIsLoading] = useState(true);
 
 	const previousYearHandler = () => {
 		setSelectedYear((prev: any) => addYears(prev, -1));
@@ -36,6 +35,10 @@ const AnnualGraph: React.FC = () => {
 
 	const nextYearHandler = () => {
 		setSelectedYear((prev: any) => addYears(prev, 1));
+	};
+
+	const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		setTask(event.target.value);
 	};
 
 	const getGraph = async () => {
@@ -48,7 +51,6 @@ const AnnualGraph: React.FC = () => {
 
 		setResponseArray(responseData.array);
 		console.log(responseData.array);
-		setIsLoading(false);
 		createChartData(responseData.array);
 	};
 
@@ -113,7 +115,7 @@ const AnnualGraph: React.FC = () => {
 
 	useEffect(() => {
 		getGraph();
-	}, [selectedYear]);
+	}, [selectedYear, task]);
 
 	return (
 		<div className={classes.wrapper}>
@@ -125,13 +127,13 @@ const AnnualGraph: React.FC = () => {
 				button_next_disabled={isAfter(addYears(selectedYear, 1), new Date())}
 				text={selectedYear.getFullYear()}
 				selector_task={
-					<select>
-						<option>Alimentation</option>
-						<option>Sommeil</option>
-						<option>Sport</option>
-						<option>Relaxation</option>
-						<option>Travail</option>
-						<option>Vie Sociale</option>
+					<select onChange={selectHandler}>
+						<option value='food'>Alimentation</option>
+						<option value='sleep'>Sommeil</option>
+						<option value='sport'>Sport</option>
+						<option value='relaxation'>Relaxation</option>
+						<option value='work'>Travail</option>
+						<option value='social'>Vie Sociale</option>
 					</select>
 				}
 			/>

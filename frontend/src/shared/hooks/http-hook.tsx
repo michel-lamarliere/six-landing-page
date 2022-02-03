@@ -41,12 +41,10 @@ export const useRequest = () => {
 		return responseData;
 	};
 
-	const sendData = async (
-		_id: string,
-		date: string,
-		task: string,
-		prevLevel: number
-	) => {
+	const sendData = async (_id: string, dateAndTaskStr: string, prevLevel: number) => {
+		const date = dateAndTaskStr.split('_')[0];
+		const task = dateAndTaskStr.split('_')[1];
+
 		const response = await fetch('http://localhost:8080/api/log/task', {
 			method: 'POST',
 			headers: {
