@@ -68,13 +68,7 @@ const DailyView: React.FC = () => {
 		let prevLevel = parseInt((event.target as HTMLButtonElement).value);
 
 		if (userState.id && userState.email) {
-			const responseData = await sendData(
-				userState.id,
-				userState.email,
-				date,
-				task,
-				prevLevel
-			);
+			const responseData = await sendData(userState.id, date, task, prevLevel);
 
 			if (!responseData) {
 				return;

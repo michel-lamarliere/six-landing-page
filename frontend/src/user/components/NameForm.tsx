@@ -36,7 +36,7 @@ const NameForm: React.FC<{
 			return;
 		}
 
-		props.setResponse(responseData.success);
+		props.setResponse(responseData.message);
 
 		dispatch({ type: UserActionTypes.REFRESH_NAME, name: responseData.name });
 		setNewName({ value: '', isValid: false, isTouched: false });

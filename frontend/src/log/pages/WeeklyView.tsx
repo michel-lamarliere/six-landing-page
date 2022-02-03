@@ -107,13 +107,7 @@ const WeekView: React.FC = () => {
 		);
 
 		if (!isAfter(dateFormat, new Date()) && userState.id && userState.email) {
-			const responseData = await sendData(
-				userState.id,
-				userState.email,
-				date,
-				task,
-				prevLevel
-			);
+			const responseData = await sendData(userState.id, date, task, prevLevel);
 
 			if (!responseData) {
 				return;

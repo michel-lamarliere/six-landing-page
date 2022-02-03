@@ -18,7 +18,26 @@ const addData: RequestHandler = async (req, res, next) => {
 		date: reqDateStr,
 		task: reqTask,
 		levelOfCompletion: reqLevelOfCompletion,
-	} = await req.body;
+	} = req.body;
+
+	console.log(req.body);
+	const reqDate = new Date(reqDateStr);
+
+	const databaseConnect = await database.getDb('six-dev').collection('test');
+
+	const reqId = ObjectId(reqIdStr);
+
+	// CHECKS IF THE USER EXISTS
+	const filter = {
+		_id: reqId,
+	};
+
+	const user = await databaseConnect.findOne(filter);
+
+	if (!user) {
+		res.status(404).json({ fatal: true });
+		return;
+	}
 
 	// VALIDATION
 	let inputsAreValid = {
@@ -33,20 +52,14 @@ const addData: RequestHandler = async (req, res, next) => {
 		levelOfCompletion: false,
 	};
 
-	if (reqDateStr.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/))
-		inputsAreValid.date.format = true;
+	// CHECKS IF THE DATE IS A DATE
+	if (!reqDate) {
+		inputsAreValid.date.format = false;
+	}
 
-	const reqDate =
-		// addHours(
-		// new Date(
-		// 	+reqDateStr.slice(0, 4),
-		// 	+reqDateStr.slice(5, 7) === 12 ? 11 : +reqDateStr.slice(5, 7) - 1,
-		// 	+reqDateStr.slice(8, 10)
-		// ),
-		new Date(reqDateStr);
-	// ,1
-	// );
+	inputsAreValid.date.format = true;
 
+	// CHECKS IF DATE IS IN THE FUTURE
 	if (isAfter(reqDate, new Date())) {
 		res.status(400).json({
 			error: "Impossible d'enregistrer des données dont la date est dans le futur.",
@@ -55,19 +68,23 @@ const addData: RequestHandler = async (req, res, next) => {
 		return;
 	} else inputsAreValid.date.pastOrPresent = true;
 
+	// VALIDATES IF THE DATE IS IN THE CORRECT FORMAT AND NOT IN THE FUTURE
 	if (inputsAreValid.date.format && inputsAreValid.date.pastOrPresent) {
 		inputsAreValid.date.valid = true;
 	}
 
+	// VALIDATES THE TASK
 	const taskNames = ['food', 'sleep', 'sport', 'relaxation', 'work', 'social'];
 
 	if (taskNames.includes(reqTask)) inputsAreValid.task = true;
 
+	// VALIDATES THE LEVEL OF COMPLETION
 	const taskLevels = [0, 1, 2];
 
 	if (taskLevels.includes(reqLevelOfCompletion))
 		inputsAreValid.levelOfCompletion = true;
 
+	// VALIDATES THE WHOLE DATA
 	if (
 		inputsAreValid._id &&
 		inputsAreValid.date.valid &&
@@ -82,25 +99,10 @@ const addData: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
-
-	const reqId = ObjectId(reqIdStr);
-
-	// FINDING THE USER
-	const filter = {
-		_id: reqId,
-	};
-
-	const result = await databaseConnect.findOne(filter);
-
-	if (!result) {
-		res.status(404).json({ fatal: true });
-		return;
-	}
-
 	let foundSameDate = false;
 
-	if (result.log.length === 0) {
+	// IF THE LOG IS EMPTY
+	if (user.log.length === 0) {
 		databaseConnect.updateOne(filter, {
 			$set: {
 				log: [
@@ -119,12 +121,13 @@ const addData: RequestHandler = async (req, res, next) => {
 				],
 			},
 		});
-	} else if (result.log.length > 0) {
-		for (let i = 0; i < result.log.length; i++) {
-			if (isSameDay(result.log[i].date, reqDate)) {
+		// IF THE LOG ISN'T EMPTY, TRIES TO FIND THE CORRECT DATE
+	} else if (user.log.length > 0) {
+		for (let i = 0; i < user.log.length; i++) {
+			if (isSameDay(user.log[i].date, reqDate)) {
 				foundSameDate = true;
 
-				for (let task in result.log[i].six) {
+				for (let task in user.log[i].six) {
 					if (task === reqTask) {
 						databaseConnect.updateOne(filter, {
 							$set: {
@@ -141,11 +144,11 @@ const addData: RequestHandler = async (req, res, next) => {
 				}
 			}
 		}
-
+		// IF THE CORRECT DATE DOESN'T EXIST
 		if (!foundSameDate) {
 			databaseConnect.updateOne(filter, {
 				$set: {
-					[`log.${result.log.length}`]: {
+					[`log.${user.log.length}`]: {
 						date: reqDate,
 						six: {
 							food: 0,
@@ -162,23 +165,24 @@ const addData: RequestHandler = async (req, res, next) => {
 		}
 	}
 
-	const user = databaseConnect.findOne(filter);
+	const response = databaseConnect.findOne(filter);
 
-	if (!user) {
+	if (!response) {
 		res.status(404).json({ fatal: true });
 		return;
 	}
 
 	console.log('added data');
-	res.status(201).json(result);
+	res.status(201).json({ success: true });
 };
 
 const getDaily: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
-	const reqDateStr = req.params.date;
+	const reqDate = new Date(req.params.date);
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
+	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
 
 	if (!user) {
@@ -186,9 +190,9 @@ const getDaily: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	let reqDate = new Date(reqDateStr);
 	let foundDate = false;
 
+	// GETS THE DATA FOR THE REQUESTED DATE AND SENDS IT
 	for (let i = 0; i < user.log.length; i++) {
 		if (isSameDay(reqDate, user.log[i].date)) {
 			console.log('get daily');
@@ -199,6 +203,7 @@ const getDaily: RequestHandler = async (req, res, next) => {
 		}
 	}
 
+	// IF THE REQUESTED DATE DOESN'T EXIST
 	if (!foundDate) {
 		res.status(202).json({ message: "Date non trouvée, création de l'object." });
 		return;
@@ -207,19 +212,11 @@ const getDaily: RequestHandler = async (req, res, next) => {
 
 const getWeekly: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
-	const reqStartDateStr = req.params.startofweek;
-
-	// const year = +reqStartDateStr.slice(0, 4);
-	// const month = +reqStartDateStr.slice(5, 7) - 1;
-	// const day = +reqStartDateStr.slice(8, 10);
-
-	// const reqStartDate = addHours(new Date(year, month, day), 1);
-
-	// const reqStartDate = addHours(new Date(reqStartDateStr), 1);
-	const reqStartDate = new Date(reqStartDateStr);
+	const reqStartDate = new Date(req.params.startofweek);
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
+	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
 
 	if (!user) {
@@ -227,6 +224,7 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
+	// GETS THE WHOLE WEEK'S DATES
 	const getDates = (startingDate: Date) => {
 		let dateArray = [];
 
@@ -240,23 +238,35 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 
 	const datesArray = getDates(reqStartDate);
 
-	let foundDatesIndex = [];
-	let matchingLogArray = [];
+	let resultsArray = [];
 
+	// CHECKS IF THERE'S DATA FOR THE WEEK'S DATES
 	for (let i = 0; i < datesArray.length; i++) {
+		let foundDate = false;
 		for (let y = 0; y < user.log.length; y++) {
+			// IF THE DATE MATCHES, IT PUSHES THE DATA
 			if (isSameDay(datesArray[i], user.log[y].date)) {
-				foundDatesIndex.push(y);
-				matchingLogArray.push(user.log[y]);
+				foundDate = true;
+				resultsArray.push(user.log[y]);
 			}
+		}
+		if (!foundDate) {
+			// IF THE DATE DOESN'T MATCH, IT PUSHES EMPTY DATA
+			resultsArray.push({
+				date: datesArray[i],
+				six: {
+					food: 0,
+					sleep: 0,
+					sport: 0,
+					relaxation: 0,
+					work: 0,
+					social: 0,
+				},
+			});
 		}
 	}
 
-	const resultsArray = [];
-
-	for (let i = 0; i < foundDatesIndex.length; i++) {
-		resultsArray.push(matchingLogArray[i]);
-	}
+	console.log(resultsArray);
 
 	console.log('get weekly');
 	res.status(200).json(resultsArray);
@@ -264,54 +274,50 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 
 const getMonthly: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
-	const reqDateStr = req.params.date;
+	const reqStartOfMonthDate = new Date(req.params.date);
 	const reqTask = req.params.task;
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
+	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
-
-	// const year = +reqDateStr.slice(0, 4);
-	// // JAN is 0, DEC is 11, 12 is JAN of next year
-	// const month = +reqDateStr.slice(5, 7) - 1;
-	// const day = +reqDateStr.slice(8, 10);
-
-	// const reqDate = addHours(new Date(year, month, day), 1);
-
-	// const reqDate = addHours(new Date(reqDateStr), 1);
-	const reqDate = new Date(reqDateStr);
 
 	if (!user) {
 		res.status(404).json({ fatal: true });
 		return;
 	}
 
-	const numberOfDays: number = getDaysInMonth(reqDate);
-	const firstOfMonth = startOfMonth(reqDate);
+	const numberOfDaysInMonth: number = getDaysInMonth(reqStartOfMonthDate);
+
 	const datesArray = [];
 
-	for (let i = 0; i < numberOfDays; i++) {
-		const date = addDays(addHours(firstOfMonth, 1), i);
+	// CREATES AN ARRAY OF ALL THE DATES FOR THE REQUESTED MONTH
+	for (let i = 0; i < numberOfDaysInMonth; i++) {
+		const date = addDays(addHours(reqStartOfMonthDate, 1), i);
 		datesArray.push(date);
 	}
 
 	const responseArray: any[] = [];
 
+	// CREATES AN ARRAY WITH ALL OF THE REQUESTED MONTH'S DATA
 	for (let i = 0; i < datesArray.length; i++) {
 		let matched = false;
-		let y = 0;
+		let y;
 
-		for (let y = 0; y < datesArray.length; y++) {
+		// IF THE DATE IS FOUND, PUSHES THE CORRECT DATA
+		for (y = 0; y < user.log.length; y++) {
 			if (user.log[y] && isSameDay(datesArray[i], user.log[y].date)) {
 				responseArray.push(user.log[y].six[reqTask]);
 				matched = true;
 			}
 		}
 
+		//
 		if (y > user.log.length) {
 			matched = false;
 		}
 
+		// IF THE DATE ISN'T FOUND, PUSHES 0
 		if (!matched) {
 			responseArray.push(0);
 		}

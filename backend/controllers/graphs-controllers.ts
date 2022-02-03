@@ -24,6 +24,7 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
+	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
 
 	if (!user) {
@@ -34,13 +35,15 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 
 	const thisYearsData = [];
 
+	// IF THE USER'S DATA MATCHES THE REQUESTED YEAR,
 	for (let i = 0; i < user.log.length; i++) {
 		if (getYear(user.log[i].date) === reqYear && user.log[i].six[reqTask] !== 0) {
 			const data = { date: user.log[i].date, data: user.log[i].six[reqTask] };
-			thisYearsData[thisYearsData.length] = data;
+			thisYearsData.push(data);
 		}
 	}
 
+	// SORTES THE DATES
 	const sortingFn = (a: { date: Date }, b: { date: Date }) => {
 		if (isBefore(a.date, b.date)) {
 			return -1;
@@ -51,57 +54,49 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 
 	thisYearsData.sort(sortingFn);
 
-	const months = [];
+	const allYearsMonths = [];
 
+	// CREATES AN ARRAY OF ALL THE REQUESTED YEAR'S MONTHS
+	// , IF THE MONTH IS AFTER THE TODAY'S MONTH, IT STOPS
 	for (let i = 0; i < 12; i++) {
 		if (isBefore(addMonths(firstDateOfYear, i), new Date())) {
-			months.push(i);
+			allYearsMonths.push(i);
 		}
 	}
 
 	const finalData: any = [];
 
-	for (let i = 0; i < months.length; i++) {
-		const monthLength = getDaysInMonth(new Date(reqYear, months[i], 1));
-		const thisMonthData = { empty: 0, half: 0, full: 0 };
+	for (let i = 0; i < allYearsMonths.length; i++) {
+		const loopingMonthLength = getDaysInMonth(
+			new Date(reqYear, allYearsMonths[i], 1)
+		);
+		const loopingMonthData = { empty: 0, half: 0, full: 0 };
 
-		for (let y = 1; y < monthLength + 1; y++) {
-			const loopingDay = addHours(new Date(reqYear, i, y), 1);
+		// LOOPS THOUGH THE LOOPING MONTH DATA
+		for (let y = 1; y < loopingMonthLength + 1; y++) {
+			const loopingDate = addHours(new Date(reqYear, i, y), 1);
 
-			console.log(loopingDay);
-			if (isBefore(loopingDay, new Date())) {
+			if (isBefore(loopingDate, new Date())) {
 				let sameDate = false;
 
+				// CHECKS IF THE LOOPING DATE'S DATA EXISTS
 				for (let x = 0; x < thisYearsData.length; x++) {
-					if (isSameDay(thisYearsData[x].date, loopingDay)) {
-						// console.log(thisYearsData[x].data);
+					if (isSameDay(thisYearsData[x].date, loopingDate)) {
 						sameDate = true;
 						thisYearsData[x].data === 1
-							? thisMonthData.half++
-							: thisMonthData.full++;
+							? loopingMonthData.half++
+							: loopingMonthData.full++;
 					}
 				}
+				// IF THE LOOPING DATE DOESN'T EXIST
 				if (!sameDate) {
-					thisMonthData.empty++;
+					loopingMonthData.empty++;
 				}
 			}
 		}
-		finalData.push(thisMonthData);
+		// PUSHES THE LOOPING MONTH'S DATA TO THE WHOLE YEAR'S ARRAY
+		finalData.push(loopingMonthData);
 	}
-
-	console.log('finalData');
-	console.log(finalData);
-
-	const expectedResult = {
-		'0': { empty: 23, half: 7, full: 1 },
-		'1': { empty: 1, half: 0, full: 1 },
-	};
-
-	console.log('expectedResult');
-	console.log(expectedResult);
-
-	// console.log('completeArray');
-	// console.log(completeArray);
 
 	res.status(200).json({ success: 'Succès.', array: finalData });
 };

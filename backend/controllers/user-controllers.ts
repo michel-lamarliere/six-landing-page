@@ -13,6 +13,16 @@ const signUp: RequestHandler = async (req, res, next) => {
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
+	// CHECKS IF THE USER EXISTS
+	const user = await databaseConnect.findOne({ email: reqEmail });
+
+	if (user) {
+		res.status(400).json({
+			error: 'Adresse email déjà utilisée, veuillez en choisir une autre ou vous connecter.',
+		});
+		return;
+	}
+
 	let inputsAreValid = {
 		all: false,
 		name: false,
@@ -46,20 +56,11 @@ const signUp: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	let existingUser = await databaseConnect.findOne({ email: reqEmail });
-
-	if (existingUser) {
-		res.status(400).json({
-			error: 'Adresse email déjà utilisée, veuillez en choisir une autre ou vous connecter.',
-		});
-		return;
-	}
-
-	// HASHING PASSWORD
+	// HASHES THE PASSWORD
 	const hashedPassword = await bcrypt.hash(reqPassword, 10);
 	const hashedConfirmationCode = uuidv5(reqEmail, process.env.UUID_NAMESPACE);
-	console.log(hashedConfirmationCode);
 
+	// CREATES THE USER'S OBJECT
 	const newUser = {
 		name: reqName,
 		email: reqEmail,
@@ -76,7 +77,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 		log: [],
 	};
 
-	// CREATES NEW USER
+	// INSERTS THE NEW USER IS THE DATABASE
 	await databaseConnect.insertOne(newUser);
 
 	// GETS THE ID
@@ -94,7 +95,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 		{ expiresIn: '1h' }
 	);
 
-	// EMAIL
+	// SEND AN EMAIL CONFIRMATION EMAIL
 	emailConfirmationEmail(reqEmail, hashedConfirmationCode);
 
 	res.status(201).json({
@@ -109,65 +110,62 @@ const signUp: RequestHandler = async (req, res, next) => {
 
 const signIn: RequestHandler = async (req, res, next) => {
 	const { email: reqEmail, password: reqPassword } = req.body;
-	console.log('---SIGN-IN');
-	console.log({ reqEmail, reqPassword });
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
-	const result = await databaseConnect.findOne({ email: reqEmail });
+	const user = await databaseConnect.findOne({ email: reqEmail });
 
-	if (!result) {
+	if (!user) {
 		res.status(404).json({
 			error: 'Adresse email non trouvée, veuillez créer un compte.',
 		});
 		return;
 	}
 
-	console.log(result.password);
+	// CHECKS IF THE PASSWORD MATCHES THE USER'S HASHED PASSWORD
+	const matchingPasswords = await bcrypt.compare(reqPassword, user.password);
 
-	const matchingPasswords = await bcrypt.compare(reqPassword, result.password);
-
-	console.log({ matchingPasswords });
-
+	// IF THE PASSWORDS DON'T MATCH
 	if (!matchingPasswords) {
 		res.status(400).json({ error: 'Mot de passe incorrect.' });
 		return;
 	}
 
+	// CREATES A TOKEN
 	const token = await jwt.sign(
-		{ userId: result._id, email: result.email },
+		{ userId: user._id, email: user.email },
 		'je_mange_du_pain_blanc_enola',
 		{ expiresIn: '1h' }
 	);
 
 	res.status(200).json({
 		token,
-		id: result._id,
-		name: result.name,
-		email: result.email,
-		confirmedEmail: result.confirmation.confirmed,
+		id: user._id,
+		name: user.name,
+		email: user.email,
+		confirmedEmail: user.confirmation.confirmed,
 	});
-	console.log('SIGN-IN---');
 };
 
 const confirmEmailAddress: RequestHandler = async (req, res, next) => {
 	const email = req.body.email;
 	const code = req.body.code;
 
-	console.log(email, code);
-
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
+	// CHECKS IF THE USER EXISTS AND IF THE CODE MATCHES THE DB'S CODE
 	const user = await databaseConnect.findOne({
 		email: email,
 		'confirmation.code': code,
 	});
 
+	// IF IT DOESN'T MATCH
 	if (!user) {
 		res.status(400).json({ error: 'Code invalide' });
 		return;
 	}
 
+	// CONFIRMS THE ACCOUNT
 	await databaseConnect.updateOne(
 		{ email: email },
 		{
@@ -182,10 +180,10 @@ const confirmEmailAddress: RequestHandler = async (req, res, next) => {
 
 const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 	const id = new ObjectId(req.body.id);
-	console.log(id);
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
+	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: id });
 
 	if (!user) {
@@ -193,6 +191,7 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
+	// IF THE ACCOUNT IS ALREADY CONFIRMED
 	if (user.confirmation.confirmed) {
 		res.status(400).json({
 			error: 'Compte déjà confirmé, veuillez rafraichir vos données.',
@@ -200,14 +199,14 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
+	// CHECKS IF THE USER SENT AN EMAIL DURING THE LAST 5 MINUTES
 	if (user.confirmation.nextEmail) {
 		const fiveMinutesBetweenSends = !isBefore(
 			user.confirmation.nextEmail,
 			new Date()
 		);
 
-		console.log(user.confirmation.nextEmail);
-
+		// IF HE DID
 		if (fiveMinutesBetweenSends) {
 			res.status(403).json({
 				error: "Veuillez attendre 5 minutes entre chaque demande d'envoi de mail de confirmation.",
@@ -220,10 +219,10 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 		await emailConfirmationEmail(user.email, user.confirmation.code);
 	} catch (error) {
 		res.status(500).json({ error: 'Une erreur est survenue.' });
-		console.log('error');
 		return;
 	}
 
+	// ADDS THE NEW TIME INTERVAL IN THE DB
 	const nextEmail = addMinutes(new Date(), 5);
 
 	await databaseConnect.updateOne(
@@ -243,10 +242,10 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 
 const refreshData: RequestHandler = async (req, res, next) => {
 	const id = new ObjectId(req.params.userId);
-	console.log(id);
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
+	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: id });
 
 	if (!user) {

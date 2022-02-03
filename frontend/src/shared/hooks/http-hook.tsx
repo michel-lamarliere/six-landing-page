@@ -43,7 +43,6 @@ export const useRequest = () => {
 
 	const sendData = async (
 		_id: string,
-		email: string,
 		date: string,
 		task: string,
 		prevLevel: number
@@ -56,7 +55,6 @@ export const useRequest = () => {
 			},
 			body: JSON.stringify({
 				_id,
-				email,
 				date,
 				task,
 				levelOfCompletion: prevLevel !== 2 ? prevLevel + 1 : 0,
