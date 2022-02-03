@@ -13,6 +13,7 @@ import {
 } from 'date-fns';
 
 import { useRequest } from '../../shared/hooks/http-hook';
+import { useDates } from '../../shared/hooks/dates-hook';
 import { RootState } from '../../shared/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { DataButton, PlaceHolderDataButton } from '../components/Buttons';
@@ -22,6 +23,7 @@ import LogHeader from '../components/LogHeader';
 const MonthlyView: React.FC = () => {
 	const dispatch = useDispatch();
 	const { sendRequest, sendData } = useRequest();
+	const { getMonthFn } = useDates();
 	const userState = useSelector((state: RootState) => state.user);
 	const [chosenDate, setChosenDate] = useState<Date>(startOfMonth(new Date()));
 	const [monthStr, setMonthStr] = useState('');
@@ -106,46 +108,7 @@ const MonthlyView: React.FC = () => {
 		if (userState.id !== null) {
 			getMonthlyData();
 
-			switch (chosenDate.getMonth()) {
-				case 0:
-					setMonthStr('Janvier');
-					break;
-				case 1:
-					setMonthStr('Février');
-					break;
-				case 2:
-					setMonthStr('Mars');
-					break;
-				case 3:
-					setMonthStr('Avril');
-					break;
-				case 4:
-					setMonthStr('Mai');
-					break;
-				case 5:
-					setMonthStr('Juin');
-					break;
-				case 6:
-					setMonthStr('Juillet');
-					break;
-				case 7:
-					setMonthStr('Août');
-					break;
-				case 8:
-					setMonthStr('Septembre');
-					break;
-				case 9:
-					setMonthStr('Octobre');
-					break;
-				case 10:
-					setMonthStr('Novembre');
-					break;
-				case 11:
-					setMonthStr('Décembre');
-					break;
-				default:
-					break;
-			}
+			getMonthFn(chosenDate.getMonth(), setMonthStr);
 		}
 	}, [chosenDate, currentTask]);
 

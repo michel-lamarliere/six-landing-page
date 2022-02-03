@@ -9,19 +9,20 @@ import { RootState } from '../../shared/store/store';
 import ErrorPopup from '../../shared/components/UIElements/ErrorPopup';
 import { ErrorPopupActionTypes } from '../../shared/store/error';
 import LogHeader from '../components/LogHeader';
+import { useDates } from '../../shared/hooks/dates-hook';
 
 const DailyView: React.FC = () => {
 	const dispatch = useDispatch();
 	const { sendRequest, sendData } = useRequest();
+	const { getDayFn, getMonthFn } = useDates();
+
 	const userState = useSelector((state: RootState) => state.user);
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [chosenDate, setChosenDate] = useState(new Date());
-	const [fullDate, setFullDate] = useState({
-		day: '',
-		month: '',
-		year: '',
-	});
+
+	const [day, setDay] = useState('');
+	const [month, setMonth] = useState('');
 	const [dailyData, setDailyData] = useState<any>([]);
 
 	const getDailyData = async (userId: string, date: string) => {
@@ -79,127 +80,8 @@ const DailyView: React.FC = () => {
 	}, [chosenDate]);
 
 	useEffect(() => {
-		switch (getDay(chosenDate)) {
-			case 1:
-				setFullDate((prev) => ({
-					...prev,
-					day: 'Lundi',
-				}));
-				break;
-			case 2:
-				setFullDate((prev) => ({
-					...prev,
-					day: 'Mardi',
-				}));
-				break;
-			case 3:
-				setFullDate((prev) => ({
-					...prev,
-					day: 'Mercredi',
-				}));
-				break;
-			case 4:
-				setFullDate((prev) => ({
-					...prev,
-					day: 'Jeudi',
-				}));
-				break;
-			case 5:
-				setFullDate((prev) => ({
-					...prev,
-					day: 'Vendredi',
-				}));
-				break;
-			case 6:
-				setFullDate((prev) => ({
-					...prev,
-					day: 'Samedi',
-				}));
-				break;
-			case 0:
-				setFullDate((prev) => ({
-					...prev,
-					day: 'Dimanche',
-				}));
-				break;
-		}
-
-		switch (chosenDate.getMonth()) {
-			case 0:
-				setFullDate((prev) => ({
-					...prev,
-					month: 'Janvier',
-				}));
-				break;
-			case 1:
-				setFullDate((prev) => ({
-					...prev,
-					month: 'Février',
-				}));
-				break;
-			case 2:
-				setFullDate((prev) => ({
-					...prev,
-					month: 'Mars',
-				}));
-				break;
-			case 3:
-				setFullDate((prev) => ({
-					...prev,
-					month: 'Avril',
-				}));
-				break;
-			case 4:
-				setFullDate((prev) => ({
-					...prev,
-					month: 'Mai',
-				}));
-				break;
-			case 5:
-				setFullDate((prev) => ({
-					...prev,
-					month: 'Juin',
-				}));
-				break;
-			case 6:
-				setFullDate((prev) => ({
-					...prev,
-					month: 'Juillet',
-				}));
-				break;
-			case 7:
-				setFullDate((prev) => ({
-					...prev,
-					month: 'Août',
-				}));
-				break;
-			case 8:
-				setFullDate((prev) => ({
-					...prev,
-					month: 'Septembre',
-				}));
-				break;
-			case 9:
-				setFullDate((prev) => ({
-					...prev,
-					month: 'Octobre',
-				}));
-				break;
-			case 10:
-				setFullDate((prev) => ({
-					...prev,
-					month: 'Novembre',
-				}));
-				break;
-			case 11:
-				setFullDate((prev) => ({
-					...prev,
-					month: 'Décembre',
-				}));
-				break;
-			default:
-				break;
-		}
+		getDayFn(getDay(chosenDate), setDay);
+		getMonthFn(chosenDate.getMonth(), setMonth);
 	}, [chosenDate]);
 
 	return (
@@ -210,7 +92,7 @@ const DailyView: React.FC = () => {
 				button_next_text='Jour suivant'
 				button_next_handler={nextDayHandler}
 				button_next_disabled={isAfter(addDays(chosenDate, 1), new Date())}
-				text={`${fullDate.day} ${getDate(chosenDate)} ${fullDate.month}
+				text={`${day} ${getDate(chosenDate)} ${month}
 					${getYear(chosenDate)}`}
 			/>
 			{!isLoading &&

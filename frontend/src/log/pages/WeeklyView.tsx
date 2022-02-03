@@ -17,9 +17,11 @@ import { useRequest } from '../../shared/hooks/http-hook';
 import WeekViewTasks from '../components/WeeklyViewTasks';
 import { ErrorPopupActionTypes } from '../../shared/store/error';
 import LogHeader from '../components/LogHeader';
+import { useDates } from '../../shared/hooks/dates-hook';
 
 const WeekView: React.FC = () => {
 	const { sendRequest, sendData } = useRequest();
+	const { getMonthFn } = useDates();
 	const dispatch = useDispatch();
 
 	const userState = useSelector((state: RootState) => state.user);
@@ -125,46 +127,7 @@ const WeekView: React.FC = () => {
 	}, [userState.id, chosenDate]);
 
 	useEffect(() => {
-		switch (chosenDate.getMonth()) {
-			case 0:
-				setMonth('Janvier');
-				break;
-			case 1:
-				setMonth('Février');
-				break;
-			case 2:
-				setMonth('Mars');
-				break;
-			case 3:
-				setMonth('Avril');
-				break;
-			case 4:
-				setMonth('Mai');
-				break;
-			case 5:
-				setMonth('Juin');
-				break;
-			case 6:
-				setMonth('Juillet');
-				break;
-			case 7:
-				setMonth('Août');
-				break;
-			case 8:
-				setMonth('Septembre');
-				break;
-			case 9:
-				setMonth('Octobre');
-				break;
-			case 10:
-				setMonth('Novembre');
-				break;
-			case 11:
-				setMonth('Décembre');
-				break;
-			default:
-				break;
-		}
+		getMonthFn(chosenDate.getMonth(), setMonth);
 	}, [chosenDate]);
 
 	return (
