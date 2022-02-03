@@ -205,7 +205,19 @@ const getDaily: RequestHandler = async (req, res, next) => {
 
 	// IF THE REQUESTED DATE DOESN'T EXIST
 	if (!foundDate) {
-		res.status(202).json({ message: "Date non trouvée, création de l'object." });
+		const emptyData = {
+			date: reqDate,
+			six: {
+				food: 0,
+				sleep: 0,
+				sport: 0,
+				relaxation: 0,
+				work: 0,
+				social: 0,
+			},
+		};
+
+		res.status(202).json(emptyData);
 		return;
 	}
 };

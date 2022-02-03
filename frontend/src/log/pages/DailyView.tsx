@@ -25,27 +25,13 @@ const DailyView: React.FC = () => {
 	const [dailyData, setDailyData] = useState<any>([]);
 
 	const getDailyData = async (userId: string, date: string) => {
-		let responseData = await sendRequest(
+		const responseData = await sendRequest(
 			`http://localhost:8080/api/log/daily/${userId}/${date}`,
 			'GET'
 		);
 
 		if (!responseData) {
 			return;
-		}
-
-		if (responseData.message) {
-			responseData = {
-				date: chosenDate.toISOString().slice(0, 10),
-				six: {
-					food: 0,
-					sleep: 0,
-					sport: 0,
-					relaxation: 0,
-					work: 0,
-					social: 0,
-				},
-			};
 		}
 
 		setDailyData(responseData);

@@ -27,16 +27,13 @@ const MonthlyView: React.FC = () => {
 	const [monthStr, setMonthStr] = useState('');
 	const [monthlyArray, setMonthlyArray] = useState<number[]>([]);
 	const [datesArray, setDatesArray] = useState<Date[]>([]);
-	const selectSixRef = useRef<HTMLSelectElement>(null);
 	const [currentTask, setCurrentTask] = useState('food');
 	const [numberArrayPlaceholder, setNumberArrayPlaceholder] = useState<number[]>([]);
 	const [datesArrayPlaceholder, setDatesArrayPlaceholder] = useState<string[]>([]);
 	const [emptyBoxes, setEmptyBoxes] = useState<0[]>([]);
 
-	const selectHandler = () => {
-		if (selectSixRef.current) {
-			setCurrentTask(selectSixRef.current?.value);
-		}
+	const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		setCurrentTask(event.target.value);
 	};
 
 	const previousMonthHandler = () => {
@@ -74,25 +71,20 @@ const MonthlyView: React.FC = () => {
 	const getMonthlyData = async () => {
 		const chosenMonthStr = format(chosenDate, 'yyyy-MM-dd');
 
-		console.log(chosenMonthStr);
+		const responseData = await sendRequest(
+			`http://localhost:8080/api/log/monthly/${userState.id}/${chosenMonthStr}/${currentTask}`,
+			'GET'
+		);
 
-		if (selectSixRef.current) {
-			const responseData = await sendRequest(
-				`http://localhost:8080/api/log/monthly/${userState.id}/${chosenMonthStr}/${currentTask}`,
-				'GET'
-			);
-
-			if (!responseData) {
-				return;
-			}
-
-			const { datesArray: responseDatesArray, responseArray } = responseData;
-
-			console.log(responseData);
-
-			setDatesArray(responseDatesArray);
-			setMonthlyArray(responseArray);
+		if (!responseData) {
+			return;
 		}
+
+		const { datesArray: responseDatesArray, responseArray } = responseData;
+
+		setDatesArray(responseDatesArray);
+		setMonthlyArray(responseArray);
+
 		getFirstDayOfWeek(chosenDate);
 	};
 
@@ -113,35 +105,9 @@ const MonthlyView: React.FC = () => {
 		setEmptyBoxes(emptyArray);
 	};
 
-	const placeholderCalendar = (date: Date) => {
-		const numberOfDaysInMonth = getDaysInMonth(date);
-		const array: number[] = [];
-
-		for (let i = 0; i < numberOfDaysInMonth; i++) {
-			array.push(0);
-		}
-
-		setNumberArrayPlaceholder(array);
-	};
-
-	const getDatesArrayPlaceholder = (date: Date) => {
-		const numberOfDays: number = getDaysInMonth(date);
-		const datesArray: string[] = [];
-
-		for (let i = 1; i < numberOfDays + 1; i++) {
-			let dateItem = format(addDays(date, i), 'yyyy-MM-dd');
-			datesArray.push(dateItem);
-		}
-
-		setDatesArrayPlaceholder(datesArray);
-	};
-
 	useEffect(() => {
-		if (typeof selectSixRef.current?.value === 'string' && userState.id !== null) {
-			setCurrentTask(selectSixRef.current.value);
-			getDatesArrayPlaceholder(chosenDate);
+		if (userState.id !== null) {
 			getMonthlyData();
-			placeholderCalendar(chosenDate);
 
 			switch (chosenDate.getMonth()) {
 				case 0:
@@ -196,12 +162,7 @@ const MonthlyView: React.FC = () => {
 				button_next_disabled={isAfter(addMonths(chosenDate, 1), new Date())}
 				text={`${monthStr} ${getYear(chosenDate)}`}
 				selector_task={
-					<select
-						ref={selectSixRef}
-						name='six'
-						onChange={selectHandler}
-						defaultValue='food'
-					>
+					<select name='six' onChange={selectHandler} defaultValue='food'>
 						<option value='food'>Alimentation</option>
 						<option value='sleep'>Sommeil</option>
 						<option value='sport'>Activité Physique</option>
