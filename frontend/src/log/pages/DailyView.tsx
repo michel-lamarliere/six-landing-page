@@ -15,6 +15,7 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import fr from 'date-fns/locale/fr';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import CalendarButton from '../components/CalendarButton';
 
 const DailyView: React.FC = () => {
 	const dispatch = useDispatch();
@@ -27,10 +28,10 @@ const DailyView: React.FC = () => {
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [chosenDate, setChosenDate] = useState(new Date());
-
 	const [day, setDay] = useState('');
 	const [month, setMonth] = useState('');
 	const [dailyData, setDailyData] = useState<any>([]);
+	const [showCalendar, setShowCalendar] = useState(false);
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const dateAndTaskStr = (event.target as HTMLElement).id;
@@ -70,6 +71,15 @@ const DailyView: React.FC = () => {
 		setIsLoading(false);
 	};
 
+	const calendarButtonHandler = () => {
+		setShowCalendar((prev) => !prev);
+	};
+
+	const calendarOnChangeHandler = (date: Date) => {
+		setShowCalendar(false);
+		setChosenDate(date);
+	};
+
 	const previousDayHandler = () => {
 		setChosenDate(addDays(chosenDate, -1));
 	};
@@ -80,19 +90,12 @@ const DailyView: React.FC = () => {
 		}
 	};
 
-	// const datePickerHandler = () => {
-	// 	setChosenDate(event.target.value);
-	// };
-
 	useEffect(() => {
 		if (userState.id) {
 			getDailyData(userState.id, chosenDate.toISOString().slice(0, 10));
+			getDayFn(getDay(chosenDate), setDay);
+			getMonthFn(chosenDate.getMonth(), true, setMonth);
 		}
-	}, [chosenDate]);
-
-	useEffect(() => {
-		getDayFn(getDay(chosenDate), setDay);
-		getMonthFn(chosenDate.getMonth(), true, setMonth);
 	}, [chosenDate]);
 
 	return (
@@ -106,21 +109,26 @@ const DailyView: React.FC = () => {
 				text={`${day} ${getDate(chosenDate)} ${month}
 					${getYear(chosenDate)}`}
 				selector_date={
-					<DatePicker
-						selected={chosenDate}
-						onChange={(date) => setChosenDate(date!)}
-						onSelect={(date: Date) => setChosenDate(date!)}
-						showYearDropdown
-						scrollableYearDropdown
-						selectsEnd
-						minDate={new Date(2020, 0, 1)}
-						maxDate={new Date()}
-						calendarStartDay={1}
-						locale='fr'
-						// timeIntervals={7}
-						formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 3)}
-						customInput={<button>Calendrier</button>}
-					/>
+					<>
+						<CalendarButton onClick={calendarButtonHandler} />
+						{showCalendar && (
+							<DatePicker
+								selected={chosenDate}
+								onChange={calendarOnChangeHandler}
+								onSelect={(date: Date) => setChosenDate(date!)}
+								showMonthDropdown
+								showYearDropdown
+								dropdownMode='select'
+								minDate={new Date(2020, 0, 1)}
+								maxDate={new Date()}
+								calendarStartDay={1}
+								locale='fr'
+								inline
+								// timeIntervals={7}
+								formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 3)}
+							/>
+						)}
+					</>
 				}
 			/>
 			{!isLoading &&

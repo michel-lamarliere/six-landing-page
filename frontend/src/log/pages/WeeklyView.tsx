@@ -23,6 +23,7 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import fr from 'date-fns/locale/fr';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import CalendarButton from '../components/CalendarButton';
 
 const WeekView: React.FC = () => {
 	const { sendRequest, sendData } = useRequest();
@@ -32,22 +33,36 @@ const WeekView: React.FC = () => {
 	registerLocale('fr', fr);
 
 	const userState = useSelector((state: RootState) => state.user);
+
 	const [weekData, setWeekData] = useState<{ date: Date; six: {} }[]>([]);
 	const [mappingArray, setMappingArray] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [showCalendar, setShowCalendar] = useState(false);
 
 	const [chosenDate, setChosenDate] = useState(addDays(new Date(), 0));
 	const [month, setMonth] = useState('');
 	const firstOfWeek = startOfWeek(chosenDate, { weekStartsOn: 1 });
 	const formattedFirstOfWeek = format(firstOfWeek, 'yyyy-MM-dd');
 
-	const previousWeekHandler = () => {
-		setChosenDate(addDays(chosenDate, -7));
-	};
+	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
+		const dateAndTaskStr = (event.target as HTMLElement).id;
+		const prevLevel = parseInt((event.target as HTMLButtonElement).value);
 
-	const nextWeekHandler = () => {
-		if (!isAfter(addDays(chosenDate, 7), new Date())) {
-			setChosenDate(addDays(chosenDate, 7));
+		if (userState.id) {
+			const responseData = await sendData(userState.id, dateAndTaskStr, prevLevel);
+
+			if (!responseData) {
+				return;
+			}
+
+			if (responseData.error) {
+				dispatch({
+					type: ErrorPopupActionTypes.SET_ERROR,
+					message: responseData.error,
+				});
+			}
+
+			getWeekData(userState.id, formattedFirstOfWeek);
 		}
 	};
 
@@ -104,25 +119,22 @@ const WeekView: React.FC = () => {
 		setMappingArray(array);
 	};
 
-	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
-		const dateAndTaskStr = (event.target as HTMLElement).id;
-		const prevLevel = parseInt((event.target as HTMLButtonElement).value);
+	const calendarButtonHandler = () => {
+		setShowCalendar((prev) => !prev);
+	};
 
-		if (userState.id) {
-			const responseData = await sendData(userState.id, dateAndTaskStr, prevLevel);
+	const calendarOnChangeHandler = (date: Date) => {
+		setShowCalendar(false);
+		setChosenDate(date);
+	};
 
-			if (!responseData) {
-				return;
-			}
+	const previousWeekHandler = () => {
+		setChosenDate(addDays(chosenDate, -7));
+	};
 
-			if (responseData.error) {
-				dispatch({
-					type: ErrorPopupActionTypes.SET_ERROR,
-					message: responseData.error,
-				});
-			}
-
-			getWeekData(userState.id, formattedFirstOfWeek);
+	const nextWeekHandler = () => {
+		if (!isAfter(addDays(chosenDate, 7), new Date())) {
+			setChosenDate(addDays(chosenDate, 7));
 		}
 	};
 
@@ -149,24 +161,27 @@ const WeekView: React.FC = () => {
 					chosenDate
 				)}`}
 				selector_date={
-					<DatePicker
-						selected={chosenDate}
-						onChange={(date) => setChosenDate(date!)}
-						onSelect={(date: Date) => setChosenDate(date!)}
-						showMonthDropdown
-						showYearDropdown
-						dropdownMode='select'
-						scrollableYearDropdown
-						selectsEnd
-						minDate={new Date(2020, 0, 1)}
-						maxDate={new Date()}
-						calendarStartDay={1}
-						locale='fr'
-						// timeIntervals={7}
-						formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 3)}
-						showWeekNumbers
-						customInput={<button>Calendrier</button>}
-					/>
+					<>
+						<CalendarButton onClick={calendarButtonHandler} />
+						{showCalendar && (
+							<DatePicker
+								selected={chosenDate}
+								onChange={calendarOnChangeHandler}
+								onSelect={(date: Date) => setChosenDate(date!)}
+								showMonthDropdown
+								showYearDropdown
+								dropdownMode='select'
+								scrollableYearDropdown
+								minDate={new Date(2020, 0, 1)}
+								maxDate={new Date()}
+								calendarStartDay={1}
+								locale='fr'
+								formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 3)}
+								showWeekNumbers
+								inline
+							/>
+						)}
+					</>
 				}
 			/>
 			<div>
