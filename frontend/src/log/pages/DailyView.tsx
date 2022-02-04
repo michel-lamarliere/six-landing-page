@@ -11,10 +11,17 @@ import { ErrorPopupActionTypes } from '../../shared/store/error';
 import LogHeader from '../components/LogHeader';
 import { useDates } from '../../shared/hooks/dates-hook';
 
+import DatePicker, { registerLocale } from 'react-datepicker';
+import fr from 'date-fns/locale/fr';
+
+import 'react-datepicker/dist/react-datepicker.css';
+
 const DailyView: React.FC = () => {
 	const dispatch = useDispatch();
 	const { sendRequest, sendData } = useRequest();
 	const { getDayFn, getMonthFn } = useDates();
+
+	registerLocale('fr', fr);
 
 	const userState = useSelector((state: RootState) => state.user);
 
@@ -24,30 +31,6 @@ const DailyView: React.FC = () => {
 	const [day, setDay] = useState('');
 	const [month, setMonth] = useState('');
 	const [dailyData, setDailyData] = useState<any>([]);
-
-	const getDailyData = async (userId: string, date: string) => {
-		const responseData = await sendRequest(
-			`http://localhost:8080/api/log/daily/${userId}/${date}`,
-			'GET'
-		);
-
-		if (!responseData) {
-			return;
-		}
-
-		setDailyData(responseData);
-		setIsLoading(false);
-	};
-
-	const previousDayHandler = () => {
-		setChosenDate(addDays(chosenDate, -1));
-	};
-
-	const nextDayHandler = () => {
-		if (!isAfter(addDays(chosenDate, 1), new Date())) {
-			setChosenDate(addDays(chosenDate, 1));
-		}
-	};
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const dateAndTaskStr = (event.target as HTMLElement).id;
@@ -73,6 +56,34 @@ const DailyView: React.FC = () => {
 		}
 	};
 
+	const getDailyData = async (userId: string, date: string) => {
+		const responseData = await sendRequest(
+			`http://localhost:8080/api/log/daily/${userId}/${date}`,
+			'GET'
+		);
+
+		if (!responseData) {
+			return;
+		}
+
+		setDailyData(responseData);
+		setIsLoading(false);
+	};
+
+	const previousDayHandler = () => {
+		setChosenDate(addDays(chosenDate, -1));
+	};
+
+	const nextDayHandler = () => {
+		if (!isAfter(addDays(chosenDate, 1), new Date())) {
+			setChosenDate(addDays(chosenDate, 1));
+		}
+	};
+
+	// const datePickerHandler = () => {
+	// 	setChosenDate(event.target.value);
+	// };
+
 	useEffect(() => {
 		if (userState.id) {
 			getDailyData(userState.id, chosenDate.toISOString().slice(0, 10));
@@ -81,7 +92,7 @@ const DailyView: React.FC = () => {
 
 	useEffect(() => {
 		getDayFn(getDay(chosenDate), setDay);
-		getMonthFn(chosenDate.getMonth(), setMonth);
+		getMonthFn(chosenDate.getMonth(), true, setMonth);
 	}, [chosenDate]);
 
 	return (
@@ -94,6 +105,23 @@ const DailyView: React.FC = () => {
 				button_next_disabled={isAfter(addDays(chosenDate, 1), new Date())}
 				text={`${day} ${getDate(chosenDate)} ${month}
 					${getYear(chosenDate)}`}
+				selector_date={
+					<DatePicker
+						selected={chosenDate}
+						onChange={(date) => setChosenDate(date!)}
+						onSelect={(date: Date) => setChosenDate(date!)}
+						showYearDropdown
+						scrollableYearDropdown
+						selectsEnd
+						minDate={new Date(2020, 0, 1)}
+						maxDate={new Date()}
+						calendarStartDay={1}
+						locale='fr'
+						// timeIntervals={7}
+						formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 3)}
+						customInput={<button>Calendrier</button>}
+					/>
+				}
 			/>
 			{!isLoading &&
 				dailyData &&

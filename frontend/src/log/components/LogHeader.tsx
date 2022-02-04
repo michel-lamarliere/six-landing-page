@@ -6,6 +6,7 @@ const LogHeader: React.FC<{
 	selector_task?: any;
 	button_previous_text: string;
 	button_previous_handler: () => void;
+	button_previous_disabled?: boolean;
 	button_next_text: string;
 	button_next_handler: () => void;
 	button_next_disabled: boolean;
@@ -14,11 +15,14 @@ const LogHeader: React.FC<{
 	return (
 		<>
 			<div className={classes.selectors}>
-				<p>[Selecteur de date]</p>
+				<p>{props.selector_date}</p>
 				<h1>{props.selector_task}</h1>
 			</div>
 			<div className={classes.buttons}>
-				<button onClick={props.button_previous_handler}>
+				<button
+					onClick={props.button_previous_handler}
+					disabled={props.button_previous_disabled}
+				>
 					{props.button_previous_text}
 				</button>
 				<div>{props.text}</div>

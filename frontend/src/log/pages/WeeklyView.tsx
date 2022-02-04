@@ -19,28 +19,35 @@ import { ErrorPopupActionTypes } from '../../shared/store/error';
 import LogHeader from '../components/LogHeader';
 import { useDates } from '../../shared/hooks/dates-hook';
 
+import DatePicker, { registerLocale } from 'react-datepicker';
+import fr from 'date-fns/locale/fr';
+
+import 'react-datepicker/dist/react-datepicker.css';
+
 const WeekView: React.FC = () => {
 	const { sendRequest, sendData } = useRequest();
 	const { getMonthFn } = useDates();
 	const dispatch = useDispatch();
+
+	registerLocale('fr', fr);
 
 	const userState = useSelector((state: RootState) => state.user);
 	const [weekData, setWeekData] = useState<{ date: Date; six: {} }[]>([]);
 	const [mappingArray, setMappingArray] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
-	const [chosenDate, setchosenDate] = useState(addDays(new Date(), 0));
+	const [chosenDate, setChosenDate] = useState(addDays(new Date(), 0));
 	const [month, setMonth] = useState('');
 	const firstOfWeek = startOfWeek(chosenDate, { weekStartsOn: 1 });
 	const formattedFirstOfWeek = format(firstOfWeek, 'yyyy-MM-dd');
 
 	const previousWeekHandler = () => {
-		setchosenDate(addDays(chosenDate, -7));
+		setChosenDate(addDays(chosenDate, -7));
 	};
 
 	const nextWeekHandler = () => {
 		if (!isAfter(addDays(chosenDate, 7), new Date())) {
-			setchosenDate(addDays(chosenDate, 7));
+			setChosenDate(addDays(chosenDate, 7));
 		}
 	};
 
@@ -127,7 +134,7 @@ const WeekView: React.FC = () => {
 	}, [userState.id, chosenDate]);
 
 	useEffect(() => {
-		getMonthFn(chosenDate.getMonth(), setMonth);
+		getMonthFn(chosenDate.getMonth(), true, setMonth);
 	}, [chosenDate]);
 
 	return (
@@ -141,6 +148,26 @@ const WeekView: React.FC = () => {
 				text={`Semaine: ${getISOWeek(chosenDate)} | ${month} ${getYear(
 					chosenDate
 				)}`}
+				selector_date={
+					<DatePicker
+						selected={chosenDate}
+						onChange={(date) => setChosenDate(date!)}
+						onSelect={(date: Date) => setChosenDate(date!)}
+						showMonthDropdown
+						showYearDropdown
+						dropdownMode='select'
+						scrollableYearDropdown
+						selectsEnd
+						minDate={new Date(2020, 0, 1)}
+						maxDate={new Date()}
+						calendarStartDay={1}
+						locale='fr'
+						// timeIntervals={7}
+						formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 3)}
+						showWeekNumbers
+						customInput={<button>Calendrier</button>}
+					/>
+				}
 			/>
 			<div>
 				<div className={classes.days}>

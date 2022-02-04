@@ -20,7 +20,6 @@ const addData: RequestHandler = async (req, res, next) => {
 		levelOfCompletion: reqLevelOfCompletion,
 	} = req.body;
 
-	console.log(req.body);
 	const reqDate = new Date(reqDateStr);
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
@@ -95,7 +94,9 @@ const addData: RequestHandler = async (req, res, next) => {
 	}
 
 	if (!inputsAreValid.all) {
-		res.status(400).json({ error: "Erreur lors de l'enregistrement de données" });
+		res.status(400).json({
+			error: "Erreur lors de l'enregistrement de données, certaines données sont invalides.",
+		});
 		return;
 	}
 
@@ -196,7 +197,6 @@ const getDaily: RequestHandler = async (req, res, next) => {
 	for (let i = 0; i < user.log.length; i++) {
 		if (isSameDay(reqDate, user.log[i].date)) {
 			console.log('get daily');
-			console.log(user.log[i].date);
 			const dateData = user.log[i];
 			res.status(200).json(dateData);
 			foundDate = true;
@@ -278,8 +278,6 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 		}
 	}
 
-	console.log(resultsArray);
-
 	console.log('get weekly');
 	res.status(200).json(resultsArray);
 };
@@ -301,42 +299,6 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 
 	const numberOfDaysInMonth: number = getDaysInMonth(reqStartOfMonthDate);
 
-	// const datesArray = [];
-
-	// // CREATES AN ARRAY OF ALL THE DATES FOR THE REQUESTED MONTH
-	// for (let i = 0; i < numberOfDaysInMonth; i++) {
-	// 	// const date = addDays(addHours(reqStartOfMonthDate, 1), i);
-	// 	const date = addDays(reqStartOfMonthDate, i);
-	// 	datesArray.push(date);
-	// }
-
-	// const responseArray: any[] = [];
-
-	// CREATES AN ARRAY WITH ALL OF THE REQUESTED MONTH'S DATA
-	// for (let i = 0; i < numberOfDaysInMonth; i++) {
-	// 	let matched = false;
-	// 	let y;
-
-	// 	const date = addDays(reqStartOfMonthDate, i);
-
-	// 	// IF THE DATE IS FOUND, PUSHES THE CORRECT DATA
-	// 	for (y = 0; y < user.log.length; y++) {
-	// 		if (user.log[y] && isSameDay(datesArray[i], user.log[y].date)) {
-	// 			responseArray.push(user.log[y].six[reqTask]);
-	// 			matched = true;
-	// 		}
-	// 	}
-
-	// 	//
-	// 	if (y > user.log.length) {
-	// 		matched = false;
-	// 	}
-
-	// 	// IF THE DATE ISN'T FOUND, PUSHES 0
-	// 	if (!matched) {
-	// 		responseArray.push({date: });
-	// 	}
-	// }
 	const responseArray: any[] = [];
 
 	for (let i = 0; i < numberOfDaysInMonth; i++) {
@@ -359,8 +321,6 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 			});
 		}
 	}
-
-	console.log(responseArray);
 
 	console.log('get monthly');
 	res.status(200).json(responseArray);

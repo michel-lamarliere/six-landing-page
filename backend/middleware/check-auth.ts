@@ -19,7 +19,6 @@ const checkAuth: RequestHandler = (
 		const token = req.headers.authorization.split(' ')[1];
 
 		if (!token) {
-			console.log("Vous n'êtes pas autorisé à effectuer cette action.");
 			res.status(403).json({
 				error: "Vous n'êtes pas autorisé à effectuer cette action.",
 			});
@@ -30,7 +29,6 @@ const checkAuth: RequestHandler = (
 		req.userData = { id: decodedToken.id };
 		next();
 	} catch (error) {
-		console.log("Erreur lors de la vérification d'autorisation.");
 		res.status(500).json({ error: "Erreur lors de la vérification d'autorisation." });
 		return;
 	}

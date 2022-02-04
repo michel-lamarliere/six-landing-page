@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { isAfter, addYears, getYear } from 'date-fns';
+import { isAfter, addYears, getYear, isBefore } from 'date-fns';
 import {
 	Bar,
 	BarChart,
@@ -18,9 +18,11 @@ import { useRequest } from '../../shared/hooks/http-hook';
 import LogHeader from '../../log/components/LogHeader';
 
 import classes from './AnnualChart.module.scss';
+import { useDates } from '../../shared/hooks/dates-hook';
 
 const AnnualGraph: React.FC = () => {
 	const { sendRequest } = useRequest();
+	const { getMonthFn } = useDates();
 
 	const userState = useSelector((state: RootState) => state.user);
 
@@ -57,47 +59,7 @@ const AnnualGraph: React.FC = () => {
 		const data: any = [];
 
 		for (let i = 0; i < array.length; i++) {
-			let month = '';
-			switch (i) {
-				case 0:
-					month = 'Jan.';
-					break;
-				case 1:
-					month = 'Fév.';
-					break;
-				case 2:
-					month = 'Mars';
-					break;
-				case 3:
-					month = 'Avr.';
-					break;
-				case 4:
-					month = 'Mai';
-					break;
-				case 5:
-					month = 'Juin';
-					break;
-				case 6:
-					month = 'Juil.';
-					break;
-				case 7:
-					month = 'Août';
-					break;
-				case 8:
-					month = 'Sept.';
-					break;
-				case 9:
-					month = 'Oct.';
-					break;
-				case 10:
-					month = 'Nov.';
-					break;
-				case 11:
-					month = 'Déc.';
-					break;
-				default:
-					break;
-			}
+			let month = getMonthFn(i, false, null, true);
 			const thisMonth = {
 				name: month,
 				empty: array[i].empty,
@@ -119,6 +81,10 @@ const AnnualGraph: React.FC = () => {
 			<LogHeader
 				button_previous_text='Année Précédente'
 				button_previous_handler={previousYearHandler}
+				button_previous_disabled={isBefore(
+					addYears(selectedYear, -1),
+					new Date(2020, 0, 1)
+				)}
 				button_next_text='Année Suivante'
 				button_next_handler={nextYearHandler}
 				button_next_disabled={isAfter(addYears(selectedYear, 1), new Date())}
@@ -135,13 +101,8 @@ const AnnualGraph: React.FC = () => {
 				}
 			/>
 			<div className={classes.chart}>
-				<ResponsiveContainer width='99%' height='100%' className={classes.test}>
-					<BarChart
-						width={600}
-						height={600}
-						data={data}
-						className={classes.test}
-					>
+				<ResponsiveContainer width='70%' height='40%' className={classes.test}>
+					<BarChart data={data.slice(0, 6)} className={classes.test}>
 						<XAxis
 							dataKey='name'
 							axisLine={false}
@@ -155,6 +116,38 @@ const AnnualGraph: React.FC = () => {
 						<Bar dataKey='full' stackId='a' fill='#36d5d6' />
 					</BarChart>
 				</ResponsiveContainer>
+				<>
+					{data.length > 6 && (
+						<ResponsiveContainer
+							width='70%'
+							height='40%'
+							className={classes.test}
+						>
+							<BarChart data={data.slice(6)} className={classes.test}>
+								<XAxis
+									dataKey='name'
+									axisLine={false}
+									tickLine={false}
+									stroke='black'
+									style={{ fontSize: '16px' }}
+								/>
+								<YAxis
+									tickCount={8}
+									domain={['0', '31']}
+									stroke='black'
+								/>
+								<Bar
+									dataKey='empty'
+									stackId='a'
+									fill='#080e46'
+									barSize={40}
+								/>
+								<Bar dataKey='half' stackId='a' fill='#3f4cbf' />
+								<Bar dataKey='full' stackId='a' fill='#36d5d6' />
+							</BarChart>
+						</ResponsiveContainer>
+					)}
+				</>
 			</div>
 		</div>
 	);

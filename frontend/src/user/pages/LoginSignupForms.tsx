@@ -26,7 +26,6 @@ const Header: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [loginMode, setLoginMode] = useState(true);
-	console.log(loginMode);
 	const [formIsValid, setFormIsValid] = useState(false);
 
 	const {

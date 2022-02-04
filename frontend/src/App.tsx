@@ -99,8 +99,7 @@ const App: React.FC = () => {
 		userState.expiration &&
 		userState.id &&
 		userState.name &&
-		userState.email &&
-		userState.confirmedEmail;
+		userState.email;
 
 	const main_loggedIn = userData ? 'main_logged-in' : 'main_right';
 

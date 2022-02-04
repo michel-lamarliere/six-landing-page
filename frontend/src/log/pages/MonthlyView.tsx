@@ -18,12 +18,21 @@ import { RootState } from '../../shared/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { DataButton, PlaceHolderDataButton } from '../components/Buttons';
 import { ErrorPopupActionTypes } from '../../shared/store/error';
+
 import LogHeader from '../components/LogHeader';
+
+import DatePicker, { registerLocale } from 'react-datepicker';
+import fr from 'date-fns/locale/fr';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 const MonthlyView: React.FC = () => {
 	const dispatch = useDispatch();
 	const { sendRequest, sendData } = useRequest();
 	const { getMonthFn } = useDates();
+
+	registerLocale('fr', fr);
+
 	const userState = useSelector((state: RootState) => state.user);
 	const [chosenDate, setChosenDate] = useState<Date>(startOfMonth(new Date()));
 	const [monthStr, setMonthStr] = useState('');
@@ -78,13 +87,8 @@ const MonthlyView: React.FC = () => {
 			return;
 		}
 
-		const array = responseData;
-
-		setMonthlyArray(array);
-
+		setMonthlyArray(responseData);
 		getFirstDayOfWeek(chosenDate);
-
-		console.log(array);
 	};
 
 	const getFirstDayOfWeek = (date: Date) => {
@@ -108,7 +112,7 @@ const MonthlyView: React.FC = () => {
 		if (userState.id !== null) {
 			getMonthlyData();
 
-			getMonthFn(chosenDate.getMonth(), setMonthStr);
+			getMonthFn(chosenDate.getMonth(), true, setMonthStr);
 		}
 	}, [chosenDate, currentTask]);
 
@@ -130,6 +134,24 @@ const MonthlyView: React.FC = () => {
 						<option value='work'>Projets</option>
 						<option value='social'>Vie Sociale</option>
 					</select>
+				}
+				selector_date={
+					<DatePicker
+						selected={chosenDate}
+						onChange={(date) => setChosenDate(date!)}
+						onSelect={(date: Date) => setChosenDate(date!)}
+						showYearDropdown
+						scrollableYearDropdown
+						selectsEnd
+						minDate={new Date(2020, 0, 1)}
+						maxDate={new Date()}
+						calendarStartDay={1}
+						locale='fr'
+						// timeIntervals={7}
+						formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 3)}
+						showMonthYearPicker
+						customInput={<button>Calendrier</button>}
+					/>
 				}
 			/>
 			<div className={classes.days}>

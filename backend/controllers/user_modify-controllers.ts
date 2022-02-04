@@ -50,7 +50,6 @@ const changeName: RequestHandler = async (req, res, next) => {
 };
 
 const comparePasswords: RequestHandler = async (req, res, next) => {
-	console.log('---COMPARE_PASSWORDS');
 	const reqId = new ObjectId(req.params.id);
 	const reqPassword = req.params.password;
 
@@ -66,7 +65,6 @@ const comparePasswords: RequestHandler = async (req, res, next) => {
 
 	// CHECKS IF THE PASSWORD MATCHES THE USER'S HASHED PASSWORD
 	const matchingPasswords = await bcrypt.compare(reqPassword, user.password);
-	console.log({ matchingPasswords });
 
 	if (!matchingPasswords) {
 		res.status(400).json({ error: 'Mots de passe non identiques' });
@@ -74,14 +72,10 @@ const comparePasswords: RequestHandler = async (req, res, next) => {
 	}
 
 	res.status(200).json({ success: 'Mots de passe identiques' });
-
-	console.log('COMPARE_PASSWORDS---');
 };
 
 const changePassword: RequestHandler = async (req, res, next) => {
-	console.log('---CHANGE_PASSWORDS');
 	const { id: reqIdStr, newPassword: reqNewPassword } = req.body;
-	console.log({ reqIdStr, reqNewPassword });
 
 	const reqId = new ObjectId(reqIdStr);
 
@@ -119,8 +113,6 @@ const changePassword: RequestHandler = async (req, res, next) => {
 	);
 
 	res.status(200).json({ success: 'Mot de passe modifié.' });
-
-	console.log('CHANGE_PASSWORDS---');
 };
 
 const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {

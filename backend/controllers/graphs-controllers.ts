@@ -19,9 +19,6 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 	const reqYear: number = +req.params.year;
 	const reqTask = req.params.task;
 
-	console.log(reqYear);
-	console.log(reqTask);
-
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
 	// CHECKS IF THE USER EXISTS

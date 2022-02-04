@@ -47,17 +47,12 @@ const ForgotPasswordForm: React.FC = () => {
 			'GET'
 		);
 
-		console.log(userData);
-
 		if (responseData.error) {
 			navigate('/');
 			return;
 		}
 
-		console.log(responseData);
-
 		setId(responseData.id);
-		console.log(id);
 	};
 
 	const redirect = () => {
