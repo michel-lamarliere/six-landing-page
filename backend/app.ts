@@ -5,7 +5,7 @@ const database = require('./util/db-connect');
 const userRoutes = require('./routes/user-routes');
 const userModifyRoutes = require('./routes/user_modify-routes');
 const logRoutes = require('./routes/log-routes');
-const graphsRoutes = require('./routes/graphs-routes');
+const chartsRoutes = require('./routes/charts-routes');
 
 const app = express();
 
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 app.use('/api/user', userRoutes);
 app.use('/api/user_modify', userModifyRoutes);
 app.use('/api/log', logRoutes);
-app.use('/api/graphs', graphsRoutes);
+app.use('/api/charts', chartsRoutes);
 
 app.listen(8080, () => {
 	database.connectToServer((error: {}) => {

@@ -54,11 +54,8 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 	const allYearsMonths = [];
 
 	// CREATES AN ARRAY OF ALL THE REQUESTED YEAR'S MONTHS
-	// , IF THE MONTH IS AFTER THE TODAY'S MONTH, IT STOPS
 	for (let i = 0; i < 12; i++) {
-		if (isBefore(addMonths(firstDateOfYear, i), new Date())) {
-			allYearsMonths.push(i);
-		}
+		allYearsMonths.push(i);
 	}
 
 	const finalData: any = [];
@@ -67,7 +64,7 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 		const loopingMonthLength = getDaysInMonth(
 			new Date(reqYear, allYearsMonths[i], 1)
 		);
-		const loopingMonthData = { empty: 0, half: 0, full: 0 };
+		const loopingMonthData = { future: 0, empty: 0, half: 0, full: 0 };
 
 		// LOOPS THOUGH THE LOOPING MONTH DATA
 		for (let y = 1; y < loopingMonthLength + 1; y++) {
@@ -89,9 +86,12 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 				if (!sameDate) {
 					loopingMonthData.empty++;
 				}
+			} else {
+				loopingMonthData.future++;
 			}
 		}
 		// PUSHES THE LOOPING MONTH'S DATA TO THE WHOLE YEAR'S ARRAY
+		console.log(loopingMonthData);
 		finalData.push(loopingMonthData);
 	}
 

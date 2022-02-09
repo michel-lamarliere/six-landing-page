@@ -161,7 +161,6 @@ const MonthlyView: React.FC = () => {
 								maxDate={new Date()}
 								calendarStartDay={1}
 								locale='fr'
-								// timeIntervals={7}
 								formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 3)}
 								showMonthYearPicker
 								inline

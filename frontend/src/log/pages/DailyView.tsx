@@ -124,7 +124,6 @@ const DailyView: React.FC = () => {
 								calendarStartDay={1}
 								locale='fr'
 								inline
-								// timeIntervals={7}
 								formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 3)}
 							/>
 						)}

@@ -1,12 +1,12 @@
 import { Router } from 'express';
 
 const checkAuth = require('../middleware/check-auth');
-const graphsControllers = require('../controllers/graphs-controllers');
+const chartsControllers = require('../controllers/charts-controllers');
 
 const router = Router();
 
 router.use(checkAuth);
 
-router.get('/annual/:id/:year/:task', graphsControllers.getAnnual);
+router.get('/annual/:id/:year/:task', chartsControllers.getAnnual);
 
 module.exports = router;

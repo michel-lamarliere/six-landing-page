@@ -45,7 +45,7 @@ const AnnualGraph: React.FC = () => {
 
 	const getGraph = async () => {
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/graphs/annual/${userState.id}/${getYear(
+			`http://localhost:8080/api/charts/annual/${userState.id}/${getYear(
 				selectedYear
 			)}/${task}`,
 			'GET'
@@ -62,6 +62,7 @@ const AnnualGraph: React.FC = () => {
 			let month = getMonthFn(i, false, null, true);
 			const thisMonth = {
 				name: month,
+				future: array[i].future,
 				empty: array[i].empty,
 				half: array[i].half,
 				full: array[i].full,
@@ -111,43 +112,28 @@ const AnnualGraph: React.FC = () => {
 							style={{ fontSize: '16px' }}
 						/>
 						<YAxis tickCount={8} domain={['0', '31']} stroke='black' />
-						<Bar dataKey='empty' stackId='a' fill='#080e46' barSize={40} />
+						<Bar dataKey='future' stackId='a' fill='#ffffff' barSize={40} />
+						<Bar dataKey='empty' stackId='a' fill='#080e46' />
 						<Bar dataKey='half' stackId='a' fill='#3f4cbf' />
 						<Bar dataKey='full' stackId='a' fill='#36d5d6' />
 					</BarChart>
 				</ResponsiveContainer>
-				<>
-					{data.length > 6 && (
-						<ResponsiveContainer
-							width='70%'
-							height='40%'
-							className={classes.test}
-						>
-							<BarChart data={data.slice(6)} className={classes.test}>
-								<XAxis
-									dataKey='name'
-									axisLine={false}
-									tickLine={false}
-									stroke='black'
-									style={{ fontSize: '16px' }}
-								/>
-								<YAxis
-									tickCount={8}
-									domain={['0', '31']}
-									stroke='black'
-								/>
-								<Bar
-									dataKey='empty'
-									stackId='a'
-									fill='#080e46'
-									barSize={40}
-								/>
-								<Bar dataKey='half' stackId='a' fill='#3f4cbf' />
-								<Bar dataKey='full' stackId='a' fill='#36d5d6' />
-							</BarChart>
-						</ResponsiveContainer>
-					)}
-				</>
+				<ResponsiveContainer width='70%' height='40%' className={classes.test}>
+					<BarChart data={data.slice(6)} className={classes.test}>
+						<XAxis
+							dataKey='name'
+							axisLine={false}
+							tickLine={false}
+							stroke='black'
+							style={{ fontSize: '16px' }}
+						/>
+						<YAxis tickCount={8} domain={['0', '31']} stroke='black' />
+						<Bar dataKey='future' stackId='a' fill='#ffffff' barSize={40} />
+						<Bar dataKey='empty' stackId='a' fill='#080e46' />
+						<Bar dataKey='half' stackId='a' fill='#3f4cbf' />
+						<Bar dataKey='full' stackId='a' fill='#36d5d6' />
+					</BarChart>
+				</ResponsiveContainer>
 			</div>
 		</div>
 	);
