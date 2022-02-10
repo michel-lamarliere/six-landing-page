@@ -80,26 +80,12 @@ const AnnualGraph: React.FC = () => {
 	return (
 		<div className={classes.wrapper}>
 			<LogHeader
-				button_previous_text='Année Précédente'
-				button_previous_handler={previousYearHandler}
-				button_previous_disabled={isBefore(
-					addYears(selectedYear, -1),
-					new Date(2020, 0, 1)
-				)}
-				button_next_text='Année Suivante'
-				button_next_handler={nextYearHandler}
-				button_next_disabled={isAfter(addYears(selectedYear, 1), new Date())}
+				setDate={setSelectedYear}
+				date={selectedYear}
 				text={selectedYear.getFullYear()}
-				selector_task={
-					<select onChange={selectHandler}>
-						<option value='food'>Alimentation</option>
-						<option value='sleep'>Sommeil</option>
-						<option value='sport'>Sport</option>
-						<option value='relaxation'>Relaxation</option>
-						<option value='work'>Travail</option>
-						<option value='social'>Vie Sociale</option>
-					</select>
-				}
+				selectHandler={selectHandler}
+				selector_task={true}
+				calendar='YEARLY_CHART'
 			/>
 			<div className={classes.chart}>
 				<ResponsiveContainer width='70%' height='40%' className={classes.test}>
@@ -112,7 +98,7 @@ const AnnualGraph: React.FC = () => {
 							style={{ fontSize: '16px' }}
 						/>
 						<YAxis tickCount={8} domain={['0', '31']} stroke='black' />
-						<Bar dataKey='future' stackId='a' fill='#ffffff' barSize={40} />
+						<Bar dataKey='future' stackId='a' fill='#5b5b5b' barSize={40} />
 						<Bar dataKey='empty' stackId='a' fill='#080e46' />
 						<Bar dataKey='half' stackId='a' fill='#3f4cbf' />
 						<Bar dataKey='full' stackId='a' fill='#36d5d6' />
@@ -128,7 +114,7 @@ const AnnualGraph: React.FC = () => {
 							style={{ fontSize: '16px' }}
 						/>
 						<YAxis tickCount={8} domain={['0', '31']} stroke='black' />
-						<Bar dataKey='future' stackId='a' fill='#ffffff' barSize={40} />
+						<Bar dataKey='future' stackId='a' fill='#5b5b5b' barSize={40} />
 						<Bar dataKey='empty' stackId='a' fill='#080e46' />
 						<Bar dataKey='half' stackId='a' fill='#3f4cbf' />
 						<Bar dataKey='full' stackId='a' fill='#36d5d6' />

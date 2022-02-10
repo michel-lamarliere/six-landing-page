@@ -1,0 +1,60 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.header {
+	display: flex;
+}
+
+.fullheader {
+	display: flex;
+}
+
+.calendar {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	&_days {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+	}
+
+	&_weeks {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+	}
+
+	&_months {
+		display: grid;
+		grid-template-columns: repeat(6, 1fr);
+		gap: 0.5rem;
+	}
+}
+
+.day {
+	display: grid;
+	place-content: center;
+	cursor: pointer;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+
+	&:disabled {
+		cursor: default;
+	}
+}
+
+.month {
+	display: grid;
+	place-content: center;
+	cursor: pointer;
+	width: 4.5rem;
+	height: 2rem;
+	border-radius: 0.2rem;
+
+	&:disabled {
+		cursor: default;
+	}
+}

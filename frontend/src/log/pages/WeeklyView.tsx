@@ -1,4 +1,15 @@
 import React, { useState, useEffect } from 'react';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../shared/store/store';
+import { ErrorPopupActionTypes } from '../../shared/store/error';
+
+import WeekViewTasks from '../components/WeeklyViewTasks';
+import LogHeader from '../components/LogHeader';
+
+import { useRequest } from '../../shared/hooks/http-hook';
+import { useDates } from '../../shared/hooks/dates-hook';
+
 import {
 	addDays,
 	getISOWeek,
@@ -8,36 +19,19 @@ import {
 	isAfter,
 	isSameDay,
 } from 'date-fns';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../shared/store/store';
 
 import classes from './WeeklyView.module.scss';
-
-import { useRequest } from '../../shared/hooks/http-hook';
-import WeekViewTasks from '../components/WeeklyViewTasks';
-import { ErrorPopupActionTypes } from '../../shared/store/error';
-import LogHeader from '../components/LogHeader';
-import { useDates } from '../../shared/hooks/dates-hook';
-
-import DatePicker, { registerLocale } from 'react-datepicker';
-import fr from 'date-fns/locale/fr';
-
-import 'react-datepicker/dist/react-datepicker.css';
-import CalendarButton from '../components/CalendarButton';
 
 const WeekView: React.FC = () => {
 	const { sendRequest, sendData } = useRequest();
 	const { getMonthFn } = useDates();
 	const dispatch = useDispatch();
 
-	registerLocale('fr', fr);
-
 	const userState = useSelector((state: RootState) => state.user);
 
 	const [weekData, setWeekData] = useState<{ date: Date; six: {} }[]>([]);
 	const [mappingArray, setMappingArray] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
-	const [showCalendar, setShowCalendar] = useState(false);
 
 	const [chosenDate, setChosenDate] = useState(addDays(new Date(), 0));
 	const [month, setMonth] = useState('');
@@ -119,25 +113,6 @@ const WeekView: React.FC = () => {
 		setMappingArray(array);
 	};
 
-	const calendarButtonHandler = () => {
-		setShowCalendar((prev) => !prev);
-	};
-
-	const calendarOnChangeHandler = (date: Date) => {
-		setShowCalendar(false);
-		setChosenDate(date);
-	};
-
-	const previousWeekHandler = () => {
-		setChosenDate(addDays(chosenDate, -7));
-	};
-
-	const nextWeekHandler = () => {
-		if (!isAfter(addDays(chosenDate, 7), new Date())) {
-			setChosenDate(addDays(chosenDate, 7));
-		}
-	};
-
 	useEffect(() => {
 		if (userState.id) {
 			getWeekData(userState.id, formattedFirstOfWeek);
@@ -152,37 +127,12 @@ const WeekView: React.FC = () => {
 	return (
 		<div className={classes.wrapper}>
 			<LogHeader
-				button_previous_text='Semaine précédente'
-				button_previous_handler={previousWeekHandler}
-				button_next_text='Semaine suivante'
-				button_next_handler={nextWeekHandler}
-				button_next_disabled={isAfter(addDays(chosenDate, 7), new Date())}
+				setDate={setChosenDate}
+				date={chosenDate}
 				text={`Semaine: ${getISOWeek(chosenDate)} | ${month} ${getYear(
 					chosenDate
 				)}`}
-				selector_date={
-					<>
-						<CalendarButton onClick={calendarButtonHandler} />
-						{showCalendar && (
-							<DatePicker
-								selected={chosenDate}
-								onChange={calendarOnChangeHandler}
-								onSelect={(date: Date) => setChosenDate(date!)}
-								showMonthDropdown
-								showYearDropdown
-								dropdownMode='select'
-								scrollableYearDropdown
-								minDate={new Date(2020, 0, 1)}
-								maxDate={new Date()}
-								calendarStartDay={1}
-								locale='fr'
-								formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 3)}
-								showWeekNumbers
-								inline
-							/>
-						)}
-					</>
-				}
+				calendar='WEEKLY'
 			/>
 			<div>
 				<div className={classes.days}>

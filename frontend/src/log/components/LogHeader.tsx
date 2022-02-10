@@ -1,37 +1,72 @@
-import React from 'react';
+import React, { useState } from 'react';
+import CalendarButton from './Calendar/CalendarButton';
+import DailyCalendar from './Calendar/DailyCalendar';
+
+import MonthlyCalendar from './Calendar/MonthlyCalendar';
+import WeeklyCalendar from './Calendar/WeeklyCalendar';
+
 import classes from './LogHeader.module.scss';
 
 const LogHeader: React.FC<{
-	selector_date?: any;
-	selector_task?: any;
-	button_previous_text: string;
-	button_previous_handler: () => void;
-	button_previous_disabled?: boolean;
-	button_next_text: string;
-	button_next_handler: () => void;
-	button_next_disabled: boolean;
+	setDate: any;
+	date: Date;
 	text: string;
+	selector_task?: boolean;
+	selectHandler?: any;
+	calendar: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY_CHART';
 }> = (props) => {
+	const [showCalendar, setShowCalendar] = useState(false);
+
+	const calendarButtonHandler = () => {
+		setShowCalendar((prev) => !prev);
+	};
+
 	return (
 		<>
 			<div className={classes.selectors}>
-				<p>{props.selector_date}</p>
-				<h1>{props.selector_task}</h1>
+				<CalendarButton onClick={calendarButtonHandler} />
+				{props.selector_task && (
+					<select name='six' onChange={props.selectHandler} defaultValue='food'>
+						<option value='food'>Alimentation</option>
+						<option value='sleep'>Sommeil</option>
+						<option value='sport'>Activité Physique</option>
+						<option value='relaxation'>Détente</option>
+						<option value='work'>Projets</option>
+						<option value='social'>Vie Sociale</option>
+					</select>
+				)}
 			</div>
 			<div className={classes.buttons}>
-				<button
-					onClick={props.button_previous_handler}
-					disabled={props.button_previous_disabled}
-				>
-					{props.button_previous_text}
-				</button>
-				<div>{props.text}</div>
-				<button
-					onClick={props.button_next_handler}
-					disabled={props.button_next_disabled}
-				>
-					{props.button_next_text}
-				</button>
+				{props.calendar === 'DAILY' && (
+					<DailyCalendar
+						setDate={props.setDate}
+						date={props.date}
+						text={props.text}
+						showCalendar={showCalendar}
+						setShowCalendar={setShowCalendar}
+						calendarButtonHandler={calendarButtonHandler}
+					/>
+				)}
+				{props.calendar === 'WEEKLY' && (
+					<WeeklyCalendar
+						setDate={props.setDate}
+						date={props.date}
+						text={props.text}
+						showCalendar={showCalendar}
+						setShowCalendar={setShowCalendar}
+						calendarButtonHandler={calendarButtonHandler}
+					/>
+				)}
+				{props.calendar === 'MONTHLY' && (
+					<MonthlyCalendar
+						setDate={props.setDate}
+						date={props.date}
+						text={props.text}
+						showCalendar={showCalendar}
+						setShowCalendar={setShowCalendar}
+						calendarButtonHandler={calendarButtonHandler}
+					/>
+				)}
 			</div>
 		</>
 	);

@@ -21,18 +21,12 @@ import { ErrorPopupActionTypes } from '../../shared/store/error';
 
 import LogHeader from '../components/LogHeader';
 
-import DatePicker, { registerLocale } from 'react-datepicker';
-import fr from 'date-fns/locale/fr';
-
 import 'react-datepicker/dist/react-datepicker.css';
-import CalendarButton from '../components/CalendarButton';
 
 const MonthlyView: React.FC = () => {
 	const dispatch = useDispatch();
 	const { sendRequest, sendData } = useRequest();
 	const { getMonthFn } = useDates();
-
-	registerLocale('fr', fr);
 
 	const userState = useSelector((state: RootState) => state.user);
 
@@ -41,20 +35,9 @@ const MonthlyView: React.FC = () => {
 	const [monthlyArray, setMonthlyArray] = useState<any[]>([]);
 	const [currentTask, setCurrentTask] = useState('food');
 	const [emptyBoxes, setEmptyBoxes] = useState<0[]>([]);
-	const [showCalendar, setShowCalendar] = useState(false);
 
 	const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		setCurrentTask(event.target.value);
-	};
-
-	const previousMonthHandler = () => {
-		setChosenDate(addMonths(chosenDate, -1));
-	};
-
-	const nextMonthHandler = () => {
-		if (!isAfter(addMonths(chosenDate, 1), new Date())) {
-			setChosenDate(addMonths(chosenDate, 1));
-		}
 	};
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -97,33 +80,22 @@ const MonthlyView: React.FC = () => {
 	const getFirstDayOfWeek = (date: Date) => {
 		let dayOfFirstOfMonth: number = getDay(startOfMonth(date));
 
-		dayOfFirstOfMonth =
-			dayOfFirstOfMonth === 0
-				? (dayOfFirstOfMonth = 7)
-				: (dayOfFirstOfMonth = dayOfFirstOfMonth - 1);
+		if (dayOfFirstOfMonth === 0) {
+			dayOfFirstOfMonth = 7;
+		}
 
 		const emptyArray: 0[] = [];
 
-		for (let i = 0; i < dayOfFirstOfMonth; i++) {
+		for (let i = 1; i < dayOfFirstOfMonth; i++) {
 			emptyArray.push(0);
 		}
 
 		setEmptyBoxes(emptyArray);
 	};
 
-	const calendarButtonHandler = () => {
-		setShowCalendar((prev) => !prev);
-	};
-
-	const calendarOnChangeHandler = (date: Date) => {
-		setShowCalendar(false);
-		setChosenDate(date);
-	};
-
 	useEffect(() => {
-		if (userState.id !== null) {
+		if (userState.id) {
 			getMonthlyData();
-
 			getMonthFn(chosenDate.getMonth(), true, setMonthStr);
 		}
 	}, [chosenDate, currentTask]);
@@ -131,43 +103,12 @@ const MonthlyView: React.FC = () => {
 	return (
 		<div className={classes.wrapper}>
 			<LogHeader
-				button_previous_text='Mois précédent'
-				button_previous_handler={previousMonthHandler}
-				button_next_text='Mois suivant'
-				button_next_handler={nextMonthHandler}
-				button_next_disabled={isAfter(addMonths(chosenDate, 1), new Date())}
+				setDate={setChosenDate}
+				date={chosenDate}
 				text={`${monthStr} ${getYear(chosenDate)}`}
-				selector_task={
-					<select name='six' onChange={selectHandler} defaultValue='food'>
-						<option value='food'>Alimentation</option>
-						<option value='sleep'>Sommeil</option>
-						<option value='sport'>Activité Physique</option>
-						<option value='relaxation'>Détente</option>
-						<option value='work'>Projets</option>
-						<option value='social'>Vie Sociale</option>
-					</select>
-				}
-				selector_date={
-					<>
-						<CalendarButton onClick={calendarButtonHandler} />
-						{showCalendar && (
-							<DatePicker
-								selected={chosenDate}
-								onChange={calendarOnChangeHandler}
-								onSelect={(date: Date) => setChosenDate(date!)}
-								showYearDropdown
-								scrollableYearDropdown
-								minDate={new Date(2020, 0, 1)}
-								maxDate={new Date()}
-								calendarStartDay={1}
-								locale='fr'
-								formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 3)}
-								showMonthYearPicker
-								inline
-							/>
-						)}
-					</>
-				}
+				selectHandler={selectHandler}
+				selector_task={true}
+				calendar='MONTHLY'
 			/>
 			<div className={classes.days}>
 				<li>Lundi</li>
