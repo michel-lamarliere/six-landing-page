@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { addDays, addMonths, addYears, getYear, isBefore } from 'date-fns';
 
-import classes from './Calendars.module.scss';
+import classes from './AnnualChartCalendar.module.scss';
 
 const AnnualChartCalendar: React.FC<{
 	date: Date;

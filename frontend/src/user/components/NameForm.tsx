@@ -6,7 +6,7 @@ import { useInput } from '../../shared/hooks/input-hook';
 import { RootState } from '../../shared/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Input from '../../shared/components/FormElements/Input';
+import Input from '../../shared/components/Input';
 import { UserActionTypes } from '../../shared/store/user';
 
 const NameForm: React.FC<{

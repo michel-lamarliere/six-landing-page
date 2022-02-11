@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { isAfter, addYears, getYear, isBefore } from 'date-fns';
+import { isAfter, addYears, getYear, isBefore, addMonths } from 'date-fns';
 import {
 	Bar,
 	BarChart,
@@ -19,6 +19,7 @@ import LogHeader from '../../log/components/LogHeader';
 
 import classes from './AnnualChart.module.scss';
 import { useDates } from '../../shared/hooks/dates-hook';
+import Calendar from '../../shared/components/Calendar/Calendar';
 
 const AnnualGraph: React.FC = () => {
 	const { sendRequest } = useRequest();
@@ -26,18 +27,10 @@ const AnnualGraph: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
-	const [selectedYear, setSelectedYear] = useState<any>(new Date());
+	const [chosenYear, setChosenYear] = useState<any>(new Date());
 	const [task, setTask] = useState('food');
 	const [responseArray, setResponseArray] = useState<any>([]);
 	const [data, setData] = useState<any>([]);
-
-	const previousYearHandler = () => {
-		setSelectedYear((prev: any) => addYears(prev, -1));
-	};
-
-	const nextYearHandler = () => {
-		setSelectedYear((prev: any) => addYears(prev, 1));
-	};
 
 	const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		setTask(event.target.value);
@@ -46,7 +39,7 @@ const AnnualGraph: React.FC = () => {
 	const getGraph = async () => {
 		const responseData = await sendRequest(
 			`http://localhost:8080/api/charts/annual/${userState.id}/${getYear(
-				selectedYear
+				chosenYear
 			)}/${task}`,
 			'GET'
 		);
@@ -73,20 +66,50 @@ const AnnualGraph: React.FC = () => {
 		return data;
 	};
 
+	const previousHandler = () => {
+		setChosenYear(addYears(chosenYear, -1));
+	};
+
+	const nextHandler = () => {
+		setChosenYear(addYears(chosenYear, 1));
+	};
+
 	useEffect(() => {
 		getGraph();
-	}, [selectedYear, task]);
+	}, [chosenYear, task]);
 
 	return (
 		<div className={classes.wrapper}>
-			<LogHeader
+			{/* <LogHeader
 				setDate={setSelectedYear}
 				date={selectedYear}
 				text={selectedYear.getFullYear()}
 				selectHandler={selectHandler}
 				selector_task={true}
 				calendar='ANNUAL_CHART'
-			/>
+			/> */}
+			<Calendar
+				calendar={'ANNUAL_CHART'}
+				taskSelector={true}
+				selectHandler={selectHandler}
+				previousHandler={previousHandler}
+				previousHandlerDisabled={isBefore(
+					addMonths(chosenYear, -1),
+					new Date(2020, 1, 1)
+				)}
+				headerText={chosenYear.getFullYear()}
+				nextHandler={nextHandler}
+				nextHandlerDisabled={!isBefore(addMonths(chosenYear, 1), new Date())}
+				calendarPreviousYearHandler={null}
+				calendarPreviousYearHandlerDisabled={true}
+				calendarPreviousMonthHandler={null}
+				calendarPreviousMonthHandlerDisabled={true}
+				calendarText={''}
+				calendarNextMonthHandler={null}
+				calendarNextMonthHandlerDisabled={true}
+				calendarNextYearHandler={null}
+				calendarNextYearHandlerDisabled={true}
+			></Calendar>
 			<div className={classes.chart}>
 				<ResponsiveContainer width='70%' height='40%' className={classes.test}>
 					<BarChart data={data.slice(0, 6)} className={classes.test}>

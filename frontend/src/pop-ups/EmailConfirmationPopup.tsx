@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRequest } from '../../hooks/http-hook';
-import { EmailConfirmationActionTypes } from '../../store/email-confirmation';
-import { RootState } from '../../store/store';
+import { useRequest } from '../shared/hooks/http-hook';
+import { EmailConfirmationActionTypes } from '../shared/store/email-confirmation';
+import { RootState } from '../shared/store/store';
 
 import classes from './EmailConfirmationPopup.module.scss';
 

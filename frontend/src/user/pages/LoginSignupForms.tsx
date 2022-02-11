@@ -4,7 +4,7 @@ import { addHours } from 'date-fns';
 
 import { useRequest } from '../../shared/hooks/http-hook';
 import { useInput } from '../../shared/hooks/input-hook';
-import Input from '../../shared/components/FormElements/Input';
+import Input from '../../shared/components/Input';
 
 import classes from './LoginSignupForms.module.scss';
 

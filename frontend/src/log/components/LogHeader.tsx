@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import CalendarButton from './Calendar/CalendarButton';
-import DailyCalendar from './Calendar/DailyCalendar';
-import MonthlyCalendar from './Calendar/MonthlyCalendar';
-import WeeklyCalendar from './Calendar/WeeklyCalendar';
-import AnnualChartCalendar from './Calendar/AnnualChartCalendar';
+import AnnualChartCalendar from '../../charts/components/AnnualChartCalendar';
 
 import classes from './LogHeader.module.scss';
 
@@ -23,52 +19,7 @@ const LogHeader: React.FC<{
 
 	return (
 		<>
-			<div className={classes.selectors}>
-				{props.calendar !== 'ANNUAL_CHART' && (
-					<CalendarButton onClick={calendarButtonHandler} />
-				)}
-				{props.selector_task && (
-					<select name='six' onChange={props.selectHandler} defaultValue='food'>
-						<option value='food'>Alimentation</option>
-						<option value='sleep'>Sommeil</option>
-						<option value='sport'>Activité Physique</option>
-						<option value='relaxation'>Détente</option>
-						<option value='work'>Projets</option>
-						<option value='social'>Vie Sociale</option>
-					</select>
-				)}
-			</div>
 			<div className={classes.buttons}>
-				{props.calendar === 'DAILY' && (
-					<DailyCalendar
-						setDate={props.setDate}
-						date={props.date}
-						text={props.text}
-						showCalendar={showCalendar}
-						setShowCalendar={setShowCalendar}
-						calendarButtonHandler={calendarButtonHandler}
-					/>
-				)}
-				{props.calendar === 'WEEKLY' && (
-					<WeeklyCalendar
-						setDate={props.setDate}
-						date={props.date}
-						text={props.text}
-						showCalendar={showCalendar}
-						setShowCalendar={setShowCalendar}
-						calendarButtonHandler={calendarButtonHandler}
-					/>
-				)}
-				{props.calendar === 'MONTHLY' && (
-					<MonthlyCalendar
-						setDate={props.setDate}
-						date={props.date}
-						text={props.text}
-						showCalendar={showCalendar}
-						setShowCalendar={setShowCalendar}
-						calendarButtonHandler={calendarButtonHandler}
-					/>
-				)}
 				{props.calendar === 'ANNUAL_CHART' && (
 					<AnnualChartCalendar
 						setDate={props.setDate}

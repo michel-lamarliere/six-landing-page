@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import classes from './MonthlyView.module.scss';
 import {
 	addMonths,
 	getDay,
@@ -10,18 +9,20 @@ import {
 	startOfMonth,
 	addHours,
 	addDays,
+	addYears,
+	isBefore,
 } from 'date-fns';
 
 import { useRequest } from '../../shared/hooks/http-hook';
 import { useDates } from '../../shared/hooks/dates-hook';
 import { RootState } from '../../shared/store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { DataButton, PlaceHolderDataButton } from '../components/Buttons';
+import { DataButton } from '../components/Buttons';
 import { ErrorPopupActionTypes } from '../../shared/store/error';
 
-import LogHeader from '../components/LogHeader';
+import Calendar from '../../shared/components/Calendar/Calendar';
 
-import 'react-datepicker/dist/react-datepicker.css';
+import classes from './MonthlyView.module.scss';
 
 const MonthlyView: React.FC = () => {
 	const dispatch = useDispatch();
@@ -35,6 +36,26 @@ const MonthlyView: React.FC = () => {
 	const [monthlyArray, setMonthlyArray] = useState<any[]>([]);
 	const [currentTask, setCurrentTask] = useState('food');
 	const [emptyBoxes, setEmptyBoxes] = useState<0[]>([]);
+
+	const [calendarDate, setCalendarDate] = useState(new Date());
+	const [emptyCalendarDays, setEmptyCalendarDays] = useState<any[]>([]);
+	const [calendarDays, setCalendarDays] = useState<any[]>([]);
+	const [weeks, setWeeks] = useState<any[]>([]);
+	const [weekNumbers, setWeekNumbers] = useState<any[]>([]);
+	const months = [
+		'Janvier',
+		'Février',
+		'Mars',
+		'Avril',
+		'Mai',
+		'Juin',
+		'Juillet',
+		'Août',
+		'Septembre',
+		'Octobre',
+		'Novembre',
+		'Décembre',
+	];
 
 	const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		setCurrentTask(event.target.value);
@@ -93,6 +114,27 @@ const MonthlyView: React.FC = () => {
 		setEmptyBoxes(emptyArray);
 	};
 
+	const previousHandler = () => {
+		setChosenDate(addMonths(chosenDate, -1));
+	};
+
+	const nextHandler = () => {
+		setChosenDate(addDays(chosenDate, 7));
+	};
+
+	const calendarPreviousYearHandler = () => {
+		setCalendarDate(addYears(calendarDate, -1));
+	};
+
+	const calendarNextYearHandler = () => {
+		setCalendarDate(addYears(calendarDate, 1));
+	};
+
+	const monthOnClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+		setChosenDate(new Date((event.target as HTMLButtonElement).id));
+		// props.setShowCalendar(false);
+	};
+
 	useEffect(() => {
 		if (userState.id) {
 			getMonthlyData();
@@ -102,14 +144,55 @@ const MonthlyView: React.FC = () => {
 
 	return (
 		<div className={classes.wrapper}>
-			<LogHeader
-				setDate={setChosenDate}
-				date={chosenDate}
-				text={`${monthStr} ${getYear(chosenDate)}`}
+			<Calendar
+				calendar={'MONTHLY'}
+				taskSelector={true}
 				selectHandler={selectHandler}
-				selector_task={true}
-				calendar='MONTHLY'
-			/>
+				previousHandler={previousHandler}
+				previousHandlerDisabled={isBefore(
+					addMonths(chosenDate, -1),
+					new Date(2020, 0, 1)
+				)}
+				headerText={`${monthStr} ${getYear(chosenDate)}`}
+				nextHandler={nextHandler}
+				nextHandlerDisabled={!isBefore(addMonths(chosenDate, 1), new Date())}
+				calendarPreviousYearHandler={calendarPreviousYearHandler}
+				calendarPreviousYearHandlerDisabled={isBefore(
+					addYears(calendarDate, -1),
+					new Date(2020, 0, 1)
+				)}
+				calendarPreviousMonthHandler={null}
+				calendarPreviousMonthHandlerDisabled={true}
+				calendarText={`${getYear(calendarDate)}`}
+				calendarNextMonthHandler={null}
+				calendarNextMonthHandlerDisabled={true}
+				calendarNextYearHandler={calendarNextYearHandler}
+				calendarNextYearHandlerDisabled={
+					!isBefore(addYears(calendarDate, 1), addYears(new Date(), 1))
+				}
+			>
+				{months.map((month, index) => (
+					<button
+						className={classes.month}
+						disabled={
+							!isBefore(
+								addHours(
+									new Date(calendarDate.getFullYear(), index, 1),
+									1
+								),
+								new Date()
+							)
+						}
+						onClick={monthOnClickHandler}
+						id={`${addHours(
+							new Date(calendarDate.getFullYear(), index, 1),
+							1
+						)}`}
+					>
+						{month}
+					</button>
+				))}
+			</Calendar>
 			<div className={classes.days}>
 				<li>Lundi</li>
 				<li>Mardi</li>
