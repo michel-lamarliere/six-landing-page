@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 import { addDays, addHours, addMonths, addYears, getYear, isBefore } from 'date-fns';
 
-import classes from './DatePicker.module.scss';
+import classes from './Calendars.module.scss';
 import { useDates } from '../../../shared/hooks/dates-hook';
+import DaysOfWeek from './DaysOfWeek';
 
 const MonthlyCalendar: React.FC<{
 	date: Date;

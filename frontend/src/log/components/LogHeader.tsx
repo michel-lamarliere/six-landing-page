@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import CalendarButton from './Calendar/CalendarButton';
 import DailyCalendar from './Calendar/DailyCalendar';
-
 import MonthlyCalendar from './Calendar/MonthlyCalendar';
 import WeeklyCalendar from './Calendar/WeeklyCalendar';
+import AnnualChartCalendar from './Calendar/AnnualChartCalendar';
 
 import classes from './LogHeader.module.scss';
 
@@ -13,7 +13,7 @@ const LogHeader: React.FC<{
 	text: string;
 	selector_task?: boolean;
 	selectHandler?: any;
-	calendar: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY_CHART';
+	calendar: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'ANNUAL_CHART';
 }> = (props) => {
 	const [showCalendar, setShowCalendar] = useState(false);
 
@@ -24,7 +24,9 @@ const LogHeader: React.FC<{
 	return (
 		<>
 			<div className={classes.selectors}>
-				<CalendarButton onClick={calendarButtonHandler} />
+				{props.calendar !== 'ANNUAL_CHART' && (
+					<CalendarButton onClick={calendarButtonHandler} />
+				)}
 				{props.selector_task && (
 					<select name='six' onChange={props.selectHandler} defaultValue='food'>
 						<option value='food'>Alimentation</option>
@@ -65,6 +67,13 @@ const LogHeader: React.FC<{
 						showCalendar={showCalendar}
 						setShowCalendar={setShowCalendar}
 						calendarButtonHandler={calendarButtonHandler}
+					/>
+				)}
+				{props.calendar === 'ANNUAL_CHART' && (
+					<AnnualChartCalendar
+						setDate={props.setDate}
+						date={props.date}
+						text={props.text}
 					/>
 				)}
 			</div>

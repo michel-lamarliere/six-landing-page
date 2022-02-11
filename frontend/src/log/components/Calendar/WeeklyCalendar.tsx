@@ -2,17 +2,24 @@ import React, { useEffect, useState } from 'react';
 
 import {
 	addDays,
+	addHours,
 	addMonths,
 	addYears,
+	format,
 	getDay,
 	getDaysInMonth,
 	getMonth,
+	getWeeksInMonth,
 	getYear,
+	isSameWeek,
+	startOfMonth,
 } from 'date-fns';
 import { isBefore } from 'date-fns/esm';
 
-import classes from './DatePicker.module.scss';
+import classes from './Calendars.module.scss';
 import { useDates } from '../../../shared/hooks/dates-hook';
+import user from '../../../shared/store/user';
+import DaysOfWeek from './DaysOfWeek';
 
 const DatePicker: React.FC<{
 	date: Date;
@@ -23,9 +30,8 @@ const DatePicker: React.FC<{
 	calendarButtonHandler: any;
 }> = (props) => {
 	const [date, setDate] = useState(props.date);
-	const [days, setDays] = useState<any[]>([]);
+	const [weeks, setWeeks] = useState<any[]>([]);
 	const [monthStr, setMonthStr] = useState('');
-	const [emptyDays, setEmptyDays] = useState<any[]>([]);
 
 	const { getMonthFn } = useDates();
 
@@ -53,46 +59,51 @@ const DatePicker: React.FC<{
 		setDate(addYears(date, 1));
 	};
 
-	const weekOnClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const weekOnClickHandler = (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
-		const year = (event.target as HTMLButtonElement).id.slice(0, 4);
-		const month = (event.target as HTMLButtonElement).id.slice(5, 7);
-		const day = (event.target as HTMLButtonElement).id.slice(8, 10);
-		props.setDate(new Date(+year, +month, +day));
+		const year = (event.target as HTMLElement).id.slice(0, 4);
+		const month = (event.target as HTMLElement).id.slice(5, 7);
+		const day = (event.target as HTMLElement).id.slice(8, 10);
+		console.log((event.target as HTMLElement).id);
+		// console.log(year, month, day);
+		props.setDate(new Date(+year, +month - 1, +day));
 		props.setShowCalendar(false);
 	};
 
-	const createDayCalendar = () => {
-		const daysInMonth = getDaysInMonth(props.date);
-		const days = [];
+	const createWeekCalendar = () => {
+		const weeksInMonth = getWeeksInMonth(date, { weekStartsOn: 1 });
+		const firstDateOfMonth = startOfMonth(date);
+		const dayOfFirstDateOfMonth = getDay(firstDateOfMonth);
 
-		for (let i = 1; i < daysInMonth + 1; i++) {
-			days.push(i);
+		let firstDateOfFirstWeekOfMonth = addDays(
+			firstDateOfMonth,
+			-dayOfFirstDateOfMonth + 1
+		);
+
+		const weeks = [];
+		for (let i = 0; i < weeksInMonth; i++) {
+			const week = [];
+
+			for (let y = 0; y < 7; y++) {
+				week.push(addDays(firstDateOfFirstWeekOfMonth, y));
+			}
+
+			weeks.push(week);
+			firstDateOfFirstWeekOfMonth = addDays(firstDateOfFirstWeekOfMonth, 7);
 		}
-		setDays(days);
 
-		let firstDayOfWeek: number = getDay(props.date);
-		const emptyDays = [];
-
-		console.log(firstDayOfWeek);
-		if (firstDayOfWeek === 0) {
-			firstDayOfWeek = 7;
-		}
-
-		for (let i = 1; i < firstDayOfWeek; i++) {
-			emptyDays.push(0);
-		}
-
-		setEmptyDays(emptyDays);
+		console.log(weeks);
+		setWeeks(weeks);
 	};
 
 	useEffect(() => {
-		createDayCalendar();
 		setDate(props.date);
+		// createWeekCalendar();
 	}, [props.date]);
 
 	useEffect(() => {
 		getMonthFn(date.getMonth(), true, setMonthStr);
+		createWeekCalendar();
 	}, [date]);
 
 	return (
@@ -144,34 +155,36 @@ const DatePicker: React.FC<{
 						</button>
 					</div>
 					<div className={classes.calendar_weeks}>
-						{emptyDays.map((emptyDay) => (
-							<div></div>
-						))}
-						{days.map((day) => (
-							<button
-								className={classes.day}
-								disabled={
-									!isBefore(
-										new Date(
-											date.getFullYear(),
-											getMonth(date) < 10
-												? 0 + getMonth(date)
-												: getMonth(date),
-											day < 10 ? '0' + day : day
-										),
-										new Date()
-									)
-								}
-								id={`${date.getFullYear()}-${
-									getMonth(date) < 10
-										? '0' + getMonth(date)
-										: getMonth(date)
-								}-${day < 10 ? '0' + day : day}`}
-								onClick={weekOnClickHandler}
-							>
-								{day}
-							</button>
-						))}
+						<DaysOfWeek />
+						{weeks.length > 0 &&
+							weeks.map((week) => (
+								<button
+									className={classes.week}
+									onClick={weekOnClickHandler}
+									disabled={!isBefore(new Date(week[0]), new Date())}
+									id={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
+								>
+									{console.log(week[0])}
+									{console.log(
+										`${format(new Date(week[6]), 'yyyy-MM-dd')}`
+									)}
+									{week.map((day: any) => (
+										<button
+											className={classes.week_day}
+											onClick={weekOnClickHandler}
+											disabled={
+												!isBefore(new Date(week[0]), new Date())
+											}
+											id={`${format(
+												new Date(week[6]),
+												'yyyy-MM-dd'
+											)}`}
+										>
+											{format(day, 'dd')}
+										</button>
+									))}
+								</button>
+							))}
 					</div>
 				</div>
 			)}

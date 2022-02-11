@@ -22,8 +22,8 @@
 	}
 
 	&_weeks {
-		display: grid;
-		grid-template-columns: repeat(7, 1fr);
+		display: flex;
+		flex-direction: column;
 	}
 
 	&_months {
@@ -43,6 +43,36 @@
 
 	&:disabled {
 		cursor: default;
+	}
+}
+
+.week {
+	display: flex;
+	flex-direction: row;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+	&:disabled {
+		cursor: default;
+
+		&:hover {
+			background-color: default;
+		}
+	}
+
+	&_day {
+		display: grid;
+		place-content: center;
+		cursor: default;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 50%;
+
+		&:hover {
+			pointer-events: none;
+		}
 	}
 }
 

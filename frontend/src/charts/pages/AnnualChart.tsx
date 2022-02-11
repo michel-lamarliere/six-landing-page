@@ -85,7 +85,7 @@ const AnnualGraph: React.FC = () => {
 				text={selectedYear.getFullYear()}
 				selectHandler={selectHandler}
 				selector_task={true}
-				calendar='YEARLY_CHART'
+				calendar='ANNUAL_CHART'
 			/>
 			<div className={classes.chart}>
 				<ResponsiveContainer width='70%' height='40%' className={classes.test}>

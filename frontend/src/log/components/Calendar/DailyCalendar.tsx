@@ -14,7 +14,8 @@ import {
 
 import { useDates } from '../../../shared/hooks/dates-hook';
 
-import classes from './DatePicker.module.scss';
+import classes from './Calendars.module.scss';
+import DaysOfWeek from './DaysOfWeek';
 
 const DailyCalendar: React.FC<{
 	date: Date;
@@ -146,6 +147,7 @@ const DailyCalendar: React.FC<{
 							{'>>'}
 						</button>
 					</div>
+					<DaysOfWeek />
 					<div className={classes.calendar_days}>
 						{emptyDays.map((emptyDay) => (
 							<div></div>
