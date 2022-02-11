@@ -140,6 +140,7 @@ const DailyView: React.FC = () => {
 		const month = (event.target as HTMLButtonElement).id.slice(5, 7);
 		const day = (event.target as HTMLButtonElement).id.slice(8, 10);
 		setChosenDate(addHours(new Date(+year, +month, +day), 1));
+		// REIMPLEMENT
 		// props.setShowCalendar(false);
 	};
 
