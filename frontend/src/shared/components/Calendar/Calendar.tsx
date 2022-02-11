@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
-import classes from './Calendar.module.scss';
+
 import DaysOfWeek from './DaysOfWeek';
+
+import LeftArrow from '../../assets/icons/left-arrow.svg';
+import DoubleLeftArrow from '../../assets/icons/double-left-arrow.svg';
+import RightArrow from '../../assets/icons/right-arrow.svg';
+import DoubleRightArrow from '../../assets/icons/double-right-arrow.svg';
+import TopArrow from '../../assets/icons/top-arrow.svg';
+
+import classes from './Calendar.module.scss';
 
 const Calendar: React.FC<{
 	calendar: 'ANNUAL_CHART' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
@@ -28,13 +36,23 @@ const Calendar: React.FC<{
 	};
 
 	return (
-		<div>
-			<div className={classes.selectors}>
+		<div className={classes.wrapper}>
+			<div className={classes.buttons}>
 				{props.calendar !== 'ANNUAL_CHART' && (
-					<button onClick={calendarButtonHandler}>Calendrier</button>
+					<button
+						className={classes.buttons__calendar}
+						onClick={calendarButtonHandler}
+					>
+						Calendrier
+					</button>
 				)}
 				{props.taskSelector && (
-					<select name='six' onChange={props.selectHandler} defaultValue='food'>
+					<select
+						className={classes.buttons__selector}
+						onChange={props.selectHandler}
+						name='six'
+						defaultValue='food'
+					>
 						<option value='food'>Alimentation</option>
 						<option value='sleep'>Sommeil</option>
 						<option value='sport'>Activité Physique</option>
@@ -44,59 +62,70 @@ const Calendar: React.FC<{
 					</select>
 				)}
 			</div>
-			{!showCalendar && (
-				<div className={classes.header}>
-					<button
-						onClick={props.previousHandler}
-						disabled={props.previousHandlerDisabled}
-					>
-						{'<'}
-					</button>
-					<p>{props.headerText}</p>
-					<button
-						onClick={props.nextHandler}
-						disabled={props.nextHandlerDisabled}
-					>
-						{'>'}
-					</button>
-				</div>
-			)}
+			<div className={classes.header}>
+				<button
+					className={classes.header__button}
+					onClick={props.previousHandler}
+					disabled={props.previousHandlerDisabled}
+				>
+					<img src={LeftArrow} />
+				</button>
+				<p>{props.headerText}</p>
+				<button
+					className={classes.header__button}
+					onClick={props.nextHandler}
+					disabled={props.nextHandlerDisabled}
+				>
+					<img src={RightArrow} />
+				</button>
+			</div>
 			{showCalendar && (
-				<div>
-					<div className={classes.fullheader}>
-						<button
-							onClick={props.calendarPreviousYearHandler}
-							disabled={props.calendarPreviousYearHandlerDisabled}
-						>
-							{'<<'}
-						</button>
-						{props.calendar !== 'MONTHLY' && (
+				<div className={classes.calendar}>
+					<div className={classes.calendar__header}>
+						{!props.calendarPreviousYearHandlerDisabled && (
 							<button
-								onClick={props.calendarPreviousMonthHandler}
-								disabled={props.calendarPreviousMonthHandlerDisabled}
+								className={classes.calendar__header__button}
+								onClick={props.calendarPreviousYearHandler}
 							>
-								{'<'}
+								<img src={DoubleLeftArrow} />
 							</button>
 						)}
-						<p>{props.calendarText}</p>
-						{props.calendar !== 'MONTHLY' && (
+						{props.calendar !== 'MONTHLY' ? (
+							!props.calendarPreviousMonthHandlerDisabled && (
+								<button
+									className={classes.calendar__header__button}
+									onClick={props.calendarPreviousMonthHandler}
+								>
+									<img src={LeftArrow} />
+								</button>
+							)
+						) : (
+							<div></div>
+						)}
+						<div>{props.calendarText}</div>
+						{props.calendar !== 'MONTHLY' &&
+							!props.calendarNextMonthHandlerDisabled && (
+								<button
+									className={classes.calendar__header__button}
+									onClick={props.calendarNextMonthHandler}
+								>
+									<img src={RightArrow} />
+								</button>
+							)}
+						{!props.calendarNextYearHandlerDisabled && (
 							<button
-								onClick={props.calendarNextMonthHandler}
-								disabled={props.calendarNextMonthHandlerDisabled}
+								className={classes.calendar__header__button}
+								onClick={props.calendarNextYearHandler}
 							>
-								{'>'}
+								<img src={DoubleRightArrow} />
 							</button>
 						)}
-						<button
-							onClick={props.calendarNextYearHandler}
-							disabled={props.calendarNextYearHandlerDisabled}
-						>
-							{'>>'}
-						</button>
 					</div>
-					<div>
-						<DaysOfWeek />
-						<div className={classes.calendar_days}>{props.children}</div>
+					<div className={classes.calendar__calendar}>
+						{(props.calendar === 'DAILY' || props.calendar === 'WEEKLY') && (
+							<DaysOfWeek />
+						)}
+						{props.children}
 					</div>
 				</div>
 			)}

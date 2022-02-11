@@ -15,8 +15,6 @@ import { RootState } from '../../shared/store/store';
 import { useSelector } from 'react-redux';
 import { useRequest } from '../../shared/hooks/http-hook';
 
-import LogHeader from '../../log/components/LogHeader';
-
 import classes from './AnnualChart.module.scss';
 import { useDates } from '../../shared/hooks/dates-hook';
 import Calendar from '../../shared/components/Calendar/Calendar';
@@ -29,7 +27,6 @@ const AnnualGraph: React.FC = () => {
 
 	const [chosenYear, setChosenYear] = useState<any>(new Date());
 	const [task, setTask] = useState('food');
-	const [responseArray, setResponseArray] = useState<any>([]);
 	const [data, setData] = useState<any>([]);
 
 	const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -44,7 +41,6 @@ const AnnualGraph: React.FC = () => {
 			'GET'
 		);
 
-		setResponseArray(responseData.array);
 		createChartData(responseData.array);
 	};
 
@@ -80,14 +76,6 @@ const AnnualGraph: React.FC = () => {
 
 	return (
 		<div className={classes.wrapper}>
-			{/* <LogHeader
-				setDate={setSelectedYear}
-				date={selectedYear}
-				text={selectedYear.getFullYear()}
-				selectHandler={selectHandler}
-				selector_task={true}
-				calendar='ANNUAL_CHART'
-			/> */}
 			<Calendar
 				calendar={'ANNUAL_CHART'}
 				taskSelector={true}

@@ -21,6 +21,7 @@ import { DataButton } from '../components/Buttons';
 import { ErrorPopupActionTypes } from '../../shared/store/error';
 
 import Calendar from '../../shared/components/Calendar/Calendar';
+import calendarClasses from '../../shared/components/Calendar/Calendar.module.scss';
 
 import classes from './MonthlyView.module.scss';
 
@@ -38,10 +39,6 @@ const MonthlyView: React.FC = () => {
 	const [emptyBoxes, setEmptyBoxes] = useState<0[]>([]);
 
 	const [calendarDate, setCalendarDate] = useState(new Date());
-	const [emptyCalendarDays, setEmptyCalendarDays] = useState<any[]>([]);
-	const [calendarDays, setCalendarDays] = useState<any[]>([]);
-	const [weeks, setWeeks] = useState<any[]>([]);
-	const [weekNumbers, setWeekNumbers] = useState<any[]>([]);
 	const months = [
 		'Janvier',
 		'Février',
@@ -168,30 +165,40 @@ const MonthlyView: React.FC = () => {
 				calendarNextMonthHandlerDisabled={true}
 				calendarNextYearHandler={calendarNextYearHandler}
 				calendarNextYearHandlerDisabled={
-					!isBefore(addYears(calendarDate, 1), addYears(new Date(), 1))
+					!isBefore(addYears(calendarDate, 1), new Date())
 				}
 			>
-				{months.map((month, index) => (
-					<button
-						className={classes.month}
-						disabled={
-							!isBefore(
-								addHours(
-									new Date(calendarDate.getFullYear(), index, 1),
-									1
-								),
-								new Date()
-							)
-						}
-						onClick={monthOnClickHandler}
-						id={`${addHours(
-							new Date(calendarDate.getFullYear(), index, 1),
-							1
-						)}`}
-					>
-						{month}
-					</button>
-				))}
+				<div className={calendarClasses.month}>
+					{months.map((month, index) => (
+						<button
+							className={`${calendarClasses.month__month} ${
+								!isBefore(
+									addHours(
+										new Date(calendarDate.getFullYear(), index, 1),
+										1
+									),
+									new Date()
+								) && calendarClasses.month__month__disabled
+							}`}
+							disabled={
+								!isBefore(
+									addHours(
+										new Date(calendarDate.getFullYear(), index, 1),
+										1
+									),
+									new Date()
+								)
+							}
+							onClick={monthOnClickHandler}
+							id={`${addHours(
+								new Date(calendarDate.getFullYear(), index, 1),
+								1
+							)}`}
+						>
+							{month}
+						</button>
+					))}
+				</div>
 			</Calendar>
 			<div className={classes.days}>
 				<li>Lundi</li>

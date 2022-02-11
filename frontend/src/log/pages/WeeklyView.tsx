@@ -24,11 +24,15 @@ import {
 	startOfMonth,
 	getDay,
 	getWeek,
+	getMonth,
 } from 'date-fns';
 
-import classes from './WeeklyView.module.scss';
 import Calendar from '../../shared/components/Calendar/Calendar';
+import calendarClasses from '../../shared/components/Calendar/Calendar.module.scss';
+
 import DaysOfWeek from '../../shared/components/Calendar/DaysOfWeek';
+
+import classes from './WeeklyView.module.scss';
 
 const WeekView: React.FC = () => {
 	const { sendRequest, sendData } = useRequest();
@@ -43,12 +47,11 @@ const WeekView: React.FC = () => {
 
 	const [chosenDate, setChosenDate] = useState(addDays(new Date(), 0));
 	const [monthStr, setMonthStr] = useState('');
+	const [calendarMonthStr, setCalendarMonthStr] = useState('');
 	const firstOfWeek = startOfWeek(chosenDate, { weekStartsOn: 1 });
 	const formattedFirstOfWeek = format(firstOfWeek, 'yyyy-MM-dd');
 
 	const [calendarDate, setCalendarDate] = useState(new Date());
-	const [emptyCalendarDays, setEmptyCalendarDays] = useState<any[]>([]);
-	const [calendarDays, setCalendarDays] = useState<any[]>([]);
 	const [weeks, setWeeks] = useState<any[]>([]);
 	const [weekNumbers, setWeekNumbers] = useState<any[]>([]);
 
@@ -190,7 +193,7 @@ const WeekView: React.FC = () => {
 		const month = (event.target as HTMLElement).id.slice(5, 7);
 		const day = (event.target as HTMLElement).id.slice(8, 10);
 		console.log((event.target as HTMLElement).id);
-		// console.log(year, month, day);
+
 		setChosenDate(new Date(+year, +month - 1, +day));
 		// props.setShowCalendar(false);
 	};
@@ -204,6 +207,7 @@ const WeekView: React.FC = () => {
 	}, [userState.id, chosenDate]);
 
 	useEffect(() => {
+		getMonthFn(calendarDate.getMonth(), true, setCalendarMonthStr);
 		createWeekCalendar();
 	}, [calendarDate]);
 
@@ -233,7 +237,7 @@ const WeekView: React.FC = () => {
 					addMonths(calendarDate, -1),
 					new Date(2020, 0, 1)
 				)}
-				calendarText={''}
+				calendarText={`${calendarMonthStr} ${getYear(calendarDate)}`}
 				calendarNextMonthHandler={calendarNextMonthHandler}
 				calendarNextMonthHandlerDisabled={
 					!isBefore(addMonths(calendarDate, 1), new Date())
@@ -243,39 +247,43 @@ const WeekView: React.FC = () => {
 					!isBefore(addYears(calendarDate, 1), new Date())
 				}
 			>
-				<div className={classes.calendar__calendar__numbers}>
-					{weekNumbers.map((weekNumber) => (
-						<div>{weekNumber}</div>
-					))}
-				</div>
-				<div className={classes.calendar__calendar__}>
-					<DaysOfWeek />
-					{weeks.length > 0 &&
-						weeks.map((week) => (
-							<button
-								className={classes.week}
-								onClick={weekOnClickHandler}
-								disabled={!isBefore(new Date(week[0]), new Date())}
-								id={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
-							>
-								{console.log(week[0])}
-								{console.log(
-									`${format(new Date(week[6]), 'yyyy-MM-dd')}`
-								)}
-								{week.map((day: any) => (
-									<button
-										className={classes.calendar__weeks_days}
-										onClick={weekOnClickHandler}
-										disabled={
-											!isBefore(new Date(week[0]), new Date())
-										}
-										id={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
-									>
-										{format(day, 'dd')}
-									</button>
-								))}
-							</button>
+				<div className={calendarClasses.week}>
+					<div className={calendarClasses.week__numbers}>
+						{weekNumbers.map((weekNumber) => (
+							<div>{weekNumber}</div>
 						))}
+					</div>
+					<div className={calendarClasses.week__calendar}>
+						{weeks.length > 0 &&
+							weeks.map((week) => (
+								<button
+									className={`${calendarClasses.week__calendar__week} ${
+										!isBefore(new Date(week[0]), new Date()) &&
+										calendarClasses.week__calendar__week__disabled
+									}`}
+									onClick={weekOnClickHandler}
+									disabled={!isBefore(new Date(week[0]), new Date())}
+									id={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
+								>
+									{week.map((day: any) => (
+										<button
+											className={`${calendarClasses.day} ${
+												!isBefore(day, new Date()) &&
+												calendarClasses.day__disabled
+											}`}
+											onClick={weekOnClickHandler}
+											id={`${format(
+												new Date(week[6]),
+												'yyyy-MM-dd'
+											)}`}
+										>
+											{console.log(day)}
+											{format(day, 'dd')}
+										</button>
+									))}
+								</button>
+							))}
+					</div>
 				</div>
 			</Calendar>
 			<div>

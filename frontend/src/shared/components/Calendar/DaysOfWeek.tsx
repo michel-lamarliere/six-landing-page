@@ -7,7 +7,7 @@ const DaysOfWeek: React.FC = () => {
 	return (
 		<div className={classes.wrapper}>
 			{daysOfWeek.map((day) => (
-				<div>{day}</div>
+				<div className={classes.day}>{day}</div>
 			))}
 		</div>
 	);

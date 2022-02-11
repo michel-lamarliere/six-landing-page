@@ -12,15 +12,21 @@ import {
 	addHours,
 	addYears,
 	addMonths,
+	startOfMonth,
+	isSameDay,
 } from 'date-fns';
-import classes from './DailyView.module.scss';
 
 import { useRequest } from '../../shared/hooks/http-hook';
 import { DataButton } from '../components/Buttons';
 import { RootState } from '../../shared/store/store';
 import { ErrorPopupActionTypes } from '../../shared/store/error';
 import { useDates } from '../../shared/hooks/dates-hook';
+
 import Calendar from '../../shared/components/Calendar/Calendar';
+
+import calendarClasses from '../../shared/components/Calendar/Calendar.module.scss';
+
+import classes from './DailyView.module.scss';
 
 const DailyView: React.FC = () => {
 	const dispatch = useDispatch();
@@ -33,6 +39,7 @@ const DailyView: React.FC = () => {
 	const [chosenDate, setChosenDate] = useState(new Date());
 	const [dayStr, setDayStr] = useState('');
 	const [monthStr, setMonthStr] = useState('');
+	const [calendarMonthStr, setCalendarMonthStr] = useState('');
 	const [dailyData, setDailyData] = useState<any>([]);
 
 	const [calendarDate, setCalendarDate] = useState(new Date());
@@ -111,7 +118,8 @@ const DailyView: React.FC = () => {
 		}
 		setCalendarDays(days);
 
-		let firstDayOfWeek: number = getDay(calendarDate);
+		let firstDayOfWeek: number = getDay(startOfMonth(calendarDate));
+		console.log(firstDayOfWeek);
 		const emptyDays = [];
 
 		console.log(firstDayOfWeek);
@@ -136,8 +144,7 @@ const DailyView: React.FC = () => {
 	};
 
 	useEffect(() => {
-		getMonthFn(calendarDate.getMonth(), true, setMonthStr);
-		console.log(calendarDate);
+		getMonthFn(calendarDate.getMonth(), true, setCalendarMonthStr);
 		createDayCalendar();
 	}, [calendarDate]);
 
@@ -157,13 +164,13 @@ const DailyView: React.FC = () => {
 				selectHandler={null}
 				previousHandler={previousHandler}
 				previousHandlerDisabled={isBefore(
-					addDays(calendarDate, -1),
+					addDays(chosenDate, -1),
 					new Date(2020, 0, 1)
 				)}
 				headerText={`${dayStr} ${getDate(chosenDate)} ${monthStr}
 					${getYear(chosenDate)}`}
 				nextHandler={nextHandler}
-				nextHandlerDisabled={!isBefore(addDays(calendarDate, 1), new Date())}
+				nextHandlerDisabled={!isBefore(addDays(chosenDate, 1), new Date())}
 				calendarPreviousYearHandler={calendarPreviousYearHandler}
 				calendarPreviousYearHandlerDisabled={isBefore(
 					addYears(calendarDate, -1),
@@ -174,7 +181,7 @@ const DailyView: React.FC = () => {
 					addMonths(calendarDate, -1),
 					new Date(2020, 0, 1)
 				)}
-				calendarText={`${monthStr} ${getYear(calendarDate)}`}
+				calendarText={`${calendarMonthStr} ${getYear(calendarDate)}`}
 				calendarNextMonthHandler={calendarNextMonthHandler}
 				calendarNextMonthHandlerDisabled={
 					!isBefore(addMonths(calendarDate, 1), new Date())
@@ -184,34 +191,65 @@ const DailyView: React.FC = () => {
 					!isBefore(addYears(calendarDate, 1), new Date())
 				}
 			>
-				{emptyCalendarDays.map((emptyDay) => (
-					<div></div>
-				))}
-				{calendarDays.map((day) => (
-					<button
-						className={classes.day}
-						disabled={
-							!isBefore(
-								new Date(
-									calendarDate.getFullYear(),
-									getMonth(calendarDate) < 10
-										? 0 + getMonth(calendarDate)
-										: getMonth(calendarDate),
-									day < 10 ? '0' + day : day
-								),
-								new Date()
-							)
-						}
-						id={`${calendarDate.getFullYear()}-${
-							getMonth(calendarDate) < 10
-								? '0' + getMonth(calendarDate)
-								: getMonth(calendarDate)
-						}-${day < 10 ? '0' + day : day}`}
-						onClick={dayOnClickHandler}
-					>
-						{day}
-					</button>
-				))}
+				<div className={calendarClasses.calendar__calendar__days}>
+					{emptyCalendarDays.map(() => (
+						<div></div>
+					))}
+					{calendarDays.map((day) => (
+						<button
+							className={`${calendarClasses.day} ${
+								isSameDay(
+									new Date(
+										calendarDate.getFullYear(),
+										getMonth(calendarDate),
+										day < 10 ? '0' + day : day
+									),
+									new Date()
+								) && calendarClasses.day__today
+							} ${
+								isSameDay(
+									chosenDate,
+									new Date(
+										calendarDate.getFullYear(),
+										getMonth(calendarDate),
+										day < 10 ? '0' + day : day
+									)
+								) && calendarClasses.day__chosendate
+							} ${
+								!isBefore(
+									new Date(
+										calendarDate.getFullYear(),
+										getMonth(calendarDate) < 10
+											? 0 + getMonth(calendarDate)
+											: getMonth(calendarDate),
+										day < 10 ? '0' + day : day
+									),
+									new Date()
+								) && calendarClasses.day__disabled
+							}`}
+							disabled={
+								!isBefore(
+									new Date(
+										calendarDate.getFullYear(),
+										getMonth(calendarDate) < 10
+											? 0 + getMonth(calendarDate)
+											: getMonth(calendarDate),
+										day < 10 ? '0' + day : day
+									),
+									new Date()
+								)
+							}
+							id={`${calendarDate.getFullYear()}-${
+								getMonth(calendarDate) < 10
+									? '0' + getMonth(calendarDate)
+									: getMonth(calendarDate)
+							}-${day < 10 ? '0' + day : day}`}
+							onClick={dayOnClickHandler}
+						>
+							{day}
+						</button>
+					))}
+				</div>
 			</Calendar>
 			{!isLoading &&
 				dailyData &&
