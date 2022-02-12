@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+
+import PasswordShowSVG from '../assets/icons/password_show.svg';
+import PasswordHideSVG from '../assets/icons/password_hide.svg';
+
 import classes from './Input.module.scss';
 
 const FormInput: React.FC<{
@@ -37,24 +41,34 @@ const FormInput: React.FC<{
 
 	return (
 		<div className={classes.wrapper}>
-			<label htmlFor={id}>{id}</label>
-			<input
-				className={!isValid && isTouched ? classes.invalid : ''}
-				type={showPassword ? 'text' : type}
-				name={id}
-				placeholder={placeholder}
-				id={id}
-				value={value}
-				onChange={onChange}
-				onBlur={onBlur}
-				onPaste={onPaste}
-			/>
-			{password && (
-				<button onClick={showPasswordHandler}>
-					{showPassword ? 'Cacher' : 'Afficher'}
-				</button>
-			)}
-			<p>{!isValid && isTouched && errorText}</p>
+			<div className={classes.input__wrapper}>
+				<input
+					className={`${classes.input} ${
+						!isValid && isTouched && classes.input__invalid
+					}`}
+					type={showPassword ? 'text' : type}
+					name={id}
+					placeholder={placeholder}
+					id={id}
+					value={value}
+					onChange={onChange}
+					onBlur={onBlur}
+					onPaste={onPaste}
+				/>
+				{password && (
+					<button
+						onClick={showPasswordHandler}
+						className={classes.input__showpassword}
+					>
+						<img
+							src={showPassword ? PasswordShowSVG : PasswordHideSVG}
+							alt='Icone mot de passe'
+						/>
+					</button>
+				)}
+			</div>
+
+			<div className={classes.errortext}>{!isValid && isTouched && errorText}</div>
 		</div>
 	);
 };

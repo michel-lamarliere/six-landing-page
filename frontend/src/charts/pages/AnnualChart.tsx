@@ -16,12 +16,12 @@ import { useSelector } from 'react-redux';
 import { useRequest } from '../../shared/hooks/http-hook';
 
 import classes from './AnnualChart.module.scss';
-import { useDates } from '../../shared/hooks/dates-hook';
+import { useDatesFn } from '../../shared/hooks/dates-hook';
 import Calendar from '../../shared/components/Calendar/Calendar';
 
 const AnnualGraph: React.FC = () => {
 	const { sendRequest } = useRequest();
-	const { getMonthFn } = useDates();
+	const { getMonthFn } = useDatesFn();
 
 	const userState = useSelector((state: RootState) => state.user);
 
@@ -97,7 +97,7 @@ const AnnualGraph: React.FC = () => {
 				calendarNextMonthHandlerDisabled={true}
 				calendarNextYearHandler={null}
 				calendarNextYearHandlerDisabled={true}
-			></Calendar>
+			/>
 			<div className={classes.chart}>
 				<ResponsiveContainer width='70%' height='40%' className={classes.test}>
 					<BarChart data={data.slice(0, 6)} className={classes.test}>

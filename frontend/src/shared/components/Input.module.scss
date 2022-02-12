@@ -1,8 +1,45 @@
+@import '../variables.scss';
+
 .wrapper {
 	display: flex;
 	flex-direction: column;
+	width: 15.9rem;
 }
 
-.invalid {
-	border: solid 0.1rem red;
+.input {
+	width: 100%;
+	background-color: #4740a0;
+	border-radius: 0.5rem;
+	border: 0.1rem solid #4740a0;
+	padding: 0.7rem 0.8rem;
+	color: #ffffff;
+	font-size: 16px;
+
+	&:focus {
+		outline: none;
+	}
+
+	&__invalid {
+		border: solid 0.1rem #1cc1e6;
+		font-family: $fontRegular;
+		color: #1cc1e6;
+	}
+
+	&__wrapper {
+		position: relative;
+	}
+
+	&__showpassword {
+		position: absolute;
+		right: -1.5rem;
+		top: 50%;
+		transform: translateY(-50%);
+		background: none;
+	}
+}
+
+.errortext {
+	font-family: $fontMedium;
+	font-size: 12px;
+	color: #1cc1e6;
 }

@@ -14,21 +14,19 @@ import {
 } from 'date-fns';
 
 import { useRequest } from '../../shared/hooks/http-hook';
-import { useDates } from '../../shared/hooks/dates-hook';
+import { useDatesFn } from '../../shared/hooks/dates-hook';
 import { RootState } from '../../shared/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { DataButton } from '../components/Buttons';
 import { ErrorPopupActionTypes } from '../../shared/store/error';
 
-import Calendar from '../../shared/components/Calendar/Calendar';
-import calendarClasses from '../../shared/components/Calendar/Calendar.module.scss';
-
 import classes from './MonthlyView.module.scss';
+import MonthlyCalendar from '../../shared/components/Calendar/MonthlyCalendar';
 
 const MonthlyView: React.FC = () => {
 	const dispatch = useDispatch();
 	const { sendRequest, sendData } = useRequest();
-	const { getMonthFn } = useDates();
+	const { getMonthFn } = useDatesFn();
 
 	const userState = useSelector((state: RootState) => state.user);
 
@@ -37,22 +35,6 @@ const MonthlyView: React.FC = () => {
 	const [monthlyArray, setMonthlyArray] = useState<any[]>([]);
 	const [currentTask, setCurrentTask] = useState('food');
 	const [emptyBoxes, setEmptyBoxes] = useState<0[]>([]);
-
-	const [calendarDate, setCalendarDate] = useState(new Date());
-	const months = [
-		'Janvier',
-		'Février',
-		'Mars',
-		'Avril',
-		'Mai',
-		'Juin',
-		'Juillet',
-		'Août',
-		'Septembre',
-		'Octobre',
-		'Novembre',
-		'Décembre',
-	];
 
 	const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		setCurrentTask(event.target.value);
@@ -111,27 +93,6 @@ const MonthlyView: React.FC = () => {
 		setEmptyBoxes(emptyArray);
 	};
 
-	const previousHandler = () => {
-		setChosenDate(addMonths(chosenDate, -1));
-	};
-
-	const nextHandler = () => {
-		setChosenDate(addDays(chosenDate, 7));
-	};
-
-	const calendarPreviousYearHandler = () => {
-		setCalendarDate(addYears(calendarDate, -1));
-	};
-
-	const calendarNextYearHandler = () => {
-		setCalendarDate(addYears(calendarDate, 1));
-	};
-
-	const monthOnClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-		setChosenDate(new Date((event.target as HTMLButtonElement).id));
-		// props.setShowCalendar(false);
-	};
-
 	useEffect(() => {
 		if (userState.id) {
 			getMonthlyData();
@@ -141,65 +102,13 @@ const MonthlyView: React.FC = () => {
 
 	return (
 		<div className={classes.wrapper}>
-			<Calendar
-				calendar={'MONTHLY'}
-				taskSelector={true}
-				selectHandler={selectHandler}
-				previousHandler={previousHandler}
-				previousHandlerDisabled={isBefore(
-					addMonths(chosenDate, -1),
-					new Date(2020, 0, 1)
-				)}
-				headerText={`${monthStr} ${getYear(chosenDate)}`}
-				nextHandler={nextHandler}
-				nextHandlerDisabled={!isBefore(addMonths(chosenDate, 1), new Date())}
-				calendarPreviousYearHandler={calendarPreviousYearHandler}
-				calendarPreviousYearHandlerDisabled={isBefore(
-					addYears(calendarDate, -1),
-					new Date(2020, 0, 1)
-				)}
-				calendarPreviousMonthHandler={null}
-				calendarPreviousMonthHandlerDisabled={true}
-				calendarText={`${getYear(calendarDate)}`}
-				calendarNextMonthHandler={null}
-				calendarNextMonthHandlerDisabled={true}
-				calendarNextYearHandler={calendarNextYearHandler}
-				calendarNextYearHandlerDisabled={
-					!isBefore(addYears(calendarDate, 1), new Date())
-				}
-			>
-				<div className={calendarClasses.month}>
-					{months.map((month, index) => (
-						<button
-							className={`${calendarClasses.month__month} ${
-								!isBefore(
-									addHours(
-										new Date(calendarDate.getFullYear(), index, 1),
-										1
-									),
-									new Date()
-								) && calendarClasses.month__month__disabled
-							}`}
-							disabled={
-								!isBefore(
-									addHours(
-										new Date(calendarDate.getFullYear(), index, 1),
-										1
-									),
-									new Date()
-								)
-							}
-							onClick={monthOnClickHandler}
-							id={`${addHours(
-								new Date(calendarDate.getFullYear(), index, 1),
-								1
-							)}`}
-						>
-							{month}
-						</button>
-					))}
-				</div>
-			</Calendar>
+			<MonthlyCalendar
+				chosenDate={chosenDate}
+				setChosenDate={setChosenDate}
+				setCurrentTask={setCurrentTask}
+				headerText={`${monthStr} ${chosenDate.getFullYear()}`}
+				currentTask={currentTask}
+			/>
 			<div className={classes.days}>
 				<li>Lundi</li>
 				<li>Mardi</li>

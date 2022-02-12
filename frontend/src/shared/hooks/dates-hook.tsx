@@ -1,4 +1,4 @@
-export const useDates = () => {
+export const useDatesFn = () => {
 	const getDayFn = (data: number, setState: (arg0: string) => void) => {
 		switch (data) {
 			case 1:

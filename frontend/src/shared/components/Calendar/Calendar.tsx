@@ -28,8 +28,10 @@ const Calendar: React.FC<{
 	calendarNextMonthHandlerDisabled: boolean;
 	calendarNextYearHandler: any;
 	calendarNextYearHandlerDisabled: boolean;
+	currentTask?: any;
 }> = (props) => {
 	const [showCalendar, setShowCalendar] = useState(false);
+	const [showTaskSelector, setShowTaskSelector] = useState(false);
 
 	const calendarButtonHandler = () => {
 		setShowCalendar((prev) => !prev);
@@ -43,23 +45,55 @@ const Calendar: React.FC<{
 						className={classes.buttons__calendar}
 						onClick={calendarButtonHandler}
 					>
-						Calendrier
+						{/* <img /> */}
+						<img
+							src={TopArrow}
+							className={`${classes.buttons__calendar__arrow} ${
+								showCalendar && classes.buttons__calendar__arrow__open
+							}`}
+							alt='CalendarButton'
+						/>
 					</button>
 				)}
 				{props.taskSelector && (
-					<select
-						className={classes.buttons__selector}
-						onChange={props.selectHandler}
-						name='six'
-						defaultValue='food'
-					>
-						<option value='food'>Alimentation</option>
-						<option value='sleep'>Sommeil</option>
-						<option value='sport'>Activité Physique</option>
-						<option value='relaxation'>Détente</option>
-						<option value='work'>Projets</option>
-						<option value='social'>Vie Sociale</option>
-					</select>
+					<>
+						<button
+							onClick={() => setShowTaskSelector((prev) => !prev)}
+							className={classes.buttons__selector}
+						>
+							{props.currentTask}
+							<img
+								src={TopArrow}
+								className={`${classes.buttons__calendar__arrow} ${
+									showTaskSelector &&
+									classes.buttons__calendar__arrow__open
+								}`}
+								alt='CalendarButton'
+							/>
+						</button>
+						{showTaskSelector && (
+							<div className={classes.selector}>
+								<button value='food' onClick={props.selectHandler}>
+									Alimentation
+								</button>
+								<button value='sleep' onClick={props.selectHandler}>
+									Sommeil
+								</button>
+								<button value='sport' onClick={props.selectHandler}>
+									Sport
+								</button>
+								<button value='relaxation' onClick={props.selectHandler}>
+									Détente
+								</button>
+								<button value='work' onClick={props.selectHandler}>
+									Projets
+								</button>
+								<button value='social' onClick={props.selectHandler}>
+									Vie Sociale
+								</button>
+							</div>
+						)}
+					</>
 				)}
 			</div>
 			<div className={classes.header}>
@@ -84,29 +118,28 @@ const Calendar: React.FC<{
 					<div className={classes.calendar__header}>
 						{!props.calendarPreviousYearHandlerDisabled && (
 							<button
-								className={classes.calendar__header__button}
+								className={`${classes.calendar__header__button} ${classes.calendar__header__button__doubleleft}`}
 								onClick={props.calendarPreviousYearHandler}
 							>
 								<img src={DoubleLeftArrow} />
 							</button>
 						)}
-						{props.calendar !== 'MONTHLY' ? (
+						{props.calendar !== 'MONTHLY' &&
 							!props.calendarPreviousMonthHandlerDisabled && (
 								<button
-									className={classes.calendar__header__button}
+									className={`${classes.calendar__header__button} ${classes.calendar__header__button__left}`}
 									onClick={props.calendarPreviousMonthHandler}
 								>
 									<img src={LeftArrow} />
 								</button>
-							)
-						) : (
-							<div></div>
-						)}
-						<div>{props.calendarText}</div>
+							)}
+						<div className={classes.calendar__header__text}>
+							{props.calendarText}
+						</div>
 						{props.calendar !== 'MONTHLY' &&
 							!props.calendarNextMonthHandlerDisabled && (
 								<button
-									className={classes.calendar__header__button}
+									className={`${classes.calendar__header__button} ${classes.calendar__header__button__right}`}
 									onClick={props.calendarNextMonthHandler}
 								>
 									<img src={RightArrow} />
@@ -114,7 +147,7 @@ const Calendar: React.FC<{
 							)}
 						{!props.calendarNextYearHandlerDisabled && (
 							<button
-								className={classes.calendar__header__button}
+								className={`${classes.calendar__header__button} ${classes.calendar__header__button__doubleright}`}
 								onClick={props.calendarNextYearHandler}
 							>
 								<img src={DoubleRightArrow} />

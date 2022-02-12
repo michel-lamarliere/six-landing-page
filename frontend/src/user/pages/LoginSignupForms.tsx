@@ -6,12 +6,15 @@ import { useRequest } from '../../shared/hooks/http-hook';
 import { useInput } from '../../shared/hooks/input-hook';
 import Input from '../../shared/components/Input';
 
-import classes from './LoginSignupForms.module.scss';
-
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../shared/store/store';
 import { UserActionTypes } from '../../shared/store/user';
 import { EmailConfirmationActionTypes } from '../../shared/store/email-confirmation';
+
+import RememberMeFalseSVG from '../../shared/assets/icons/rememberme_false.svg';
+import RememberMeTrueSVG from '../../shared/assets/icons/rememberme_true.svg';
+
+import classes from './LoginSignupForms.module.scss';
 
 const Header: React.FC = () => {
 	const [responseMessage, setResponseMessage] = useState('');
@@ -21,7 +24,6 @@ const Header: React.FC = () => {
 	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
-	const emailState = useSelector((state: RootState) => state.email);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -136,12 +138,14 @@ const Header: React.FC = () => {
 		logInUser(responseData);
 	};
 
-	const checkboxHandler = () => {
+	const checkboxHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
 		setRememberEmail((prev) => !prev);
 	};
 
 	const forgotPasswordHandler = async (event: FormEvent) => {
 		event.preventDefault();
+		setResponseMessage('');
 		setForgotPassword((prev) => !prev);
 	};
 
@@ -207,13 +211,6 @@ const Header: React.FC = () => {
 	return (
 		<div className={classes.wrapper}>
 			<Link to='/users' />
-			<div className={classes.nav}>
-				{!userData && !forgotPassword && (
-					<button onClick={switchModeHandler}>
-						Basculer sur {loginMode ? "s'inscrire" : 'se connecter'}
-					</button>
-				)}
-			</div>
 			{!userData && (
 				<form
 					onSubmit={loginMode ? loginFormHandler : signupFormHandler}
@@ -258,15 +255,24 @@ const Header: React.FC = () => {
 						/>
 					)}
 					{loginMode && !forgotPassword && (
-						<div className={classes.remember_me}>
-							<label htmlFor='remember_me'>Se souvenir de moi</label>
-							<input
-								type='checkbox'
-								id='remember_me'
-								name='remember_me'
-								onChange={checkboxHandler}
-								checked={rememberEmail}
-							/>
+						<div className={classes.rememberme}>
+							<button
+								onClick={checkboxHandler}
+								className={classes.rememberme__button}
+							>
+								<img
+									className={classes.rememberme__button__img}
+									src={
+										rememberEmail
+											? RememberMeTrueSVG
+											: RememberMeFalseSVG
+									}
+									alt='Se souvenir de moi'
+								/>
+							</button>
+							<div onClick={() => setRememberEmail((prev) => !prev)}>
+								Se souvenir de moi
+							</div>
 						</div>
 					)}
 					{forgotPassword && (
@@ -277,21 +283,40 @@ const Header: React.FC = () => {
 							</button>
 						</>
 					)}
-					{loginMode && (
-						<button onClick={forgotPasswordHandler}>
-							{forgotPassword ? 'Revenir' : 'Mot de passe oublié?'}
-						</button>
-					)}
 					{!forgotPassword && (
-						<button disabled={!formIsValid}>
+						<button disabled={!formIsValid} className={classes.submitbutton}>
 							{loginMode ? 'Connexion' : 'Inscription'}
 						</button>
 					)}
-					<h1>michel@test.com</h1>
-					<h1>Tester1@</h1>
-					<h1>{responseMessage}</h1>
+					<div className={classes.responsemessage}>{responseMessage}</div>
+					{loginMode && (
+						<button
+							onClick={forgotPasswordHandler}
+							className={classes.forgotpassword}
+						>
+							{forgotPassword ? 'Revenir' : 'Mot de passe oublié?'}
+						</button>
+					)}
 				</form>
 			)}
+			<h1>michel@test.com</h1>
+			<h1>Tester1@</h1>
+
+			<div className={classes.footer}>
+				{!userData && !forgotPassword && (
+					<>
+						<div className={classes.footer__text}>
+							{loginMode ? 'Pas de compte ?' : 'Déjà membre ?'}
+						</div>
+						<button
+							onClick={switchModeHandler}
+							className={classes.footer__button}
+						>
+							{loginMode ? 'Inscrivez-vous !' : 'Connectez-vous !'}
+						</button>
+					</>
+				)}
+			</div>
 		</div>
 	);
 };

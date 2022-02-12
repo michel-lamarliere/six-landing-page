@@ -7,7 +7,7 @@ import { ErrorPopupActionTypes } from '../../shared/store/error';
 import WeekViewTasks from '../components/WeeklyViewTasks';
 
 import { useRequest } from '../../shared/hooks/http-hook';
-import { useDates } from '../../shared/hooks/dates-hook';
+import { useDatesFn } from '../../shared/hooks/dates-hook';
 
 import {
 	addDays,
@@ -33,10 +33,11 @@ import calendarClasses from '../../shared/components/Calendar/Calendar.module.sc
 import DaysOfWeek from '../../shared/components/Calendar/DaysOfWeek';
 
 import classes from './WeeklyView.module.scss';
+import WeeklyCalendar from '../../shared/components/Calendar/WeeklyCalendar';
 
 const WeekView: React.FC = () => {
 	const { sendRequest, sendData } = useRequest();
-	const { getMonthFn } = useDates();
+	const { getMonthFn } = useDatesFn();
 	const dispatch = useDispatch();
 
 	const userState = useSelector((state: RootState) => state.user);
@@ -47,13 +48,8 @@ const WeekView: React.FC = () => {
 
 	const [chosenDate, setChosenDate] = useState(addDays(new Date(), 0));
 	const [monthStr, setMonthStr] = useState('');
-	const [calendarMonthStr, setCalendarMonthStr] = useState('');
 	const firstOfWeek = startOfWeek(chosenDate, { weekStartsOn: 1 });
 	const formattedFirstOfWeek = format(firstOfWeek, 'yyyy-MM-dd');
-
-	const [calendarDate, setCalendarDate] = useState(new Date());
-	const [weeks, setWeeks] = useState<any[]>([]);
-	const [weekNumbers, setWeekNumbers] = useState<any[]>([]);
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const dateAndTaskStr = (event.target as HTMLElement).id;
@@ -130,74 +126,6 @@ const WeekView: React.FC = () => {
 		setMappingArray(array);
 	};
 
-	const previousHandler = () => {
-		setChosenDate(addDays(chosenDate, -7));
-	};
-
-	const nextHandler = () => {
-		setChosenDate(addDays(chosenDate, 7));
-	};
-
-	const calendarPreviousYearHandler = () => {
-		setCalendarDate(addYears(calendarDate, -1));
-	};
-
-	const calendarPreviousMonthHandler = () => {
-		setCalendarDate(addMonths(calendarDate, -1));
-	};
-
-	const calendarNextMonthHandler = () => {
-		setCalendarDate(addMonths(calendarDate, 1));
-	};
-
-	const calendarNextYearHandler = () => {
-		setCalendarDate(addYears(calendarDate, 1));
-	};
-
-	const createWeekCalendar = () => {
-		const weeksInMonth = getWeeksInMonth(calendarDate, { weekStartsOn: 1 });
-		const firstDateOfMonth = startOfMonth(calendarDate);
-		const dayOfFirstDateOfMonth = getDay(firstDateOfMonth);
-
-		let firstDateOfFirstWeekOfMonth = addDays(
-			firstDateOfMonth,
-			-dayOfFirstDateOfMonth + 1
-		);
-
-		const weeks = [];
-		const weekNumbers = [];
-		for (let i = 0; i < weeksInMonth; i++) {
-			const week = [];
-			for (let y = 0; y < 7; y++) {
-				week.push(addDays(firstDateOfFirstWeekOfMonth, y));
-			}
-			weekNumbers.push(
-				getWeek(firstDateOfFirstWeekOfMonth, {
-					weekStartsOn: 1,
-					firstWeekContainsDate: 4,
-				})
-			);
-
-			firstDateOfFirstWeekOfMonth = addDays(firstDateOfFirstWeekOfMonth, 7);
-
-			weeks.push(week);
-		}
-
-		setWeeks(weeks);
-		setWeekNumbers(weekNumbers);
-	};
-
-	const weekOnClickHandler = (event: React.MouseEvent<HTMLElement>) => {
-		event.preventDefault();
-		const year = (event.target as HTMLElement).id.slice(0, 4);
-		const month = (event.target as HTMLElement).id.slice(5, 7);
-		const day = (event.target as HTMLElement).id.slice(8, 10);
-		console.log((event.target as HTMLElement).id);
-
-		setChosenDate(new Date(+year, +month - 1, +day));
-		// props.setShowCalendar(false);
-	};
-
 	useEffect(() => {
 		if (userState.id) {
 			getWeekData(userState.id, formattedFirstOfWeek);
@@ -206,86 +134,15 @@ const WeekView: React.FC = () => {
 		}
 	}, [userState.id, chosenDate]);
 
-	useEffect(() => {
-		getMonthFn(calendarDate.getMonth(), true, setCalendarMonthStr);
-		createWeekCalendar();
-	}, [calendarDate]);
-
 	return (
 		<div className={classes.wrapper}>
-			<Calendar
-				calendar={'WEEKLY'}
-				taskSelector={false}
-				selectHandler={null}
-				previousHandler={previousHandler}
-				previousHandlerDisabled={isBefore(
-					addDays(chosenDate, -7),
-					new Date(2020, 0, 1)
-				)}
+			<WeeklyCalendar
+				chosenDate={chosenDate}
+				setChosenDate={setChosenDate}
 				headerText={`Semaine: ${getISOWeek(chosenDate)} | ${monthStr} ${getYear(
 					chosenDate
 				)}`}
-				nextHandler={nextHandler}
-				nextHandlerDisabled={!isBefore(addDays(chosenDate, 7), new Date())}
-				calendarPreviousYearHandler={calendarPreviousYearHandler}
-				calendarPreviousYearHandlerDisabled={isBefore(
-					addYears(calendarDate, -1),
-					new Date(2020, 0, 1)
-				)}
-				calendarPreviousMonthHandler={calendarPreviousMonthHandler}
-				calendarPreviousMonthHandlerDisabled={isBefore(
-					addMonths(calendarDate, -1),
-					new Date(2020, 0, 1)
-				)}
-				calendarText={`${calendarMonthStr} ${getYear(calendarDate)}`}
-				calendarNextMonthHandler={calendarNextMonthHandler}
-				calendarNextMonthHandlerDisabled={
-					!isBefore(addMonths(calendarDate, 1), new Date())
-				}
-				calendarNextYearHandler={calendarNextYearHandler}
-				calendarNextYearHandlerDisabled={
-					!isBefore(addYears(calendarDate, 1), new Date())
-				}
-			>
-				<div className={calendarClasses.week}>
-					<div className={calendarClasses.week__numbers}>
-						{weekNumbers.map((weekNumber) => (
-							<div>{weekNumber}</div>
-						))}
-					</div>
-					<div className={calendarClasses.week__calendar}>
-						{weeks.length > 0 &&
-							weeks.map((week) => (
-								<button
-									className={`${calendarClasses.week__calendar__week} ${
-										!isBefore(new Date(week[0]), new Date()) &&
-										calendarClasses.week__calendar__week__disabled
-									}`}
-									onClick={weekOnClickHandler}
-									disabled={!isBefore(new Date(week[0]), new Date())}
-									id={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
-								>
-									{week.map((day: any) => (
-										<button
-											className={`${calendarClasses.day} ${
-												!isBefore(day, new Date()) &&
-												calendarClasses.day__disabled
-											}`}
-											onClick={weekOnClickHandler}
-											id={`${format(
-												new Date(week[6]),
-												'yyyy-MM-dd'
-											)}`}
-										>
-											{console.log(day)}
-											{format(day, 'dd')}
-										</button>
-									))}
-								</button>
-							))}
-					</div>
-				</div>
-			</Calendar>
+			/>
 			<div>
 				<div className={classes.days}>
 					<li>Lundi {addDays(firstOfWeek, 0).getDate()}</li>
