@@ -2,19 +2,20 @@ import React, { FormEvent, useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { addHours } from 'date-fns';
 
-import { useRequest } from '../../shared/hooks/http-hook';
-import { useInput } from '../../shared/hooks/input-hook';
-import Input from '../../shared/components/Input';
+import { useRequest } from '../shared/hooks/http-hook';
+import { useInput } from '../shared/hooks/input-hook';
+import Input from '../shared/components/Input';
 
 import { useSelector, useDispatch } from 'react-redux';
-import type { RootState } from '../../shared/store/store';
-import { UserActionTypes } from '../../shared/store/user';
-import { EmailConfirmationActionTypes } from '../../shared/store/email-confirmation';
+import type { RootState } from '../shared/store/store';
+import { UserActionTypes } from '../shared/store/user';
+import { EmailConfirmationActionTypes } from '../shared/store/email-confirmation';
 
-import RememberMeFalseSVG from '../../shared/assets/icons/rememberme_false.svg';
-import RememberMeTrueSVG from '../../shared/assets/icons/rememberme_true.svg';
+import RememberMeFalseSVG from '../shared/assets/icons/rememberme_false.svg';
+import RememberMeTrueSVG from '../shared/assets/icons/rememberme_true.svg';
 
 import classes from './LoginSignupForms.module.scss';
+import { type } from 'os';
 
 const Header: React.FC = () => {
 	const [responseMessage, setResponseMessage] = useState('');
@@ -51,6 +52,13 @@ const Header: React.FC = () => {
 		inputOnBlurHandler: passwordOnBlurHandler,
 	} = useInput('PASSWORD', loginMode);
 
+	const {
+		input: passwordConfirmationInput,
+		setInput: setPasswordConfirmationInput,
+		inputOnChangeHandler: passwordConfirmationOnChangeHandler,
+		inputOnBlurHandler: passwordConfirmationOnBlurHandler,
+	} = useInput('PASSWORD_COMPARISON', loginMode, passwordInput.value);
+
 	const switchModeHandler = () => {
 		setLoginMode((prev) => !prev);
 
@@ -63,6 +71,12 @@ const Header: React.FC = () => {
 		});
 
 		setPasswordInput({
+			value: '',
+			isValid: true,
+			isTouched: false,
+		});
+
+		setPasswordConfirmationInput({
 			value: '',
 			isValid: true,
 			isTouched: false,
@@ -192,13 +206,18 @@ const Header: React.FC = () => {
 				setFormIsValid(false);
 			}
 		} else {
-			if (nameInput.isValid && emailInput.isValid && passwordInput.isValid) {
+			if (
+				nameInput.isValid &&
+				emailInput.isValid &&
+				passwordInput.isValid &&
+				passwordConfirmationInput.isValid
+			) {
 				setFormIsValid(true);
 			} else {
 				setFormIsValid(false);
 			}
 		}
-	}, [nameInput, emailInput, passwordInput]);
+	}, [nameInput, emailInput, passwordInput, passwordConfirmationInput]);
 
 	const userData =
 		userState.token &&
@@ -211,6 +230,9 @@ const Header: React.FC = () => {
 	return (
 		<div className={classes.wrapper}>
 			<Link to='/users' />
+			<h1 className={classes.title}>
+				{loginMode ? 'Heureux de vous revoir !' : 'Bienvenue !'}
+			</h1>
 			{!userData && (
 				<form
 					onSubmit={loginMode ? loginFormHandler : signupFormHandler}
@@ -241,27 +263,43 @@ const Header: React.FC = () => {
 						onBlur={emailOnBlurHandler}
 					/>
 					{!forgotPassword && (
-						<Input
-							id='mot de passe'
-							type='password'
-							placeholder='********'
-							value={passwordInput.value}
-							isValid={passwordInput.isValid}
-							isTouched={passwordInput.isTouched}
-							errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
-							onChange={passwordOnChangeHandler}
-							onBlur={passwordOnBlurHandler}
-							password={true}
-						/>
+						<>
+							<Input
+								id='mot de passe'
+								type='password'
+								placeholder='Mot de passe'
+								value={passwordInput.value}
+								isValid={passwordInput.isValid}
+								isTouched={passwordInput.isTouched}
+								errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
+								onChange={passwordOnChangeHandler}
+								onBlur={passwordOnBlurHandler}
+								password={true}
+							/>
+							{!loginMode && (
+								<Input
+									id='mot de passe'
+									type='password'
+									placeholder='Confirmation mot de passe'
+									value={passwordConfirmationInput.value}
+									isValid={passwordConfirmationInput.isValid}
+									isTouched={passwordConfirmationInput.isTouched}
+									errorText='Les mots de passe ne sont pas indentiques.'
+									onChange={passwordConfirmationOnChangeHandler}
+									onBlur={passwordConfirmationOnBlurHandler}
+									password={true}
+								/>
+							)}
+						</>
 					)}
 					{loginMode && !forgotPassword && (
-						<div className={classes.rememberme}>
+						<div className={classes['remember-me']}>
 							<button
 								onClick={checkboxHandler}
-								className={classes.rememberme__button}
+								className={classes['remember-me__button']}
 							>
 								<img
-									className={classes.rememberme__button__img}
+									className={classes['remember-me__button__img']}
 									src={
 										rememberEmail
 											? RememberMeTrueSVG
@@ -284,15 +322,20 @@ const Header: React.FC = () => {
 						</>
 					)}
 					{!forgotPassword && (
-						<button disabled={!formIsValid} className={classes.submitbutton}>
+						<button
+							disabled={!formIsValid}
+							className={`${classes['submit-button']} ${
+								!formIsValid && classes['submit-button--disabled']
+							}`}
+						>
 							{loginMode ? 'Connexion' : 'Inscription'}
 						</button>
 					)}
-					<div className={classes.responsemessage}>{responseMessage}</div>
+					<div className={classes['response-message']}>{responseMessage}</div>
 					{loginMode && (
 						<button
 							onClick={forgotPasswordHandler}
-							className={classes.forgotpassword}
+							className={classes['forgot-password-button']}
 						>
 							{forgotPassword ? 'Revenir' : 'Mot de passe oublié?'}
 						</button>

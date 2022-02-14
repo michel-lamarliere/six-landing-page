@@ -10,7 +10,7 @@ import { ErrorPopupActionTypes } from './shared/store/error';
 
 import { useRequest } from './shared/hooks/http-hook';
 
-import LoginSignupForms from './user/pages/LoginSignupForms';
+import LoginSignupForms from './pages/LoginSignupForms';
 import Sidebar from './layout/pages/Sidebar';
 import DailyView from './log/pages/DailyView';
 import WeeklyView from './log/pages/WeeklyView';

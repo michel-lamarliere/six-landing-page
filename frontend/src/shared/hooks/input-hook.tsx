@@ -23,14 +23,6 @@ export const useInput = (
 	};
 
 	useEffect(() => {
-		if (condition === 'PASSWORD_COMPARISON') {
-			input.value === compareTo
-				? setInput((prev) => ({ ...prev, isValid: true }))
-				: setInput((prev) => ({ ...prev, isValid: false }));
-		}
-	}, [compareTo, input.value]);
-
-	useEffect(() => {
 		if (condition === 'NAME') {
 			input.value.trim().length >= 2 &&
 			input.value.trim().match(/^[-'a-zA-ZÀ-ÖØ-öø-ÿ]+$/)
@@ -58,6 +50,14 @@ export const useInput = (
 				: setInput((prev) => ({ ...prev, isValid: false }));
 		}
 	}, [input.value]);
+
+	useEffect(() => {
+		if (condition === 'PASSWORD_COMPARISON') {
+			input.value === compareTo
+				? setInput((prev) => ({ ...prev, isValid: true }))
+				: setInput((prev) => ({ ...prev, isValid: false }));
+		}
+	}, [compareTo, input.value]);
 
 	useEffect(() => {
 		if (condition === 'OLD_PASSWORD' && input.isTouched) {

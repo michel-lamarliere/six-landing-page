@@ -58,7 +58,7 @@ const FormInput: React.FC<{
 				{password && (
 					<button
 						onClick={showPasswordHandler}
-						className={classes.input__input__showpassword}
+						className={classes['input__show-password']}
 					>
 						<img
 							src={showPassword ? PasswordShowSVG : PasswordHideSVG}

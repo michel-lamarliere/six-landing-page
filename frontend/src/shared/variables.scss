@@ -9,8 +9,8 @@
 }
 
 @font-face {
-	font-family: Poppins-Bold;
-	src: url('./assets/fonts/Poppins-Bold.ttf');
+	font-family: Poppins-Medium-Italic;
+	src: url('./assets/fonts/Poppins-MediumItalic.ttf');
 }
 
 @font-face {
@@ -19,12 +19,18 @@
 }
 
 @font-face {
-	font-family: Poppins-Medium-Italic;
-	src: url('./assets/fonts/Poppins-MediumItalic.ttf');
+	font-family: Poppins-Bold;
+	src: url('./assets/fonts/Poppins-Bold.ttf');
+}
+
+@font-face {
+	font-family: Poppins-Extra-Bold;
+	src: url('./assets/fonts/Poppins-ExtraBold.ttf');
 }
 
 $fontRegular: Poppins-Regular;
 $fontMedium: Poppins-Medium;
-$fontBold: Poppins-Bold;
-$fontSemiBold: Poppins-Semi-Bold;
 $fontMediumItalic: Poppins-Medium-Italic;
+$fontSemiBold: Poppins-Semi-Bold;
+$fontBold: Poppins-Bold;
+$fontExtraBold: Poppins-Extra-Bold;
