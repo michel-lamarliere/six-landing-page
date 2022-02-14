@@ -1,27 +1,18 @@
-import React, { useEffect, useState, useRef } from 'react';
-import {
-	addMonths,
-	getDay,
-	getYear,
-	format,
-	isAfter,
-	getDaysInMonth,
-	startOfMonth,
-	addHours,
-	addDays,
-	addYears,
-	isBefore,
-} from 'date-fns';
+import React, { useEffect, useState } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getDay, format, isAfter, startOfMonth } from 'date-fns';
 
 import { useRequest } from '../../shared/hooks/http-hook';
 import { useDatesFn } from '../../shared/hooks/dates-hook';
 import { RootState } from '../../shared/store/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { DataButton } from '../components/Buttons';
 import { ErrorPopupActionTypes } from '../../shared/store/error';
 
-import classes from './MonthlyView.module.scss';
 import MonthlyCalendar from '../../shared/components/Calendar/MonthlyCalendar';
+import { DataButton } from '../components/Buttons';
+
+import classes from './MonthlyView.module.scss';
 
 const MonthlyView: React.FC = () => {
 	const dispatch = useDispatch();
@@ -118,13 +109,13 @@ const MonthlyView: React.FC = () => {
 				<li>Samedi</li>
 				<li>Dimanche</li>
 			</div>
-			<div className={classes.calendar_wrapper}>
+			<div className={classes.calendar}>
 				{emptyBoxes.length > 0 &&
 					emptyBoxes.map((item) => <div key={item + Math.random()}></div>)}
 				{monthlyArray &&
 					monthlyArray.map((item: { date: number; level: 0 }, index) => (
 						<div
-							className={classes.button_wrapper}
+							className={classes.calendar__button}
 							key={`${format(
 								new Date(item.date),
 								'yyyy-MM-dd'

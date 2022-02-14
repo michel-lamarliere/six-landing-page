@@ -12,18 +12,18 @@
 	width: 50%;
 	margin: auto;
 
-	&_img {
+	&__img {
 		width: 1.5rem;
 		height: 1.5rem;
 		background-color: black;
 		border: 0;
 		border-radius: 1.5rem;
 	}
-}
 
-.button {
-	width: 1rem;
-	height: 1rem;
+	&__button {
+		width: 1rem;
+		height: 1rem;
+	}
 }
 
 .links {
@@ -32,14 +32,14 @@
 	align-items: flex-start;
 	width: 50%;
 	margin: auto;
-}
 
-.link {
-	color: rgb(56, 56, 56);
-	cursor: pointer;
-	text-decoration: none;
+	&__link {
+		color: rgb(56, 56, 56);
+		cursor: pointer;
+		text-decoration: none;
 
-	&:hover {
-		color: black;
+		&:hover {
+			color: black;
+		}
 	}
 }

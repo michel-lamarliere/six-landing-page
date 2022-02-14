@@ -48,8 +48,8 @@ const Calendar: React.FC<{
 						{/* <img /> */}
 						<img
 							src={TopArrow}
-							className={`${classes.buttons__calendar__arrow} ${
-								showCalendar && classes.buttons__calendar__arrow__open
+							className={`${classes.buttons__button__arrow} ${
+								showCalendar && classes['buttons__calendar__arrow--open']
 							}`}
 							alt='CalendarButton'
 						/>
@@ -64,9 +64,9 @@ const Calendar: React.FC<{
 							{props.currentTask}
 							<img
 								src={TopArrow}
-								className={`${classes.buttons__calendar__arrow} ${
+								className={`${classes.buttons__button__arrow} ${
 									showTaskSelector &&
-									classes.buttons__calendar__arrow__open
+									classes['buttons__calendar__arrow--open']
 								}`}
 								alt='CalendarButton'
 							/>
@@ -118,7 +118,7 @@ const Calendar: React.FC<{
 					<div className={classes.calendar__header}>
 						{!props.calendarPreviousYearHandlerDisabled && (
 							<button
-								className={`${classes.calendar__header__button} ${classes.calendar__header__button__doubleleft}`}
+								className={`${classes.calendar__header__button} ${classes['calendar__header__button--doubleleft']}`}
 								onClick={props.calendarPreviousYearHandler}
 							>
 								<img src={DoubleLeftArrow} />
@@ -127,7 +127,7 @@ const Calendar: React.FC<{
 						{props.calendar !== 'MONTHLY' &&
 							!props.calendarPreviousMonthHandlerDisabled && (
 								<button
-									className={`${classes.calendar__header__button} ${classes.calendar__header__button__left}`}
+									className={`${classes.calendar__header__button} ${classes['calendar__header__button--left']}`}
 									onClick={props.calendarPreviousMonthHandler}
 								>
 									<img src={LeftArrow} />
@@ -139,7 +139,7 @@ const Calendar: React.FC<{
 						{props.calendar !== 'MONTHLY' &&
 							!props.calendarNextMonthHandlerDisabled && (
 								<button
-									className={`${classes.calendar__header__button} ${classes.calendar__header__button__right}`}
+									className={`${classes.calendar__header__button} ${classes['calendar__header__button--right']}`}
 									onClick={props.calendarNextMonthHandler}
 								>
 									<img src={RightArrow} />
@@ -147,7 +147,7 @@ const Calendar: React.FC<{
 							)}
 						{!props.calendarNextYearHandlerDisabled && (
 							<button
-								className={`${classes.calendar__header__button} ${classes.calendar__header__button__doubleright}`}
+								className={`${classes.calendar__header__button} ${classes['calendar__header__button--doubleright']}`}
 								onClick={props.calendarNextYearHandler}
 							>
 								<img src={DoubleRightArrow} />

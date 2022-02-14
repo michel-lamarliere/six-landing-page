@@ -99,8 +99,8 @@ const AnnualGraph: React.FC = () => {
 				calendarNextYearHandlerDisabled={true}
 			/>
 			<div className={classes.chart}>
-				<ResponsiveContainer width='70%' height='40%' className={classes.test}>
-					<BarChart data={data.slice(0, 6)} className={classes.test}>
+				<ResponsiveContainer width='70%' height='40%'>
+					<BarChart data={data.slice(0, 6)}>
 						<XAxis
 							dataKey='name'
 							axisLine={false}
@@ -115,8 +115,8 @@ const AnnualGraph: React.FC = () => {
 						<Bar dataKey='full' stackId='a' fill='#36d5d6' />
 					</BarChart>
 				</ResponsiveContainer>
-				<ResponsiveContainer width='70%' height='40%' className={classes.test}>
-					<BarChart data={data.slice(6)} className={classes.test}>
+				<ResponsiveContainer width='70%' height='40%'>
+					<BarChart data={data.slice(6)}>
 						<XAxis
 							dataKey='name'
 							axisLine={false}

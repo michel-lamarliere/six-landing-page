@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { useRequest } from '../shared/hooks/http-hook';
-import { EmailConfirmationActionTypes } from '../shared/store/email-confirmation';
+
 import { RootState } from '../shared/store/store';
+import { EmailConfirmationActionTypes } from '../shared/store/email-confirmation';
+
+import { useRequest } from '../shared/hooks/http-hook';
 
 import classes from './EmailConfirmationPopup.module.scss';
 
@@ -12,7 +15,6 @@ const EmailPopup: React.FC = () => {
 	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
-	const emailState = useSelector((state: RootState) => state.email);
 
 	const [sent, setSent] = useState(false);
 	const [responseMessage, setResponseMessage] = useState('');

@@ -4,7 +4,7 @@
 	display: flex;
 	justify-content: center;
 
-	&__calendar {
+	&__button {
 		position: relative;
 		background-color: #25273e;
 		width: 4.1rem;
@@ -16,14 +16,10 @@
 			width: 1rem;
 			transition: all 0.3s ease-in-out;
 
-			&__open {
+			&--open {
 				transform: rotate(180deg);
 			}
 		}
-	}
-
-	&__selector {
-		@extend .buttons__calendar;
 	}
 }
 
@@ -103,22 +99,22 @@
 			@extend .header__button;
 			height: 100%;
 
-			&__doubleleft {
+			&--doubleleft {
 				position: absolute;
 				left: 0rem;
 			}
 
-			&__left {
+			&--left {
 				position: absolute;
 				left: 2rem;
 			}
 
-			&__right {
+			&--right {
 				position: absolute;
 				right: 2rem;
 			}
 
-			&__doubleright {
+			&--doubleright {
 				position: absolute;
 				right: 0rem;
 			}
@@ -153,7 +149,7 @@
 		border: 0.15rem solid #8d88ff;
 	}
 
-	&__disabled {
+	&--disabled {
 		cursor: default;
 		color: grey;
 
@@ -162,12 +158,12 @@
 		}
 	}
 
-	&__today {
+	&--today {
 		border: 0.15rem solid #564bef;
 		color: #564bef;
 	}
 
-	&__chosendate {
+	&--chosen-date {
 		background-color: #8d88ff;
 	}
 }
@@ -205,7 +201,7 @@
 				cursor: pointer;
 			}
 
-			&__disabled {
+			&--disabled {
 				&:hover {
 					background-color: transparent;
 					cursor: default;
@@ -235,7 +231,7 @@
 			cursor: pointer;
 		}
 
-		&__disabled {
+		&--disabled {
 			color: grey;
 
 			&:hover {

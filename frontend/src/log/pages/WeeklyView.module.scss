@@ -19,14 +19,14 @@
 	margin: 2rem 0 0 -2rem;
 	gap: 1rem;
 
-	&_titles {
+	&__titles {
 		display: grid;
 		gap: 1rem;
 		font-size: 16px;
-	}
-}
 
-li {
-	display: grid;
-	place-content: center;
+		& > li {
+			display: grid;
+			place-content: center;
+		}
+	}
 }

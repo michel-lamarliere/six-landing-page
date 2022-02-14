@@ -16,16 +16,16 @@
 			border: 0;
 		}
 	}
-}
 
-.zero {
-	background-color: white;
-}
+	&--zero {
+		background-color: white;
+	}
 
-.one {
-	background-color: yellow;
-}
+	&--one {
+		background-color: yellow;
+	}
 
-.two {
-	background-color: green;
+	&--two {
+		background-color: green;
+	}
 }

@@ -154,7 +154,7 @@ const WeekView: React.FC = () => {
 					<li>Dimanche {addDays(firstOfWeek, 6).getDate()}</li>
 				</div>
 				<div className={classes.six}>
-					<div className={classes.six_titles}>
+					<div className={classes.six__titles}>
 						<li>Food</li>
 						<li>Sleep</li>
 						<li>Sport</li>

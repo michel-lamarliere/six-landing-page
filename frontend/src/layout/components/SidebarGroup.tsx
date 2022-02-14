@@ -18,10 +18,10 @@ const SidebarGroups: React.FC<{
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.title}>
-				<img src='' alt='' className={classes.title_img} />
-				<h3 className={classes.title_text}>{props.title}</h3>
+				<img src='' alt='' className={classes.title__img} />
+				<h3 className={classes.title__text}>{props.title}</h3>
 				<button
-					className={classes.button}
+					className={classes.title__button}
 					onClick={() => setShowLinks((prev) => !prev)}
 				>
 					<img src='' alt='' />
@@ -35,7 +35,7 @@ const SidebarGroups: React.FC<{
 								<>
 									{link.nav_link ? (
 										<NavLink
-											className={classes.link}
+											className={classes.links__link}
 											style={({ isActive }) => ({
 												color: isActive ? 'grey' : 'black',
 											})}
@@ -44,14 +44,20 @@ const SidebarGroups: React.FC<{
 											{link.text}
 										</NavLink>
 									) : (
-										<Link className={classes.link} to={link.url}>
+										<Link
+											className={classes.links__link}
+											to={link.url}
+										>
 											{link.text}
 										</Link>
 									)}
 								</>
 							)}
 							{link.onClick && (
-								<div className={classes.link} onClick={link.onClick}>
+								<div
+									className={classes.links__link}
+									onClick={link.onClick}
+								>
 									{link.text}
 								</div>
 							)}

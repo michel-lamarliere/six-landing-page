@@ -41,10 +41,10 @@ const FormInput: React.FC<{
 
 	return (
 		<div className={classes.wrapper}>
-			<div className={classes.input__wrapper}>
+			<div className={classes.input}>
 				<input
-					className={`${classes.input} ${
-						!isValid && isTouched && classes.input__invalid
+					className={`${classes.input__input} ${
+						!isValid && isTouched && classes['input__input--invalid']
 					}`}
 					type={showPassword ? 'text' : type}
 					name={id}
@@ -58,7 +58,7 @@ const FormInput: React.FC<{
 				{password && (
 					<button
 						onClick={showPasswordHandler}
-						className={classes.input__showpassword}
+						className={classes.input__input__showpassword}
 					>
 						<img
 							src={showPassword ? PasswordShowSVG : PasswordHideSVG}
@@ -67,8 +67,9 @@ const FormInput: React.FC<{
 					</button>
 				)}
 			</div>
-
-			<div className={classes.errortext}>{!isValid && isTouched && errorText}</div>
+			<div className={classes['error-text']}>
+				{!isValid && isTouched && errorText}
+			</div>
 		</div>
 	);
 };

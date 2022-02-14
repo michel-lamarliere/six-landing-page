@@ -138,7 +138,7 @@ const DailyCalendar: React.FC<{
 									day < 10 ? '0' + day : day
 								),
 								new Date()
-							) && calendarClasses.day__today
+							) && calendarClasses['day--today']
 						} ${
 							isSameDay(
 								props.chosenDate,
@@ -147,7 +147,7 @@ const DailyCalendar: React.FC<{
 									getMonth(calendarDate),
 									day < 10 ? '0' + day : day
 								)
-							) && calendarClasses.day__chosendate
+							) && calendarClasses['day--chosen-date']
 						} ${
 							!isBefore(
 								new Date(
@@ -158,7 +158,7 @@ const DailyCalendar: React.FC<{
 									day < 10 ? '0' + day : day
 								),
 								new Date()
-							) && calendarClasses.day__disabled
+							) && calendarClasses['day--disabled']
 						}`}
 						disabled={
 							!isBefore(

@@ -147,7 +147,7 @@ const WeeklyCalendar: React.FC<{
 							<button
 								className={`${calendarClasses.week__calendar__week} ${
 									!isBefore(new Date(week[0]), new Date()) &&
-									calendarClasses.week__calendar__week__disabled
+									calendarClasses['week__calendar__week--disabled']
 								}`}
 								onClick={weekOnClickHandler}
 								disabled={!isBefore(new Date(week[0]), new Date())}

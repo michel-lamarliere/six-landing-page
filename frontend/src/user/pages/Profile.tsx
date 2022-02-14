@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+import { RootState } from '../../shared/store/store';
 import { useRequest } from '../../shared/hooks/http-hook';
 
 import NameForm from '../components/NameForm';
 import PasswordForm from '../components/PasswordForm';
-import { RootState } from '../../shared/store/store';
 
 import classes from './Profile.module.scss';
-import { EmailConfirmationActionTypes } from '../../shared/store/email-confirmation';
 
 const Profile: React.FC = () => {
 	const { sendRequest } = useRequest();
-	const dispatch = useDispatch();
 
 	const userState = useSelector((state: RootState) => state.user);
 

@@ -1,9 +1,10 @@
 import React from 'react';
-import classes from './WeeklyViewTasks.module.scss';
 
-import { format, isAfter, isBefore } from 'date-fns';
+import { format, isAfter } from 'date-fns';
 
 import { DataButton } from './Buttons';
+
+import classes from './WeeklyViewTasks.module.scss';
 
 interface Props {
 	className?: (event: React.MouseEvent<HTMLButtonElement>) => string;

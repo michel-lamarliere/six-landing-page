@@ -107,7 +107,7 @@ const App: React.FC = () => {
 		<>
 			{userData && <Sidebar />}
 			<div className='main'>
-				<div className={main_loggedIn}>
+				<div className='main__logged-in'>
 					<Routes>
 						{!userData && <Route path='/' element={<LoginSignupForms />} />}
 						{userData && (

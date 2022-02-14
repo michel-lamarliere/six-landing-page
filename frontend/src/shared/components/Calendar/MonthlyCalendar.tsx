@@ -90,7 +90,7 @@ const MonthlyCalendar: React.FC<{
 									1
 								),
 								new Date()
-							) && calendarClasses.month__month__disabled
+							) && calendarClasses['month__month--disabled']
 						}`}
 						disabled={
 							!isBefore(

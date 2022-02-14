@@ -9,9 +9,11 @@ export const DataButton: React.FC<{
 }> = (props) => {
 	return (
 		<button
-			className={`${classes.button} ${props.value === 0 ? classes.zero : ''}
-						${props.value === 1 ? classes.one : ''}
-						${props.value === 2 ? classes.two : ''}
+			className={`${classes.button} ${
+				props.value === 0 ? classes['button--zero'] : ''
+			}
+						${props.value === 1 ? classes['button--one'] : ''}
+						${props.value === 2 ? classes['button--two'] : ''}
 						`}
 			id={props.id}
 			onClick={props.onClick}
