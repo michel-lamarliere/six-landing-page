@@ -11,9 +11,9 @@ import {
 	isSameDay,
 	startOfMonth,
 } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDatesFn } from '../../hooks/dates-hook';
-import Calendar from './Calendar';
+import Calendar, { calendarTypes } from './Calendar';
 import calendarClasses from './Calendar.module.scss';
 
 const DailyCalendar: React.FC<{
@@ -21,7 +21,9 @@ const DailyCalendar: React.FC<{
 	setChosenDate: any;
 	headerText: string;
 }> = (props) => {
-	const { getDayFn, getMonthFn } = useDatesFn();
+	const { getMonthFn } = useDatesFn();
+
+	const calendarButtonRef = React.createRef<HTMLButtonElement>();
 
 	const [calendarDate, setCalendarDate] = useState(new Date());
 	const [emptyCalendarDays, setEmptyCalendarDays] = useState<any[]>([]);
@@ -83,7 +85,10 @@ const DailyCalendar: React.FC<{
 		const month = (event.target as HTMLButtonElement).id.slice(5, 7);
 		const day = (event.target as HTMLButtonElement).id.slice(8, 10);
 		props.setChosenDate(addHours(new Date(+year, +month, +day), 1));
-		// props.setShowCalendar(false);
+
+		if (calendarButtonRef.current) {
+			calendarButtonRef.current.click();
+		}
 	};
 
 	useEffect(() => {
@@ -93,9 +98,8 @@ const DailyCalendar: React.FC<{
 
 	return (
 		<Calendar
-			calendar={'DAILY'}
-			taskSelector={false}
-			selectHandler={null}
+			calendar={calendarTypes.DAILY}
+			ref={calendarButtonRef}
 			previousHandler={previousHandler}
 			previousHandlerDisabled={isBefore(
 				addDays(props.chosenDate, -1),

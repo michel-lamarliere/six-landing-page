@@ -1,16 +1,19 @@
-import { addDays, addHours, addMonths, addYears, getYear, isBefore } from 'date-fns';
-import React, { useState } from 'react';
-import Calendar from './Calendar';
+import { addHours, addMonths, addYears, getYear, isBefore } from 'date-fns';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import Calendar, { calendarTypes } from './Calendar';
 import calendarClasses from './Calendar.module.scss';
 
 const MonthlyCalendar: React.FC<{
 	chosenDate: Date;
 	setChosenDate: any;
-	setCurrentTask: any;
+	chosenTask: string;
+	setChosenTask: Dispatch<SetStateAction<string>>;
 	headerText: string;
-	currentTask: string;
 }> = (props) => {
+	const calendarButtonRef = React.createRef<HTMLButtonElement>();
+
 	const [calendarDate, setCalendarDate] = useState(new Date());
+
 	const months = [
 		'Janvier',
 		'Février',
@@ -26,8 +29,8 @@ const MonthlyCalendar: React.FC<{
 		'Décembre',
 	];
 
-	const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-		props.setCurrentTask(event.target.value);
+	const selectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+		props.setChosenTask((event.target as HTMLButtonElement).value);
 	};
 
 	const previousHandler = () => {
@@ -48,14 +51,19 @@ const MonthlyCalendar: React.FC<{
 
 	const monthOnClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		props.setChosenDate(new Date((event.target as HTMLButtonElement).id));
-		// props.setShowCalendar(false);
+
+		if (calendarButtonRef.current) {
+			calendarButtonRef.current.click();
+		}
 	};
 
 	return (
 		<Calendar
-			calendar={'MONTHLY'}
+			calendar={calendarTypes.MONTHLY}
+			ref={calendarButtonRef}
 			taskSelector={true}
 			selectHandler={selectHandler}
+			chosenTask={props.chosenTask}
 			previousHandler={previousHandler}
 			previousHandlerDisabled={isBefore(
 				addMonths(props.chosenDate, -1),
@@ -69,16 +77,11 @@ const MonthlyCalendar: React.FC<{
 				addYears(calendarDate, -1),
 				new Date(2020, 0, 1)
 			)}
-			calendarPreviousMonthHandler={null}
-			calendarPreviousMonthHandlerDisabled={true}
 			calendarText={`${getYear(calendarDate)}`}
-			calendarNextMonthHandler={null}
-			calendarNextMonthHandlerDisabled={true}
 			calendarNextYearHandler={calendarNextYearHandler}
 			calendarNextYearHandlerDisabled={
 				!isBefore(addYears(calendarDate, 1), new Date())
 			}
-			currentTask={props.currentTask}
 		>
 			<div className={calendarClasses.month}>
 				{months.map((month, index) => (

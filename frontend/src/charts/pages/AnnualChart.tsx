@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { isAfter, addYears, getYear, isBefore, addMonths } from 'date-fns';
+
+import { useSelector } from 'react-redux';
+
+import { addYears, getYear, isBefore, addMonths } from 'date-fns';
 import {
 	Bar,
 	BarChart,
@@ -12,12 +15,13 @@ import {
 } from 'recharts';
 
 import { RootState } from '../../shared/store/store';
-import { useSelector } from 'react-redux';
+
 import { useRequest } from '../../shared/hooks/http-hook';
+import { useDatesFn } from '../../shared/hooks/dates-hook';
+
+import Calendar, { calendarTypes } from '../../shared/components/Calendar/Calendar';
 
 import classes from './AnnualChart.module.scss';
-import { useDatesFn } from '../../shared/hooks/dates-hook';
-import Calendar from '../../shared/components/Calendar/Calendar';
 
 const AnnualGraph: React.FC = () => {
 	const { sendRequest } = useRequest();
@@ -26,18 +30,18 @@ const AnnualGraph: React.FC = () => {
 	const userState = useSelector((state: RootState) => state.user);
 
 	const [chosenYear, setChosenYear] = useState<any>(new Date());
-	const [task, setTask] = useState('food');
+	const [chosenTask, setChosenTask] = useState('food');
 	const [data, setData] = useState<any>([]);
 
-	const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-		setTask(event.target.value);
+	const selectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+		setChosenTask((event.target as HTMLButtonElement).value);
 	};
 
 	const getGraph = async () => {
 		const responseData = await sendRequest(
 			`http://localhost:8080/api/charts/annual/${userState.id}/${getYear(
 				chosenYear
-			)}/${task}`,
+			)}/${chosenTask}`,
 			'GET'
 		);
 
@@ -72,13 +76,14 @@ const AnnualGraph: React.FC = () => {
 
 	useEffect(() => {
 		getGraph();
-	}, [chosenYear, task]);
+	}, [chosenYear, chosenTask]);
 
 	return (
 		<div className={classes.wrapper}>
 			<Calendar
-				calendar={'ANNUAL_CHART'}
+				calendar={calendarTypes.ANNUAL_CHART}
 				taskSelector={true}
+				chosenTask={chosenTask}
 				selectHandler={selectHandler}
 				previousHandler={previousHandler}
 				previousHandlerDisabled={isBefore(
@@ -88,15 +93,6 @@ const AnnualGraph: React.FC = () => {
 				headerText={chosenYear.getFullYear()}
 				nextHandler={nextHandler}
 				nextHandlerDisabled={!isBefore(addMonths(chosenYear, 1), new Date())}
-				calendarPreviousYearHandler={null}
-				calendarPreviousYearHandlerDisabled={true}
-				calendarPreviousMonthHandler={null}
-				calendarPreviousMonthHandlerDisabled={true}
-				calendarText={''}
-				calendarNextMonthHandler={null}
-				calendarNextMonthHandlerDisabled={true}
-				calendarNextYearHandler={null}
-				calendarNextYearHandlerDisabled={true}
 			/>
 			<div className={classes.chart}>
 				<ResponsiveContainer width='70%' height='40%'>

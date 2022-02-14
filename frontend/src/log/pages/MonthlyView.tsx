@@ -24,12 +24,8 @@ const MonthlyView: React.FC = () => {
 	const [chosenDate, setChosenDate] = useState<Date>(startOfMonth(new Date()));
 	const [monthStr, setMonthStr] = useState('');
 	const [monthlyArray, setMonthlyArray] = useState<any[]>([]);
-	const [currentTask, setCurrentTask] = useState('food');
+	const [chosenTask, setChosenTask] = useState('food');
 	const [emptyBoxes, setEmptyBoxes] = useState<0[]>([]);
-
-	const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-		setCurrentTask(event.target.value);
-	};
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const dateAndTaskStr = (event.target as HTMLElement).id;
@@ -56,7 +52,7 @@ const MonthlyView: React.FC = () => {
 		const chosenMonthStr = format(chosenDate, 'yyyy-MM-dd');
 
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/log/monthly/${userState.id}/${chosenMonthStr}/${currentTask}`,
+			`http://localhost:8080/api/log/monthly/${userState.id}/${chosenMonthStr}/${chosenTask}`,
 			'GET'
 		);
 
@@ -89,16 +85,16 @@ const MonthlyView: React.FC = () => {
 			getMonthlyData();
 			getMonthFn(chosenDate.getMonth(), true, setMonthStr);
 		}
-	}, [chosenDate, currentTask]);
+	}, [chosenDate, chosenTask]);
 
 	return (
 		<div className={classes.wrapper}>
 			<MonthlyCalendar
 				chosenDate={chosenDate}
 				setChosenDate={setChosenDate}
-				setCurrentTask={setCurrentTask}
+				chosenTask={chosenTask}
+				setChosenTask={setChosenTask}
 				headerText={`${monthStr} ${chosenDate.getFullYear()}`}
-				currentTask={currentTask}
 			/>
 			<div className={classes.days}>
 				<li>Lundi</li>
@@ -119,7 +115,7 @@ const MonthlyView: React.FC = () => {
 							key={`${format(
 								new Date(item.date),
 								'yyyy-MM-dd'
-							)}_${currentTask}_div`}
+							)}_${chosenTask}_div`}
 						>
 							<div>{index + 1}</div>
 
@@ -127,13 +123,13 @@ const MonthlyView: React.FC = () => {
 								id={`${format(
 									new Date(item.date),
 									'yyyy-MM-dd'
-								)}_${currentTask}`}
+								)}_${chosenTask}`}
 								onClick={addData}
 								value={item.level}
 								key={`${format(
 									new Date(item.date),
 									'yyyy-MM-dd'
-								)}_${currentTask}`}
+								)}_${chosenTask}`}
 								disabled={!isAfter(new Date(item.date), new Date())}
 							/>
 						</div>

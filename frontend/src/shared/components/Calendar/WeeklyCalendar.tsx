@@ -9,10 +9,11 @@ import {
 	getWeeksInMonth,
 	getYear,
 	isBefore,
+	isSameWeek,
 	startOfMonth,
 } from 'date-fns';
 
-import Calendar from './Calendar';
+import Calendar, { calendarTypes } from './Calendar';
 
 import calendarClasses from './Calendar.module.scss';
 import { useDatesFn } from '../../hooks/dates-hook';
@@ -23,6 +24,8 @@ const WeeklyCalendar: React.FC<{
 	headerText: string;
 }> = (props) => {
 	const { getMonthFn } = useDatesFn();
+
+	const calendarButtonRef = React.createRef<HTMLButtonElement>();
 
 	const [calendarDate, setCalendarDate] = useState(new Date());
 	const [calendarMonthStr, setCalendarMonthStr] = useState('');
@@ -86,7 +89,7 @@ const WeeklyCalendar: React.FC<{
 		setWeekNumbers(weekNumbers);
 	};
 
-	const weekOnClickHandler = (event: React.MouseEvent<HTMLElement>) => {
+	const weekOnClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		const year = (event.target as HTMLElement).id.slice(0, 4);
 		const month = (event.target as HTMLElement).id.slice(5, 7);
@@ -94,7 +97,10 @@ const WeeklyCalendar: React.FC<{
 		console.log((event.target as HTMLElement).id);
 
 		props.setChosenDate(new Date(+year, +month - 1, +day));
-		// props.setShowCalendar(false);
+
+		if (calendarButtonRef.current) {
+			calendarButtonRef.current.click();
+		}
 	};
 
 	useEffect(() => {
@@ -104,9 +110,8 @@ const WeeklyCalendar: React.FC<{
 
 	return (
 		<Calendar
-			calendar={'WEEKLY'}
-			taskSelector={false}
-			selectHandler={null}
+			ref={calendarButtonRef}
+			calendar={calendarTypes.WEEKLY}
 			previousHandler={previousHandler}
 			previousHandlerDisabled={isBefore(
 				addDays(props.chosenDate, -7),
@@ -138,7 +143,9 @@ const WeeklyCalendar: React.FC<{
 			<div className={calendarClasses.week}>
 				<div className={calendarClasses.week__numbers}>
 					{weekNumbers.map((weekNumber) => (
-						<div>{weekNumber}</div>
+						<div className={calendarClasses.week__numbers__number}>
+							{weekNumber}
+						</div>
 					))}
 				</div>
 				<div className={calendarClasses.week__calendar}>
@@ -155,15 +162,20 @@ const WeeklyCalendar: React.FC<{
 							>
 								{week.map((day: any) => (
 									<button
-										className={`${calendarClasses.day} ${
-											!isBefore(day, new Date()) &&
-											calendarClasses.day__disabled
-										}`}
-										onClick={weekOnClickHandler}
+										className={`${calendarClasses.day}
+										${!isBefore(day, new Date()) && calendarClasses['day--disabled']}
+										 ${
+												!isBefore(day, new Date()) &&
+												isSameWeek(day, new Date(), {
+													weekStartsOn: 1,
+												}) &&
+												calendarClasses[
+													'day--disabled--same-week'
+												]
+											}`}
 										id={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
 									>
-										{console.log(day)}
-										{format(day, 'dd')}
+										{format(day, 'd')}
 									</button>
 								))}
 							</button>
