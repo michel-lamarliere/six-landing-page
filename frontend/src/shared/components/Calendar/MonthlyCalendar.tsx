@@ -10,7 +10,11 @@ const MonthlyCalendar: React.FC<{
 	setChosenTask: Dispatch<SetStateAction<string>>;
 	headerText: string;
 }> = (props) => {
-	const calendarButtonRef = React.createRef<HTMLButtonElement>();
+	// const calendarButtonRef = React.createRef<HTMLButtonElement>();
+	// const taskButtonRef = React.createRef<HTMLButtonElement>();
+
+	const calendarButtonRef = React.useRef<HTMLButtonElement>(null);
+	const taskButtonRef = React.useRef<HTMLButtonElement>(null);
 
 	const [calendarDate, setCalendarDate] = useState(new Date());
 

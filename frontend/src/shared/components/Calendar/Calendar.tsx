@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import DaysOfWeek from './DaysOfWeek';
 
@@ -6,9 +7,10 @@ import LeftArrow from '../../assets/icons/left-arrow.svg';
 import DoubleLeftArrow from '../../assets/icons/double-left-arrow.svg';
 import RightArrow from '../../assets/icons/right-arrow.svg';
 import DoubleRightArrow from '../../assets/icons/double-right-arrow.svg';
-import TopArrow from '../../assets/icons/top-arrow.svg';
 
 import classes from './Calendar.module.scss';
+import { CalendarButton, TaskButton } from './CalendarButtons';
+import { UIElementsActionTypes } from '../../store/ui-elements';
 
 export enum calendarTypes {
 	DAILY = 'DAILY',
@@ -60,7 +62,6 @@ type TestProps =
 	  }
 	| {
 			calendar: calendarTypes.ANNUAL_CHART;
-			// ref?: never;
 			taskSelector: boolean;
 			chosenTask: string;
 			selectHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -80,76 +81,37 @@ type Props = CommonProps & TestProps;
 
 const Calendar: React.FC<Props> = React.forwardRef<HTMLButtonElement, Props>(
 	(props, ref) => {
+		const dispatch = useDispatch();
+
 		const [showCalendar, setShowCalendar] = useState(false);
 		const [showTaskSelector, setShowTaskSelector] = useState(false);
 
 		const calendarButtonHandler = () => {
 			setShowCalendar((prev) => !prev);
-			console.log('click');
+			dispatch({ type: UIElementsActionTypes.TOGGLE_OVERLAY });
+		};
+
+		const taskButtonHandler = () => {
+			setShowTaskSelector((prev) => !prev);
+			dispatch({ type: UIElementsActionTypes.TOGGLE_OVERLAY });
 		};
 
 		return (
 			<div className={classes.wrapper}>
 				<div className={classes.buttons}>
 					{props.calendar !== calendarTypes.ANNUAL_CHART && (
-						<button
-							ref={ref}
-							className={classes.buttons__button}
-							onClick={calendarButtonHandler}
-						>
-							{/* <img /> */}
-							<img
-								src={TopArrow}
-								className={`${classes.buttons__button__arrow} ${
-									showCalendar &&
-									classes['buttons__button__arrow--open']
-								}`}
-								alt='CalendarButton'
-							/>
-						</button>
+						<CalendarButton
+							showCalendar={showCalendar}
+							calendarButtonHandler={calendarButtonHandler}
+						/>
 					)}
 					{props.taskSelector && (
-						<>
-							<button
-								onClick={() => setShowTaskSelector((prev) => !prev)}
-								className={classes.buttons__button}
-							>
-								{props.chosenTask}
-								<img
-									src={TopArrow}
-									className={`${classes.buttons__button__arrow} ${
-										showTaskSelector &&
-										classes['buttons__button__arrow--open']
-									}`}
-									alt='CalendarButton'
-								/>
-							</button>
-							{showTaskSelector && (
-								<div className={classes.selector}>
-									<button value='food' onClick={props.selectHandler}>
-										Alimentation
-									</button>
-									<button value='sleep' onClick={props.selectHandler}>
-										Sommeil
-									</button>
-									<button value='sport' onClick={props.selectHandler}>
-										Sport
-									</button>
-									<button
-										value='relaxation'
-										onClick={props.selectHandler}
-									>
-										Détente
-									</button>
-									<button value='work' onClick={props.selectHandler}>
-										Projets
-									</button>
-									<button value='social' onClick={props.selectHandler}>
-										Vie Sociale
-									</button>
-								</div>
-							)}
-						</>
+						<TaskButton
+							showTaskSelector={showTaskSelector}
+							setShowTaskSelector={taskButtonHandler}
+							chosenTask={props.chosenTask}
+							selectHandler={props.selectHandler}
+						/>
 					)}
 				</div>
 				<div className={classes.header}>

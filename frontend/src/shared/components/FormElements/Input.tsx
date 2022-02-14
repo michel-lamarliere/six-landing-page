@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import PasswordShowSVG from '../assets/icons/password_show.svg';
-import PasswordHideSVG from '../assets/icons/password_hide.svg';
+import PasswordShowSVG from '../../assets/icons/password_show.svg';
+import PasswordHideSVG from '../../assets/icons/password_hide.svg';
 
 import classes from './Input.module.scss';
 

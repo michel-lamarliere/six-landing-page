@@ -4,7 +4,7 @@ import { addHours } from 'date-fns';
 
 import { useRequest } from '../shared/hooks/http-hook';
 import { useInput } from '../shared/hooks/input-hook';
-import Input from '../shared/components/Input';
+import Input from '../shared/components/FormElements/Input';
 
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../shared/store/store';

@@ -1,3 +1,7 @@
+import React, { useEffect, useState } from 'react';
+
+import { useDispatch } from 'react-redux';
+
 import {
 	addDays,
 	addHours,
@@ -11,9 +15,11 @@ import {
 	isSameDay,
 	startOfMonth,
 } from 'date-fns';
-import React, { useEffect, useRef, useState } from 'react';
+
 import { useDatesFn } from '../../hooks/dates-hook';
+
 import Calendar, { calendarTypes } from './Calendar';
+
 import calendarClasses from './Calendar.module.scss';
 
 const DailyCalendar: React.FC<{
@@ -81,9 +87,11 @@ const DailyCalendar: React.FC<{
 
 	const dayOnClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
+
 		const year = (event.target as HTMLButtonElement).id.slice(0, 4);
 		const month = (event.target as HTMLButtonElement).id.slice(5, 7);
 		const day = (event.target as HTMLButtonElement).id.slice(8, 10);
+
 		props.setChosenDate(addHours(new Date(+year, +month, +day), 1));
 
 		if (calendarButtonRef.current) {

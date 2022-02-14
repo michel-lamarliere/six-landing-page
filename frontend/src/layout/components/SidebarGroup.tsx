@@ -35,10 +35,11 @@ const SidebarGroups: React.FC<{
 								<>
 									{link.nav_link ? (
 										<NavLink
-											className={classes.links__link}
-											style={({ isActive }) => ({
-												color: isActive ? 'grey' : 'black',
-											})}
+											className={({ isActive }) =>
+												isActive
+													? classes['links__link--active']
+													: classes['links__link']
+											}
 											to={link.url}
 										>
 											{link.text}

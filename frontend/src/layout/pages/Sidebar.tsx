@@ -81,12 +81,6 @@ const Sidebar: React.FC = () => {
 			key: 'log-monthly-key',
 			nav_link: true,
 		},
-		{
-			text: 'Historique à Enlever',
-			url: '/recap',
-			key: 'log-annual-key',
-			nav_link: true,
-		},
 	];
 
 	return ReactDOM.createPortal(

@@ -6,7 +6,7 @@ import { useRequest } from '../../shared/hooks/http-hook';
 import { RootState } from '../../shared/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Input from '../../shared/components/Input';
+import Input from '../../shared/components/FormElements/Input';
 import { ErrorPopupActionTypes } from '../../shared/store/error';
 
 const PasswordForm: React.FC<{

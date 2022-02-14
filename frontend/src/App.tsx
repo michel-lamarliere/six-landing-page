@@ -23,15 +23,16 @@ import ConfirmEmailAddress from './user/pages/ConfirmedEmailAddress';
 import ForgotPasswordForm from './user/pages/ForgotPasswordForm';
 import dateAndTaskStr from './charts/pages/AnnualChart';
 import AnnualChart from './charts/pages/AnnualChart';
+import Overlay from './shared/components/UIElements/Overlay';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
 	const errorState = useSelector((state: RootState) => state.error);
 	const emailState = useSelector((state: RootState) => state.email);
+	const uiElementsState = useSelector((state: RootState) => state.uiElements);
 
 	const autoLogIn = async () => {
 		const storedUserData = localStorage.getItem('userData');
@@ -94,6 +95,10 @@ const App: React.FC = () => {
 		}, remainingTime);
 	}, [userState.expiration]);
 
+	useEffect(() => {
+		console.log(uiElementsState.showCalendarOverlay);
+	}, [uiElementsState]);
+
 	const userData =
 		userState.token &&
 		userState.expiration &&
@@ -101,13 +106,14 @@ const App: React.FC = () => {
 		userState.name &&
 		userState.email;
 
-	const main_loggedIn = userData ? 'main_logged-in' : 'main_right';
+	const main_loggedIn = userData ? 'main__logged-in' : 'main__right';
 
 	return (
 		<>
 			{userData && <Sidebar />}
+			{uiElementsState.showCalendarOverlay && <Overlay />}
 			<div className='main'>
-				<div className='main__logged-in'>
+				<div className={main_loggedIn}>
 					<Routes>
 						{!userData && <Route path='/' element={<LoginSignupForms />} />}
 						{userData && (
