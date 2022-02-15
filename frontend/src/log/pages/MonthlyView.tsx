@@ -21,6 +21,7 @@ const MonthlyView: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
+	// CALENDAR
 	const [chosenDate, setChosenDate] = useState<Date>(startOfMonth(new Date()));
 	const [monthStr, setMonthStr] = useState('');
 	const [monthlyArray, setMonthlyArray] = useState<any[]>([]);

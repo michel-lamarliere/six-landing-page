@@ -21,12 +21,13 @@ const DailyView: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
+	const [dailyData, setDailyData] = useState<any>([]);
+
+	// CALENDAR
 	const [isLoading, setIsLoading] = useState(true);
 	const [chosenDate, setChosenDate] = useState(new Date());
 	const [dayStr, setDayStr] = useState('');
 	const [monthStr, setMonthStr] = useState('');
-
-	const [dailyData, setDailyData] = useState<any>([]);
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const dateAndTaskStr = (event.target as HTMLElement).id;

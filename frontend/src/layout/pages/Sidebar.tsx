@@ -14,6 +14,7 @@ import userIcon from '../../_shared/assets/icons/user-icon.svg';
 import refreshSpinner from '../../_shared/assets/icons/refresh-spinner.svg';
 
 import classes from './Sidebar.module.scss';
+import RefreshSpinner from '../../_shared/assets/svgs/refresh-spinner';
 
 const Sidebar: React.FC = () => {
 	const { sendRequest } = useRequest();
@@ -22,6 +23,9 @@ const Sidebar: React.FC = () => {
 	const userState = useSelector((state: RootState) => state.user);
 
 	const [spinButton, setSpinButton] = useState(false);
+
+	// let test = '';
+	const [test, setTest] = useState('');
 
 	const refreshDataHandler = async () => {
 		setSpinButton(true);
@@ -49,8 +53,13 @@ const Sidebar: React.FC = () => {
 			confirmedEmail: responseData.user.confirmation.confirmed,
 		});
 
+		setTest(classes['user__refresh__spinner--active']);
+
 		setTimeout(() => {
-			setSpinButton(false);
+			setTest(classes['user__refresh__spinner--done']);
+			setTimeout(() => {
+				setSpinButton(false);
+			}, 1000);
 		}, 1500);
 
 		return clearTimeout();
@@ -84,16 +93,12 @@ const Sidebar: React.FC = () => {
 					</Link>
 					<button
 						onClick={refreshDataHandler}
-						className={`${classes.user__button} ${
-							spinButton && classes['user__button--clicked']
+						className={`${classes.user__refresh} ${
+							spinButton && classes['user__refresh--active']
 						}`}
 						disabled={spinButton}
 					>
-						<img
-							src={refreshSpinner}
-							alt='Icône Rafraîchir'
-							className={classes.test}
-						/>
+						<RefreshSpinner className={spinButton ? test : ''} />
 					</button>
 				</div>
 				<div className={classes.links}>

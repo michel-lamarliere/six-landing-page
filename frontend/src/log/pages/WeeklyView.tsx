@@ -21,10 +21,10 @@ const WeekView: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
-	const [weekData, setWeekData] = useState<{ date: Date; six: {} }[]>([]);
 	const [mappingArray, setMappingArray] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
+	// CALENDAR
 	const [chosenDate, setChosenDate] = useState(addDays(new Date(), 0));
 	const [monthStr, setMonthStr] = useState('');
 	const firstOfWeek = startOfWeek(chosenDate, { weekStartsOn: 1 });
@@ -63,52 +63,12 @@ const WeekView: React.FC = () => {
 		}
 
 		setIsLoading(false);
-		setWeekData(responseData);
-		getMappingArray(responseData, firstOfWeek);
-	};
-
-	const emptySixObject = (logDate: Date) => {
-		let emptySix = {
-			date: logDate,
-			six: {
-				food: 0,
-				sleep: 0,
-				sport: 0,
-				relaxation: 0,
-				work: 0,
-				social: 0,
-			},
-		};
-
-		return emptySix;
-	};
-
-	const getMappingArray = (weekData: { date: Date; six: {} }[], firstOfWeek: Date) => {
-		let array = [];
-		let i = 0;
-		let y = 0;
-
-		do {
-			if (
-				weekData[i] &&
-				isSameDay(new Date(weekData[i].date), addDays(firstOfWeek, y))
-			) {
-				array.push(weekData[i]);
-				i++;
-				y++;
-			} else {
-				array.push(emptySixObject(addDays(firstOfWeek, y)));
-				y++;
-			}
-		} while (array.length < 7);
-
-		setMappingArray(array);
+		setMappingArray(responseData);
 	};
 
 	useEffect(() => {
 		if (userState.id) {
 			getWeekData(userState.id, formattedFirstOfWeek);
-			getMappingArray(weekData, firstOfWeek);
 			getMonthFn(chosenDate.getMonth(), true, setMonthStr);
 		}
 	}, [userState.id, chosenDate]);
