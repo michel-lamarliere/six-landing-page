@@ -6,7 +6,7 @@ import { UIElementsActionTypes } from '../../store/ui-elements';
 
 import TopArrow from '../../assets/icons/top-arrow.svg';
 
-import classes from './Calendar.module.scss';
+import calendarClasses from './Calendar.module.scss';
 
 export const CalendarButton: React.FC = () => {
 	const dispatch = useDispatch();
@@ -26,13 +26,16 @@ export const CalendarButton: React.FC = () => {
 	}, [uiElementsState.showCalendar]);
 
 	return (
-		<button className={classes.buttons__button} onClick={calendarButtonHandler}>
+		<button
+			className={calendarClasses.buttons__button}
+			onClick={calendarButtonHandler}
+		>
 			{/* <img /> */}
 			<img
 				src={TopArrow}
-				className={`${classes.buttons__button__arrow} ${
+				className={`${calendarClasses.buttons__button__arrow} ${
 					uiElementsState.showCalendar &&
-					classes['buttons__button__arrow--open']
+					calendarClasses['buttons__button__arrow--open']
 				}`}
 				alt='CalendarButton'
 			/>
@@ -62,20 +65,23 @@ export const TaskButton: React.FC<{
 	}, [uiElementsState.showTaskSelector]);
 
 	return (
-		<>
-			<button onClick={taskButtonHandler} className={classes.buttons__button}>
+		<div className={calendarClasses.buttons}>
+			<button
+				onClick={taskButtonHandler}
+				className={calendarClasses.buttons__button}
+			>
 				{props.chosenTask}
 				<img
 					src={TopArrow}
-					className={`${classes.buttons__button__arrow} ${
+					className={`${calendarClasses.buttons__button__arrow} ${
 						uiElementsState.showTaskSelector &&
-						classes['buttons__button__arrow--open']
+						calendarClasses['buttons__button__arrow--open']
 					}`}
 					alt='CalendarButton'
 				/>
 			</button>
 			{uiElementsState.showTaskSelector && (
-				<div className={classes.selector}>
+				<div className={calendarClasses.selector}>
 					<button value='food' onClick={props.selectHandler}>
 						Alimentation
 					</button>
@@ -96,6 +102,6 @@ export const TaskButton: React.FC<{
 					</button>
 				</div>
 			)}
-		</>
+		</div>
 	);
 };

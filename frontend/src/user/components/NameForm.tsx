@@ -9,7 +9,7 @@ import { useRequest } from '../../_shared/hooks/http-hook';
 
 import Input from '../../_shared/components/FormElements/Input';
 
-import classes from './NameForm.module.scss';
+import formClasses from './UserForms.module.scss';
 
 const NameForm: React.FC<{
 	setShowChangeName: (arg0: boolean) => void;
@@ -52,7 +52,7 @@ const NameForm: React.FC<{
 		inputOnBlurHandler: newNameOnBlurHandler,
 	} = useInput('NAME');
 	return (
-		<>
+		<div className={formClasses['name-wrapper']}>
 			<Input
 				id='Nouveau Nom'
 				type='text'
@@ -64,10 +64,16 @@ const NameForm: React.FC<{
 				onChange={newNameOnChangeHandler}
 				onBlur={newNameOnBlurHandler}
 			/>
-			<button onClick={changeNameHandler} disabled={!newName.isValid}>
+			<button
+				onClick={changeNameHandler}
+				disabled={!newName.isValid}
+				className={`${formClasses['submit-button']} ${
+					!newName.isValid && formClasses['submit-button--disabled']
+				}`}
+			>
 				Changer Nom
 			</button>
-		</>
+		</div>
 	);
 };
 

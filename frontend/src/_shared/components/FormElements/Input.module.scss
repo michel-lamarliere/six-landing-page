@@ -4,6 +4,7 @@
 	display: flex;
 	flex-direction: column;
 	width: 15.9rem;
+	gap: 0.5rem;
 }
 
 .input {
@@ -16,11 +17,10 @@
 	}
 
 	&__input {
-		width: 100%;
 		background-color: #4740a0;
 		border-radius: 0.5rem;
 		border: 0.1rem solid #4740a0;
-		padding: 0.7rem 0.8rem;
+		padding: 0.7rem 2.5rem 0.7rem 0.8rem;
 		color: #ffffff;
 		font-size: 16px;
 
@@ -31,7 +31,7 @@
 
 	&__show-password {
 		position: absolute;
-		right: -1.5rem;
+		right: -1rem;
 		top: 50%;
 		transform: translateY(-50%);
 		background: none;

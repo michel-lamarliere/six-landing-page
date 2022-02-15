@@ -4,14 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../_shared/store/store';
 
+import { UserActionTypes } from '../../_shared/store/user';
+import { EmailConfirmationActionTypes } from '../../_shared/store/email-confirmation';
+
 import { useRequest } from '../../_shared/hooks/http-hook';
 
 import NameForm from '../components/NameForm';
 import PasswordForm from '../components/PasswordForm';
 
+import TopArrow from '../../_shared/assets/icons/top-arrow.svg';
+
 import classes from './Profile.module.scss';
-import { UserActionTypes } from '../../_shared/store/user';
-import { EmailConfirmationActionTypes } from '../../_shared/store/email-confirmation';
 
 const Profile: React.FC = () => {
 	const dispatch = useDispatch();
@@ -20,6 +23,7 @@ const Profile: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
+	const [showEditProfile, setShowEditProfile] = useState(false);
 	const [showChangeName, setShowChangeName] = useState(false);
 	const [showChangePassword, setShowChangePassword] = useState(false);
 	const [response, setResponse] = useState('');
@@ -68,6 +72,10 @@ const Profile: React.FC = () => {
 		}, 5000);
 	};
 
+	const editProfileHandler = () => {
+		setShowEditProfile((prev) => !prev);
+	};
+
 	const logoutHandler = () => {
 		dispatch({ type: UserActionTypes.LOG_OUT });
 		dispatch({ type: EmailConfirmationActionTypes.HIDE });
@@ -88,29 +96,65 @@ const Profile: React.FC = () => {
 					</>
 				)}
 			</div>
-			<Link to='/recap'>Recapitulatif</Link>
-			<button className={classes.button} onClick={showChangeNameHandler}>
-				Modifier Mon Nom
-			</button>
-			{showChangeName && (
-				<NameForm
-					setShowChangeName={showChangeNameHandler}
-					setResponse={setResponseHandler}
+			<Link to='/recap' className={classes.recap}>
+				Recapitulatif de l'Année
+			</Link>
+			<button
+				className={`${classes['edit-profile']} ${
+					showEditProfile && classes['edit-profile--open']
+				}`}
+				onClick={editProfileHandler}
+			>
+				<div
+					className={`${classes['edit-profile__text']} ${
+						showEditProfile && classes['edit-profile__text--open']
+					}`}
+				>
+					Éditer mon profil
+				</div>
+				<img
+					src={TopArrow}
+					alt='Flêche'
+					className={`${classes['edit-profile__img']} ${
+						showEditProfile && classes['edit-profile__img--open']
+					}`}
 				/>
-			)}
-			<button className={classes.button} onClick={showChangePasswordHandler}>
-				Modifier Mon Mot de Passe
 			</button>
-			{showChangePassword && (
+			{showEditProfile && (
 				<>
-					<PasswordForm
-						setShowChangePassword={showChangePasswordHandler}
-						setResponse={setResponseHandler}
-					/>
-					<h1>Tester1@</h1>
+					<button
+						className={classes['edit-button']}
+						onClick={showChangeNameHandler}
+					>
+						Modifier Mon Nom
+					</button>
+					{showChangeName && (
+						<NameForm
+							setShowChangeName={showChangeNameHandler}
+							setResponse={setResponseHandler}
+						/>
+					)}
+					<button
+						className={classes['edit-button']}
+						onClick={showChangePasswordHandler}
+					>
+						Modifier Mon Mot de Passe
+					</button>
+					{showChangePassword && (
+						<>
+							<PasswordForm
+								setShowChangePassword={showChangePasswordHandler}
+								setResponse={setResponseHandler}
+							/>
+							<h1>Tester1@</h1>
+						</>
+					)}
 				</>
 			)}
-			<button onClick={logoutHandler}>Déconnexion</button>
+			<button onClick={logoutHandler} className={classes['log-out']}>
+				<img src='' alt='img' />
+				<div className={classes['log-out__text']}>Déconnexion</div>
+			</button>
 			<h1>{response}</h1>
 		</div>
 	);

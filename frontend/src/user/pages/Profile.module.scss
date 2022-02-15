@@ -1,15 +1,73 @@
+@import '../../_shared/style/variables.scss';
+
 .wrapper {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 	gap: 2rem;
-	width: 50%;
-	margin: 4rem auto 0 auto;
-	padding: 2rem 0 2rem 0;
+	width: 100%;
+
 	color: white;
 }
 
-.button {
-	height: 2rem;
+.recap {
+	padding: 0.73em 0.93em;
+	background-color: #564bef;
+	font-family: $fontSemiBold;
+	font-size: 16px;
+	border-radius: 2.31em;
+}
+
+.edit-profile {
+	margin: 0 auto;
+	display: flex;
+	gap: 1rem;
+	background: none;
+	cursor: pointer;
+
+	&__text {
+		transition: all 0.3s;
+		color: white;
+		font-family: $fontSemiBold;
+		font-size: 18px;
+
+		&--open {
+			color: #8d88ff;
+		}
+	}
+
+	&__img {
+		transition: all 0.3s;
+
+		&--open {
+			transform: rotate(180deg);
+		}
+	}
+}
+
+.edit-button {
+	background: none;
+	color: white;
+	font-family: $fontMedium;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.log-out {
+	position: absolute;
+	bottom: 4rem;
+	display: flex;
+	background: none;
+	cursor: pointer;
+
+	&:hover > .log-out__text {
+		color: #564bef !important;
+	}
+
+	&__text {
+		font-family: $fontMedium;
+		font-size: 20px;
+		color: white;
+	}
 }

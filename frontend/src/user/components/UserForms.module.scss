@@ -1,0 +1,25 @@
+@import '../../_shared/style/variables.scss';
+
+.submit-button {
+	background-color: #3e379b;
+	font-family: $fontSemiBold;
+	font-size: 14px;
+	padding: 0.68em 2em;
+	border-radius: 2.31em;
+	color: white;
+	cursor: pointer;
+
+	&--disabled {
+		background-color: darkgrey;
+		color: grey;
+		cursor: default;
+	}
+}
+
+.name-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	gap: 1rem;
+}

@@ -9,7 +9,7 @@ import { useRequest } from '../../_shared/hooks/http-hook';
 
 import Input from '../../_shared/components/FormElements/Input';
 
-import classes from './PasswordForm.module.scss';
+import formClasses from './UserForms.module.scss';
 
 const PasswordForm: React.FC<{
 	setShowChangePassword: (arg0: boolean) => void;
@@ -189,8 +189,14 @@ const PasswordForm: React.FC<{
 				onBlur={newPasswordConfirmationOnBlurHandler}
 				password={true}
 			/>
-			<h1>{errorMessage}</h1>
-			<button onClick={changePasswordHandler} disabled={!passwordFormIsValid}>
+			<div>{errorMessage}</div>
+			<button
+				onClick={changePasswordHandler}
+				disabled={!passwordFormIsValid}
+				className={`${formClasses['submit-button']} ${
+					!passwordFormIsValid && formClasses['submit-button--disabled']
+				}`}
+			>
 				Changer Mot de Passe
 			</button>
 		</>

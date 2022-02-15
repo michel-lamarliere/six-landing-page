@@ -68,14 +68,16 @@ export const useInput = (
 	}, [input.value]);
 
 	const inputOnBlurHandler = () => {
-		setInput((prev) => ({ ...prev, isTouched: true }));
+		if (input.value.trim().length >= 1) {
+			setInput((prev) => ({ ...prev, isTouched: true }));
+		}
 		if (additionalOnBlurHandler) {
 			additionalOnBlurHandler();
 		}
 	};
 
 	useEffect(() => {
-		if (loginMode) {
+		if (loginMode && input.value.trim().length >= 1) {
 			setInput((prev) => ({ ...prev, isValid: true, isTouched: false }));
 		} else if (!loginMode) {
 			setInput((prev) => ({ ...prev, isValid: false, isTouched: false }));

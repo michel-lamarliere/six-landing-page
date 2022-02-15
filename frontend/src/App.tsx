@@ -104,8 +104,6 @@ const App: React.FC = () => {
 		userState.name &&
 		userState.email;
 
-	const mainLoggedIn = userData && 'main--logged-in';
-
 	useEffect(() => {
 		const sidebar = document.getElementById('sidebar')!;
 		if (!userData) {
@@ -119,30 +117,29 @@ const App: React.FC = () => {
 		<>
 			{userData && <Sidebar />}
 			{uiElementsState.showCalendarOverlay && <Overlay />}
-			<div className={mainLoggedIn}>
-				<Routes>
-					{!userData && <Route path='/' element={<LoginSignupForms />} />}
-					{userData && (
-						<>
-							<Route path='/' element={<DailyView />} />
-							<Route path='/log/daily' element={<DailyView />} />
-							<Route path='/log/weekly' element={<WeeklyView />} />
-							<Route path='/log/monthly' element={<MonthlyView />} />
-							<Route path='/recap' element={<AnnualChart />} />
-							<Route path='/profile' element={<Profile />} />
-						</>
-					)}
-					<Route
-						path='/profile/confirm/:email/:code'
-						element={<ConfirmEmailAddress />}
-					/>
-					<Route
-						path='/modify/password/:email/:uniqueId'
-						element={<ForgotPasswordForm />}
-					/>
-					<Route path='*' element={<Error404 />} />
-				</Routes>
-			</div>
+			<Routes>
+				{!userData && <Route path='/' element={<LoginSignupForms />} />}
+				{userData && (
+					<>
+						<Route path='/' element={<DailyView />} />
+						<Route path='/log/daily' element={<DailyView />} />
+						<Route path='/log/weekly' element={<WeeklyView />} />
+						<Route path='/log/monthly' element={<MonthlyView />} />
+						<Route path='/recap' element={<AnnualChart />} />
+						<Route path='/profile' element={<Profile />} />
+					</>
+				)}
+				<Route
+					path='/profile/confirm/:email/:code'
+					element={<ConfirmEmailAddress />}
+				/>
+				<Route
+					path='/modify/password/:email/:uniqueId'
+					element={<ForgotPasswordForm />}
+				/>
+				<Route path='*' element={<Error404 />} />
+			</Routes>
+
 			{errorState.message && <ErrorPopup message={errorState.message} />}
 			{emailState.show && <EmailPopup />}
 		</>
