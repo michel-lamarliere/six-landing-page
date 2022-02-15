@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ErrorPopupActionTypes } from '../shared/store/error';
-import { RootState } from '../shared/store/store';
+
+import { RootState } from '../_shared/store/store';
+import { ErrorPopupActionTypes } from '../_shared/store/error';
+
 import classes from './ErrorPopup.module.scss';
 
 const ErrorPopup: React.FC<{ message: string }> = (props) => {

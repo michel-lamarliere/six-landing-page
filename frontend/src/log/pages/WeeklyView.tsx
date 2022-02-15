@@ -1,39 +1,18 @@
 import React, { useState, useEffect } from 'react';
-
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../shared/store/store';
-import { ErrorPopupActionTypes } from '../../shared/store/error';
+
+import { addDays, getISOWeek, startOfWeek, format, getYear, isSameDay } from 'date-fns';
+
+import { RootState } from '../../_shared/store/store';
+import { ErrorPopupActionTypes } from '../../_shared/store/error';
+
+import { useRequest } from '../../_shared/hooks/http-hook';
+import { useDatesFn } from '../../_shared/hooks/dates-hook';
 
 import WeekViewTasks from '../components/WeeklyViewTasks';
-
-import { useRequest } from '../../shared/hooks/http-hook';
-import { useDatesFn } from '../../shared/hooks/dates-hook';
-
-import {
-	addDays,
-	getISOWeek,
-	startOfWeek,
-	format,
-	getYear,
-	isAfter,
-	isSameDay,
-	addYears,
-	addMonths,
-	isBefore,
-	getWeeksInMonth,
-	startOfMonth,
-	getDay,
-	getWeek,
-	getMonth,
-} from 'date-fns';
-
-import Calendar from '../../shared/components/Calendar/Calendar';
-import calendarClasses from '../../shared/components/Calendar/Calendar.module.scss';
-
-import DaysOfWeek from '../../shared/components/Calendar/DaysOfWeek';
+import WeeklyCalendar from '../../_shared/components/Calendar/WeeklyCalendar';
 
 import classes from './WeeklyView.module.scss';
-import WeeklyCalendar from '../../shared/components/Calendar/WeeklyCalendar';
 
 const WeekView: React.FC = () => {
 	const { sendRequest, sendData } = useRequest();

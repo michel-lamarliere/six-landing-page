@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { RootState } from '../../_shared/store/store';
 
-import { RootState } from '../../shared/store/store';
-import { useRequest } from '../../shared/hooks/http-hook';
+import { useRequest } from '../../_shared/hooks/http-hook';
 
 import NameForm from '../components/NameForm';
 import PasswordForm from '../components/PasswordForm';
 
 import classes from './Profile.module.scss';
+import { UserActionTypes } from '../../_shared/store/user';
+import { EmailConfirmationActionTypes } from '../../_shared/store/email-confirmation';
 
 const Profile: React.FC = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
@@ -21,10 +25,16 @@ const Profile: React.FC = () => {
 	const [response, setResponse] = useState('');
 
 	const showChangeNameHandler = () => {
+		if (showChangePassword) {
+			setShowChangePassword(false);
+		}
 		setShowChangeName((prev) => !prev);
 	};
 
 	const showChangePasswordHandler = () => {
+		if (showChangeName) {
+			setShowChangeName(false);
+		}
 		setShowChangePassword((prev) => !prev);
 	};
 
@@ -56,6 +66,12 @@ const Profile: React.FC = () => {
 		setTimeout(() => {
 			setResponse('');
 		}, 5000);
+	};
+
+	const logoutHandler = () => {
+		dispatch({ type: UserActionTypes.LOG_OUT });
+		dispatch({ type: EmailConfirmationActionTypes.HIDE });
+		navigate('/');
 	};
 
 	return (
@@ -94,6 +110,7 @@ const Profile: React.FC = () => {
 					<h1>Tester1@</h1>
 				</>
 			)}
+			<button onClick={logoutHandler}>Déconnexion</button>
 			<h1>{response}</h1>
 		</div>
 	);

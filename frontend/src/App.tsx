@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { isBefore } from 'date-fns';
 
-import { RootState } from './shared/store/store';
-import { UserActionTypes } from './shared/store/user';
-import { EmailConfirmationActionTypes } from './shared/store/email-confirmation';
-import { ErrorPopupActionTypes } from './shared/store/error';
-
-import { useRequest } from './shared/hooks/http-hook';
+import { RootState } from './_shared/store/store';
+import { UserActionTypes } from './_shared/store/user';
+import { EmailConfirmationActionTypes } from './_shared/store/email-confirmation';
+import { ErrorPopupActionTypes } from './_shared/store/error';
 
 import LoginSignupForms from './pages/LoginSignupForms';
 import Sidebar from './layout/pages/Sidebar';
@@ -21,9 +20,8 @@ import ErrorPopup from './pop-ups/ErrorPopup';
 import EmailPopup from './pop-ups/EmailConfirmationPopup';
 import ConfirmEmailAddress from './user/pages/ConfirmedEmailAddress';
 import ForgotPasswordForm from './user/pages/ForgotPasswordForm';
-import dateAndTaskStr from './charts/pages/AnnualChart';
 import AnnualChart from './charts/pages/AnnualChart';
-import Overlay from './shared/components/UIElements/Overlay';
+import Overlay from './_shared/components/UIElements/Overlay';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
@@ -106,40 +104,47 @@ const App: React.FC = () => {
 		userState.name &&
 		userState.email;
 
-	const main_loggedIn = userData ? 'main__logged-in' : 'main__right';
+	const mainLoggedIn = userData && 'main--logged-in';
+
+	useEffect(() => {
+		const sidebar = document.getElementById('sidebar')!;
+		if (!userData) {
+			sidebar.style.display = 'none';
+		} else {
+			sidebar.style.display = 'flex';
+		}
+	}, [userData]);
 
 	return (
 		<>
 			{userData && <Sidebar />}
 			{uiElementsState.showCalendarOverlay && <Overlay />}
-			<div className='main'>
-				<div className={main_loggedIn}>
-					<Routes>
-						{!userData && <Route path='/' element={<LoginSignupForms />} />}
-						{userData && (
-							<>
-								<Route path='/' element={<DailyView />} />
-								<Route path='/log/daily' element={<DailyView />} />
-								<Route path='/log/weekly' element={<WeeklyView />} />
-								<Route path='/log/monthly' element={<MonthlyView />} />
-								<Route path='/recap' element={<AnnualChart />} />
-								<Route path='/profile' element={<Profile />} />
-							</>
-						)}
-						<Route
-							path='/profile/confirm/:email/:code'
-							element={<ConfirmEmailAddress />}
-						/>
-						<Route
-							path='/modify/password/:email/:uniqueId'
-							element={<ForgotPasswordForm />}
-						/>
-						<Route path='*' element={<Error404 />} />
-					</Routes>
-				</div>
-				{errorState.message && <ErrorPopup message={errorState.message} />}
-				{emailState.show && <EmailPopup />}
+			<div className={mainLoggedIn}>
+				<Routes>
+					{!userData && <Route path='/' element={<LoginSignupForms />} />}
+					{userData && (
+						<>
+							<Route path='/' element={<DailyView />} />
+							<Route path='/log/daily' element={<DailyView />} />
+							<Route path='/log/weekly' element={<WeeklyView />} />
+							<Route path='/log/monthly' element={<MonthlyView />} />
+							<Route path='/recap' element={<AnnualChart />} />
+							<Route path='/profile' element={<Profile />} />
+						</>
+					)}
+					<Route
+						path='/profile/confirm/:email/:code'
+						element={<ConfirmEmailAddress />}
+					/>
+					<Route
+						path='/modify/password/:email/:uniqueId'
+						element={<ForgotPasswordForm />}
+					/>
+					<Route path='*' element={<Error404 />} />
+				</Routes>
 			</div>
+			{errorState.message && <ErrorPopup message={errorState.message} />}
+			{emailState.show && <EmailPopup />}
 		</>
 	);
 };

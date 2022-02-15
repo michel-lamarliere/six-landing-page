@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useRequest } from '../../shared/hooks/http-hook';
-import { ErrorPopupActionTypes } from '../../shared/store/error';
-import { RootState } from '../../shared/store/store';
+import { ErrorPopupActionTypes } from '../../_shared/store/error';
+import { RootState } from '../../_shared/store/store';
+
+import { useRequest } from '../../_shared/hooks/http-hook';
 
 import PasswordForm from '../components/PasswordForm';
 

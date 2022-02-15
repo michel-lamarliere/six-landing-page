@@ -1,7 +1,12 @@
-import { addHours, addMonths, addYears, getYear, isBefore } from 'date-fns';
 import React, { Dispatch, SetStateAction, useState } from 'react';
+
+import { addHours, addMonths, addYears, getYear, isBefore } from 'date-fns';
+
 import Calendar, { calendarTypes } from './Calendar';
+
 import calendarClasses from './Calendar.module.scss';
+import { UIElementsActionTypes } from '../../store/ui-elements';
+import { useDispatch } from 'react-redux';
 
 const MonthlyCalendar: React.FC<{
 	chosenDate: Date;
@@ -10,11 +15,7 @@ const MonthlyCalendar: React.FC<{
 	setChosenTask: Dispatch<SetStateAction<string>>;
 	headerText: string;
 }> = (props) => {
-	// const calendarButtonRef = React.createRef<HTMLButtonElement>();
-	// const taskButtonRef = React.createRef<HTMLButtonElement>();
-
-	const calendarButtonRef = React.useRef<HTMLButtonElement>(null);
-	const taskButtonRef = React.useRef<HTMLButtonElement>(null);
+	const dispatch = useDispatch();
 
 	const [calendarDate, setCalendarDate] = useState(new Date());
 
@@ -35,6 +36,8 @@ const MonthlyCalendar: React.FC<{
 
 	const selectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		props.setChosenTask((event.target as HTMLButtonElement).value);
+
+		dispatch({ type: UIElementsActionTypes.HIDE_TASK_SELECTOR });
 	};
 
 	const previousHandler = () => {
@@ -56,16 +59,12 @@ const MonthlyCalendar: React.FC<{
 	const monthOnClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		props.setChosenDate(new Date((event.target as HTMLButtonElement).id));
 
-		if (calendarButtonRef.current) {
-			calendarButtonRef.current.click();
-		}
+		dispatch({ type: UIElementsActionTypes.HIDE_CALENDAR });
 	};
 
 	return (
 		<Calendar
 			calendar={calendarTypes.MONTHLY}
-			ref={calendarButtonRef}
-			taskSelector={true}
 			selectHandler={selectHandler}
 			chosenTask={props.chosenTask}
 			previousHandler={previousHandler}

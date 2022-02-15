@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import classes from './PasswordForm.module.scss';
-
-import { useInput } from '../../shared/hooks/input-hook';
-import { useRequest } from '../../shared/hooks/http-hook';
-import { RootState } from '../../shared/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Input from '../../shared/components/FormElements/Input';
-import { ErrorPopupActionTypes } from '../../shared/store/error';
+import { RootState } from '../../_shared/store/store';
+import { ErrorPopupActionTypes } from '../../_shared/store/error';
+
+import { useInput } from '../../_shared/hooks/input-hook';
+import { useRequest } from '../../_shared/hooks/http-hook';
+
+import Input from '../../_shared/components/FormElements/Input';
+
+import classes from './PasswordForm.module.scss';
 
 const PasswordForm: React.FC<{
 	setShowChangePassword: (arg0: boolean) => void;

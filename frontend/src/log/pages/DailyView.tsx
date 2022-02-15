@@ -1,31 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-	addDays,
-	getDate,
-	getDay,
-	getYear,
-	format,
-	isBefore,
-	getDaysInMonth,
-	getMonth,
-	addHours,
-	addYears,
-	addMonths,
-	startOfMonth,
-	isSameDay,
-} from 'date-fns';
 
-import { useRequest } from '../../shared/hooks/http-hook';
+import { getDate, getDay, getYear, format } from 'date-fns';
+
+import { RootState } from '../../_shared/store/store';
+import { ErrorPopupActionTypes } from '../../_shared/store/error';
+
+import { useRequest } from '../../_shared/hooks/http-hook';
+import { useDatesFn } from '../../_shared/hooks/dates-hook';
+
 import { DataButton } from '../components/Buttons';
-import { RootState } from '../../shared/store/store';
-import { ErrorPopupActionTypes } from '../../shared/store/error';
-import { useDatesFn } from '../../shared/hooks/dates-hook';
-
-import Calendar from '../../shared/components/Calendar/Calendar';
+import DailyCalendar from '../../_shared/components/Calendar/DailyCalendar';
 
 import classes from './DailyView.module.scss';
-import DailyCalendar from '../../shared/components/Calendar/DailyCalendar';
 
 const DailyView: React.FC = () => {
 	const dispatch = useDispatch();

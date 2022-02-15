@@ -1,12 +1,25 @@
-@import './shared/variables.scss';
+@import './_shared/style/variables.scss';
+
 #root {
 	font-size: 20px;
 	font-family: $fontMedium;
+	position: relative;
+	height: 100vh;
+	background-color: #191b34;
+	display: flex;
+	justify-content: center;
 }
 
 #sidebar {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 33%;
+	height: 100vh;
 	font-size: 20px;
 	font-family: $fontMedium;
+	float: left;
+	background-color: #3e379b;
 }
 
 body {
@@ -29,20 +42,20 @@ button {
 	border: 0;
 }
 
-.main {
-	position: relative;
-	height: 100vh;
-	background-color: #191b34;
-	display: flex;
-	justify-content: center;
+// .main {
+// position: relative;
+// height: 100vh;
+// background-color: #191b34;
+// display: flex;
+// justify-content: center;
 
-	&__logged-in {
-		display: flex;
-		justify-content: center;
-		width: 100%;
-		float: right;
-	}
-}
+// 	&--logged-in {
+// 		display: flex;
+// 		justify-content: center;
+// 		width: 100%;
+// 		float: right;
+// 	}
+// }
 
 a {
 	color: inherit;

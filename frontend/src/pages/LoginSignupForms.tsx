@@ -1,21 +1,22 @@
-import React, { FormEvent, useEffect, useState, useRef } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
 import { addHours } from 'date-fns';
 
-import { useRequest } from '../shared/hooks/http-hook';
-import { useInput } from '../shared/hooks/input-hook';
-import Input from '../shared/components/FormElements/Input';
+import type { RootState } from '../_shared/store/store';
+import { EmailConfirmationActionTypes } from '../_shared/store/email-confirmation';
+import { UserActionTypes } from '../_shared/store/user';
 
-import { useSelector, useDispatch } from 'react-redux';
-import type { RootState } from '../shared/store/store';
-import { UserActionTypes } from '../shared/store/user';
-import { EmailConfirmationActionTypes } from '../shared/store/email-confirmation';
+import { useRequest } from '../_shared/hooks/http-hook';
+import { useInput } from '../_shared/hooks/input-hook';
+
+import Input from '../_shared/components/FormElements/Input';
 
 import RememberMeFalseSVG from '../shared/assets/icons/rememberme_false.svg';
 import RememberMeTrueSVG from '../shared/assets/icons/rememberme_true.svg';
 
 import classes from './LoginSignupForms.module.scss';
-import { type } from 'os';
 
 const Header: React.FC = () => {
 	const [responseMessage, setResponseMessage] = useState('');

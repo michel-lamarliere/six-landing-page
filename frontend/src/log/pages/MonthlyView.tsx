@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getDay, format, isAfter, startOfMonth } from 'date-fns';
 
-import { useRequest } from '../../shared/hooks/http-hook';
-import { useDatesFn } from '../../shared/hooks/dates-hook';
-import { RootState } from '../../shared/store/store';
-import { ErrorPopupActionTypes } from '../../shared/store/error';
+import { RootState } from '../../_shared/store/store';
+import { ErrorPopupActionTypes } from '../../_shared/store/error';
 
-import MonthlyCalendar from '../../shared/components/Calendar/MonthlyCalendar';
+import { useRequest } from '../../_shared/hooks/http-hook';
+import { useDatesFn } from '../../_shared/hooks/dates-hook';
+
+import MonthlyCalendar from '../../_shared/components/Calendar/MonthlyCalendar';
 import { DataButton } from '../components/Buttons';
 
 import classes from './MonthlyView.module.scss';

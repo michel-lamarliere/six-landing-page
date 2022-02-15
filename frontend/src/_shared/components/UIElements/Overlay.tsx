@@ -10,7 +10,9 @@ const Overlay: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const hideOverlay = () => {
-		dispatch({ type: UIElementsActionTypes.TOGGLE_OVERLAY });
+		dispatch({ type: UIElementsActionTypes.HIDE_OVERLAY });
+		dispatch({ type: UIElementsActionTypes.HIDE_CALENDAR });
+		dispatch({ type: UIElementsActionTypes.HIDE_TASK_SELECTOR });
 	};
 
 	return ReactDOM.createPortal(

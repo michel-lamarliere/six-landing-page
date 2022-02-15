@@ -1,7 +1,6 @@
 interface State {
 	token: null | string;
 	expiration: any;
-	// expiration: Date | null;
 	id: null | string;
 	name: null | string;
 	email: null | string;
@@ -82,11 +81,11 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 					confirmedEmail: action.confirmedEmail,
 				})
 			);
-
 			sessionStorage.setItem(
 				'showEmailConfirmationPopup',
 				JSON.stringify(!action.confirmedEmail)
 			);
+
 			return { ...state, name: action.name, confirmedEmail: action.confirmedEmail };
 		}
 

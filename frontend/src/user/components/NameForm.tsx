@@ -1,13 +1,15 @@
 import React from 'react';
-import classes from './NameForm.module.scss';
-import { useRequest } from '../../shared/hooks/http-hook';
-
-import { useInput } from '../../shared/hooks/input-hook';
-import { RootState } from '../../shared/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Input from '../../shared/components/FormElements/Input';
-import { UserActionTypes } from '../../shared/store/user';
+import { UserActionTypes } from '../../_shared/store/user';
+import { RootState } from '../../_shared/store/store';
+
+import { useInput } from '../../_shared/hooks/input-hook';
+import { useRequest } from '../../_shared/hooks/http-hook';
+
+import Input from '../../_shared/components/FormElements/Input';
+
+import classes from './NameForm.module.scss';
 
 const NameForm: React.FC<{
 	setShowChangeName: (arg0: boolean) => void;

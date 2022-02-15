@@ -1,25 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../shared/store/store';
 
-import SidebarGroup from '../components/SidebarGroup';
+import { RootState } from '../../_shared/store/store';
+import { UserActionTypes } from '../../_shared/store/user';
+import { ErrorPopupActionTypes } from '../../_shared/store/error';
+import { EmailConfirmationActionTypes } from '../../_shared/store/email-confirmation';
+
+import { useRequest } from '../../_shared/hooks/http-hook';
+
+import userIcon from '../../_shared/assets/icons/user-icon.svg';
+import refreshSpinner from '../../_shared/assets/icons/refresh-spinner.svg';
 
 import classes from './Sidebar.module.scss';
-import { UserActionTypes } from '../../shared/store/user';
-import { useRequest } from '../../shared/hooks/http-hook';
-import { ErrorPopupActionTypes } from '../../shared/store/error';
-import { EmailConfirmationActionTypes } from '../../shared/store/email-confirmation';
 
 const Sidebar: React.FC = () => {
 	const { sendRequest } = useRequest();
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 
 	const userState = useSelector((state: RootState) => state.user);
 
+	const [spinButton, setSpinButton] = useState(false);
+
 	const refreshDataHandler = async () => {
+		setSpinButton(true);
 		const responseData = await sendRequest(
 			`http://localhost:8080/api/user/${userState.id}`,
 			'GET'
@@ -43,52 +48,83 @@ const Sidebar: React.FC = () => {
 			email: responseData.user.email,
 			confirmedEmail: responseData.user.confirmation.confirmed,
 		});
-	};
 
-	const nameLinks = [
-		{
-			text: 'Profil',
-			url: '/profile',
-			key: 'profile-key',
-		},
-		{
-			text: 'Déconnexion',
-			onClick: () => {
-				dispatch({ type: UserActionTypes.LOG_OUT });
-				dispatch({ type: EmailConfirmationActionTypes.HIDE });
-				navigate('/');
-			},
-			key: 'logout-key',
-		},
-	];
+		setTimeout(() => {
+			setSpinButton(false);
+		}, 1500);
+
+		return clearTimeout();
+	};
 
 	const logLinks = [
 		{
 			text: 'Jour',
 			url: '/log/daily',
 			key: 'log-daily-key',
-			nav_link: true,
 		},
 		{
 			text: 'Semaine',
 			url: '/log/weekly',
 			key: 'log-weekly-key',
-			nav_link: true,
 		},
 		{
 			text: 'Mois',
 			url: '/log/monthly',
 			key: 'log-monthly-key',
-			nav_link: true,
 		},
 	];
 
 	return ReactDOM.createPortal(
-		<div className={classes.wrapper}>
-			<SidebarGroup title={userState.name!} links={nameLinks} />
-			<SidebarGroup title='Historique' links={logLinks} />
-			<button onClick={refreshDataHandler}>Refresh</button>
-		</div>,
+		<>
+			<div className={classes.wrapper}>
+				<div className={classes.user}>
+					<Link to='/profile' className={classes['user__name-img']}>
+						<img src={userIcon} alt='Icône Utilisateur' />
+						<div>{userState.name}</div>
+					</Link>
+					<button
+						onClick={refreshDataHandler}
+						className={`${classes.user__button} ${
+							spinButton && classes['user__button--clicked']
+						}`}
+						disabled={spinButton}
+					>
+						<img
+							src={refreshSpinner}
+							alt='Icône Rafraîchir'
+							className={classes.test}
+						/>
+					</button>
+				</div>
+				<div className={classes.links}>
+					{logLinks.map((link) => (
+						<React.Fragment key={link.key}>
+							{link.url && (
+								<NavLink
+									className={({ isActive }) =>
+										isActive
+											? classes['links__link--active']
+											: classes['links__link']
+									}
+									to={link.url}
+								>
+									{link.text}
+								</NavLink>
+							)}
+						</React.Fragment>
+					))}
+				</div>
+			</div>
+			<footer className={classes.footer}>
+				<div className={classes['footer__help-contact']}>
+					<Link to='/'>Aide</Link>
+					<Link to='/'>Nous Contacter</Link>
+				</div>
+				<Link to='/' className={classes['footer__legal-notice']}>
+					Mentions Légales
+				</Link>
+			</footer>
+		</>,
 		document.getElementById('sidebar')!
 	);
 };

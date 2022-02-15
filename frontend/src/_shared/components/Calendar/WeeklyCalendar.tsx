@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import {
 	addDays,
 	addMonths,
@@ -13,19 +14,21 @@ import {
 	startOfMonth,
 } from 'date-fns';
 
+import { useDatesFn } from '../../hooks/dates-hook';
+
 import Calendar, { calendarTypes } from './Calendar';
 
 import calendarClasses from './Calendar.module.scss';
-import { useDatesFn } from '../../hooks/dates-hook';
+import { UIElementsActionTypes } from '../../store/ui-elements';
+import { useDispatch } from 'react-redux';
 
 const WeeklyCalendar: React.FC<{
 	chosenDate: Date;
 	setChosenDate: any;
 	headerText: string;
 }> = (props) => {
+	const dispatch = useDispatch();
 	const { getMonthFn } = useDatesFn();
-
-	const calendarButtonRef = React.createRef<HTMLButtonElement>();
 
 	const [calendarDate, setCalendarDate] = useState(new Date());
 	const [calendarMonthStr, setCalendarMonthStr] = useState('');
@@ -98,9 +101,7 @@ const WeeklyCalendar: React.FC<{
 
 		props.setChosenDate(new Date(+year, +month - 1, +day));
 
-		if (calendarButtonRef.current) {
-			calendarButtonRef.current.click();
-		}
+		dispatch({ type: UIElementsActionTypes.HIDE_CALENDAR });
 	};
 
 	useEffect(() => {
@@ -110,7 +111,6 @@ const WeeklyCalendar: React.FC<{
 
 	return (
 		<Calendar
-			ref={calendarButtonRef}
 			calendar={calendarTypes.WEEKLY}
 			previousHandler={previousHandler}
 			previousHandlerDisabled={isBefore(

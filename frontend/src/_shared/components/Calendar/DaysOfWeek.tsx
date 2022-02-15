@@ -1,4 +1,5 @@
 import React from 'react';
+
 import classes from './DaysOfWeek.module.scss';
 
 const DaysOfWeek: React.FC = () => {

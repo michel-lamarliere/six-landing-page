@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { addYears, getYear, isBefore, addMonths } from 'date-fns';
 import {
@@ -14,16 +13,18 @@ import {
 	YAxis,
 } from 'recharts';
 
-import { RootState } from '../../shared/store/store';
+import { RootState } from '../../_shared/store/store';
+import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 
-import { useRequest } from '../../shared/hooks/http-hook';
-import { useDatesFn } from '../../shared/hooks/dates-hook';
+import { useRequest } from '../../_shared/hooks/http-hook';
+import { useDatesFn } from '../../_shared/hooks/dates-hook';
 
-import Calendar, { calendarTypes } from '../../shared/components/Calendar/Calendar';
+import Calendar, { calendarTypes } from '../../_shared/components/Calendar/Calendar';
 
 import classes from './AnnualChart.module.scss';
 
 const AnnualGraph: React.FC = () => {
+	const dispatch = useDispatch();
 	const { sendRequest } = useRequest();
 	const { getMonthFn } = useDatesFn();
 
@@ -35,6 +36,8 @@ const AnnualGraph: React.FC = () => {
 
 	const selectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setChosenTask((event.target as HTMLButtonElement).value);
+
+		dispatch({ type: UIElementsActionTypes.HIDE_TASK_SELECTOR });
 	};
 
 	const getGraph = async () => {
@@ -82,7 +85,6 @@ const AnnualGraph: React.FC = () => {
 		<div className={classes.wrapper}>
 			<Calendar
 				calendar={calendarTypes.ANNUAL_CHART}
-				taskSelector={true}
 				chosenTask={chosenTask}
 				selectHandler={selectHandler}
 				previousHandler={previousHandler}
