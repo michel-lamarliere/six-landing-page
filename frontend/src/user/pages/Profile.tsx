@@ -28,6 +28,14 @@ const Profile: React.FC = () => {
 	const [showChangePassword, setShowChangePassword] = useState(false);
 	const [response, setResponse] = useState('');
 
+	const editProfileHandler = () => {
+		if (showEditProfile) {
+			setShowChangePassword(false);
+			setShowChangeName(false);
+		}
+		setShowEditProfile((prev) => !prev);
+	};
+
 	const showChangeNameHandler = () => {
 		if (showChangePassword) {
 			setShowChangePassword(false);
@@ -72,10 +80,6 @@ const Profile: React.FC = () => {
 		}, 5000);
 	};
 
-	const editProfileHandler = () => {
-		setShowEditProfile((prev) => !prev);
-	};
-
 	const logoutHandler = () => {
 		dispatch({ type: UserActionTypes.LOG_OUT });
 		dispatch({ type: EmailConfirmationActionTypes.HIDE });
@@ -99,58 +103,60 @@ const Profile: React.FC = () => {
 			<Link to='/recap' className={classes.recap}>
 				Recapitulatif de l'Année
 			</Link>
-			<button
-				className={`${classes['edit-profile']} ${
-					showEditProfile && classes['edit-profile--open']
-				}`}
-				onClick={editProfileHandler}
-			>
-				<div
-					className={`${classes['edit-profile__text']} ${
-						showEditProfile && classes['edit-profile__text--open']
+			<div className={classes['edit-profile']}>
+				<button
+					className={`${classes['edit-profile__button']} ${
+						showEditProfile && classes['edit-profile__button--open']
 					}`}
+					onClick={editProfileHandler}
 				>
-					Éditer mon profil
-				</div>
-				<img
-					src={TopArrow}
-					alt='Flêche'
-					className={`${classes['edit-profile__img']} ${
-						showEditProfile && classes['edit-profile__img--open']
-					}`}
-				/>
-			</button>
-			{showEditProfile && (
-				<>
-					<button
-						className={classes['edit-button']}
-						onClick={showChangeNameHandler}
+					<div
+						className={`${classes['edit-profile__text']} ${
+							showEditProfile && classes['edit-profile__text--open']
+						}`}
 					>
-						Modifier Mon Nom
-					</button>
-					{showChangeName && (
-						<NameForm
-							setShowChangeName={showChangeNameHandler}
-							setResponse={setResponseHandler}
-						/>
-					)}
-					<button
-						className={classes['edit-button']}
-						onClick={showChangePasswordHandler}
-					>
-						Modifier Mon Mot de Passe
-					</button>
-					{showChangePassword && (
-						<>
-							<PasswordForm
-								setShowChangePassword={showChangePasswordHandler}
+						Éditer mon profil
+					</div>
+					<img
+						src={TopArrow}
+						alt='Flêche'
+						className={`${classes['edit-profile__img']} ${
+							showEditProfile && classes['edit-profile__img--open']
+						}`}
+					/>
+				</button>
+				{showEditProfile && (
+					<>
+						<button
+							className={classes['edit-button']}
+							onClick={showChangeNameHandler}
+						>
+							Modifier Mon Nom
+						</button>
+						{showChangeName && (
+							<NameForm
+								setShowChangeName={showChangeNameHandler}
 								setResponse={setResponseHandler}
 							/>
-							<h1>Tester1@</h1>
-						</>
-					)}
-				</>
-			)}
+						)}
+						<button
+							className={classes['edit-button']}
+							onClick={showChangePasswordHandler}
+						>
+							Modifier Mon Mot de Passe
+						</button>
+						{showChangePassword && (
+							<>
+								<PasswordForm
+									setShowChangePassword={showChangePasswordHandler}
+									setResponse={setResponseHandler}
+								/>
+								<h1>Tester1@</h1>
+							</>
+						)}
+					</>
+				)}
+			</div>
 			<button onClick={logoutHandler} className={classes['log-out']}>
 				<img src='' alt='img' />
 				<div className={classes['log-out__text']}>Déconnexion</div>

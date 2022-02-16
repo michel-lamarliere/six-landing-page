@@ -7,7 +7,7 @@ import { RootState } from '../../_shared/store/store';
 import { ErrorPopupActionTypes } from '../../_shared/store/error';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
-import { useDatesFn } from '../../_shared/hooks/dates-hook';
+import { getMonthFnTypes, useDatesFn } from '../../_shared/hooks/dates-hook';
 
 import WeekViewTasks from '../components/WeeklyViewTasks';
 import WeeklyCalendar from '../../_shared/components/Calendar/WeeklyCalendar';
@@ -69,7 +69,7 @@ const WeekView: React.FC = () => {
 	useEffect(() => {
 		if (userState.id) {
 			getWeekData(userState.id, formattedFirstOfWeek);
-			getMonthFn(chosenDate.getMonth(), true, setMonthStr);
+			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), setMonthStr);
 		}
 	}, [userState.id, chosenDate]);
 

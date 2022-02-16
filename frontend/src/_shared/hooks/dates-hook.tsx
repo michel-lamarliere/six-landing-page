@@ -1,3 +1,8 @@
+export enum getMonthFnTypes {
+	VARIABLE = 'VARIABLE',
+	STATE = 'STATE',
+}
+
 export const useDatesFn = () => {
 	const getDayFn = (data: number, setState: (arg0: string) => void) => {
 		switch (data) {
@@ -26,12 +31,12 @@ export const useDatesFn = () => {
 	};
 
 	const getMonthFn = (
+		type: getMonthFnTypes.VARIABLE | getMonthFnTypes.STATE,
 		data: number,
-		state?: boolean,
-		setState?: ((arg0: string) => void) | null,
+		setState?: (arg0: string) => void,
 		abreviation?: boolean
-	) => {
-		if (state && setState) {
+	): any => {
+		if (type === getMonthFnTypes.STATE && setState) {
 			switch (data) {
 				case 0:
 					!abreviation ? setState('Janvier') : setState('Janv.');
@@ -72,9 +77,10 @@ export const useDatesFn = () => {
 				default:
 					break;
 			}
+
 			return setState;
 		} else {
-			let variable = '';
+			let variable: string = '';
 			switch (data) {
 				case 0:
 					!abreviation ? (variable = 'Janvier') : (variable = 'Janv.');

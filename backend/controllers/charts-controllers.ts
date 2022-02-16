@@ -95,7 +95,7 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 		finalData.push(loopingMonthData);
 	}
 
-	res.status(200).json({ success: 'Succès.', array: finalData });
+	res.status(200).json({ success: true, array: finalData });
 };
 
 exports.getAnnual = getAnnual;

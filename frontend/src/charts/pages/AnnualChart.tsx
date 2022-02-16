@@ -17,7 +17,7 @@ import { RootState } from '../../_shared/store/store';
 import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
-import { useDatesFn } from '../../_shared/hooks/dates-hook';
+import { getMonthFnTypes, useDatesFn } from '../../_shared/hooks/dates-hook';
 
 import Calendar, { calendarTypes } from '../../_shared/components/Calendar/Calendar';
 
@@ -33,6 +33,14 @@ const AnnualGraph: React.FC = () => {
 	const [chosenYear, setChosenYear] = useState<any>(new Date());
 	const [chosenTask, setChosenTask] = useState('food');
 	const [data, setData] = useState<any>([]);
+
+	const previousHandler = () => {
+		setChosenYear(addYears(chosenYear, -1));
+	};
+
+	const nextHandler = () => {
+		setChosenYear(addYears(chosenYear, 1));
+	};
 
 	const selectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setChosenTask((event.target as HTMLButtonElement).value);
@@ -55,9 +63,9 @@ const AnnualGraph: React.FC = () => {
 		const data: any = [];
 
 		for (let i = 0; i < array.length; i++) {
-			let month = getMonthFn(i, false, null, true);
+			let month = getMonthFn(getMonthFnTypes.VARIABLE, i, undefined, true);
 			const thisMonth = {
-				name: month,
+				name: month.toUpperCase(),
 				future: array[i].future,
 				empty: array[i].empty,
 				half: array[i].half,
@@ -67,14 +75,6 @@ const AnnualGraph: React.FC = () => {
 		}
 		setData(data);
 		return data;
-	};
-
-	const previousHandler = () => {
-		setChosenYear(addYears(chosenYear, -1));
-	};
-
-	const nextHandler = () => {
-		setChosenYear(addYears(chosenYear, 1));
 	};
 
 	useEffect(() => {
@@ -101,12 +101,10 @@ const AnnualGraph: React.FC = () => {
 					<BarChart data={data.slice(0, 6)}>
 						<XAxis
 							dataKey='name'
-							axisLine={false}
-							tickLine={false}
-							stroke='black'
+							stroke='#25345F'
+							tick={{ fill: '#A2AAD4' }}
 							style={{ fontSize: '16px' }}
 						/>
-						<YAxis tickCount={8} domain={['0', '31']} stroke='black' />
 						<Bar dataKey='future' stackId='a' fill='#5b5b5b' barSize={40} />
 						<Bar dataKey='empty' stackId='a' fill='#080e46' />
 						<Bar dataKey='half' stackId='a' fill='#3f4cbf' />
@@ -117,12 +115,10 @@ const AnnualGraph: React.FC = () => {
 					<BarChart data={data.slice(6)}>
 						<XAxis
 							dataKey='name'
-							axisLine={false}
-							tickLine={false}
-							stroke='black'
+							stroke='#25345F'
+							tick={{ fill: '#A2AAD4' }}
 							style={{ fontSize: '16px' }}
 						/>
-						<YAxis tickCount={8} domain={['0', '31']} stroke='black' />
 						<Bar dataKey='future' stackId='a' fill='#5b5b5b' barSize={40} />
 						<Bar dataKey='empty' stackId='a' fill='#080e46' />
 						<Bar dataKey='half' stackId='a' fill='#3f4cbf' />

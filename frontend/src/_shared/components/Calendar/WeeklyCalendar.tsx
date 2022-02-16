@@ -14,7 +14,7 @@ import {
 	startOfMonth,
 } from 'date-fns';
 
-import { useDatesFn } from '../../hooks/dates-hook';
+import { getMonthFnTypes, useDatesFn } from '../../hooks/dates-hook';
 
 import Calendar, { calendarTypes } from './Calendar';
 
@@ -105,7 +105,12 @@ const WeeklyCalendar: React.FC<{
 	};
 
 	useEffect(() => {
-		getMonthFn(calendarDate.getMonth(), true, setCalendarMonthStr);
+		getMonthFn(
+			getMonthFnTypes.STATE,
+			calendarDate.getMonth(),
+			setCalendarMonthStr,
+			true
+		);
 		createWeekCalendar();
 	}, [calendarDate]);
 

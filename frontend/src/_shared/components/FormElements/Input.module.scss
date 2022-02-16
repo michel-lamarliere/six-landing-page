@@ -3,12 +3,13 @@
 .wrapper {
 	display: flex;
 	flex-direction: column;
-	width: 15.9rem;
+	width: 100%;
 	gap: 0.5rem;
 }
 
 .input {
 	position: relative;
+	width: 15.9rem;
 
 	&--invalid {
 		border: solid 0.1rem #1cc1e6;

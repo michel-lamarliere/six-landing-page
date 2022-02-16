@@ -152,12 +152,12 @@ const PasswordForm: React.FC<{
 	}, [oldPassword, newPassword, newPasswordConfirmation]);
 
 	return (
-		<>
+		<div className={formClasses['password-wrapper']}>
 			{!props.forgotForm && (
 				<Input
 					id='Ancien Mot de Passe'
 					type='password'
-					placeholder='********'
+					placeholder='Ancien mot de passe'
 					errorText='Ancien mot de passe incorrect.'
 					value={oldPassword.value}
 					isValid={oldPassword.isValid}
@@ -170,7 +170,7 @@ const PasswordForm: React.FC<{
 			<Input
 				id='Nouveau Mot de Passe'
 				type='password'
-				placeholder='********'
+				placeholder='Nouveau mot de passe'
 				errorText='8 caractères minimum dont 1 minuscule, 1 majuscule, 1 chiffre et un caractère spécial.'
 				value={newPassword.value}
 				isValid={newPassword.isValid}
@@ -182,7 +182,7 @@ const PasswordForm: React.FC<{
 			<Input
 				id='Confirmer Nouveau Mot de Passe'
 				type='password'
-				placeholder='********'
+				placeholder='Confirmation mot de passe'
 				errorText='Mots de passe non-identiques.'
 				value={newPasswordConfirmation.value}
 				isValid={newPasswordConfirmation.isValid}
@@ -201,7 +201,7 @@ const PasswordForm: React.FC<{
 			>
 				Changer Mot de Passe
 			</button>
-		</>
+		</div>
 	);
 };
 

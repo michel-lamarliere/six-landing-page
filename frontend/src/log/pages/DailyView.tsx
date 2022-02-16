@@ -7,7 +7,7 @@ import { RootState } from '../../_shared/store/store';
 import { ErrorPopupActionTypes } from '../../_shared/store/error';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
-import { useDatesFn } from '../../_shared/hooks/dates-hook';
+import { getMonthFnTypes, useDatesFn } from '../../_shared/hooks/dates-hook';
 
 import { DataButton } from '../components/Buttons';
 import DailyCalendar from '../../_shared/components/Calendar/DailyCalendar';
@@ -72,7 +72,7 @@ const DailyView: React.FC = () => {
 		if (userState.id) {
 			getDailyData(userState.id, chosenDate.toISOString().slice(0, 10));
 			getDayFn(getDay(chosenDate), setDayStr);
-			getMonthFn(chosenDate.getMonth(), true, setMonthStr);
+			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), setMonthStr);
 		}
 	}, [chosenDate]);
 

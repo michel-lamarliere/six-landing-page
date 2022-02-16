@@ -7,7 +7,7 @@ import { RootState } from '../../_shared/store/store';
 import { ErrorPopupActionTypes } from '../../_shared/store/error';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
-import { useDatesFn } from '../../_shared/hooks/dates-hook';
+import { getMonthFnTypes, useDatesFn } from '../../_shared/hooks/dates-hook';
 
 import MonthlyCalendar from '../../_shared/components/Calendar/MonthlyCalendar';
 import { DataButton } from '../components/Buttons';
@@ -84,7 +84,7 @@ const MonthlyView: React.FC = () => {
 	useEffect(() => {
 		if (userState.id) {
 			getMonthlyData();
-			getMonthFn(chosenDate.getMonth(), true, setMonthStr);
+			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), setMonthStr);
 		}
 	}, [chosenDate, chosenTask]);
 

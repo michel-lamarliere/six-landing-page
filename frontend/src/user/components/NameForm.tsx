@@ -57,7 +57,7 @@ const NameForm: React.FC<{
 				id='Nouveau Nom'
 				type='text'
 				placeholder='Jean'
-				errorText='Minimum 2 caractères'
+				errorText='Minimum 2 caractères, sans espaces.'
 				value={newName.value}
 				isValid={newName.isValid}
 				isTouched={newName.isTouched}
