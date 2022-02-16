@@ -5,6 +5,8 @@ const userModifyControllers = require('../controllers/user_modify-controllers');
 
 const router = Router();
 
+router.get('/check-email/:email', userModifyControllers.checkEmail)
+
 router.get(
 	'/email/forgot-password/:email',
 	userModifyControllers.sendEmailForgotPassword

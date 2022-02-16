@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 export const useInput = (
 	condition:
 		| 'NAME'
+		| 'CHECK_EMAIL'
 		| 'EMAIL'
 		| 'PASSWORD'
 		| 'PASSWORD_COMPARISON'
@@ -32,12 +33,28 @@ export const useInput = (
 	}, [input.value]);
 
 	useEffect(() => {
-		if (condition === 'EMAIL' && !loginMode) {
+		if (condition === 'EMAIL') {
 			input.value.match(
 				/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 			)
 				? setInput((prev) => ({ ...prev, isValid: true }))
 				: setInput((prev) => ({ ...prev, isValid: false }));
+		}
+	}, [input.value]);
+
+	useEffect(() => {
+		if (condition === 'CHECK_EMAIL' && input.value.trim().length > 0) {
+			if (additionalOnBlurHandler) {
+				const delayDebounceFn = setTimeout(() => {
+					additionalOnBlurHandler();
+					setInput((prev) => ({ ...prev, isTouched: true }));
+				}, 1000);
+
+				return () => {
+					setInput((prev) => ({ ...prev, isTouched: false, isValid: false }));
+					clearTimeout(delayDebounceFn);
+				};
+			}
 		}
 	}, [input.value]);
 
@@ -57,7 +74,7 @@ export const useInput = (
 				? setInput((prev) => ({ ...prev, isValid: true }))
 				: setInput((prev) => ({ ...prev, isValid: false }));
 		}
-	}, [compareTo, input.value]);
+	}, [input.value]);
 
 	useEffect(() => {
 		if (condition === 'OLD_PASSWORD' && input.isTouched) {
@@ -68,16 +85,18 @@ export const useInput = (
 	}, [input.value]);
 
 	const inputOnBlurHandler = () => {
-		if (input.value.trim().length >= 1) {
-			setInput((prev) => ({ ...prev, isTouched: true }));
-		}
-		if (additionalOnBlurHandler) {
-			additionalOnBlurHandler();
+		if (condition !== 'CHECK_EMAIL') {
+			if (input.value.trim().length >= 1) {
+				setInput((prev) => ({ ...prev, isTouched: true }));
+			}
+			if (additionalOnBlurHandler) {
+				additionalOnBlurHandler();
+			}
 		}
 	};
 
 	useEffect(() => {
-		if (loginMode && input.value.trim().length >= 1) {
+		if (loginMode) {
 			setInput((prev) => ({ ...prev, isValid: true, isTouched: false }));
 		} else if (!loginMode) {
 			setInput((prev) => ({ ...prev, isValid: false, isTouched: false }));

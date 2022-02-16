@@ -13,8 +13,8 @@ import { useInput } from '../_shared/hooks/input-hook';
 
 import Input from '../_shared/components/FormElements/Input';
 
-import RememberMeFalseSVG from '../shared/assets/icons/rememberme_false.svg';
-import RememberMeTrueSVG from '../shared/assets/icons/rememberme_true.svg';
+import RememberMeFalseSVG from '../_shared/assets/icons/remember-me_false.svg';
+import RememberMeTrueSVG from '../_shared/assets/icons/remember-me_true.svg';
 
 import classes from './LoginSignupForms.module.scss';
 
@@ -32,6 +32,32 @@ const Header: React.FC = () => {
 	const [loginMode, setLoginMode] = useState(true);
 	const [formIsValid, setFormIsValid] = useState(false);
 
+	const checkEmail = async () => {
+		const responseData = await sendRequest(
+			`http://localhost:8080/api/user_modify/check-email/${checkEmailInput.value}`,
+			'GET',
+			null
+		);
+
+		console.log(responseData);
+
+		if (!responseData) {
+			console.log(responseData);
+			return;
+		}
+
+		if (responseData.error) {
+			console.log('no');
+			setResponseMessage(responseData.message);
+			setCheckEmailInput((prev) => ({ ...prev, isValid: false }));
+		}
+
+		if (responseData.success) {
+			console.log('yes');
+			setCheckEmailInput((prev) => ({ ...prev, isValid: true }));
+		}
+	};
+
 	const {
 		input: nameInput,
 		setInput: setNameInput,
@@ -45,6 +71,13 @@ const Header: React.FC = () => {
 		inputOnChangeHandler: emailOnChangeHandler,
 		inputOnBlurHandler: emailOnBlurHandler,
 	} = useInput('EMAIL', loginMode);
+
+	const {
+		input: checkEmailInput,
+		setInput: setCheckEmailInput,
+		inputOnChangeHandler: checkEmailOnChangeHandler,
+		inputOnBlurHandler: checkEmailOnBlurHandler,
+	} = useInput('CHECK_EMAIL', null, null, checkEmail);
 
 	const {
 		input: passwordInput,
@@ -244,7 +277,7 @@ const Header: React.FC = () => {
 							id='Nom'
 							type='text'
 							placeholder='Jean'
-							errorText='Nom invalide'
+							errorText='Minimum 2 caractères, sans espace.'
 							value={nameInput.value}
 							isValid={nameInput.isValid}
 							isTouched={nameInput.isTouched}
@@ -252,19 +285,19 @@ const Header: React.FC = () => {
 							onBlur={nameOnBlurHandler}
 						/>
 					)}
-					<Input
-						id='Email'
-						type='text'
-						placeholder='jean@email.fr'
-						value={emailInput.value}
-						errorText='Adresse mail non valide.'
-						isValid={emailInput.isValid}
-						isTouched={emailInput.isTouched}
-						onChange={emailOnChangeHandler}
-						onBlur={emailOnBlurHandler}
-					/>
 					{!forgotPassword && (
 						<>
+							<Input
+								id='Email'
+								type='text'
+								placeholder='jean@email.fr'
+								value={emailInput.value}
+								errorText='Format invalide.'
+								isValid={emailInput.isValid}
+								isTouched={emailInput.isTouched}
+								onChange={emailOnChangeHandler}
+								onBlur={emailOnBlurHandler}
+							/>
 							<Input
 								id='mot de passe'
 								type='password'
@@ -316,8 +349,26 @@ const Header: React.FC = () => {
 					)}
 					{forgotPassword && (
 						<>
+							<Input
+								id='Email'
+								type='text'
+								placeholder='jean@email.fr'
+								value={checkEmailInput.value}
+								errorText='Adresse email non trouvée, veuillez créer un compte.'
+								isValid={checkEmailInput.isValid}
+								isTouched={checkEmailInput.isTouched}
+								onChange={checkEmailOnChangeHandler}
+								onBlur={checkEmailOnBlurHandler}
+							/>
 							<p>Envoyer un email pour changer mon mot de passe.</p>
-							<button onClick={sendEmailForgotPassword}>
+							<button
+								onClick={sendEmailForgotPassword}
+								disabled={!checkEmailInput.isValid}
+								className={`${classes['submit-button']} ${
+									!checkEmailInput.isValid &&
+									classes['submit-button--disabled']
+								}`}
+							>
 								Envoyer un email.
 							</button>
 						</>

@@ -42,6 +42,27 @@ const PasswordForm: React.FC<{
 		}
 	};
 
+	const {
+		input: oldPassword,
+		setInput: setOldPassword,
+		inputOnChangeHandler: oldPasswordOnChangeHandler,
+		inputOnBlurHandler: oldPasswordOnBlurHandler,
+	} = useInput('OLD_PASSWORD', null, null, fetchOldPassword);
+
+	const {
+		input: newPassword,
+		setInput: setNewPassword,
+		inputOnChangeHandler: newPasswordOnChangeHandler,
+		inputOnBlurHandler: newPasswordOnBlurHandler,
+	} = useInput('PASSWORD', null, oldPassword.value);
+
+	const {
+		input: newPasswordConfirmation,
+		setInput: setNewPasswordConfirmation,
+		inputOnChangeHandler: newPasswordConfirmationOnChangeHandler,
+		inputOnBlurHandler: newPasswordConfirmationOnBlurHandler,
+	} = useInput('PASSWORD_COMPARISON', null, newPassword.value);
+
 	const changePasswordHandler = async () => {
 		const responseData = await sendRequest(
 			'http://localhost:8080/api/user_modify/modify/password',
@@ -80,27 +101,6 @@ const PasswordForm: React.FC<{
 		setNewPassword({ value: '', isValid: false, isTouched: false });
 		setNewPasswordConfirmation({ value: '', isValid: false, isTouched: false });
 	};
-
-	const {
-		input: oldPassword,
-		setInput: setOldPassword,
-		inputOnChangeHandler: oldPasswordOnChangeHandler,
-		inputOnBlurHandler: oldPasswordOnBlurHandler,
-	} = useInput('OLD_PASSWORD', null, null, fetchOldPassword);
-
-	const {
-		input: newPassword,
-		setInput: setNewPassword,
-		inputOnChangeHandler: newPasswordOnChangeHandler,
-		inputOnBlurHandler: newPasswordOnBlurHandler,
-	} = useInput('PASSWORD', null, oldPassword.value);
-
-	const {
-		input: newPasswordConfirmation,
-		setInput: setNewPasswordConfirmation,
-		inputOnChangeHandler: newPasswordConfirmationOnChangeHandler,
-		inputOnBlurHandler: newPasswordConfirmationOnBlurHandler,
-	} = useInput('PASSWORD_COMPARISON', null, newPassword.value);
 
 	useEffect(() => {
 		if (props.forgotForm) {
@@ -156,7 +156,7 @@ const PasswordForm: React.FC<{
 					id='Ancien Mot de Passe'
 					type='password'
 					placeholder='********'
-					errorText='Ancien mot de passe incorrect'
+					errorText='Ancien mot de passe incorrect.'
 					value={oldPassword.value}
 					isValid={oldPassword.isValid}
 					isTouched={oldPassword.isTouched}
@@ -181,7 +181,7 @@ const PasswordForm: React.FC<{
 				id='Confirmer Nouveau Mot de Passe'
 				type='password'
 				placeholder='********'
-				errorText='Mots de passe non identiques'
+				errorText='Mots de passe non-identiques.'
 				value={newPasswordConfirmation.value}
 				isValid={newPasswordConfirmation.isValid}
 				isTouched={newPasswordConfirmation.isTouched}

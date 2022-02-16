@@ -85,7 +85,7 @@ const ForgotPasswordForm: React.FC = () => {
 				/>
 			)}
 			<p>{response}</p>
-			{changedPassword && <Link to={'/'}>Me connecter</Link>}
+			{changedPassword && <Link to='/'>Me connecter</Link>}
 		</div>
 	);
 };
