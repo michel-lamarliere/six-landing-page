@@ -1,15 +1,27 @@
 import { useState, useEffect } from 'react';
 
+export enum useInputTypes {
+	NAME = 'NAME',
+	CHECK_EMAIL = 'CHECK_EMAIL',
+	EMAIL = 'EMAIL',
+	PASSWORD = 'PASSWORD',
+	NEW_PASSWORD = 'NEW_PASSWORD',
+	PASSWORD_COMPARISON = 'PASSWORD_COMPARISON',
+	OLD_PASSWORD = 'OLD_PASSWORD',
+	NONE = 'NONE',
+}
+
 export const useInput = (
-	condition:
-		| 'NAME'
-		| 'CHECK_EMAIL'
-		| 'EMAIL'
-		| 'PASSWORD'
-		| 'PASSWORD_COMPARISON'
-		| 'OLD_PASSWORD'
-		| 'NONE',
-	loginMode?: boolean | null,
+	type:
+		| useInputTypes.NAME
+		| useInputTypes.CHECK_EMAIL
+		| useInputTypes.EMAIL
+		| useInputTypes.PASSWORD
+		| useInputTypes.NEW_PASSWORD
+		| useInputTypes.PASSWORD_COMPARISON
+		| useInputTypes.OLD_PASSWORD
+		| useInputTypes.NONE,
+	condition?: boolean | null,
 	compareTo?: string | null,
 	additionalOnBlurHandler?: () => void
 ) => {
@@ -24,7 +36,7 @@ export const useInput = (
 	};
 
 	useEffect(() => {
-		if (condition === 'NAME') {
+		if (type === 'NAME') {
 			input.value.trim().length >= 2 &&
 			input.value.trim().match(/^[-'a-zA-ZÀ-ÖØ-öø-ÿ]+$/)
 				? setInput((prev) => ({ ...prev, isValid: true }))
@@ -33,7 +45,7 @@ export const useInput = (
 	}, [input.value]);
 
 	useEffect(() => {
-		if (condition === 'EMAIL') {
+		if (type === 'EMAIL') {
 			input.value.match(
 				/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 			)
@@ -43,7 +55,7 @@ export const useInput = (
 	}, [input.value]);
 
 	useEffect(() => {
-		if (condition === 'CHECK_EMAIL' && input.value.trim().length > 0) {
+		if (type === 'CHECK_EMAIL' && input.value.trim().length > 0) {
 			if (additionalOnBlurHandler) {
 				const delayDebounceFn = setTimeout(() => {
 					additionalOnBlurHandler();
@@ -59,7 +71,7 @@ export const useInput = (
 	}, [input.value]);
 
 	useEffect(() => {
-		if (condition === 'PASSWORD' && !loginMode) {
+		if (type === 'PASSWORD' && !condition) {
 			input.value.match(
 				/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
 			)
@@ -69,15 +81,25 @@ export const useInput = (
 	}, [input.value]);
 
 	useEffect(() => {
-		if (condition === 'PASSWORD_COMPARISON') {
+		if (type === 'NEW_PASSWORD' && !condition) {
+			input.value.match(
+				/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
+			)
+				? setInput((prev) => ({ ...prev, isValid: true }))
+				: setInput((prev) => ({ ...prev, isValid: false }));
+		}
+	}, [input.value, compareTo]);
+
+	useEffect(() => {
+		if (type === 'PASSWORD_COMPARISON') {
 			input.value === compareTo
 				? setInput((prev) => ({ ...prev, isValid: true }))
 				: setInput((prev) => ({ ...prev, isValid: false }));
 		}
-	}, [input.value]);
+	}, [input.value, compareTo]);
 
 	useEffect(() => {
-		if (condition === 'OLD_PASSWORD' && input.isTouched) {
+		if (type === 'OLD_PASSWORD' && input.isTouched) {
 			if (additionalOnBlurHandler) {
 				additionalOnBlurHandler();
 			}
@@ -85,7 +107,7 @@ export const useInput = (
 	}, [input.value]);
 
 	const inputOnBlurHandler = () => {
-		if (condition !== 'CHECK_EMAIL') {
+		if (type !== 'CHECK_EMAIL') {
 			if (input.value.trim().length >= 1) {
 				setInput((prev) => ({ ...prev, isTouched: true }));
 			}
@@ -96,12 +118,12 @@ export const useInput = (
 	};
 
 	useEffect(() => {
-		if (loginMode) {
+		if (condition) {
 			setInput((prev) => ({ ...prev, isValid: true, isTouched: false }));
-		} else if (!loginMode) {
+		} else if (!condition) {
 			setInput((prev) => ({ ...prev, isValid: false, isTouched: false }));
 		}
-	}, [loginMode]);
+	}, [condition]);
 
 	return {
 		input,

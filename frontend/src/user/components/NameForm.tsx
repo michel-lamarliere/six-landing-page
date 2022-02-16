@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UserActionTypes } from '../../_shared/store/user';
 import { RootState } from '../../_shared/store/store';
 
-import { useInput } from '../../_shared/hooks/input-hook';
+import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
 import { useRequest } from '../../_shared/hooks/http-hook';
 
 import Input from '../../_shared/components/FormElements/Input';
@@ -50,7 +50,7 @@ const NameForm: React.FC<{
 		setInput: setNewName,
 		inputOnChangeHandler: newNameOnChangeHandler,
 		inputOnBlurHandler: newNameOnBlurHandler,
-	} = useInput('NAME');
+	} = useInput(useInputTypes.NAME);
 	return (
 		<div className={formClasses['name-wrapper']}>
 			<Input

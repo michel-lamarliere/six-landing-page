@@ -9,7 +9,7 @@ import { EmailConfirmationActionTypes } from '../_shared/store/email-confirmatio
 import { UserActionTypes } from '../_shared/store/user';
 
 import { useRequest } from '../_shared/hooks/http-hook';
-import { useInput } from '../_shared/hooks/input-hook';
+import { useInput, useInputTypes } from '../_shared/hooks/input-hook';
 
 import Input from '../_shared/components/FormElements/Input';
 
@@ -63,35 +63,35 @@ const Header: React.FC = () => {
 		setInput: setNameInput,
 		inputOnChangeHandler: nameOnChangeHandler,
 		inputOnBlurHandler: nameOnBlurHandler,
-	} = useInput('NAME', loginMode);
+	} = useInput(useInputTypes.NAME, loginMode);
 
 	const {
 		input: emailInput,
 		setInput: setEmailInput,
 		inputOnChangeHandler: emailOnChangeHandler,
 		inputOnBlurHandler: emailOnBlurHandler,
-	} = useInput('EMAIL', loginMode);
+	} = useInput(useInputTypes.EMAIL, loginMode);
 
 	const {
 		input: checkEmailInput,
 		setInput: setCheckEmailInput,
 		inputOnChangeHandler: checkEmailOnChangeHandler,
 		inputOnBlurHandler: checkEmailOnBlurHandler,
-	} = useInput('CHECK_EMAIL', null, null, checkEmail);
+	} = useInput(useInputTypes.CHECK_EMAIL, null, null, checkEmail);
 
 	const {
 		input: passwordInput,
 		setInput: setPasswordInput,
 		inputOnChangeHandler: passwordOnChangeHandler,
 		inputOnBlurHandler: passwordOnBlurHandler,
-	} = useInput('PASSWORD', loginMode);
+	} = useInput(useInputTypes.PASSWORD, loginMode);
 
 	const {
 		input: passwordConfirmationInput,
 		setInput: setPasswordConfirmationInput,
 		inputOnChangeHandler: passwordConfirmationOnChangeHandler,
 		inputOnBlurHandler: passwordConfirmationOnBlurHandler,
-	} = useInput('PASSWORD_COMPARISON', loginMode, passwordInput.value);
+	} = useInput(useInputTypes.PASSWORD_COMPARISON, loginMode, passwordInput.value);
 
 	const switchModeHandler = () => {
 		setLoginMode((prev) => !prev);
@@ -277,7 +277,7 @@ const Header: React.FC = () => {
 							id='Nom'
 							type='text'
 							placeholder='Jean'
-							errorText='Minimum 2 caractères, sans espace.'
+							errorText='Minimum 2 caractères, sans espaces.'
 							value={nameInput.value}
 							isValid={nameInput.isValid}
 							isTouched={nameInput.isTouched}

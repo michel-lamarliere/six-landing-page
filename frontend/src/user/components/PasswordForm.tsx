@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../_shared/store/store';
 import { ErrorPopupActionTypes } from '../../_shared/store/error';
 
-import { useInput } from '../../_shared/hooks/input-hook';
+import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
 import { useRequest } from '../../_shared/hooks/http-hook';
 
 import Input from '../../_shared/components/FormElements/Input';
@@ -24,7 +24,7 @@ const PasswordForm: React.FC<{
 
 	const userState = useSelector((state: RootState) => state.user);
 
-	const [passwordFormIsValid, setPasswordFormIsValid] = useState(false);
+	const [passwordFormIsValid, setPasswordFormIsValid] = useState(true);
 
 	const fetchOldPassword = async () => {
 		if (oldPassword.value.trim().length > 0) {
@@ -47,21 +47,21 @@ const PasswordForm: React.FC<{
 		setInput: setOldPassword,
 		inputOnChangeHandler: oldPasswordOnChangeHandler,
 		inputOnBlurHandler: oldPasswordOnBlurHandler,
-	} = useInput('OLD_PASSWORD', null, null, fetchOldPassword);
+	} = useInput(useInputTypes.OLD_PASSWORD, null, null, fetchOldPassword);
 
 	const {
 		input: newPassword,
 		setInput: setNewPassword,
 		inputOnChangeHandler: newPasswordOnChangeHandler,
 		inputOnBlurHandler: newPasswordOnBlurHandler,
-	} = useInput('PASSWORD', null, oldPassword.value);
+	} = useInput(useInputTypes.NEW_PASSWORD, null, oldPassword.value);
 
 	const {
 		input: newPasswordConfirmation,
 		setInput: setNewPasswordConfirmation,
 		inputOnChangeHandler: newPasswordConfirmationOnChangeHandler,
 		inputOnBlurHandler: newPasswordConfirmationOnBlurHandler,
-	} = useInput('PASSWORD_COMPARISON', null, newPassword.value);
+	} = useInput(useInputTypes.PASSWORD_COMPARISON, null, newPassword.value);
 
 	const changePasswordHandler = async () => {
 		const responseData = await sendRequest(
@@ -78,10 +78,12 @@ const PasswordForm: React.FC<{
 		}
 
 		if (responseData.error) {
-			dispatch({
-				type: ErrorPopupActionTypes.SET_ERROR,
-				message: responseData.error,
-			});
+			// CHOISIR
+			setErrorMessage(responseData.error);
+			// dispatch({
+			// 	type: ErrorPopupActionTypes.SET_ERROR,
+			// 	message: responseData.error,
+			// });
 			return;
 		}
 		resetForm();

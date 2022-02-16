@@ -106,6 +106,13 @@ const changePassword: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
+	const samePasswords = await bcrypt.compare(user.password,reqNewPassword);
+
+	if (samePasswords) {
+		res.json({error: "Le nouveau mot de passe ne peut pas être identique à l'ancien."})
+		return;
+	}
+
 	// CHECKS IF THE PASSWORD IS IN THE CORRECT FORMAT
 	const newPasswordIsValid = reqNewPassword.match(
 		/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
