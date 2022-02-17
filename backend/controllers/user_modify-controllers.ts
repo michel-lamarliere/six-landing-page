@@ -9,7 +9,6 @@ const { createNodemailerTransporter } = require('../util/nodemailer-transporter'
 
 const checkEmail: RequestHandler = async (req, res, next) => {
 	const reqEmail = req.params.email;
-	console.log(reqEmail)
 
 	const databaseConnect = await database.getDb('six-dev').collection('test');
 
@@ -132,6 +131,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
 		{
 			$set: {
 				password: hashedNewPassword,
+				'forgotPassword.code': null
 			},
 		}
 	);
@@ -225,7 +225,7 @@ const checkForgotPasswordAuth: RequestHandler = async (req, res, next) => {
 	// IF THE UNIQUE ID MATCHES THE USER'S ONE FROM THE DB
 	const user = await databaseConnect.findOne({
 		email: reqEmail,
-		forgotPasswordCode: reqUniqueId,
+		'forgotPassword.code': reqUniqueId,
 	});
 
 	if (!user) {

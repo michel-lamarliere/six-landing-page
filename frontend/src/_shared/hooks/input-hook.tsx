@@ -81,6 +81,16 @@ export const useInput = (
 	}, [input.value]);
 
 	useEffect(() => {
+		if (type === 'OLD_PASSWORD' && input.isTouched && input.value.trim().length > 0) {
+			if (additionalOnBlurHandler) {
+				additionalOnBlurHandler();
+			}
+		} else {
+			setInput((prev) => ({ ...prev, isTouched: false }));
+		}
+	}, [input.value]);
+
+	useEffect(() => {
 		if (type === 'NEW_PASSWORD' && !condition) {
 			input.value.match(
 				/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
@@ -97,14 +107,6 @@ export const useInput = (
 				: setInput((prev) => ({ ...prev, isValid: false }));
 		}
 	}, [input.value, compareTo]);
-
-	useEffect(() => {
-		if (type === 'OLD_PASSWORD' && input.isTouched) {
-			if (additionalOnBlurHandler) {
-				additionalOnBlurHandler();
-			}
-		}
-	}, [input.value]);
 
 	const inputOnBlurHandler = () => {
 		if (type !== 'CHECK_EMAIL') {

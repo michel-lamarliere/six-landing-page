@@ -47,6 +47,7 @@ const App: React.FC = () => {
 		let userData = JSON.parse(storedUserData);
 
 		if (isBefore(new Date(userData.expiration), new Date())) {
+			console.log('oui');
 			dispatch({ type: UserActionTypes.LOG_OUT });
 			navigate('/');
 			return;
