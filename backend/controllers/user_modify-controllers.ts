@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 const { ObjectId } = require('mongodb');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
-const { addSeconds, addMinutes, isBefore } = require('date-fns');
+const { addMinutes, isBefore } = require('date-fns');
 
 const database = require('../util/db-connect');
 const { createNodemailerTransporter } = require('../util/nodemailer-transporter');
@@ -16,12 +16,14 @@ const checkEmail: RequestHandler = async (req, res, next) => {
 	const user = await databaseConnect.findOne({ email: reqEmail });
 
 	if (!user) {
-		res.status(404).json({ error: 'Adresse mail non trouvée, veuillez créer un compte.' });
+		res.status(404).json({
+			error: 'Adresse mail non trouvée, veuillez créer un compte.',
+		});
 		return;
 	}
 
-	res.status(200).json({success: true});
-}
+	res.status(200).json({ success: true });
+};
 
 const changeName: RequestHandler = async (req, res, next) => {
 	const { id: reqIdStr, newName: reqNewName } = req.body;
@@ -105,10 +107,12 @@ const changePassword: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	const samePasswords = await bcrypt.compare(user.password,reqNewPassword);
+	const samePasswords = await bcrypt.compare(user.password, reqNewPassword);
 
 	if (samePasswords) {
-		res.json({error: "Le nouveau mot de passe ne peut pas être identique à l'ancien."})
+		res.json({
+			error: "Le nouveau mot de passe ne peut pas être identique à l'ancien.",
+		});
 		return;
 	}
 
@@ -131,7 +135,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
 		{
 			$set: {
 				password: hashedNewPassword,
-				'forgotPassword.code': null
+				'forgotPassword.code': null,
 			},
 		}
 	);
