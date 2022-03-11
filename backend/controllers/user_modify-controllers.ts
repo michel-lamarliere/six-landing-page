@@ -10,7 +10,7 @@ const { createNodemailerTransporter } = require('../util/nodemailer-transporter'
 const checkEmail: RequestHandler = async (req, res, next) => {
 	const reqEmail = req.params.email;
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ email: reqEmail });
@@ -29,7 +29,7 @@ const changeName: RequestHandler = async (req, res, next) => {
 	const { id: reqIdStr, newName: reqNewName } = req.body;
 	const reqId = new ObjectId(reqIdStr);
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
@@ -71,7 +71,7 @@ const comparePasswords: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
 	const reqPassword = req.params.password;
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
@@ -97,7 +97,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
 
 	const reqId = new ObjectId(reqIdStr);
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
@@ -107,6 +107,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
+	// COMPARES THE NEW PASSWORD TO THE OLD ONE
 	const samePasswords = await bcrypt.compare(user.password, reqNewPassword);
 
 	if (samePasswords) {
@@ -146,7 +147,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
 const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 	const reqEmail = req.params.email;
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ email: reqEmail });
@@ -158,7 +159,7 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	// CHECKS IF THE USER CONFIRMED IS ACCOUNT
+	// CHECKS IF THE USER CONFIRMED HIS ACCOUNT
 	if (!user.confirmation.confirmed) {
 		res.status(403).json({
 			error: "Cette adresse mail n'est pas confirmée. Envoi de mail impossible.",
@@ -223,7 +224,7 @@ const checkForgotPasswordAuth: RequestHandler = async (req, res, next) => {
 	const reqEmail = req.params.email;
 	const reqUniqueId = req.params.uniqueId;
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS AND
 	// IF THE UNIQUE ID MATCHES THE USER'S ONE FROM THE DB

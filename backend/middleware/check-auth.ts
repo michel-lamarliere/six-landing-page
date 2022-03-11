@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 import { RequestHandler } from 'express';
 
 const checkAuth: RequestHandler = (
-	// req: { headers: { authorization: string }; userData: { userId: {} } },
+	// req: { method: string; headers: { authorization: string }; userData: { id: {} } },
 	req: any,
 	res,
 	next
@@ -10,6 +10,7 @@ const checkAuth: RequestHandler = (
 	if (req.method === 'OPTIONS') {
 		return next();
 	}
+
 	if (!req.headers.authorization) {
 		res.status(403).json({ error: 'Pas de req.header.authorization' });
 		return;

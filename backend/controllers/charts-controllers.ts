@@ -1,16 +1,6 @@
 import { RequestHandler } from 'express';
 import { ObjectId } from 'mongodb';
-import {
-	addHours,
-	addMonths,
-	getMonth,
-	isBefore,
-	isAfter,
-	isSameMonth,
-	getDaysInMonth,
-	getYear,
-	isSameDay,
-} from 'date-fns';
+import { addHours, isBefore, getDaysInMonth, getYear, isSameDay } from 'date-fns';
 
 const database = require('../util/db-connect');
 
@@ -19,18 +9,26 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 	const reqYear: number = +req.params.year;
 	const reqTask = req.params.task;
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS
+	const thisYearsData = [];
+
 	const user = await databaseConnect.findOne({ _id: reqId });
 
 	if (!user) {
 		res.status(404).json({ fatal: true });
 	}
 
-	const firstDateOfYear = addHours(new Date(reqYear, 0, 1), 1);
-
-	const thisYearsData = [];
+	// const data = await databaseConnect.aggregate([
+	// 	{ $match: { _id: reqId } },
+	// 	{
+	// 		$group: { 'log.date': { $gt: new Date(2022, 0, 1) } },
+	// 	},
+	// ]);
+	// responseArray.push(data);
+	// console.log(data);
+	// console.log(responseArray);
 
 	// IF THE USER'S DATA MATCHES THE REQUESTED YEAR,
 	for (let i = 0; i < user.log.length; i++) {
@@ -58,7 +56,7 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 		allYearsMonths.push(i);
 	}
 
-	const finalData: any = [];
+	const finalData: {}[] = [];
 
 	for (let i = 0; i < allYearsMonths.length; i++) {
 		const loopingMonthLength = getDaysInMonth(

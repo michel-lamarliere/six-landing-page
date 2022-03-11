@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 export enum getMonthFnTypes {
 	VARIABLE = 'VARIABLE',
 	STATE = 'STATE',
@@ -32,12 +34,12 @@ export const useDatesFn = () => {
 
 	const getMonthFn = (
 		type: getMonthFnTypes.VARIABLE | getMonthFnTypes.STATE,
-		data: number,
-		setState?: (arg0: string) => void,
-		abreviation?: boolean
-	): any => {
+		month: number,
+		abreviation: boolean,
+		setState?: Dispatch<SetStateAction<string>>
+	): string | Dispatch<SetStateAction<string>> => {
 		if (type === getMonthFnTypes.STATE && setState) {
-			switch (data) {
+			switch (month) {
 				case 0:
 					!abreviation ? setState('Janvier') : setState('Janv.');
 					break;
@@ -81,7 +83,7 @@ export const useDatesFn = () => {
 			return setState;
 		} else {
 			let variable: string = '';
-			switch (data) {
+			switch (month) {
 				case 0:
 					!abreviation ? (variable = 'Janvier') : (variable = 'Janv.');
 					break;

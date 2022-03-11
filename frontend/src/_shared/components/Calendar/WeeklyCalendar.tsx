@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import {
 	addDays,
@@ -24,7 +24,7 @@ import { useDispatch } from 'react-redux';
 
 const WeeklyCalendar: React.FC<{
 	chosenDate: Date;
-	setChosenDate: any;
+	setChosenDate: Dispatch<SetStateAction<Date>>;
 	headerText: string;
 }> = (props) => {
 	const dispatch = useDispatch();
@@ -32,8 +32,8 @@ const WeeklyCalendar: React.FC<{
 
 	const [calendarDate, setCalendarDate] = useState(new Date());
 	const [calendarMonthStr, setCalendarMonthStr] = useState('');
-	const [weeks, setWeeks] = useState<any[]>([]);
-	const [weekNumbers, setWeekNumbers] = useState<any[]>([]);
+	const [weeks, setWeeks] = useState<Date[][]>([]);
+	const [weekNumbers, setWeekNumbers] = useState<number[]>([]);
 
 	const previousHandler = () => {
 		props.setChosenDate(addDays(props.chosenDate, -7));
@@ -69,10 +69,10 @@ const WeeklyCalendar: React.FC<{
 			-dayOfFirstDateOfMonth + 1
 		);
 
-		const weeks = [];
+		const weeks: Date[][] = [];
 		const weekNumbers = [];
 		for (let i = 0; i < weeksInMonth; i++) {
-			const week = [];
+			const week: Date[] = [];
 			for (let y = 0; y < 7; y++) {
 				week.push(addDays(firstDateOfFirstWeekOfMonth, y));
 			}
@@ -108,8 +108,8 @@ const WeeklyCalendar: React.FC<{
 		getMonthFn(
 			getMonthFnTypes.STATE,
 			calendarDate.getMonth(),
-			setCalendarMonthStr,
-			true
+			true,
+			setCalendarMonthStr
 		);
 		createWeekCalendar();
 	}, [calendarDate]);
@@ -165,7 +165,7 @@ const WeeklyCalendar: React.FC<{
 								disabled={!isBefore(new Date(week[0]), new Date())}
 								id={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
 							>
-								{week.map((day: any) => (
+								{week.map((day: Date) => (
 									<button
 										className={`${calendarClasses.day}
 										${!isBefore(day, new Date()) && calendarClasses['day--disabled']}

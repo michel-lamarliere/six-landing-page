@@ -30,9 +30,9 @@ const AnnualGraph: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
-	const [chosenYear, setChosenYear] = useState<any>(new Date());
+	const [chosenYear, setChosenYear] = useState<Date>(new Date());
 	const [chosenTask, setChosenTask] = useState('food');
-	const [data, setData] = useState<any>([]);
+	const [data, setData] = useState<{}[]>([]);
 
 	const previousHandler = () => {
 		setChosenYear(addYears(chosenYear, -1));
@@ -59,21 +59,26 @@ const AnnualGraph: React.FC = () => {
 		createChartData(responseData.array);
 	};
 
-	const createChartData = (array: any[]) => {
-		const data: any = [];
+	const createChartData = (
+		array: { future: number; empty: number; half: number; full: number }[]
+	) => {
+		const data: {}[] = [];
 
 		for (let i = 0; i < array.length; i++) {
-			let month = getMonthFn(getMonthFnTypes.VARIABLE, i, undefined, true);
+			let month = getMonthFn(getMonthFnTypes.VARIABLE, i, true);
+
 			const thisMonth = {
-				name: month.toUpperCase(),
+				name: month,
 				future: array[i].future,
 				empty: array[i].empty,
 				half: array[i].half,
 				full: array[i].full,
 			};
+
 			data.push(thisMonth);
 		}
 		setData(data);
+		console.log(data);
 		return data;
 	};
 
@@ -92,7 +97,7 @@ const AnnualGraph: React.FC = () => {
 					addMonths(chosenYear, -1),
 					new Date(2020, 1, 1)
 				)}
-				headerText={chosenYear.getFullYear()}
+				headerText={chosenYear.getFullYear().toString()}
 				nextHandler={nextHandler}
 				nextHandlerDisabled={!isBefore(addMonths(chosenYear, 1), new Date())}
 			/>

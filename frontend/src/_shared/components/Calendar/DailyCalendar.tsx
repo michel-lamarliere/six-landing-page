@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import {
 	addDays,
@@ -24,17 +24,15 @@ import { UIElementsActionTypes } from '../../store/ui-elements';
 
 const DailyCalendar: React.FC<{
 	chosenDate: Date;
-	setChosenDate: any;
+	setChosenDate: Dispatch<SetStateAction<Date>>;
 	headerText: string;
 }> = (props) => {
 	const dispatch = useDispatch();
 	const { getMonthFn } = useDatesFn();
 
-	const calendarButtonRef = React.createRef<HTMLDivElement>();
-
 	const [calendarDate, setCalendarDate] = useState(new Date());
-	const [emptyCalendarDays, setEmptyCalendarDays] = useState<any[]>([]);
-	const [calendarDays, setCalendarDays] = useState<any[]>([]);
+	const [emptyCalendarDays, setEmptyCalendarDays] = useState<number[]>([]);
+	const [calendarDays, setCalendarDays] = useState<number[]>([]);
 	const [calendarMonthStr, setCalendarMonthStr] = useState('');
 
 	const previousHandler = () => {
@@ -102,8 +100,8 @@ const DailyCalendar: React.FC<{
 		getMonthFn(
 			getMonthFnTypes.STATE,
 			calendarDate.getMonth(),
-			setCalendarMonthStr,
-			true
+			true,
+			setCalendarMonthStr
 		);
 		createDayCalendar();
 	}, [calendarDate]);
@@ -112,7 +110,6 @@ const DailyCalendar: React.FC<{
 		<>
 			<Calendar
 				calendar={calendarTypes.DAILY}
-				// ref={calendarButtonRef}
 				previousHandler={previousHandler}
 				previousHandlerDisabled={isBefore(
 					addDays(props.chosenDate, -1),
@@ -142,8 +139,8 @@ const DailyCalendar: React.FC<{
 				}
 			>
 				<div className={calendarClasses.calendar__calendar__days}>
-					{emptyCalendarDays.map(() => (
-						<div></div>
+					{emptyCalendarDays.map((index) => (
+						<div key={`emptyBox${index}`}></div>
 					))}
 					{calendarDays.map((day) => (
 						<button
@@ -152,7 +149,7 @@ const DailyCalendar: React.FC<{
 									new Date(
 										calendarDate.getFullYear(),
 										getMonth(calendarDate),
-										day < 10 ? '0' + day : day
+										day
 									),
 									new Date()
 								) && calendarClasses['day--today']
@@ -162,7 +159,7 @@ const DailyCalendar: React.FC<{
 									new Date(
 										calendarDate.getFullYear(),
 										getMonth(calendarDate),
-										day < 10 ? '0' + day : day
+										day
 									)
 								) && calendarClasses['day--chosen-date']
 							} ${
@@ -172,7 +169,7 @@ const DailyCalendar: React.FC<{
 										getMonth(calendarDate) < 10
 											? 0 + getMonth(calendarDate)
 											: getMonth(calendarDate),
-										day < 10 ? '0' + day : day
+										day
 									),
 									new Date()
 								) && calendarClasses['day--disabled']
@@ -184,12 +181,17 @@ const DailyCalendar: React.FC<{
 										getMonth(calendarDate) < 10
 											? 0 + getMonth(calendarDate)
 											: getMonth(calendarDate),
-										day < 10 ? '0' + day : day
+										day
 									),
 									new Date()
 								)
 							}
 							id={`${calendarDate.getFullYear()}-${
+								getMonth(calendarDate) < 10
+									? '0' + getMonth(calendarDate)
+									: getMonth(calendarDate)
+							}-${day < 10 ? '0' + day : day}`}
+							key={`${calendarDate.getFullYear()}-${
 								getMonth(calendarDate) < 10
 									? '0' + getMonth(calendarDate)
 									: getMonth(calendarDate)

@@ -22,10 +22,10 @@ export enum calendarTypes {
 }
 
 type CommonProps = {
-	previousHandler: any;
+	previousHandler: () => void;
 	previousHandlerDisabled: boolean;
 	headerText: string;
-	nextHandler: any;
+	nextHandler: () => void;
 	nextHandlerDisabled: boolean;
 };
 
@@ -126,8 +126,8 @@ const Calendar: React.FC<Props> = (props) => {
 								/>
 							</button>
 						)}
-						{(props.calendar ===
-							calendarTypes.DAILY || props.calendar === calendarTypes.WEEKLY) &&
+						{(props.calendar === calendarTypes.DAILY ||
+							props.calendar === calendarTypes.WEEKLY) &&
 							!props.calendarPreviousMonthHandlerDisabled && (
 								<button
 									className={`${classes.calendar__header__button} ${classes['calendar__header__button--left']}`}
@@ -139,8 +139,8 @@ const Calendar: React.FC<Props> = (props) => {
 						<div className={classes.calendar__header__text}>
 							{props.calendarText}
 						</div>
-						{(props.calendar ===
-							calendarTypes.DAILY || props.calendar === calendarTypes.WEEKLY) &&
+						{(props.calendar === calendarTypes.DAILY ||
+							props.calendar === calendarTypes.WEEKLY) &&
 							!props.calendarNextMonthHandlerDisabled && (
 								<button
 									className={`${classes.calendar__header__button} ${classes['calendar__header__button--right']}`}

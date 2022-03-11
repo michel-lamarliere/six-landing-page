@@ -1,6 +1,6 @@
 interface State {
 	token: null | string;
-	expiration: any;
+	expiration: null | Date;
 	id: null | string;
 	name: null | string;
 	email: null | string;

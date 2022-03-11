@@ -11,7 +11,7 @@ interface Props {
 	isLoading: boolean;
 	array: {
 		date: Date;
-		six: any;
+		six: {};
 	}[];
 	onClick: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 }
@@ -19,9 +19,9 @@ interface Props {
 const WeekViewButtons: React.FC<Props> = (props) => {
 	return (
 		<div className={classes.wrapper}>
-			{props.array.map((item: { date: Date; six: number }) => (
+			{props.array.map((item: { date: Date; six: {} }) => (
 				<React.Fragment key={`${format(new Date(item.date), 'yyyy-MM-dd')}_div`}>
-					{Object.entries(item.six).map((item2) => (
+					{Object.entries(item.six).map((item2: any[]) => (
 						<DataButton
 							id={`${format(new Date(item.date), 'yyyy-MM-dd')}_${
 								item2[0]

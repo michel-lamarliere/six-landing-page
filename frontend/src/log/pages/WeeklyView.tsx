@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { addDays, getISOWeek, startOfWeek, format, getYear, isSameDay } from 'date-fns';
+import { addDays, getISOWeek, startOfWeek, format, getYear } from 'date-fns';
 
 import { RootState } from '../../_shared/store/store';
 import { ErrorPopupActionTypes } from '../../_shared/store/error';
@@ -21,7 +21,7 @@ const WeekView: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
-	const [mappingArray, setMappingArray] = useState<any[]>([]);
+	const [mappingArray, setMappingArray] = useState<{ date: Date; six: {} }[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	// CALENDAR
@@ -69,7 +69,9 @@ const WeekView: React.FC = () => {
 	useEffect(() => {
 		if (userState.id) {
 			getWeekData(userState.id, formattedFirstOfWeek);
-			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), setMonthStr);
+			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), false, setMonthStr);
+			console.log(mappingArray);
+			console.log(typeof mappingArray[1]);
 		}
 	}, [userState.id, chosenDate]);
 

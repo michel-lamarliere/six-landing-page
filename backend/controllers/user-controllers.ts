@@ -11,7 +11,7 @@ const { emailConfirmationEmail } = require('../util/email-confirmation');
 const signUp: RequestHandler = async (req, res, next) => {
 	const { name: reqName, email: reqEmail, password: reqPassword } = await req.body;
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ email: reqEmail });
@@ -72,7 +72,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 		confirmation: {
 			confirmed: false,
 			code: hashedConfirmationCode,
-			nextEmail: null,
+			nextEmail: addMinutes(new Date(), 5),
 		},
 		log: [],
 	};
@@ -91,7 +91,9 @@ const signUp: RequestHandler = async (req, res, next) => {
 	// CREATES THE TOKEN
 	let token = await jwt.sign(
 		{ id: findingNewUser._id, email: findingNewUser.email },
-		'je_mange_du_pain_blanc_enola',
+		process.env.JWT_SECRET,
+
+		// 'je_mange_du_pain_blanc_enola',
 		{ expiresIn: '1h' }
 	);
 
@@ -111,7 +113,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 const signIn: RequestHandler = async (req, res, next) => {
 	const { email: reqEmail, password: reqPassword } = req.body;
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	const user = await databaseConnect.findOne({ email: reqEmail });
 
@@ -134,7 +136,7 @@ const signIn: RequestHandler = async (req, res, next) => {
 	// CREATES A TOKEN
 	const token = await jwt.sign(
 		{ userId: user._id, email: user.email },
-		'je_mange_du_pain_blanc_enola',
+		process.env.JWT_SECRET,
 		{ expiresIn: '1h' }
 	);
 
@@ -151,7 +153,7 @@ const confirmEmailAddress: RequestHandler = async (req, res, next) => {
 	const email = req.body.email;
 	const code = req.body.code;
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS AND IF THE CODE MATCHES THE DB'S CODE
 	const user = await databaseConnect.findOne({
@@ -181,7 +183,7 @@ const confirmEmailAddress: RequestHandler = async (req, res, next) => {
 const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 	const id = new ObjectId(req.body.id);
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: id });
@@ -208,7 +210,7 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 
 		// IF HE DID
 		if (fiveMinutesBetweenSends) {
-			res.status(403).json({
+			res.status(405).json({
 				error: "Veuillez attendre 5 minutes entre chaque demande d'envoi de mail de confirmation.",
 			});
 			return;
@@ -243,7 +245,7 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 const refreshData: RequestHandler = async (req, res, next) => {
 	const id = new ObjectId(req.params.userId);
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: id });

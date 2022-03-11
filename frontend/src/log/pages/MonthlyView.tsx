@@ -24,7 +24,7 @@ const MonthlyView: React.FC = () => {
 	// CALENDAR
 	const [chosenDate, setChosenDate] = useState<Date>(startOfMonth(new Date()));
 	const [monthStr, setMonthStr] = useState('');
-	const [monthlyArray, setMonthlyArray] = useState<any[]>([]);
+	const [monthlyArray, setMonthlyArray] = useState<[]>([]);
 	const [chosenTask, setChosenTask] = useState('food');
 	const [emptyBoxes, setEmptyBoxes] = useState<0[]>([]);
 
@@ -84,7 +84,8 @@ const MonthlyView: React.FC = () => {
 	useEffect(() => {
 		if (userState.id) {
 			getMonthlyData();
-			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), setMonthStr);
+			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), false, setMonthStr);
+			console.log(monthlyArray);
 		}
 	}, [chosenDate, chosenTask]);
 
@@ -110,7 +111,7 @@ const MonthlyView: React.FC = () => {
 				{emptyBoxes.length > 0 &&
 					emptyBoxes.map((item) => <div key={item + Math.random()}></div>)}
 				{monthlyArray &&
-					monthlyArray.map((item: { date: number; level: 0 }, index) => (
+					monthlyArray.map((item: { date: string; level: 0 }, index) => (
 						<div
 							className={classes.calendar__button}
 							key={`${format(
@@ -119,7 +120,6 @@ const MonthlyView: React.FC = () => {
 							)}_${chosenTask}_div`}
 						>
 							<div>{index + 1}</div>
-
 							<DataButton
 								id={`${format(
 									new Date(item.date),

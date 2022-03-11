@@ -69,17 +69,17 @@ const Sidebar: React.FC = () => {
 	const logLinks = [
 		{
 			text: 'Jour',
-			url: '/log/daily',
+			url: '/journal/quotidien',
 			key: 'log-daily-key',
 		},
 		{
 			text: 'Semaine',
-			url: '/log/weekly',
+			url: '/journal/hebdomadaire',
 			key: 'log-weekly-key',
 		},
 		{
 			text: 'Mois',
-			url: '/log/monthly',
+			url: '/journal/mensuel',
 			key: 'log-monthly-key',
 		},
 	];
@@ -88,7 +88,7 @@ const Sidebar: React.FC = () => {
 		<>
 			<div className={classes.wrapper}>
 				<div className={classes.user}>
-					<Link to='/profile' className={classes['user__name-img']}>
+					<Link to='/profil' className={classes['user__name-img']}>
 						<img src={userIcon} alt='Icône Utilisateur' />
 						<div>{userState.name}</div>
 					</Link>

@@ -117,7 +117,14 @@ const Header: React.FC = () => {
 		});
 	};
 
-	const logInUser = (responseData: any) => {
+	const logInUser = (responseData: {
+		error: string;
+		token: string;
+		id: string;
+		name: string;
+		email: string;
+		confirmedEmail: string;
+	}) => {
 		if (responseData.error) {
 			setResponseMessage(responseData.error);
 			return;
@@ -152,7 +159,7 @@ const Header: React.FC = () => {
 			dispatch({ type: EmailConfirmationActionTypes.SHOW });
 		}
 
-		navigate('/log/daily');
+		navigate('/journal/quotidien');
 	};
 
 	const signupFormHandler = async (event: FormEvent) => {
@@ -263,7 +270,6 @@ const Header: React.FC = () => {
 
 	return (
 		<div className={classes.wrapper}>
-			<Link to='/users' />
 			<h1 className={classes.title}>
 				{loginMode ? 'Heureux de vous revoir !' : 'Bienvenue !'}
 			</h1>

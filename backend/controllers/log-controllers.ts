@@ -1,13 +1,6 @@
 import { RequestHandler } from 'express';
 const { ObjectId } = require('mongodb');
-const {
-	addDays,
-	addHours,
-	isAfter,
-	parseISO,
-	getDaysInMonth,
-	isSameDay,
-} = require('date-fns');
+const { addDays, isAfter, getDaysInMonth, isSameDay } = require('date-fns');
 const database = require('../util/db-connect');
 
 const addData: RequestHandler = async (req, res, next) => {
@@ -20,7 +13,7 @@ const addData: RequestHandler = async (req, res, next) => {
 
 	const reqDate = new Date(reqDateStr);
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	const reqId = ObjectId(reqIdStr);
 
@@ -98,88 +91,54 @@ const addData: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	let foundSameDate = false;
-
-	// IF THE LOG IS EMPTY
-	if (user.log.length === 0) {
-		databaseConnect.updateOne(filter, {
-			$set: {
-				log: [
+	await databaseConnect
+		.findOne({ _id: reqId, 'log.date': reqDate })
+		.then((result: {}) => {
+			if (result) {
+				databaseConnect.updateOne(
+					{ _id: reqId, 'log.date': reqDate },
 					{
-						date: reqDate,
-						six: {
-							food: 0,
-							sleep: 0,
-							sport: 0,
-							relaxation: 0,
-							work: 0,
-							social: 0,
-							[reqTask]: reqLevelOfCompletion,
+						$set: {
+							[`log.$.six.${reqTask}`]: reqLevelOfCompletion,
 						},
-					},
-				],
-			},
-		});
-		// IF THE LOG ISN'T EMPTY, TRIES TO FIND THE CORRECT DATE
-	} else if (user.log.length > 0) {
-		for (let i = 0; i < user.log.length; i++) {
-			if (isSameDay(user.log[i].date, reqDate)) {
-				foundSameDate = true;
-
-				for (let task in user.log[i].six) {
-					if (task === reqTask) {
-						databaseConnect.updateOne(filter, {
-							$set: {
-								[`log.${i}.six.${reqTask}`]: reqLevelOfCompletion,
-							},
-						});
-					} else {
-						databaseConnect.updateOne(filter, {
-							$set: {
-								[`log.${i}.six.${reqTask}`]: reqLevelOfCompletion,
-							},
-						});
 					}
-				}
-			}
-		}
-		// IF THE CORRECT DATE DOESN'T EXIST
-		if (!foundSameDate) {
-			databaseConnect.updateOne(filter, {
-				$set: {
-					[`log.${user.log.length}`]: {
-						date: reqDate,
-						six: {
-							food: 0,
-							sleep: 0,
-							sport: 0,
-							relaxation: 0,
-							work: 0,
-							social: 0,
-							[reqTask]: reqLevelOfCompletion,
+				);
+			} else {
+				databaseConnect.updateOne(
+					{ _id: reqId },
+					{
+						$push: {
+							log: {
+								date: reqDate,
+								six: {
+									food: 0,
+									sleep: 0,
+									sport: 0,
+									relaxation: 0,
+									work: 0,
+									social: 0,
+									[reqTask]: reqLevelOfCompletion,
+								},
+							},
 						},
-					},
-				},
+					}
+				);
+			}
+			console.log('added data');
+			res.status(201).json({ success: true });
+		})
+		.catch((err: any) => {
+			res.status(400).json({
+				message: "Erreur lors de l'enregistrement des données.",
 			});
-		}
-	}
-
-	const response = databaseConnect.findOne(filter);
-
-	if (!response) {
-		res.status(404).json({ fatal: true });
-		return;
-	}
-
-	console.log('added data');
-	res.status(201).json({ success: true });
+		});
 };
 
 const getDaily: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
 	const reqDate = new Date(req.params.date);
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
@@ -224,7 +183,7 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
 	const reqStartDate = new Date(req.params.startofweek);
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
@@ -285,7 +244,7 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 	const reqStartOfMonthDate = new Date(req.params.date);
 	const reqTask = req.params.task;
 
-	const databaseConnect = await database.getDb('six-dev').collection('test');
+	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
@@ -297,7 +256,7 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 
 	const numberOfDaysInMonth: number = getDaysInMonth(reqStartOfMonthDate);
 
-	const responseArray: any[] = [];
+	const responseArray: {}[] = [];
 
 	for (let i = 0; i < numberOfDaysInMonth; i++) {
 		let loopingDate = addDays(reqStartOfMonthDate, i);

@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 
 const MonthlyCalendar: React.FC<{
 	chosenDate: Date;
-	setChosenDate: any;
+	setChosenDate: Dispatch<SetStateAction<Date>>;
 	chosenTask: string;
 	setChosenTask: Dispatch<SetStateAction<string>>;
 	headerText: string;

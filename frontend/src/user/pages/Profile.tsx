@@ -100,7 +100,7 @@ const Profile: React.FC = () => {
 					</>
 				)}
 			</div>
-			<Link to='/recap' className={classes.recap}>
+			<Link to='/graphique' className={classes.recap}>
 				Recapitulatif de l'Année
 			</Link>
 			<div className={classes['edit-profile']}>

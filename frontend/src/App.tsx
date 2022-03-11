@@ -123,19 +123,19 @@ const App: React.FC = () => {
 				{userData && (
 					<>
 						<Route path='/' element={<DailyView />} />
-						<Route path='/log/daily' element={<DailyView />} />
-						<Route path='/log/weekly' element={<WeeklyView />} />
-						<Route path='/log/monthly' element={<MonthlyView />} />
-						<Route path='/recap' element={<AnnualChart />} />
-						<Route path='/profile' element={<Profile />} />
+						<Route path='/journal/quotidien' element={<DailyView />} />
+						<Route path='/journal/hebdomadaire' element={<WeeklyView />} />
+						<Route path='/journal/mensuel' element={<MonthlyView />} />
+						<Route path='/graphique' element={<AnnualChart />} />
+						<Route path='/profil' element={<Profile />} />
 					</>
 				)}
 				<Route
-					path='/profile/confirm/:email/:code'
+					path='/profil/confirmation/:email/:code'
 					element={<ConfirmEmailAddress />}
 				/>
 				<Route
-					path='/modify/password/:email/:uniqueId'
+					path='/modifier/motdepasse/:email/:uniqueId'
 					element={<ForgotPasswordForm />}
 				/>
 				<Route path='*' element={<Error404 />} />
