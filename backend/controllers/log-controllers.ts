@@ -18,11 +18,7 @@ const addData: RequestHandler = async (req, res, next) => {
 	const reqId = ObjectId(reqIdStr);
 
 	// CHECKS IF THE USER EXISTS
-	const filter = {
-		_id: reqId,
-	};
-
-	const user = await databaseConnect.findOne(filter);
+	const user = await databaseConnect.findOne({ _id: reqId });
 
 	if (!user) {
 		res.status(404).json({ fatal: true });
@@ -51,11 +47,9 @@ const addData: RequestHandler = async (req, res, next) => {
 
 	// CHECKS IF DATE IS IN THE FUTURE
 	if (isAfter(reqDate, new Date())) {
-		res.status(400).json({
+		return res.status(400).json({
 			error: "Impossible d'enregistrer des données dont la date est dans le futur.",
 		});
-
-		return;
 	} else inputsAreValid.date.pastOrPresent = true;
 
 	// VALIDATES IF THE DATE IS IN THE CORRECT FORMAT AND NOT IN THE FUTURE
@@ -85,10 +79,9 @@ const addData: RequestHandler = async (req, res, next) => {
 	}
 
 	if (!inputsAreValid.all) {
-		res.status(400).json({
+		return res.status(400).json({
 			error: "Erreur lors de l'enregistrement de données, certaines données sont invalides.",
 		});
-		return;
 	}
 
 	await databaseConnect
@@ -127,7 +120,7 @@ const addData: RequestHandler = async (req, res, next) => {
 			console.log('added data');
 			res.status(201).json({ success: true });
 		})
-		.catch((err: any) => {
+		.catch((err: {}) => {
 			res.status(400).json({
 				message: "Erreur lors de l'enregistrement des données.",
 			});
@@ -148,35 +141,82 @@ const getDaily: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	let foundDate = false;
-
-	// GETS THE DATA FOR THE REQUESTED DATE AND SENDS IT
-	for (let i = 0; i < user.log.length; i++) {
-		if (isSameDay(reqDate, user.log[i].date)) {
-			console.log('get daily');
-			const dateData = user.log[i];
-			res.status(200).json(dateData);
-			foundDate = true;
-		}
-	}
-
 	// IF THE REQUESTED DATE DOESN'T EXIST
-	if (!foundDate) {
-		const emptyData = {
-			date: reqDate,
-			six: {
-				food: 0,
-				sleep: 0,
-				sport: 0,
-				relaxation: 0,
-				work: 0,
-				social: 0,
-			},
-		};
+	await databaseConnect.findOne(
+		{ _id: reqId, 'log.date': reqDate },
+		(error: {}, result: {}) => {
+			if (error) {
+				return res.status(400).json({
+					message: 'Erreur lors de la récupération de données.',
+				});
+			}
 
-		res.status(202).json(emptyData);
-		return;
-	}
+			if (!result) {
+				return res.status(202).json({
+					data: {
+						food: 0,
+						sleep: 0,
+						sport: 0,
+						relaxation: 0,
+						work: 0,
+						social: 0,
+					},
+				});
+			}
+		}
+	);
+
+	await databaseConnect
+		.aggregate([
+			{
+				$match: {
+					_id: reqId,
+					'log.date': reqDate,
+				},
+			},
+			// { $project: { _id: 0, data: { $getField: 'log.$' } } },
+			{ $project: { _id: 0, 'log.$.six': 1 } },
+			{ filter: 'log.date' },
+		])
+		.forEach((doc: {}) => {
+			console.log(doc);
+			return res.status(200).json(doc);
+		});
+	// .project();
+	// .forEach((doc: any) => {
+	// 	ouais.push(doc.log);
+	// });
+
+	// console.log(essai);
+	// console.log(ouais);
+
+	// if (!foundDate) {
+	// 	const emptyData = {
+	// 		date: reqDate,
+	// 		six: {
+	// 			food: 0,
+	// 			sleep: 0,
+	// 			sport: 0,
+	// 			relaxation: 0,
+	// 			work: 0,
+	// 			social: 0,
+	// 		},
+	// 	};
+
+	// 	res.status(202).json(emptyData);
+
+	// 	// GETS THE DATA FOR THE REQUESTED DATE AND SENDS IT
+	// 	for (let i = 0; i < user.log.length; i++) {
+	// 		if (isSameDay(reqDate, user.log[i].date)) {
+	// 			console.log('get daily');
+	// 			const dateData = user.log[i];
+	// 			res.status(200).json(dateData);
+	// 			foundDate = true;
+	// 		}
+	// 	}
+
+	// 	return;
+	// }
 };
 
 const getWeekly: RequestHandler = async (req, res, next) => {

@@ -87,6 +87,7 @@ const App: React.FC = () => {
 				type: ErrorPopupActionTypes.SET_ERROR,
 				message: 'Votre session a expiré, veuillez vous reconnecter.',
 			});
+			dispatch({ type: EmailConfirmationActionTypes.HIDE });
 
 			dispatch({ type: UserActionTypes.LOG_OUT });
 

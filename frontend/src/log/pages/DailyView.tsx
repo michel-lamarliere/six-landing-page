@@ -21,7 +21,8 @@ const DailyView: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
-	const [dailyData, setDailyData] = useState<{ six: {} }>();
+	const [dailyData, setDailyData] = useState<{}>();
+	// const [dailyData, setDailyData] = useState<{ six: {} }>();
 
 	// CALENDAR
 	const [isLoading, setIsLoading] = useState(true);
@@ -64,7 +65,7 @@ const DailyView: React.FC = () => {
 			return;
 		}
 
-		setDailyData(responseData);
+		setDailyData(responseData.data);
 		setIsLoading(false);
 	};
 
@@ -73,7 +74,6 @@ const DailyView: React.FC = () => {
 			getDailyData(userState.id, chosenDate.toISOString().slice(0, 10));
 			getDayFn(getDay(chosenDate), setDayStr);
 			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), false, setMonthStr);
-			console.log(dailyData);
 		}
 	}, [chosenDate]);
 
@@ -88,13 +88,14 @@ const DailyView: React.FC = () => {
 			/>
 			{!isLoading &&
 				dailyData &&
-				Object.entries(dailyData.six).map((item: any[]) => (
+				// console.log(dailyData) &&
+				Object.entries(dailyData).map((item: any[]) => (
 					<div
 						className={classes.task}
 						key={`${format(chosenDate, 'yyyy-MM-dd')}_${item[0]}_task`}
 					>
+						<>{console.log(item)}</>
 						<div>{item[0]}</div>
-						{console.log(item)}
 						<DataButton
 							id={`${format(chosenDate, 'yyyy-MM-dd')}_${item[0]}`}
 							onClick={addData}

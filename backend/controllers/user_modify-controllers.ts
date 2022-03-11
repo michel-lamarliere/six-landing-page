@@ -107,10 +107,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-<<<<<<< HEAD
 	// COMPARES THE NEW PASSWORD TO THE OLD ONE
-=======
->>>>>>> 5d04898eab352cd2805621f875a3f53affdaef51
 	const samePasswords = await bcrypt.compare(user.password, reqNewPassword);
 
 	if (samePasswords) {
