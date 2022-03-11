@@ -65,7 +65,8 @@ const DailyView: React.FC = () => {
 			return;
 		}
 
-		setDailyData(responseData.data);
+		console.log(responseData);
+		setDailyData(responseData);
 		setIsLoading(false);
 	};
 

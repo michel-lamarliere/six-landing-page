@@ -129,7 +129,7 @@ const addData: RequestHandler = async (req, res, next) => {
 
 const getDaily: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
-	const reqDate = new Date(req.params.date);
+	const reqDate: Date = new Date(req.params.date);
 
 	const databaseConnect = await database.getDb('six-dev').collection('users');
 
@@ -153,14 +153,12 @@ const getDaily: RequestHandler = async (req, res, next) => {
 
 			if (!result) {
 				return res.status(202).json({
-					data: {
-						food: 0,
-						sleep: 0,
-						sport: 0,
-						relaxation: 0,
-						work: 0,
-						social: 0,
-					},
+					food: 0,
+					sleep: 0,
+					sport: 0,
+					relaxation: 0,
+					work: 0,
+					social: 0,
 				});
 			}
 		}
@@ -171,52 +169,28 @@ const getDaily: RequestHandler = async (req, res, next) => {
 			{
 				$match: {
 					_id: reqId,
+				},
+			},
+			{
+				$unwind: {
+					path: '$log',
+				},
+			},
+			{
+				$match: {
 					'log.date': reqDate,
 				},
 			},
-			// { $project: { _id: 0, data: { $getField: 'log.$' } } },
-			{ $project: { _id: 0, 'log.$.six': 1 } },
-			{ filter: 'log.date' },
+			{
+				$project: {
+					_id: 0,
+					'log.six': 1,
+				},
+			},
 		])
-		.forEach((doc: {}) => {
-			console.log(doc);
-			return res.status(200).json(doc);
+		.forEach((doc: { log: { six: {} } }) => {
+			return res.status(200).json(doc.log.six);
 		});
-	// .project();
-	// .forEach((doc: any) => {
-	// 	ouais.push(doc.log);
-	// });
-
-	// console.log(essai);
-	// console.log(ouais);
-
-	// if (!foundDate) {
-	// 	const emptyData = {
-	// 		date: reqDate,
-	// 		six: {
-	// 			food: 0,
-	// 			sleep: 0,
-	// 			sport: 0,
-	// 			relaxation: 0,
-	// 			work: 0,
-	// 			social: 0,
-	// 		},
-	// 	};
-
-	// 	res.status(202).json(emptyData);
-
-	// 	// GETS THE DATA FOR THE REQUESTED DATE AND SENDS IT
-	// 	for (let i = 0; i < user.log.length; i++) {
-	// 		if (isSameDay(reqDate, user.log[i].date)) {
-	// 			console.log('get daily');
-	// 			const dateData = user.log[i];
-	// 			res.status(200).json(dateData);
-	// 			foundDate = true;
-	// 		}
-	// 	}
-
-	// 	return;
-	// }
 };
 
 const getWeekly: RequestHandler = async (req, res, next) => {
