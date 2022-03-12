@@ -1,3 +1,4 @@
+import { getDay, isBefore, lastDayOfMonth } from 'date-fns';
 import { RequestHandler } from 'express';
 const { ObjectId } = require('mongodb');
 const { addDays, isAfter, getDaysInMonth, isSameDay } = require('date-fns');
@@ -207,55 +208,83 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	// GETS THE WHOLE WEEK'S DATES
-	const getDates = (startingDate: Date) => {
-		let dateArray = [];
-
+	// GET ALL DATES OF THE REQUESTED WEEK
+	const getDatesArray = (startingDate: Date) => {
+		const array = [];
 		for (let i = 0; i < 7; i++) {
-			let date = addDays(startingDate, i);
-			dateArray.push(date);
+			array.push(addDays(startingDate, i));
 		}
 
-		return dateArray;
+		return array;
 	};
 
-	const datesArray = getDates(reqStartDate);
+	const datesArray = getDatesArray(reqStartDate);
 
-	let resultsArray = [];
+	const matchedDatesArray: { date: Date; six: {} }[] = [];
 
-	// CHECKS IF THERE'S DATA FOR THE WEEK'S DATES
-	for (let i = 0; i < datesArray.length; i++) {
-		let foundDate = false;
-		for (let y = 0; y < user.log.length; y++) {
-			// IF THE DATE MATCHES, IT PUSHES THE DATA
-			if (isSameDay(datesArray[i], user.log[y].date)) {
-				foundDate = true;
-				resultsArray.push(user.log[y]);
+	await databaseConnect
+		.aggregate([
+			{
+				$match: {
+					_id: reqId,
+				},
+			},
+			{
+				$unwind: {
+					path: '$log',
+				},
+			},
+			{ $sort: { 'log.date': 1 } },
+			{
+				$match: {
+					$and: [
+						{
+							'log.date': {
+								$gte: reqStartDate,
+							},
+						},
+						{
+							'log.date': {
+								$lte: datesArray[6],
+							},
+						},
+					],
+				},
+			},
+			{ $project: { _id: 0, data: '$log' } },
+		])
+		.forEach((doc: any) => {
+			matchedDatesArray.push(doc.data);
+		});
+
+	for (let date of datesArray) {
+		let found = false;
+		for (let i = 0; i < matchedDatesArray.length; i++) {
+			if (isSameDay(date, matchedDatesArray[i].date)) {
+				found = true;
 			}
 		}
-		if (!foundDate) {
-			// IF THE DATE DOESN'T MATCH, IT PUSHES EMPTY DATA
-			resultsArray.push({
-				date: datesArray[i],
-				six: {
-					food: 0,
-					sleep: 0,
-					sport: 0,
-					relaxation: 0,
-					work: 0,
-					social: 0,
-				},
+
+		if (!found) {
+			matchedDatesArray.push({
+				date: date,
+				six: { food: 0, sleep: 0, sport: 0, relaxation: 0, work: 0, social: 0 },
 			});
 		}
 	}
 
-	console.log('get weekly');
-	res.status(200).json(resultsArray);
+	const sortArray = (a: { date: Date }, b: { date: Date }) => {
+		return isAfter(a.date, b.date) ? 1 : -1;
+	};
+
+	matchedDatesArray.sort(sortArray);
+
+	res.status(200).json(matchedDatesArray);
 };
 
 const getMonthly: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
-	const reqStartOfMonthDate = new Date(req.params.date);
+	const reqFirstDateOfMonth = new Date(req.params.date);
 	const reqTask = req.params.task;
 
 	const databaseConnect = await database.getDb('six-dev').collection('users');
@@ -268,33 +297,71 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	const numberOfDaysInMonth: number = getDaysInMonth(reqStartOfMonthDate);
+	const numberOfDaysInMonth: number = getDaysInMonth(reqFirstDateOfMonth);
+	const lastDateOfMonth = lastDayOfMonth(reqFirstDateOfMonth);
 
-	const responseArray: {}[] = [];
+	let matchedDatesArray: { date: Date; level: number }[] = [];
+
+	await databaseConnect
+		.aggregate([
+			{
+				$match: {
+					_id: reqId,
+				},
+			},
+			{
+				$unwind: {
+					path: '$log',
+				},
+			},
+			{ $sort: { 'log.date': 1 } },
+			{
+				$match: {
+					$and: [
+						{
+							'log.date': {
+								$gte: reqFirstDateOfMonth,
+							},
+						},
+						{
+							'log.date': {
+								$lte: lastDateOfMonth,
+							},
+						},
+					],
+				},
+			},
+			{ $project: { _id: 0, date: '$log.date', level: `$log.six.${reqTask}` } },
+		])
+		.forEach((doc: any) => {
+			matchedDatesArray.push(doc);
+		});
 
 	for (let i = 0; i < numberOfDaysInMonth; i++) {
-		let loopingDate = addDays(reqStartOfMonthDate, i);
-		let sameDate = false;
-
-		for (let y = 0; y < user.log.length; y++) {
-			if (isSameDay(loopingDate, user.log[y].date)) {
-				sameDate = true;
-				responseArray.push({
-					date: loopingDate,
-					level: user.log[y].six[reqTask],
-				});
+		let loopingDate = addDays(reqFirstDateOfMonth, i);
+		let found = false;
+		for (let i = 0; i < matchedDatesArray.length; i++) {
+			if (isSameDay(loopingDate, matchedDatesArray[i].date)) {
+				found = true;
 			}
 		}
-		if (!sameDate) {
-			responseArray.push({
+
+		if (!found) {
+			matchedDatesArray.push({
 				date: loopingDate,
 				level: 0,
 			});
 		}
 	}
 
+	const sortArray = (a: { date: Date }, b: { date: Date }) => {
+		return isAfter(a.date, b.date) ? 1 : -1;
+	};
+
+	matchedDatesArray.sort(sortArray);
+
 	console.log('get monthly');
-	res.status(200).json(responseArray);
+	res.status(200).json(matchedDatesArray);
 };
 
 exports.addData = addData;

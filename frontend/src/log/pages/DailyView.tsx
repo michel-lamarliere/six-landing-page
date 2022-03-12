@@ -33,7 +33,6 @@ const DailyView: React.FC = () => {
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const dateAndTaskStr = (event.target as HTMLElement).id;
 		const prevLevel = parseInt((event.target as HTMLButtonElement).value);
-		console.log((event.target as HTMLElement).id);
 
 		if (userState.id) {
 			const responseData = await sendData(userState.id, dateAndTaskStr, prevLevel);
@@ -65,7 +64,6 @@ const DailyView: React.FC = () => {
 			return;
 		}
 
-		console.log(responseData);
 		setDailyData(responseData);
 		setIsLoading(false);
 	};
@@ -89,13 +87,11 @@ const DailyView: React.FC = () => {
 			/>
 			{!isLoading &&
 				dailyData &&
-				// console.log(dailyData) &&
 				Object.entries(dailyData).map((item: any[]) => (
 					<div
 						className={classes.task}
 						key={`${format(chosenDate, 'yyyy-MM-dd')}_${item[0]}_task`}
 					>
-						<>{console.log(item)}</>
 						<div>{item[0]}</div>
 						<DataButton
 							id={`${format(chosenDate, 'yyyy-MM-dd')}_${item[0]}`}

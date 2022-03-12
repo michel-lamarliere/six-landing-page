@@ -39,21 +39,16 @@ const Header: React.FC = () => {
 			null
 		);
 
-		console.log(responseData);
-
 		if (!responseData) {
-			console.log(responseData);
 			return;
 		}
 
 		if (responseData.error) {
-			console.log('no');
 			setResponseMessage(responseData.message);
 			setCheckEmailInput((prev) => ({ ...prev, isValid: false }));
 		}
 
 		if (responseData.success) {
-			console.log('yes');
 			setCheckEmailInput((prev) => ({ ...prev, isValid: true }));
 		}
 	};

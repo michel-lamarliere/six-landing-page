@@ -49,7 +49,6 @@ const ForgotPasswordForm: React.FC = () => {
 		);
 
 		if (responseData.error) {
-			console.log('oui');
 			dispatch({
 				type: ErrorPopupActionTypes.SET_ERROR,
 				message: 'Chemin interdit.',

@@ -14,7 +14,7 @@ module.exports = {
 			}
 
 			dbConnection = db.db('development');
-			console.log('Connected to the six development database!');
+			console.log(`Connected to the ${process.env.DATABASE_NAME} database!`);
 			return callback();
 		});
 	},

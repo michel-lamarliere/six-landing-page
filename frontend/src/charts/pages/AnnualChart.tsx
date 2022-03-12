@@ -78,7 +78,6 @@ const AnnualGraph: React.FC = () => {
 			data.push(thisMonth);
 		}
 		setData(data);
-		console.log(data);
 		return data;
 	};
 

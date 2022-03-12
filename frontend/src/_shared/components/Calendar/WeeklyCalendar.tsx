@@ -97,7 +97,6 @@ const WeeklyCalendar: React.FC<{
 		const year = (event.target as HTMLElement).id.slice(0, 4);
 		const month = (event.target as HTMLElement).id.slice(5, 7);
 		const day = (event.target as HTMLElement).id.slice(8, 10);
-		console.log((event.target as HTMLElement).id);
 
 		props.setChosenDate(new Date(+year, +month - 1, +day));
 

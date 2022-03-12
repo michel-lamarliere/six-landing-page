@@ -70,8 +70,6 @@ const WeekView: React.FC = () => {
 		if (userState.id) {
 			getWeekData(userState.id, formattedFirstOfWeek);
 			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), false, setMonthStr);
-			console.log(mappingArray);
-			console.log(typeof mappingArray[1]);
 		}
 	}, [userState.id, chosenDate]);
 

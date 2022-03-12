@@ -85,7 +85,6 @@ const MonthlyView: React.FC = () => {
 		if (userState.id) {
 			getMonthlyData();
 			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), false, setMonthStr);
-			console.log(monthlyArray);
 		}
 	}, [chosenDate, chosenTask]);
 

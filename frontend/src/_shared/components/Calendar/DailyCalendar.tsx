@@ -69,10 +69,8 @@ const DailyCalendar: React.FC<{
 		setCalendarDays(days);
 
 		let firstDayOfWeek: number = getDay(startOfMonth(calendarDate));
-		console.log(firstDayOfWeek);
 		const emptyDays = [];
 
-		console.log(firstDayOfWeek);
 		if (firstDayOfWeek === 0) {
 			firstDayOfWeek = 7;
 		}
