@@ -20,7 +20,15 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 		res.status(404).json({ fatal: true });
 	}
 
-	await databaseConnect.aggregate([]);
+	// const data = await databaseConnect.aggregate([
+	// 	{ $match: { _id: reqId } },
+	// 	{
+	// 		$group: { 'log.date': { $gt: new Date(2022, 0, 1) } },
+	// 	},
+	// ]);
+	// responseArray.push(data);
+	// console.log(data);
+	// console.log(responseArray);
 
 	// IF THE USER'S DATA MATCHES THE REQUESTED YEAR,
 	for (let i = 0; i < user.log.length; i++) {

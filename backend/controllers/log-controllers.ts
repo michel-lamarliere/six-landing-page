@@ -149,24 +149,16 @@ const getDaily: RequestHandler = async (req, res, next) => {
 				},
 			},
 			{
-				$unwind: {
-					path: '$log',
-				},
+				$project: { _id: 0, data: '$log' },
 			},
 			{
-				$project: {
-					_id: 0,
-					data: '$log',
+				$unwind: {
+					path: '$data',
 				},
 			},
 			{
 				$match: {
 					'data.date': reqDate,
-				},
-			},
-			{
-				$project: {
-					data: '$data.six',
 				},
 			},
 		])
@@ -185,7 +177,7 @@ const getDaily: RequestHandler = async (req, res, next) => {
 	}
 
 	console.log('get daily');
-	return res.status(200).json(result[0].data);
+	return res.status(200).json(result[0].data.six);
 };
 
 const getWeekly: RequestHandler = async (req, res, next) => {
@@ -234,12 +226,13 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 					path: '$data',
 				},
 			},
+			{ $sort: { 'data.date': 1 } },
 			{
 				$match: {
 					$and: [
 						{
 							'data.date': {
-								$gte: reqStartDate,
+								$gte: datesArray[0],
 							},
 						},
 						{
@@ -250,13 +243,9 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 					],
 				},
 			},
-			{
-				$sort: {
-					'data.date': 1,
-				},
-			},
 		])
 		.forEach((doc: { data: { date: Date; six: {} } }) => {
+			console.log(doc);
 			resultsArray.push(doc.data);
 		});
 
@@ -281,7 +270,8 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 	};
 
 	resultsArray.sort(sortArray);
-	console.log('get weekly');
+	console.log(resultsArray);
+
 	res.status(200).json(resultsArray);
 };
 
@@ -303,7 +293,7 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 	const numberOfDaysInMonth: number = getDaysInMonth(reqFirstDateOfMonth);
 	const lastDateOfMonth = lastDayOfMonth(reqFirstDateOfMonth);
 
-	let resultsArray: { date: Date; level: number }[] = [];
+	let matchedDatesArray: { date: Date; level: number }[] = [];
 
 	await databaseConnect
 		.aggregate([
@@ -313,50 +303,44 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 				},
 			},
 			{
-				$project: {
-					_id: 0,
-					data: '$log',
-				},
-			},
-			{
 				$unwind: {
-					path: '$data',
+					path: '$log',
 				},
 			},
-			{ $project: { _id: 0, date: '$data.date', level: `$data.six.${reqTask}` } },
+			{ $sort: { 'log.date': 1 } },
 			{
 				$match: {
 					$and: [
 						{
-							date: {
+							'log.date': {
 								$gte: reqFirstDateOfMonth,
 							},
 						},
 						{
-							date: {
+							'log.date': {
 								$lte: lastDateOfMonth,
 							},
 						},
 					],
 				},
 			},
-			{ $sort: { date: 1 } },
+			{ $project: { _id: 0, date: '$log.date', level: `$log.six.${reqTask}` } },
 		])
-		.forEach((doc: { date: Date; level: number }) => {
-			resultsArray.push(doc);
+		.forEach((doc: any) => {
+			matchedDatesArray.push(doc);
 		});
 
 	for (let i = 0; i < numberOfDaysInMonth; i++) {
 		let loopingDate = addDays(reqFirstDateOfMonth, i);
 		let found = false;
-		for (let i = 0; i < resultsArray.length; i++) {
-			if (isSameDay(loopingDate, resultsArray[i].date)) {
+		for (let i = 0; i < matchedDatesArray.length; i++) {
+			if (isSameDay(loopingDate, matchedDatesArray[i].date)) {
 				found = true;
 			}
 		}
 
 		if (!found) {
-			resultsArray.push({
+			matchedDatesArray.push({
 				date: loopingDate,
 				level: 0,
 			});
@@ -367,10 +351,10 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 		return isAfter(a.date, b.date) ? 1 : -1;
 	};
 
-	resultsArray.sort(sortArray);
+	matchedDatesArray.sort(sortArray);
 
 	console.log('get monthly');
-	res.status(200).json(resultsArray);
+	res.status(200).json(matchedDatesArray);
 };
 
 exports.addData = addData;
