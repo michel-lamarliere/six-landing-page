@@ -138,8 +138,7 @@ const getDaily: RequestHandler = async (req, res, next) => {
 	const user = await databaseConnect.findOne({ _id: reqId });
 
 	if (!user) {
-		res.status(404).json({ fatal: true });
-		return;
+		return res.status(404).json({ fatal: true });
 	}
 
 	const result = await databaseConnect
@@ -171,14 +170,11 @@ const getDaily: RequestHandler = async (req, res, next) => {
 				},
 			},
 		])
-		.forEach((doc: { data: {} }) => {
-			console.log('get daily');
-			return res.status(200).json(doc.data);
-		});
+		.toArray();
 
-	if (!result) {
+	if (result.length === 0) {
 		console.log('get daily');
-		return res.status(202).json({
+		return res.status(200).json({
 			food: 0,
 			sleep: 0,
 			sport: 0,
@@ -187,6 +183,9 @@ const getDaily: RequestHandler = async (req, res, next) => {
 			social: 0,
 		});
 	}
+
+	console.log('get daily');
+	return res.status(200).json(result[0].data);
 };
 
 const getWeekly: RequestHandler = async (req, res, next) => {
@@ -227,7 +226,7 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 			{
 				$project: {
 					_id: 0,
-					data: 'log',
+					data: '$log',
 				},
 			},
 			{
@@ -257,9 +256,8 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 				},
 			},
 		])
-		.forEach((doc: { date: Date; six: {} }) => {
-			console.log(doc);
-			resultsArray.push(doc);
+		.forEach((doc: { data: { date: Date; six: {} } }) => {
+			resultsArray.push(doc.data);
 		});
 
 	for (let date of datesArray) {
