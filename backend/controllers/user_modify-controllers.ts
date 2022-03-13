@@ -210,12 +210,14 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 			)}/${encodeURI(generatedForgotPasswordCode)}">Cliquez ici !</a></div>`,
 		});
 
-		res.status(200).json({
-			success: 'Email envoyé, veuillez consulter votre boite de réception.',
-		});
+		console.log('Message sent: %s', info.messageId);
 	} catch (error) {
-		res.status(400).json({ error: "Erreur lors de la tentative d'envoi de mail." });
+		console.log(error);
 	}
+
+	res.status(200).json({
+		success: 'Email envoyé, veuillez consulter votre boite de réception.',
+	});
 };
 
 const checkForgotPasswordAuth: RequestHandler = async (req, res, next) => {
