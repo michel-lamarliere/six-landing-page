@@ -89,6 +89,7 @@ const MonthlyCalendar: React.FC<{
 			<div className={calendarClasses.month}>
 				{months.map((month, index) => (
 					<button
+						key={Math.random()}
 						className={`${calendarClasses.month__month} ${
 							!isBefore(
 								addHours(

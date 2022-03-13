@@ -146,8 +146,11 @@ const WeeklyCalendar: React.FC<{
 		>
 			<div className={calendarClasses.week}>
 				<div className={calendarClasses.week__numbers}>
-					{weekNumbers.map((weekNumber) => (
-						<div className={calendarClasses.week__numbers__number}>
+					{weekNumbers.map((weekNumber, index) => (
+						<div
+							className={calendarClasses.week__numbers__number}
+							key={`CalendarWeek-${weekNumber}`}
+						>
 							{weekNumber}
 						</div>
 					))}
@@ -163,6 +166,7 @@ const WeeklyCalendar: React.FC<{
 								onClick={weekOnClickHandler}
 								disabled={!isBefore(new Date(week[0]), new Date())}
 								id={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
+								key={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
 							>
 								{week.map((day: Date) => (
 									<button
@@ -178,6 +182,7 @@ const WeeklyCalendar: React.FC<{
 												]
 											}`}
 										id={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
+										key={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
 									>
 										{format(day, 'd')}
 									</button>
