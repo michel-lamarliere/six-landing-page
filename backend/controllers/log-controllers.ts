@@ -245,7 +245,6 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 			},
 		])
 		.forEach((doc: { data: { date: Date; six: {} } }) => {
-			console.log(doc);
 			resultsArray.push(doc.data);
 		});
 
@@ -270,7 +269,6 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 	};
 
 	resultsArray.sort(sortArray);
-	console.log(resultsArray);
 
 	res.status(200).json(resultsArray);
 };
