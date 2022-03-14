@@ -135,12 +135,11 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 			}
 
 			const futureTotal = daysInLoopingMonth - index;
+			resultsArray[i].future = futureTotal;
 
 			const emptyTotal =
 				daysInLoopingMonth -
 				(resultsArray[i].full + resultsArray[i].half + resultsArray[i].future);
-
-			resultsArray[i].future = futureTotal;
 			resultsArray[i].empty = emptyTotal;
 		}
 	}
