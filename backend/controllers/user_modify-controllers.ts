@@ -1,8 +1,8 @@
 import { RequestHandler } from 'express';
 const { ObjectId } = require('mongodb');
-const crypto = require('crypto');
-const bcrypt = require('bcrypt');
 const { addMinutes, isBefore } = require('date-fns');
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 const database = require('../util/db-connect');
 const { createNodemailerTransporter } = require('../util/nodemailer-transporter');
@@ -25,6 +25,8 @@ const checkEmail: RequestHandler = async (req, res, next) => {
 	res.status(200).json({ success: true });
 };
 
+const changeEmail: RequestHandler = async (req, res, next) => {};
+
 const changeName: RequestHandler = async (req, res, next) => {
 	const { id: reqIdStr, newName: reqNewName } = req.body;
 	const reqId = new ObjectId(reqIdStr);
@@ -44,7 +46,7 @@ const changeName: RequestHandler = async (req, res, next) => {
 	// CHECKS IF THE NAME IS VALID
 	if (
 		reqNewName.trim().length >= 2 &&
-		reqNewName.trim().match(/^[-'a-zA-ZÀ-ÖØ-öø-ÿ]+$/)
+		reqNewName.trim().match(/^['’\p{L}\p{M}]*-?['’\p{L}\p{M}]*$/giu)
 	) {
 		validateNewName = true;
 	}

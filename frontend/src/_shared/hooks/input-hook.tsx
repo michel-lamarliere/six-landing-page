@@ -38,7 +38,7 @@ export const useInput = (
 	useEffect(() => {
 		if (type === 'NAME') {
 			input.value.trim().length >= 2 &&
-			input.value.trim().match(/^[-'a-zA-ZÀ-ÖØ-öø-ÿ]+$/)
+			input.value.trim().match(/^['’\p{L}\p{M}]*-?['’\p{L}\p{M}]*$/giu)
 				? setInput((prev) => ({ ...prev, isValid: true }))
 				: setInput((prev) => ({ ...prev, isValid: false }));
 		}

@@ -12,18 +12,16 @@ import Input from '../../_shared/components/FormElements/Input';
 import formClasses from './UserForms.module.scss';
 
 const PasswordForm: React.FC<{
-	setShowChangePassword: (arg0: boolean) => void;
-	setResponse: (arg0: string) => void;
 	forgotForm?: boolean;
 	userId?: string;
 	redirect?: () => void;
 }> = (props) => {
 	const dispatch = useDispatch();
 	const { sendRequest } = useRequest();
-	const [errorMessage, setErrorMessage] = useState('');
-
 	const userState = useSelector((state: RootState) => state.user);
 
+	const [errorMessage, setErrorMessage] = useState('');
+	const [response, setResponse] = useState('');
 	const [passwordFormIsValid, setPasswordFormIsValid] = useState(true);
 
 	const fetchOldPassword = async () => {
@@ -88,8 +86,11 @@ const PasswordForm: React.FC<{
 		}
 		resetForm();
 
-		props.setResponse('Mot de passe modifié!');
-		props.setShowChangePassword(false);
+		setResponse('Mot de passe modifié!');
+
+		setTimeout(() => {
+			setResponse('');
+		}, 3000);
 
 		if (props.redirect) {
 			props.redirect();
@@ -152,55 +153,59 @@ const PasswordForm: React.FC<{
 	}, [oldPassword, newPassword, newPasswordConfirmation]);
 
 	return (
-		<div className={formClasses['password-wrapper']}>
-			{!props.forgotForm && (
+		<div>
+			<div className={formClasses['password-wrapper']}>
+				{!props.forgotForm && (
+					<Input
+						id='Ancien Mot de Passe'
+						type='password'
+						placeholder='Ancien mot de passe'
+						errorText='Ancien mot de passe incorrect.'
+						value={oldPassword.value}
+						isValid={oldPassword.isValid}
+						isTouched={oldPassword.isTouched}
+						onChange={oldPasswordOnChangeHandler}
+						onBlur={oldPasswordOnBlurHandler}
+						password={true}
+					/>
+				)}
 				<Input
-					id='Ancien Mot de Passe'
+					id='Nouveau Mot de Passe'
 					type='password'
-					placeholder='Ancien mot de passe'
-					errorText='Ancien mot de passe incorrect.'
-					value={oldPassword.value}
-					isValid={oldPassword.isValid}
-					isTouched={oldPassword.isTouched}
-					onChange={oldPasswordOnChangeHandler}
-					onBlur={oldPasswordOnBlurHandler}
+					placeholder='Nouveau mot de passe'
+					errorText='8 caractères minimum dont 1 minuscule, 1 majuscule, 1 chiffre et un caractère spécial.'
+					value={newPassword.value}
+					isValid={newPassword.isValid}
+					isTouched={newPassword.isTouched}
+					onChange={newPasswordOnChangeHandler}
+					onBlur={newPasswordOnBlurHandler}
 					password={true}
 				/>
-			)}
-			<Input
-				id='Nouveau Mot de Passe'
-				type='password'
-				placeholder='Nouveau mot de passe'
-				errorText='8 caractères minimum dont 1 minuscule, 1 majuscule, 1 chiffre et un caractère spécial.'
-				value={newPassword.value}
-				isValid={newPassword.isValid}
-				isTouched={newPassword.isTouched}
-				onChange={newPasswordOnChangeHandler}
-				onBlur={newPasswordOnBlurHandler}
-				password={true}
-			/>
-			<Input
-				id='Confirmer Nouveau Mot de Passe'
-				type='password'
-				placeholder='Confirmation mot de passe'
-				errorText='Mots de passe non-identiques.'
-				value={newPasswordConfirmation.value}
-				isValid={newPasswordConfirmation.isValid}
-				isTouched={newPasswordConfirmation.isTouched}
-				onChange={newPasswordConfirmationOnChangeHandler}
-				onBlur={newPasswordConfirmationOnBlurHandler}
-				password={true}
-			/>
-			<div>{errorMessage}</div>
-			<button
-				onClick={changePasswordHandler}
-				disabled={!passwordFormIsValid}
-				className={`${formClasses['submit-button']} ${
-					!passwordFormIsValid && formClasses['submit-button--disabled']
-				}`}
-			>
-				Changer Mot de Passe
-			</button>
+				<Input
+					id='Confirmer Nouveau Mot de Passe'
+					type='password'
+					placeholder='Confirmation mot de passe'
+					errorText='Mots de passe non-identiques.'
+					value={newPasswordConfirmation.value}
+					isValid={newPasswordConfirmation.isValid}
+					isTouched={newPasswordConfirmation.isTouched}
+					onChange={newPasswordConfirmationOnChangeHandler}
+					onBlur={newPasswordConfirmationOnBlurHandler}
+					password={true}
+				/>
+				<div>{errorMessage}</div>
+				<button
+					onClick={changePasswordHandler}
+					disabled={!passwordFormIsValid}
+					className={`${formClasses['submit-button']} ${
+						!passwordFormIsValid && formClasses['submit-button--disabled']
+					}`}
+				>
+					Changer Mot de Passe
+				</button>
+				Tester1@
+			</div>
+			<div>{response}</div>
 		</div>
 	);
 };

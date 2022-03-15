@@ -80,13 +80,7 @@ const ForgotPasswordForm: React.FC = () => {
 		<div>
 			{email}
 			{!changedPassword && (
-				<PasswordForm
-					setShowChangePassword={setShowChangePassword}
-					setResponse={setResponse}
-					forgotForm={true}
-					userId={id}
-					redirect={redirect}
-				/>
+				<PasswordForm forgotForm={true} userId={id} redirect={redirect} />
 			)}
 			<p>{response}</p>
 			{changedPassword && <Link to='/'>Me connecter</Link>}

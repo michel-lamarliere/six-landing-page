@@ -11,17 +11,26 @@ import { ErrorPopupActionTypes } from './_shared/store/error';
 
 import LoginSignupForms from './pages/LoginSignupForms';
 import Sidebar from './layout/pages/Sidebar';
+
 import DailyView from './log/pages/DailyView';
 import WeeklyView from './log/pages/WeeklyView';
 import MonthlyView from './log/pages/MonthlyView';
-import Profile from './user/pages/Profile';
+
 import Error404 from './pages/Error404';
 import ErrorPopup from './pop-ups/ErrorPopup';
 import EmailPopup from './pop-ups/EmailConfirmationPopup';
 import ConfirmEmailAddress from './user/pages/ConfirmedEmailAddress';
 import ForgotPasswordForm from './user/pages/ForgotPasswordForm';
-import AnnualChart from './charts/pages/AnnualChart';
+
 import Overlay from './_shared/components/UIElements/Overlay';
+
+import Profile from './user/pages/Profile';
+import ChangeName from './user/pages/ChangeName';
+import ChangeEmail from './user/pages/ChangeEmail';
+import ChangePassword from './user/pages/ChangePassword';
+import ChangeImage from './user/pages/ChangeImage';
+
+import AnnualChart from './charts/pages/AnnualChart';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
@@ -124,10 +133,18 @@ const App: React.FC = () => {
 						<Route path='/journal/mensuel' element={<MonthlyView />} />
 						<Route path='/graphique' element={<AnnualChart />} />
 						<Route path='/profil' element={<Profile />} />
+
+						<Route path='/profil/modifier/image' element={<ChangeImage />} />
+						<Route path='/profil/modifier/nom' element={<ChangeName />} />
+						<Route path='/profil/modifier/email' element={<ChangeEmail />} />
+						<Route
+							path='/profil/modifier/motdepasse'
+							element={<ChangePassword />}
+						/>
 					</>
 				)}
 				<Route
-					path='/profil/confirmation/:email/:code'
+					path='/profil/confirmer/:email/:code'
 					element={<ConfirmEmailAddress />}
 				/>
 				<Route

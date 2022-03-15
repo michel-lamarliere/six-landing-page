@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
 import { RequestHandler } from 'express';
+const jwt = require('jsonwebtoken');
 
 const checkAuth: RequestHandler = (
 	// req: { method: string; headers: { authorization: string }; userData: { id: {} } },

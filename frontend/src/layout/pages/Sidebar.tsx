@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Link, NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,6 +20,7 @@ const Sidebar: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
+	const [userName, setUserName] = useState('');
 	const [spinButton, setSpinButton] = useState(false);
 	const [spinnerClasses, setSpinnerClasses] = useState('');
 
@@ -84,13 +85,35 @@ const Sidebar: React.FC = () => {
 		},
 	];
 
+	const formatUserName = () => {
+		if (!userState.name) return;
+
+		if (userState.name.match(/-/)) {
+			let part1 = userState.name.split('-')[0];
+			part1 = part1.slice(0, 1).toUpperCase() + part1.slice(1);
+
+			let part2 = userState.name.split('-')[1];
+			part2 = part2.slice(0, 1).toUpperCase() + part2.slice(1);
+
+			return setUserName(`${part1}-${part2}`);
+		} else {
+			setUserName(
+				userState.name?.slice(0, 1).toUpperCase() + userState.name.slice(1)
+			);
+		}
+	};
+
+	useEffect(() => {
+		formatUserName();
+	}, [userState]);
+
 	return ReactDOM.createPortal(
 		<>
 			<div className={classes.wrapper}>
 				<div className={classes.user}>
 					<Link to='/profil' className={classes['user__name-img']}>
 						<img src={userIcon} alt='Icône Utilisateur' />
-						<div>{userState.name}</div>
+						<div>{userName}</div>
 					</Link>
 					<button
 						onClick={refreshDataHandler}

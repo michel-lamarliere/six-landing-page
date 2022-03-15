@@ -1,7 +1,7 @@
-import express, { NextFunction } from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
-const database = require('./util/db-connect');
 
+const database = require('./util/db-connect');
 const userRoutes = require('./routes/user-routes');
 const userModifyRoutes = require('./routes/user_modify-routes');
 const logRoutes = require('./routes/log-routes');

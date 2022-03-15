@@ -1,5 +1,3 @@
-const nodemailer = require('nodemailer');
-
 const { createNodemailerTransporter } = require('./nodemailer-transporter');
 
 export const emailConfirmationEmail = async (email: string, code: string) => {

@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express';
 const { ObjectId } = require('mongodb');
-const jwt = require('jsonwebtoken');
+const { addMinutes, isBefore } = require('date-fns');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { v5: uuidv5 } = require('uuid');
-const { addSeconds, addMinutes, isBefore } = require('date-fns');
 
 const database = require('../util/db-connect');
 const { emailConfirmationEmail } = require('../util/email-confirmation');
@@ -31,7 +31,10 @@ const signUp: RequestHandler = async (req, res, next) => {
 	};
 
 	// VALIDATION
-	if (reqName.trim().length >= 2 && reqName.trim().match(/^[-'a-zA-ZÀ-ÖØ-öø-ÿ]+$/))
+	if (
+		reqName.trim().length >= 2 &&
+		reqName.trim().match(/^['’\p{L}\p{M}]*-?['’\p{L}\p{M}]*$/giu)
+	)
 		inputsAreValid.name = true;
 	if (
 		reqEmail.match(

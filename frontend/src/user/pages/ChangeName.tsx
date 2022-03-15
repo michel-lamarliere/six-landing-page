@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { UserActionTypes } from '../../_shared/store/user';
@@ -9,15 +10,15 @@ import { useRequest } from '../../_shared/hooks/http-hook';
 
 import Input from '../../_shared/components/FormElements/Input';
 
-import formClasses from './UserForms.module.scss';
+import classes from './ChangeName.module.scss';
+import formClasses from '../components/UserForms.module.scss';
 
-const NameForm: React.FC<{
-	setShowChangeName: (arg0: boolean) => void;
-	setResponse: (arg0: string) => void;
-}> = (props) => {
+const ChangeName: React.FC = () => {
 	const dispatch = useDispatch();
 	const { sendRequest } = useRequest();
 	const userState = useSelector((state: RootState) => state.user);
+
+	const [response, setResponse] = useState('');
 
 	const changeNameHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
@@ -38,11 +39,14 @@ const NameForm: React.FC<{
 			return;
 		}
 
-		props.setResponse(responseData.message);
+		setResponse(responseData.success);
+
+		setTimeout(() => {
+			setResponse('');
+		}, 3000);
 
 		dispatch({ type: UserActionTypes.REFRESH_NAME, name: responseData.name });
 		setNewName({ value: '', isValid: false, isTouched: false });
-		props.setShowChangeName(false);
 	};
 
 	const {
@@ -51,30 +55,35 @@ const NameForm: React.FC<{
 		inputOnChangeHandler: newNameOnChangeHandler,
 		inputOnBlurHandler: newNameOnBlurHandler,
 	} = useInput(useInputTypes.NAME);
+
 	return (
-		<div className={formClasses['name-wrapper']}>
-			<Input
-				id='Nouveau Nom'
-				type='text'
-				placeholder='Jean'
-				errorText='Minimum 2 caractères, sans espaces.'
-				value={newName.value}
-				isValid={newName.isValid}
-				isTouched={newName.isTouched}
-				onChange={newNameOnChangeHandler}
-				onBlur={newNameOnBlurHandler}
-			/>
-			<button
-				onClick={changeNameHandler}
-				disabled={!newName.isValid}
-				className={`${formClasses['submit-button']} ${
-					!newName.isValid && formClasses['submit-button--disabled']
-				}`}
-			>
-				Changer Nom
-			</button>
+		<div className={formClasses.basic}>
+			<Link to='/profil'>{'< Profil'}</Link>
+			<div className={formClasses['name-wrapper']}>
+				<Input
+					id='Nouveau Nom'
+					type='text'
+					placeholder='Jean'
+					errorText='Minimum 2 caractères, sans espaces.'
+					value={newName.value}
+					isValid={newName.isValid}
+					isTouched={newName.isTouched}
+					onChange={newNameOnChangeHandler}
+					onBlur={newNameOnBlurHandler}
+				/>
+				<button
+					onClick={changeNameHandler}
+					disabled={!newName.isValid}
+					className={`${formClasses['submit-button']} ${
+						!newName.isValid && formClasses['submit-button--disabled']
+					}`}
+				>
+					Changer Nom
+				</button>
+			</div>
+			<div>{response}</div>
 		</div>
 	);
 };
 
-export default NameForm;
+export default ChangeName;

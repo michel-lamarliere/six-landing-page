@@ -9,7 +9,6 @@ import { EmailConfirmationActionTypes } from '../../_shared/store/email-confirma
 
 import { useRequest } from '../../_shared/hooks/http-hook';
 
-import NameForm from '../components/NameForm';
 import PasswordForm from '../components/PasswordForm';
 
 import TopArrow from '../../_shared/assets/icons/top-arrow.svg';
@@ -23,39 +22,11 @@ const Profile: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
-	const [showEditProfile, setShowEditProfile] = useState(false);
-	const [showChangeName, setShowChangeName] = useState(false);
-	const [showChangePassword, setShowChangePassword] = useState(false);
+	const [showEditProfile, setShowEditProfile] = useState(true);
 	const [response, setResponse] = useState('');
 
 	const editProfileHandler = () => {
-		if (showEditProfile) {
-			setShowChangePassword(false);
-			setShowChangeName(false);
-		}
 		setShowEditProfile((prev) => !prev);
-	};
-
-	const showChangeNameHandler = () => {
-		if (showChangePassword) {
-			setShowChangePassword(false);
-		}
-		setShowChangeName((prev) => !prev);
-	};
-
-	const showChangePasswordHandler = () => {
-		if (showChangeName) {
-			setShowChangeName(false);
-		}
-		setShowChangePassword((prev) => !prev);
-	};
-
-	const setResponseHandler = (message: string) => {
-		setResponse(message);
-
-		setTimeout(() => {
-			setResponse('');
-		}, 3000);
 	};
 
 	const resendEmail = async () => {
@@ -127,33 +98,30 @@ const Profile: React.FC = () => {
 				</button>
 				{showEditProfile && (
 					<>
-						<button
+						<Link
+							to='/profil/modifier/image'
 							className={classes['edit-button']}
-							onClick={showChangeNameHandler}
+						>
+							Modifier Mon Image
+						</Link>
+						<Link
+							to='/profil/modifier/nom'
+							className={classes['edit-button']}
 						>
 							Modifier Mon Nom
-						</button>
-						{showChangeName && (
-							<NameForm
-								setShowChangeName={showChangeNameHandler}
-								setResponse={setResponseHandler}
-							/>
-						)}
-						<button
+						</Link>
+						<Link
+							to='/profil/modifier/email'
 							className={classes['edit-button']}
-							onClick={showChangePasswordHandler}
+						>
+							Modifier Mon Adresse Mail
+						</Link>
+						<Link
+							to='/profil/modifier/motdepasse'
+							className={classes['edit-button']}
 						>
 							Modifier Mon Mot de Passe
-						</button>
-						{showChangePassword && (
-							<>
-								<PasswordForm
-									setShowChangePassword={showChangePasswordHandler}
-									setResponse={setResponseHandler}
-								/>
-								<h1>Tester1@</h1>
-							</>
-						)}
+						</Link>
 					</>
 				)}
 			</div>
@@ -161,7 +129,6 @@ const Profile: React.FC = () => {
 				<img src='' alt='img' />
 				<div className={classes['log-out__text']}>Déconnexion</div>
 			</button>
-			<h1>{response}</h1>
 		</div>
 	);
 };
