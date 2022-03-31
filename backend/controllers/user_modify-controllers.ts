@@ -25,7 +25,9 @@ const checkEmail: RequestHandler = async (req, res, next) => {
 	res.status(200).json({ success: true });
 };
 
-const changeEmail: RequestHandler = async (req, res, next) => {};
+const changeEmail: RequestHandler = async (req, res, next) => {
+
+};
 
 const changeName: RequestHandler = async (req, res, next) => {
 	const { id: reqIdStr, newName: reqNewName } = req.body;
@@ -245,6 +247,7 @@ const checkForgotPasswordAuth: RequestHandler = async (req, res, next) => {
 
 exports.checkEmail = checkEmail;
 exports.changeName = changeName;
+exports.changeEmail = changeEmail;
 exports.comparePasswords = comparePasswords;
 exports.changePassword = changePassword;
 exports.sendEmailForgotPassword = sendEmailForgotPassword;

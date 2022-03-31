@@ -34,7 +34,7 @@ const Header: React.FC = () => {
 
 	const checkEmail = async () => {
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/user_modify/check-email/${checkEmailInput.value}`,
+			`http://localhost:8080/api/user_modify/check-email/${forgotPasswordEmailInput.value}`,
 			'GET',
 			null
 		);
@@ -45,11 +45,11 @@ const Header: React.FC = () => {
 
 		if (responseData.error) {
 			setResponseMessage(responseData.message);
-			setCheckEmailInput((prev) => ({ ...prev, isValid: false }));
+			setForgotPasswordEmailInput((prev) => ({ ...prev, isValid: false }));
 		}
 
 		if (responseData.success) {
-			setCheckEmailInput((prev) => ({ ...prev, isValid: true }));
+			setForgotPasswordEmailInput((prev) => ({ ...prev, isValid: true }));
 		}
 	};
 
@@ -68,10 +68,10 @@ const Header: React.FC = () => {
 	} = useInput(useInputTypes.EMAIL, loginMode);
 
 	const {
-		input: checkEmailInput,
-		setInput: setCheckEmailInput,
-		inputOnChangeHandler: checkEmailOnChangeHandler,
-		inputOnBlurHandler: checkEmailOnBlurHandler,
+		input: forgotPasswordEmailInput,
+		setInput: setForgotPasswordEmailInput,
+		inputOnChangeHandler: forgotPasswordEmailOnChangeHandler,
+		inputOnBlurHandler: forgotPasswordEmailOnBlurHandler,
 	} = useInput(useInputTypes.CHECK_EMAIL, null, null, checkEmail);
 
 	const {
@@ -202,7 +202,7 @@ const Header: React.FC = () => {
 	const sendEmailForgotPassword = async (event: FormEvent) => {
 		event.preventDefault();
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/user_modify/email/forgot-password/${checkEmailInput.value}`,
+			`http://localhost:8080/api/user_modify/email/forgot-password/${forgotPasswordEmailInput.value}`,
 			'GET'
 		);
 
@@ -354,19 +354,19 @@ const Header: React.FC = () => {
 								id='Email'
 								type='text'
 								placeholder='jean@email.fr'
-								value={checkEmailInput.value}
+								value={forgotPasswordEmailInput.value}
 								errorText='Adresse email non trouvée, veuillez créer un compte.'
-								isValid={checkEmailInput.isValid}
-								isTouched={checkEmailInput.isTouched}
-								onChange={checkEmailOnChangeHandler}
-								onBlur={checkEmailOnBlurHandler}
+								isValid={forgotPasswordEmailInput.isValid}
+								isTouched={forgotPasswordEmailInput.isTouched}
+								onChange={forgotPasswordEmailOnChangeHandler}
+								onBlur={forgotPasswordEmailOnBlurHandler}
 							/>
 							<p>Envoyer un email pour changer mon mot de passe.</p>
 							<button
 								onClick={sendEmailForgotPassword}
-								disabled={!checkEmailInput.isValid}
+								disabled={!forgotPasswordEmailInput.isValid}
 								className={`${classes['submit-button']} ${
-									!checkEmailInput.isValid &&
+									!forgotPasswordEmailInput.isValid &&
 									classes['submit-button--disabled']
 								}`}
 							>

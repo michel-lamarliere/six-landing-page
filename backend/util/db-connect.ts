@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 
 const client = new MongoClient(
-	`mongodb+srv://${process.env.SERVER_USER_NAME}:${process.env.SERVER_USER_PWD}@six-cluster.vl7dd.mongodb.net/${process.env.DATABASE_NAME}?retryWrites=true&w=majority`
+	`mongodb+srv://${process.env.DB_USER_NAME}:${process.env.DB_USER_PWD}@six-cluster.vl7dd.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
 );
 
 let dbConnection: {};
@@ -14,7 +14,7 @@ module.exports = {
 			}
 
 			dbConnection = db.db('development');
-			console.log(`Connected to the ${process.env.DATABASE_NAME} database!`);
+			console.log(`Connected to the ${process.env.DB_NAME} database!`);
 			return callback();
 		});
 	},
