@@ -26,7 +26,7 @@ const checkAuth: RequestHandler = (
 			return;
 		}
 
-		const decodedToken = jwt.verify(token, 'je_mange_du_pain_blanc_enola');
+		const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 		req.userData = { id: decodedToken.id };
 		next();
 	} catch (error) {
