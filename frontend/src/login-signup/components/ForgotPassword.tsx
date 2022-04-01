@@ -26,7 +26,7 @@ const ForgotPassword: React.FC = () => {
 		setInput: setForgotPasswordEmailInput,
 		inputOnChangeHandler: forgotPasswordEmailOnChangeHandler,
 		inputOnBlurHandler: forgotPasswordEmailOnBlurHandler,
-	} = useInput(useInputTypes.CHECK_EMAIL, null, null);
+	} = useInput(useInputTypes.CHECK_EMAIL);
 
 	const sendEmailForgotPassword = async (event: React.FormEvent) => {
 		event.preventDefault();

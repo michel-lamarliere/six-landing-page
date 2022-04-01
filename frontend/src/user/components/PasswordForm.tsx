@@ -45,21 +45,21 @@ const PasswordForm: React.FC<{
 		setInput: setOldPassword,
 		inputOnChangeHandler: oldPasswordOnChangeHandler,
 		inputOnBlurHandler: oldPasswordOnBlurHandler,
-	} = useInput(useInputTypes.OLD_PASSWORD, null, null, fetchOldPassword);
+	} = useInput(useInputTypes.OLD_PASSWORD);
 
 	const {
 		input: newPassword,
 		setInput: setNewPassword,
 		inputOnChangeHandler: newPasswordOnChangeHandler,
 		inputOnBlurHandler: newPasswordOnBlurHandler,
-	} = useInput(useInputTypes.NEW_PASSWORD, null, oldPassword.value);
+	} = useInput(useInputTypes.NEW_PASSWORD);
 
 	const {
 		input: newPasswordConfirmation,
 		setInput: setNewPasswordConfirmation,
 		inputOnChangeHandler: newPasswordConfirmationOnChangeHandler,
 		inputOnBlurHandler: newPasswordConfirmationOnBlurHandler,
-	} = useInput(useInputTypes.PASSWORD_COMPARISON, null, newPassword.value);
+	} = useInput(useInputTypes.PASSWORD_COMPARISON);
 
 	const changePasswordHandler = async () => {
 		const responseData = await sendRequest(
