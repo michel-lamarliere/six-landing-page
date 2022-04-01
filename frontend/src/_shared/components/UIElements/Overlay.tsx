@@ -13,6 +13,7 @@ const Overlay: React.FC = () => {
 		dispatch({ type: UIElementsActionTypes.HIDE_OVERLAY });
 		dispatch({ type: UIElementsActionTypes.HIDE_CALENDAR });
 		dispatch({ type: UIElementsActionTypes.HIDE_TASK_SELECTOR });
+		dispatch({ type: UIElementsActionTypes.HIDE_FORGOT_PASSWORD_FORM });
 	};
 
 	return ReactDOM.createPortal(

@@ -223,8 +223,9 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 	try {
 		await emailConfirmationEmail(user.email, user.confirmation.code);
 	} catch (error) {
-		res.status(500).json({ error: 'Une erreur est survenue.' });
-		return;
+		console.log(error);
+
+		return res.status(500).json({ error: 'Une erreur est survenue.' });
 	}
 
 	// ADDS THE NEW TIME INTERVAL IN THE DB

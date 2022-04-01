@@ -25,6 +25,8 @@ const EmailPopup: React.FC = () => {
 			JSON.stringify({ id: userState.id })
 		);
 
+		console.log(responseData);
+
 		if (responseData.error) {
 			setResponseMessage(responseData.error);
 		} else if (responseData.success) {

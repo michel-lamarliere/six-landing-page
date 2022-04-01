@@ -3,18 +3,24 @@
 .wrapper {
 	display: flex;
 	flex-direction: column;
-	width: 100%;
 	gap: 0.5rem;
+	width: 100%;
 }
 
 .input {
 	position: relative;
-	width: 15.9rem;
+	max-width: 80%;
+
+	::placeholder {
+		color: #8d88ff;
+		opacity: 1;
+	}
 
 	&__input {
 		background-color: #4740a0;
 		border-radius: 0.5rem;
 		border: 0.1rem solid #4740a0;
+		width: 100%;
 		padding: 0.7rem 2.5rem 0.7rem 0.8rem;
 		color: #ffffff;
 		font-size: 16px;
@@ -23,16 +29,15 @@
 			outline: none;
 		}
 
-		&--invalid {
-		border: solid 0.1rem #1cc1e6;
-		font-family: $fontRegular;
-		color: #1cc1e6;
-	}
+		&_invalid {
+			border: solid 0.1rem #1cc1e6;
+			color: #1cc1e6;
+		}
 	}
 
 	&__show-password {
 		position: absolute;
-		right: -1rem;
+		right: -3rem;
 		top: 50%;
 		transform: translateY(-50%);
 		background: none;

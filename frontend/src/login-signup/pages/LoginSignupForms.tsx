@@ -4,54 +4,35 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { addHours } from 'date-fns';
 
-import type { RootState } from '../_shared/store/store';
-import { EmailConfirmationActionTypes } from '../_shared/store/email-confirmation';
-import { UserActionTypes } from '../_shared/store/user';
+import type { RootState } from '../../_shared/store/store';
+import { EmailConfirmationActionTypes } from '../../_shared/store/email-confirmation';
+import { UserActionTypes } from '../../_shared/store/user';
 
-import { useRequest } from '../_shared/hooks/http-hook';
-import { useInput, useInputTypes } from '../_shared/hooks/input-hook';
+import { useRequest } from '../../_shared/hooks/http-hook';
+import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
+import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 
-import Input from '../_shared/components/FormElements/Input';
+import ForgotPassword from '../components/ForgotPassword';
+import Input from '../../_shared/components/FormElements/Input';
 
-import RememberMeFalseSVG from '../_shared/assets/icons/remember-me_false.svg';
-import RememberMeTrueSVG from '../_shared/assets/icons/remember-me_true.svg';
+import RememberMeFalseSVG from '../../_shared/assets/icons/remember-me_false.svg';
+import RememberMeTrueSVG from '../../_shared/assets/icons/remember-me_true.svg';
 
 import classes from './LoginSignupForms.module.scss';
 
 const Header: React.FC = () => {
-	const [responseMessage, setResponseMessage] = useState('');
-	const [rememberEmail, setRememberEmail] = useState(false);
-	const [forgotPassword, setForgotPassword] = useState(false);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
+	const uiElementsState = useSelector((state: RootState) => state.uiElements);
 
+	const [responseMessage, setResponseMessage] = useState('');
+	const [rememberEmail, setRememberEmail] = useState(false);
 	const [loginMode, setLoginMode] = useState(true);
 	const [formIsValid, setFormIsValid] = useState(false);
-
-	const checkEmail = async () => {
-		const responseData = await sendRequest(
-			`http://localhost:8080/api/user_modify/check-email/${forgotPasswordEmailInput.value}`,
-			'GET',
-			null
-		);
-
-		if (!responseData) {
-			return;
-		}
-
-		if (responseData.error) {
-			setResponseMessage(responseData.message);
-			setForgotPasswordEmailInput((prev) => ({ ...prev, isValid: false }));
-		}
-
-		if (responseData.success) {
-			setForgotPasswordEmailInput((prev) => ({ ...prev, isValid: true }));
-		}
-	};
 
 	const {
 		input: nameInput,
@@ -66,13 +47,6 @@ const Header: React.FC = () => {
 		inputOnChangeHandler: emailOnChangeHandler,
 		inputOnBlurHandler: emailOnBlurHandler,
 	} = useInput(useInputTypes.EMAIL, loginMode);
-
-	const {
-		input: forgotPasswordEmailInput,
-		setInput: setForgotPasswordEmailInput,
-		inputOnChangeHandler: forgotPasswordEmailOnChangeHandler,
-		inputOnBlurHandler: forgotPasswordEmailOnBlurHandler,
-	} = useInput(useInputTypes.CHECK_EMAIL, null, null, checkEmail);
 
 	const {
 		input: passwordInput,
@@ -193,33 +167,6 @@ const Header: React.FC = () => {
 		setRememberEmail((prev) => !prev);
 	};
 
-	const forgotPasswordHandler = async (event: FormEvent) => {
-		event.preventDefault();
-		setResponseMessage('');
-		setForgotPassword((prev) => !prev);
-	};
-
-	const sendEmailForgotPassword = async (event: FormEvent) => {
-		event.preventDefault();
-		const responseData = await sendRequest(
-			`http://localhost:8080/api/user_modify/email/forgot-password/${forgotPasswordEmailInput.value}`,
-			'GET'
-		);
-
-		if (!responseData) {
-			return;
-		}
-
-		if (responseData.error) {
-			setResponseMessage(responseData.error);
-			return;
-		}
-
-		setResponseMessage(responseData.success);
-
-		setForgotPassword(false);
-	};
-
 	useEffect(() => {
 		const emailStorage = localStorage.getItem('rememberEmail');
 
@@ -255,6 +202,12 @@ const Header: React.FC = () => {
 		}
 	}, [nameInput, emailInput, passwordInput, passwordConfirmationInput]);
 
+	const forgotPasswordHandler = (event: FormEvent) => {
+		event.preventDefault();
+		dispatch({ type: UIElementsActionTypes.SHOW_OVERLAY });
+		dispatch({ type: UIElementsActionTypes.SHOW_FORGOT_PASSWORD_FORM });
+	};
+
 	const userData =
 		userState.token &&
 		userState.expiration &&
@@ -286,48 +239,46 @@ const Header: React.FC = () => {
 							onBlur={nameOnBlurHandler}
 						/>
 					)}
-					{!forgotPassword && (
-						<>
-							<Input
-								id='Email'
-								type='text'
-								placeholder='jean@email.fr'
-								value={emailInput.value}
-								errorText='Format invalide.'
-								isValid={emailInput.isValid}
-								isTouched={emailInput.isTouched}
-								onChange={emailOnChangeHandler}
-								onBlur={emailOnBlurHandler}
-							/>
+					<>
+						<Input
+							id='Email'
+							type='text'
+							placeholder='jean@email.fr'
+							value={emailInput.value}
+							errorText='Format invalide.'
+							isValid={emailInput.isValid}
+							isTouched={emailInput.isTouched}
+							onChange={emailOnChangeHandler}
+							onBlur={emailOnBlurHandler}
+						/>
+						<Input
+							id='mot de passe'
+							type='password'
+							placeholder='Mot de passe'
+							value={passwordInput.value}
+							isValid={passwordInput.isValid}
+							isTouched={passwordInput.isTouched}
+							errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
+							onChange={passwordOnChangeHandler}
+							onBlur={passwordOnBlurHandler}
+							password={true}
+						/>
+						{!loginMode && (
 							<Input
 								id='mot de passe'
 								type='password'
-								placeholder='Mot de passe'
-								value={passwordInput.value}
-								isValid={passwordInput.isValid}
-								isTouched={passwordInput.isTouched}
-								errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
-								onChange={passwordOnChangeHandler}
-								onBlur={passwordOnBlurHandler}
+								placeholder='Confirmation mot de passe'
+								value={passwordConfirmationInput.value}
+								isValid={passwordConfirmationInput.isValid}
+								isTouched={passwordConfirmationInput.isTouched}
+								errorText='Les mots de passe ne sont pas indentiques.'
+								onChange={passwordConfirmationOnChangeHandler}
+								onBlur={passwordConfirmationOnBlurHandler}
 								password={true}
 							/>
-							{!loginMode && (
-								<Input
-									id='mot de passe'
-									type='password'
-									placeholder='Confirmation mot de passe'
-									value={passwordConfirmationInput.value}
-									isValid={passwordConfirmationInput.isValid}
-									isTouched={passwordConfirmationInput.isTouched}
-									errorText='Les mots de passe ne sont pas indentiques.'
-									onChange={passwordConfirmationOnChangeHandler}
-									onBlur={passwordConfirmationOnBlurHandler}
-									password={true}
-								/>
-							)}
-						</>
-					)}
-					{loginMode && !forgotPassword && (
+						)}
+					</>
+					{loginMode && (
 						<div className={classes['remember-me']}>
 							<button
 								onClick={checkboxHandler}
@@ -348,58 +299,30 @@ const Header: React.FC = () => {
 							</div>
 						</div>
 					)}
-					{forgotPassword && (
-						<>
-							<Input
-								id='Email'
-								type='text'
-								placeholder='jean@email.fr'
-								value={forgotPasswordEmailInput.value}
-								errorText='Adresse email non trouvée, veuillez créer un compte.'
-								isValid={forgotPasswordEmailInput.isValid}
-								isTouched={forgotPasswordEmailInput.isTouched}
-								onChange={forgotPasswordEmailOnChangeHandler}
-								onBlur={forgotPasswordEmailOnBlurHandler}
-							/>
-							<p>Envoyer un email pour changer mon mot de passe.</p>
-							<button
-								onClick={sendEmailForgotPassword}
-								disabled={!forgotPasswordEmailInput.isValid}
-								className={`${classes['submit-button']} ${
-									!forgotPasswordEmailInput.isValid &&
-									classes['submit-button--disabled']
-								}`}
-							>
-								Envoyer un email.
-							</button>
-						</>
-					)}
-					{!forgotPassword && (
-						<button
-							disabled={!formIsValid}
-							className={`${classes['submit-button']} ${
-								!formIsValid && classes['submit-button--disabled']
-							}`}
-						>
-							{loginMode ? 'Connexion' : 'Inscription'}
-						</button>
-					)}
-					<div className={classes['response-message']}>{responseMessage}</div>
 					{loginMode && (
 						<button
 							onClick={forgotPasswordHandler}
 							className={classes['forgot-password-button']}
 						>
-							{forgotPassword ? 'Revenir' : 'Mot de passe oublié?'}
+							Mot de passe oublié?
 						</button>
 					)}
+					{uiElementsState.showForgotPasswordForm && <ForgotPassword />}
+					<button
+						disabled={!formIsValid}
+						className={`${classes['submit-button']} ${
+							!formIsValid && classes['submit-button--disabled']
+						}`}
+					>
+						{loginMode ? 'Connexion' : 'Inscription'}
+					</button>
+					<div className={classes['response-message']}>{responseMessage}</div>
 				</form>
 			)}
-			<h1>michel@test.com</h1>
-			<h1>Tester1@</h1>
-
+			<h3>michel@test.com</h3>
+			<h3>Tester1@</h3>
 			<div className={classes.footer}>
-				{!userData && !forgotPassword && (
+				{!userData && (
 					<>
 						<div className={classes.footer__text}>
 							{loginMode ? 'Pas de compte ?' : 'Déjà membre ?'}

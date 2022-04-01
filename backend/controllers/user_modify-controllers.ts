@@ -7,27 +7,7 @@ const crypto = require('crypto');
 const database = require('../util/db-connect');
 const { createNodemailerTransporter } = require('../util/nodemailer-transporter');
 
-const checkEmail: RequestHandler = async (req, res, next) => {
-	const reqEmail = req.params.email;
-
-	const databaseConnect = await database.getDb('six-dev').collection('users');
-
-	// CHECKS IF THE USER EXISTS
-	const user = await databaseConnect.findOne({ email: reqEmail });
-
-	if (!user) {
-		res.status(404).json({
-			error: 'Adresse mail non trouvée, veuillez créer un compte.',
-		});
-		return;
-	}
-
-	res.status(200).json({ success: true });
-};
-
-const changeEmail: RequestHandler = async (req, res, next) => {
-
-};
+const changeEmail: RequestHandler = async (req, res, next) => {};
 
 const changeName: RequestHandler = async (req, res, next) => {
 	const { id: reqIdStr, newName: reqNewName } = req.body;
@@ -245,7 +225,6 @@ const checkForgotPasswordAuth: RequestHandler = async (req, res, next) => {
 	res.status(200).json({ success: 'Autorisé !', id: user._id });
 };
 
-exports.checkEmail = checkEmail;
 exports.changeName = changeName;
 exports.changeEmail = changeEmail;
 exports.comparePasswords = comparePasswords;

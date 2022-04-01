@@ -44,7 +44,7 @@ const FormInput: React.FC<{
 			<div className={classes.input}>
 				<input
 					className={`${classes.input__input} ${
-						!isValid && isTouched && classes['input__input--invalid']
+						!isValid && isTouched && classes['input__input_invalid']
 					}`}
 					type={showPassword ? 'text' : type}
 					name={id}

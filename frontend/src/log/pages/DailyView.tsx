@@ -22,7 +22,6 @@ const DailyView: React.FC = () => {
 	const userState = useSelector((state: RootState) => state.user);
 
 	const [dailyData, setDailyData] = useState<{}>();
-	// const [dailyData, setDailyData] = useState<{ six: {} }>();
 
 	// CALENDAR
 	const [isLoading, setIsLoading] = useState(true);
@@ -59,8 +58,6 @@ const DailyView: React.FC = () => {
 			`http://localhost:8080/api/log/daily/${userId}/${date}`,
 			'GET'
 		);
-
-		console.log(responseData);
 
 		if (!responseData) {
 			return;

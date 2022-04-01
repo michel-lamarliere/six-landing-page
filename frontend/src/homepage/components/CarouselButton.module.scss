@@ -1,0 +1,13 @@
+.button {
+	width: 0.7rem;
+	height: 0.7rem;
+	border: solid 0.05rem #ffffff;
+	border-radius: 50%;
+	background-color: transparent;
+	cursor: pointer;
+
+	&_active {
+		background-color: #8d88ff;
+		cursor: default;
+	}
+}

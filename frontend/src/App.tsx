@@ -9,14 +9,14 @@ import { UserActionTypes } from './_shared/store/user';
 import { EmailConfirmationActionTypes } from './_shared/store/email-confirmation';
 import { ErrorPopupActionTypes } from './_shared/store/error';
 
-import LoginSignupForms from './pages/LoginSignupForms';
+import LoginSignupForms from './login-signup/pages/LoginSignupForms';
 import Sidebar from './layout/pages/Sidebar';
 
 import DailyView from './log/pages/DailyView';
 import WeeklyView from './log/pages/WeeklyView';
 import MonthlyView from './log/pages/MonthlyView';
 
-import Error404 from './pages/Error404';
+import Error404 from './error/pages/Error404';
 import ErrorPopup from './pop-ups/ErrorPopup';
 import EmailPopup from './pop-ups/EmailConfirmationPopup';
 import ConfirmEmailAddress from './user/pages/ConfirmedEmailAddress';
@@ -31,6 +31,7 @@ import ChangePassword from './user/pages/ChangePassword';
 import ChangeImage from './user/pages/ChangeImage';
 
 import AnnualChart from './charts/pages/AnnualChart';
+import HomePage from './homepage/pages/HomePage';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
@@ -122,9 +123,14 @@ const App: React.FC = () => {
 	return (
 		<>
 			{userData && <Sidebar />}
-			{uiElementsState.showCalendarOverlay && <Overlay />}
+			{uiElementsState.showOverlay && <Overlay />}
 			<Routes>
-				{!userData && <Route path='/' element={<LoginSignupForms />} />}
+				{!userData && (
+					<>
+						<Route path='/' element={<HomePage />} />
+						<Route path='/login-signup' element={<LoginSignupForms />} />
+					</>
+				)}
 				{userData && (
 					<>
 						<Route path='/' element={<DailyView />} />

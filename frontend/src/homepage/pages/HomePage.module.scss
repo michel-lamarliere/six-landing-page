@@ -1,0 +1,119 @@
+@import '../../_shared/style/variables.scss';
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 100%;
+	height: auto;
+	padding: 3.5rem;
+	background: #3e379b;
+	// background: #3e379b url('../../_shared/assets/svgs/homepage-bg.svg') no-repeat bottom;
+}
+
+.carousel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 3rem;
+
+	&__text {
+		display: flex;
+		flex-direction: column;
+		min-height: 22rem;
+		gap: 1rem;
+
+		&__title {
+			font-family: $fontBold;
+			font-size: 18px;
+			color: #ffffff;
+
+			&:not(:first-of-type) {
+				margin-top: 2rem;
+			}
+
+			&__icon {
+				width: 1.5rem;
+				height: 1.5rem;
+			}
+		}
+
+		&__header {
+			font-family: $fontSemiBold;
+			font-size: 16px;
+			color: #ffffff;
+		}
+
+		&__header-two {
+			font-family: $fontMedium;
+			font-size: 14px;
+			color: #ffffff;
+		}
+
+		&__para {
+			font-family: $fontRegular;
+			font-size: 14px;
+			color: #ffffff;
+		}
+
+		&__grid {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 1.15rem;
+			margin: 3rem auto 0 auto;
+		}
+	}
+
+	&__buttons {
+		display: flex;
+		justify-content: center;
+		gap: 1.6rem;
+	}
+}
+
+.buttons {
+	display: flex;
+	flex-direction: column;
+	max-width: 15rem;
+	margin: 0 auto;
+	gap: 1.3rem;
+}
+
+.forms {
+	display: none;
+}
+
+@media screen and (min-width: 1200px) {
+	.wrapper {
+		flex-direction: row;
+		padding: 6rem;
+	}
+
+	.carousel {
+		float: left;
+		width: 25%;
+		min-width: 25rem;
+		min-height: 30rem;
+		margin: 0 auto;
+		border: 1px solid #ffffff;
+
+		&__text {
+			width: 100%;
+		}
+	}
+
+	.forms {
+		float: right;
+		display: flex;
+		width: 25%;
+		min-width: 25rem;
+		min-height: 40rem;
+		border: 1px solid black;
+		border-radius: 2rem;
+		overflow: hidden;
+	}
+
+	.buttons {
+		display: none;
+	}
+}
