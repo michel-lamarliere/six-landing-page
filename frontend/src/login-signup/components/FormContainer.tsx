@@ -24,8 +24,6 @@ const FormContainer: React.FC<Props> = (props) => {
 
 	const [responseMessage, setResponseMessage] = useState('');
 
-	const switchModeHandler = () => {};
-
 	const backButton = (event: React.FormEvent) => {
 		event.preventDefault();
 		navigate(-1);

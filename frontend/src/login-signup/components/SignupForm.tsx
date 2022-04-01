@@ -1,9 +1,11 @@
 import React from 'react';
-import Input from '../../_shared/components/FormElements/Input';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
+import { useUser } from '../../_shared/hooks/user-hook';
+
 import FormContainer from './FormContainer';
+import Input from '../../_shared/components/FormElements/Input';
 
 import classes from './SignupForm.module.scss';
 
@@ -13,6 +15,7 @@ interface Props {
 
 const SingupForm: React.FC<Props> = (props) => {
 	const { sendRequest } = useRequest();
+	const { User } = useUser();
 
 	const {
 		input: nameInput,
@@ -54,6 +57,16 @@ const SingupForm: React.FC<Props> = (props) => {
 				password: passwordInput.value,
 			})
 		);
+
+		if (responseData.error) {
+			// setResponseMessage(responseData.error);
+			console.log('erreur');
+			return;
+		}
+
+		const user = new User(responseData);
+
+		console.log(user);
 
 		// logInUser(responseData);
 	};

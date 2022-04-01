@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
+import { useUser } from '../../_shared/hooks/user-hook';
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
 import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 
@@ -20,6 +21,7 @@ interface Props {
 const LoginForm: React.FC<Props> = (props) => {
 	const dispatch = useDispatch();
 	const { sendRequest } = useRequest();
+	const { User } = useUser();
 
 	const [rememberEmail, setRememberEmail] = useState(false);
 
@@ -48,6 +50,18 @@ const LoginForm: React.FC<Props> = (props) => {
 				password: passwordInput.value,
 			})
 		);
+
+		if (responseData.error) {
+			// setResponseMessage(responseData.error);
+			console.log('erreur');
+			return;
+		}
+
+		const user = new User(responseData);
+
+		user.logIn();
+
+		console.log(user);
 
 		// logInUser(responseData);
 	};
