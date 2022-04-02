@@ -5,6 +5,7 @@ import { RootState } from '../../store/store';
 import { UIElementsActionTypes } from '../../store/ui-elements';
 
 import TopArrow from '../../assets/icons/top-arrow.svg';
+import CalendarIcon from '../../assets/icons/calendar_icon.svg';
 
 import calendarClasses from './Calendar.module.scss';
 
@@ -30,14 +31,14 @@ export const CalendarButton: React.FC = () => {
 			className={calendarClasses.buttons__button}
 			onClick={calendarButtonHandler}
 		>
-			{/* <img /> */}
+			<img src={CalendarIcon} alt='LogoCalendrier' />
 			<img
 				src={TopArrow}
 				className={`${calendarClasses.buttons__button__arrow} ${
 					uiElementsState.showCalendar &&
 					calendarClasses['buttons__button__arrow--open']
 				}`}
-				alt='CalendarButton'
+				alt='Flêche Calendrier'
 			/>
 		</button>
 	);

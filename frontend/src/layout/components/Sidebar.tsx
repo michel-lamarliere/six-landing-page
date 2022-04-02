@@ -112,10 +112,18 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 		<div className={props.className}>
 			<div className={classes.wrapper}>
 				<div className={classes.user}>
-					<Link to='/profil' className={classes['user__name-img']}>
-						<img src={userIcon} alt='Icône Utilisateur' />
-						<div>{userName}</div>
-					</Link>
+					<div
+						onClick={() =>
+							dispatch({
+								type: UIElementsActionTypes.HIDE_MOBILE_SIDEBAR,
+							})
+						}
+					>
+						<Link to='/profil' className={classes['user__name-img']}>
+							<img src={userIcon} alt='Icône Utilisateur' />
+							<div>{userName}</div>
+						</Link>
+					</div>
 					<button
 						onClick={refreshDataHandler}
 						className={`${classes.user__refresh} ${
