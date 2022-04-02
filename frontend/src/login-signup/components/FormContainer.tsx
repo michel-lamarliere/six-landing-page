@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
 import { useRequest } from '../../_shared/hooks/http-hook';
+
 import { RootState } from '../../_shared/store/store';
+
 import ForgotPassword from './ForgotPassword';
+
+import BackButton from '../../_shared/assets/icons/back-button.svg';
+
 import classes from './FormContainer.module.scss';
 
 interface Props {
@@ -12,17 +18,14 @@ interface Props {
 	footer_text: string;
 	footer_text_link: string;
 	switchFormHandler: () => void;
+	responseMessage: string;
 }
 
 const FormContainer: React.FC<Props> = (props) => {
 	const navigate = useNavigate();
 
-	const { sendRequest } = useRequest();
-
 	const userState = useSelector((state: RootState) => state.user);
 	const uiElementsState = useSelector((state: RootState) => state.uiElements);
-
-	const [responseMessage, setResponseMessage] = useState('');
 
 	const backButton = (event: React.FormEvent) => {
 		event.preventDefault();
@@ -41,16 +44,20 @@ const FormContainer: React.FC<Props> = (props) => {
 		<div className={classes.wrapper}>
 			<div className={classes.header}>
 				<button onClick={backButton} className={classes['header__back-button']}>
-					{'<'}
+					<img src={BackButton} alt='Retour' />
 				</button>
 				<h1 className={classes.header__title}>{props.header_title}</h1>
 			</div>
 			{!userData && (
-				<form onSubmit={props.formHandler} className={classes.form}>
-					{uiElementsState.showForgotPasswordForm && <ForgotPassword />}
-					{props.children}
-					<div className={classes['response-message']}>{responseMessage}</div>
-				</form>
+				<>
+					<form onSubmit={props.formHandler} className={classes.form}>
+						{uiElementsState.showForgotPasswordForm && <ForgotPassword />}
+						{props.children}
+					</form>
+					<div className={classes['response-message']}>
+						{props.responseMessage}
+					</div>
+				</>
 			)}
 			<h3>michel@test.com</h3>
 			<h3>Tester1@</h3>

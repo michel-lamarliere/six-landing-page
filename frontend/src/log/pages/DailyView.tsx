@@ -60,8 +60,6 @@ const DailyView: React.FC = () => {
 			'GET'
 		);
 
-		console.log(responseData);
-
 		if (!responseData) {
 			return;
 		}

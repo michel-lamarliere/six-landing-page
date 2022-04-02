@@ -24,23 +24,42 @@ const LoginForm: React.FC<Props> = (props) => {
 	const { User } = useUser();
 
 	const [rememberEmail, setRememberEmail] = useState(false);
+	const [responseMessage, setResponseMessage] = useState('');
 
 	const {
 		input: emailInput,
 		setInput: setEmailInput,
 		inputOnChangeHandler: emailOnChangeHandler,
 		inputOnBlurHandler: emailOnBlurHandler,
-	} = useInput(useInputTypes.EMAIL);
+	} = useInput({ type: useInputTypes.EMAIL, validate: false });
 
 	const {
 		input: passwordInput,
 		setInput: setPasswordInput,
 		inputOnChangeHandler: passwordOnChangeHandler,
 		inputOnBlurHandler: passwordOnBlurHandler,
-	} = useInput(useInputTypes.PASSWORD);
+	} = useInput({ type: useInputTypes.PASSWORD, validate: false });
+
+	const checkInputsAreNotEmpty = () => {
+		if (
+			emailInput.value.trim().length === 0 ||
+			passwordInput.value.trim().length === 0
+		) {
+			return false;
+		}
+
+		return true;
+	};
 
 	const loginFormHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
+
+		const formIsEmpty = !checkInputsAreNotEmpty();
+
+		if (formIsEmpty) {
+			setResponseMessage('Veuillez remplir les champs.');
+			return;
+		}
 
 		const responseData = await sendRequest(
 			'http://localhost:8080/api/user/signin',
@@ -52,7 +71,7 @@ const LoginForm: React.FC<Props> = (props) => {
 		);
 
 		if (responseData.error) {
-			// setResponseMessage(responseData.error);
+			setResponseMessage(responseData.error);
 			console.log('erreur');
 			return;
 		}
@@ -62,8 +81,6 @@ const LoginForm: React.FC<Props> = (props) => {
 		user.logIn();
 
 		console.log(user);
-
-		// logInUser(responseData);
 	};
 
 	const checkboxHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -93,6 +110,7 @@ const LoginForm: React.FC<Props> = (props) => {
 			footer_text={'Pas de compte ?'}
 			footer_text_link={'Inscrivez-vous !'}
 			switchFormHandler={props.switchFormHandler}
+			responseMessage={responseMessage}
 		>
 			<Input
 				id='Email'

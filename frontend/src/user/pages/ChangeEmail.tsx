@@ -22,7 +22,7 @@ const ChangeEmail: React.FC = () => {
 		setInput: setNewEmailInput,
 		inputOnChangeHandler: newEmailOnChangeHandler,
 		inputOnBlurHandler: newEmailOnBlurHandler,
-	} = useInput(useInputTypes.EMAIL);
+	} = useInput({ type: useInputTypes.EMAIL, validate: true });
 
 	const formHandler = async () => {
 		// const responseData = await sendRequest('http://localhost:8080/api/user/modify/email', 'GET')

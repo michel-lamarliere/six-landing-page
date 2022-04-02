@@ -19,9 +19,14 @@
 	&__back-button {
 		position: absolute;
 		top: 50%;
+		display: grid;
+		place-content: center;
+		width: 1.5rem;
+		height: 1.5rem;
 		transform: translateY(-50%);
 		left: -4rem;
-		background: none;
+		background: #4740a0;
+		border-radius: 50%;
 		cursor: pointer;
 	}
 
@@ -44,6 +49,10 @@
 }
 
 .response-message {
+	width: 80%;
+	margin: 2rem auto 0 auto;
+	text-align: center;
+	font-size: 15px;
 	color: #ffffff;
 }
 

@@ -9,7 +9,14 @@ const database = require('../util/db-connect');
 const { emailConfirmationEmail } = require('../util/email-confirmation');
 
 const signUp: RequestHandler = async (req, res, next) => {
-	const { name: reqName, email: reqEmail, password: reqPassword } = await req.body;
+	const {
+		name: reqName,
+		email: reqEmail,
+		password: reqPassword,
+		passwordConfirmation: reqPasswordConfirmation,
+	} = await req.body;
+
+	console.log(req.body);
 
 	const databaseConnect = await database.getDb('six-dev').collection('users');
 
@@ -28,29 +35,45 @@ const signUp: RequestHandler = async (req, res, next) => {
 		name: false,
 		email: false,
 		password: false,
+		passwordConfirmation: false,
 	};
 
 	// VALIDATION
 	if (
 		reqName.trim().length >= 2 &&
 		reqName.trim().match(/^['’\p{L}\p{M}]*-?['’\p{L}\p{M}]*$/giu)
-	)
+	) {
 		inputsAreValid.name = true;
+	}
+
 	if (
 		reqEmail.match(
 			/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 		)
-	)
+	) {
 		inputsAreValid.email = true;
+	}
 
 	if (
 		reqPassword.match(
 			/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
 		)
-	)
+	) {
 		inputsAreValid.password = true;
+	}
+	console.log(reqPassword);
+	console.log(reqPasswordConfirmation);
 
-	if (inputsAreValid.name && inputsAreValid.email && inputsAreValid.password) {
+	if (reqPassword === reqPasswordConfirmation) {
+		inputsAreValid.passwordConfirmation = true;
+	}
+
+	if (
+		inputsAreValid.name &&
+		inputsAreValid.email &&
+		inputsAreValid.password &&
+		inputsAreValid.passwordConfirmation
+	) {
 		inputsAreValid.all = true;
 	}
 

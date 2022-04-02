@@ -2,27 +2,30 @@ import { useState, useEffect } from 'react';
 
 export enum useInputTypes {
 	NAME = 'NAME',
-	CHECK_EMAIL = 'CHECK_EMAIL',
 	EMAIL = 'EMAIL',
 	PASSWORD = 'PASSWORD',
 	NEW_PASSWORD = 'NEW_PASSWORD',
 	PASSWORD_COMPARISON = 'PASSWORD_COMPARISON',
-	OLD_PASSWORD = 'OLD_PASSWORD',
 	NONE = 'NONE',
 }
 
-export const useInput = (
+export const useInput = (data: {
 	type:
 		| useInputTypes.NAME
-		| useInputTypes.CHECK_EMAIL
 		| useInputTypes.EMAIL
 		| useInputTypes.PASSWORD
 		| useInputTypes.NEW_PASSWORD
 		| useInputTypes.PASSWORD_COMPARISON
-		| useInputTypes.OLD_PASSWORD
-		| useInputTypes.NONE,
-	compareTo?: string | null
-) => {
+		| useInputTypes.NONE;
+	validate: boolean;
+	display?: boolean;
+	compareTo?: string | null;
+}) => {
+	const type = data.type;
+	const validate = data.validate;
+	const display = data.display;
+	const compareTo = data.compareTo;
+
 	const [input, setInput] = useState({
 		value: '',
 		isValid: false,
@@ -34,7 +37,13 @@ export const useInput = (
 	};
 
 	useEffect(() => {
-		if (type === 'NAME') {
+		if (display) {
+			setInput((prev) => ({ ...prev, isTouched: true }));
+		}
+	}, [display]);
+
+	useEffect(() => {
+		if (type === 'NAME' && validate) {
 			input.value.trim().length >= 2 &&
 			input.value.trim().match(/^['’\p{L}\p{M}]*-?['’\p{L}\p{M}]*$/giu)
 				? setInput((prev) => ({ ...prev, isValid: true }))
@@ -43,7 +52,7 @@ export const useInput = (
 	}, [input.value]);
 
 	useEffect(() => {
-		if (type === 'EMAIL') {
+		if (type === 'EMAIL' && validate) {
 			input.value.match(
 				/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 			)
@@ -53,20 +62,7 @@ export const useInput = (
 	}, [input.value]);
 
 	useEffect(() => {
-		if (type === 'CHECK_EMAIL' && input.value.trim().length > 0) {
-			const delayDebounceFn = setTimeout(() => {
-				setInput((prev) => ({ ...prev, isTouched: true }));
-			}, 1000);
-
-			return () => {
-				setInput((prev) => ({ ...prev, isTouched: false, isValid: false }));
-				clearTimeout(delayDebounceFn);
-			};
-		}
-	}, [input.value]);
-
-	useEffect(() => {
-		if (type === 'PASSWORD') {
+		if (type === 'PASSWORD' && validate) {
 			input.value.match(
 				/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
 			)
@@ -76,13 +72,7 @@ export const useInput = (
 	}, [input.value]);
 
 	useEffect(() => {
-		if (type === 'OLD_PASSWORD') {
-			setInput((prev) => ({ ...prev, isTouched: false }));
-		}
-	}, [input.value]);
-
-	useEffect(() => {
-		if (type === 'NEW_PASSWORD') {
+		if (type === 'NEW_PASSWORD' && validate) {
 			input.value.match(
 				/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
 			)
@@ -92,7 +82,7 @@ export const useInput = (
 	}, [input.value, compareTo]);
 
 	useEffect(() => {
-		if (type === 'PASSWORD_COMPARISON') {
+		if (type === 'PASSWORD_COMPARISON' && validate) {
 			input.value === compareTo
 				? setInput((prev) => ({ ...prev, isValid: true }))
 				: setInput((prev) => ({ ...prev, isValid: false }));
@@ -100,10 +90,8 @@ export const useInput = (
 	}, [input.value, compareTo]);
 
 	const inputOnBlurHandler = () => {
-		if (type !== 'CHECK_EMAIL') {
-			if (input.value.trim().length >= 1) {
-				setInput((prev) => ({ ...prev, isTouched: true }));
-			}
+		if (input.value.trim().length >= 1 && validate) {
+			setInput((prev) => ({ ...prev, isTouched: true }));
 		}
 	};
 

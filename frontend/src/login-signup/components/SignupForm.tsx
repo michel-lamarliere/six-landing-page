@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
@@ -17,36 +17,66 @@ const SingupForm: React.FC<Props> = (props) => {
 	const { sendRequest } = useRequest();
 	const { User } = useUser();
 
+	const [responseMessage, setResponseMessage] = useState('');
+
+	const [sumbitted, setSubmitted] = useState(false);
+
 	const {
 		input: nameInput,
 		setInput: setNameInput,
 		inputOnChangeHandler: nameOnChangeHandler,
 		inputOnBlurHandler: nameOnBlurHandler,
-	} = useInput(useInputTypes.NAME);
+	} = useInput({ type: useInputTypes.NAME, validate: true, display: sumbitted });
 
 	const {
 		input: emailInput,
 		setInput: setEmailInput,
 		inputOnChangeHandler: emailOnChangeHandler,
 		inputOnBlurHandler: emailOnBlurHandler,
-	} = useInput(useInputTypes.EMAIL);
+	} = useInput({ type: useInputTypes.EMAIL, validate: true, display: sumbitted });
 
 	const {
 		input: passwordInput,
 		setInput: setPasswordInput,
 		inputOnChangeHandler: passwordOnChangeHandler,
 		inputOnBlurHandler: passwordOnBlurHandler,
-	} = useInput(useInputTypes.PASSWORD);
+	} = useInput({ type: useInputTypes.PASSWORD, validate: true, display: sumbitted });
 
 	const {
 		input: passwordConfirmationInput,
 		setInput: setPasswordConfirmationInput,
 		inputOnChangeHandler: passwordConfirmationOnChangeHandler,
 		inputOnBlurHandler: passwordConfirmationOnBlurHandler,
-	} = useInput(useInputTypes.PASSWORD_COMPARISON, passwordInput.value);
+	} = useInput({
+		type: useInputTypes.PASSWORD_COMPARISON,
+		validate: true,
+		display: sumbitted,
+		compareTo: passwordInput.value,
+	});
+
+	const checkFormIsValid = () => {
+		if (
+			!nameInput.isValid ||
+			!emailInput.isValid ||
+			!passwordInput.isValid ||
+			!passwordConfirmationInput.isValid
+		) {
+			return false;
+		}
+
+		return true;
+	};
 
 	const signupFormHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
+		setSubmitted(true);
+		const formIsValid = checkFormIsValid();
+
+		if (!formIsValid) {
+			return;
+		}
+
+		console.log(passwordConfirmationInput.value);
 
 		const responseData = await sendRequest(
 			'http://localhost:8080/api/user/signup',
@@ -55,20 +85,19 @@ const SingupForm: React.FC<Props> = (props) => {
 				name: nameInput.value.trim().toLowerCase(),
 				email: emailInput.value.trim().toLowerCase(),
 				password: passwordInput.value,
+				passwordConfirmation: passwordConfirmationInput.value,
 			})
 		);
 
 		if (responseData.error) {
-			// setResponseMessage(responseData.error);
-			console.log('erreur');
+			setResponseMessage(responseData.error);
 			return;
 		}
 
 		const user = new User(responseData);
 
-		console.log(user);
-
-		// logInUser(responseData);
+		await user.logIn();
+		setSubmitted(false);
 	};
 
 	return (
@@ -78,6 +107,7 @@ const SingupForm: React.FC<Props> = (props) => {
 			footer_text={'Déjà membre ?'}
 			footer_text_link={'Connectez-vous !'}
 			switchFormHandler={props.switchFormHandler}
+			responseMessage={responseMessage}
 		>
 			<Input
 				id='Nom'

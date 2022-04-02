@@ -54,7 +54,7 @@ const ChangeName: React.FC = () => {
 		setInput: setNewName,
 		inputOnChangeHandler: newNameOnChangeHandler,
 		inputOnBlurHandler: newNameOnBlurHandler,
-	} = useInput(useInputTypes.NAME);
+	} = useInput({ type: useInputTypes.NAME, validate: true });
 
 	return (
 		<div className={formClasses.basic}>
