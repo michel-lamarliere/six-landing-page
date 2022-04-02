@@ -6,6 +6,12 @@ import { UIElementsActionTypes } from '../../store/ui-elements';
 
 import TopArrow from '../../assets/icons/top-arrow.svg';
 import CalendarIcon from '../../assets/icons/calendar_icon.svg';
+import FoodIcon from '../../assets/icons/food.svg';
+import SleepIcon from '../../assets/icons/sleep.svg';
+import SportsIcon from '../../assets/icons/sports.svg';
+import RelaxationIcon from '../../assets/icons/relaxation.svg';
+import WorkIcon from '../../assets/icons/work.svg';
+import SocialIcon from '../../assets/icons/social.svg';
 
 import calendarClasses from './Calendar.module.scss';
 
@@ -31,7 +37,11 @@ export const CalendarButton: React.FC = () => {
 			className={calendarClasses.buttons__button}
 			onClick={calendarButtonHandler}
 		>
-			<img src={CalendarIcon} alt='LogoCalendrier' />
+			<img
+				src={CalendarIcon}
+				alt='LogoCalendrier'
+				className={calendarClasses.buttons__button__calendar}
+			/>
 			<img
 				src={TopArrow}
 				className={`${calendarClasses.buttons__button__arrow} ${
@@ -44,7 +54,7 @@ export const CalendarButton: React.FC = () => {
 	);
 };
 
-export const TaskButton: React.FC<{
+export const TaskSelectorButton: React.FC<{
 	chosenTask: string;
 	selectHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }> = (props) => {
@@ -55,6 +65,29 @@ export const TaskButton: React.FC<{
 	const taskButtonHandler = () => {
 		dispatch({ type: UIElementsActionTypes.SHOW_TASK_SELECTOR });
 		dispatch({ type: UIElementsActionTypes.SHOW_OVERLAY });
+	};
+
+	const getTaskImage = () => {
+		switch (props.chosenTask) {
+			case 'food': {
+				return FoodIcon;
+			}
+			case 'sleep': {
+				return SleepIcon;
+			}
+			case 'sport': {
+				return SportsIcon;
+			}
+			case 'relaxation': {
+				return RelaxationIcon;
+			}
+			case 'work': {
+				return WorkIcon;
+			}
+			case 'social': {
+				return SocialIcon;
+			}
+		}
 	};
 
 	useEffect(() => {
@@ -71,34 +104,91 @@ export const TaskButton: React.FC<{
 				onClick={taskButtonHandler}
 				className={calendarClasses.buttons__button}
 			>
-				{props.chosenTask}
+				<img
+					src={getTaskImage()}
+					alt='Tâche Sélectionnée'
+					className={calendarClasses.buttons__button__icon}
+				/>
 				<img
 					src={TopArrow}
 					className={`${calendarClasses.buttons__button__arrow} ${
 						uiElementsState.showTaskSelector &&
 						calendarClasses['buttons__button__arrow--open']
 					}`}
-					alt='CalendarButton'
+					alt='Flêche Calendrier'
 				/>
 			</button>
 			{uiElementsState.showTaskSelector && (
 				<div className={calendarClasses.selector}>
-					<button value='food' onClick={props.selectHandler}>
+					<button
+						value='food'
+						onClick={props.selectHandler}
+						className={`${
+							props.chosenTask === 'food' &&
+							calendarClasses.selector__active
+						}`}
+					>
+						<img src={FoodIcon} alt='Alimentation' />
 						Alimentation
 					</button>
-					<button value='sleep' onClick={props.selectHandler}>
+
+					<button
+						value='sleep'
+						onClick={props.selectHandler}
+						className={`${
+							props.chosenTask === 'sleep' &&
+							calendarClasses.selector__active
+						}`}
+					>
+						<img src={SleepIcon} alt='Sommeil' />
 						Sommeil
 					</button>
-					<button value='sport' onClick={props.selectHandler}>
+
+					<button
+						value='sport'
+						onClick={props.selectHandler}
+						className={`${
+							props.chosenTask === 'sport' &&
+							calendarClasses.selector__active
+						}`}
+					>
+						<img src={SportsIcon} alt='Sport' />
 						Sport
 					</button>
-					<button value='relaxation' onClick={props.selectHandler}>
+
+					<button
+						value='relaxation'
+						onClick={props.selectHandler}
+						className={`${
+							props.chosenTask === 'relaxation' &&
+							calendarClasses.selector__active
+						}`}
+					>
+						<img src={RelaxationIcon} alt='Détente' />
 						Détente
 					</button>
-					<button value='work' onClick={props.selectHandler}>
+
+					<button
+						value='work'
+						onClick={props.selectHandler}
+						className={`${
+							props.chosenTask === 'work' &&
+							calendarClasses.selector__active
+						}`}
+					>
+						<img src={WorkIcon} alt='Projets' />
 						Projets
 					</button>
-					<button value='social' onClick={props.selectHandler}>
+
+					<button
+						value='social'
+						onClick={props.selectHandler}
+						className={`${
+							props.chosenTask === 'social' &&
+							calendarClasses.selector__active
+						}`}
+					>
+						<img src={SocialIcon} alt='Vie Sociale' />
 						Vie Sociale
 					</button>
 				</div>

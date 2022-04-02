@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UIElementsActionTypes } from '../../store/ui-elements';
 
 import DaysOfWeek from './DaysOfWeek';
-import { CalendarButton, TaskButton } from './CalendarButtons';
+import { CalendarButton, TaskSelectorButton } from './CalendarButtons';
 
 import LeftArrow from '../../assets/icons/left-arrow.svg';
 import DoubleLeftArrow from '../../assets/icons/double-left-arrow.svg';
@@ -85,7 +85,7 @@ const Calendar: React.FC<Props> = (props) => {
 				{props.calendar !== calendarTypes.ANNUAL_CHART && <CalendarButton />}
 				{(props.calendar === calendarTypes.MONTHLY ||
 					props.calendar === calendarTypes.ANNUAL_CHART) && (
-					<TaskButton
+					<TaskSelectorButton
 						chosenTask={props.chosenTask}
 						selectHandler={props.selectHandler}
 					/>
