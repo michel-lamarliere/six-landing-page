@@ -2,6 +2,7 @@ import { Action } from 'redux';
 
 interface State {
 	showOverlay: boolean;
+	showMobileSidebar: boolean;
 	showForgotPasswordForm: boolean;
 	showCalendar: boolean;
 	showTaskSelector: boolean;
@@ -9,6 +10,7 @@ interface State {
 
 const initialStateReducer: State = {
 	showOverlay: false,
+	showMobileSidebar: false,
 	showForgotPasswordForm: false,
 	showCalendar: false,
 	showTaskSelector: false,
@@ -17,6 +19,9 @@ const initialStateReducer: State = {
 export enum UIElementsActionTypes {
 	SHOW_OVERLAY = 'SHOW_OVERLAY',
 	HIDE_OVERLAY = 'HIDE_OVERLAY',
+
+	SHOW_MOBILE_SIDEBAR = 'SHOW_MOBILE_SIDEBAR',
+	HIDE_MOBILE_SIDEBAR = 'HIDE_MOBILE_SIDEBAR',
 
 	SHOW_FORGOT_PASSWORD_FORM = 'SHOW_FORGOT_PASSWORD_FORM',
 	HIDE_FORGOT_PASSWORD_FORM = 'HIDE_FORGOT_PASSWORD_FORM',
@@ -35,6 +40,11 @@ const UIReducer = (state = initialStateReducer, action: Action) => {
 			return { ...state, showOverlay: true };
 		case UIElementsActionTypes.HIDE_OVERLAY:
 			return { ...state, showOverlay: false };
+		// MOBILE SIDEBAR
+		case UIElementsActionTypes.SHOW_MOBILE_SIDEBAR:
+			return { ...state, showMobileSidebar: true };
+		case UIElementsActionTypes.HIDE_MOBILE_SIDEBAR:
+			return { ...state, showMobileSidebar: false };
 		// FORGOT PASSWORD FORM
 		case UIElementsActionTypes.SHOW_FORGOT_PASSWORD_FORM:
 			return { ...state, showForgotPasswordForm: true };

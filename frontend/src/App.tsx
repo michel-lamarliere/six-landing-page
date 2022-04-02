@@ -10,28 +10,26 @@ import { EmailConfirmationActionTypes } from './_shared/store/email-confirmation
 import { ErrorPopupActionTypes } from './_shared/store/error';
 
 import LoginSignupForms from './login-signup/pages/LoginSignupForms';
-import Sidebar from './layout/pages/Sidebar';
-
+import Sidebar from './layout/components/Sidebar';
 import DailyView from './log/pages/DailyView';
 import WeeklyView from './log/pages/WeeklyView';
 import MonthlyView from './log/pages/MonthlyView';
-
 import Error404 from './error/pages/Error404';
 import ErrorPopup from './pop-ups/ErrorPopup';
 import EmailPopup from './pop-ups/EmailConfirmationPopup';
 import ConfirmEmailAddress from './user/pages/ConfirmedEmailAddress';
 import ForgotPasswordForm from './user/pages/ForgotPasswordForm';
-
 import Overlay from './_shared/components/UIElements/Overlay';
-
+import HamburgerButton from './_shared/components/UIElements/HamburgerButton';
 import Profile from './user/pages/Profile';
 import ChangeName from './user/pages/ChangeName';
 import ChangeEmail from './user/pages/ChangeEmail';
 import ChangePassword from './user/pages/ChangePassword';
 import ChangeImage from './user/pages/ChangeImage';
-
 import AnnualChart from './charts/pages/AnnualChart';
 import HomePage from './homepage/pages/HomePage';
+import DesktopSidebar from './layout/pages/DesktopSidebar';
+import MobileSidebar from './layout/pages/MobileSidebar';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
@@ -111,18 +109,11 @@ const App: React.FC = () => {
 		userState.name &&
 		userState.email;
 
-	useEffect(() => {
-		const sidebar = document.getElementById('sidebar')!;
-		if (!userData) {
-			sidebar.style.display = 'none';
-		} else {
-			sidebar.style.display = 'flex';
-		}
-	}, [userData]);
-
 	return (
 		<>
-			{userData && <Sidebar />}
+			{userData && <HamburgerButton />}
+			{userData && <DesktopSidebar />}
+			{userData && <MobileSidebar />}
 			{uiElementsState.showOverlay && <Overlay />}
 			<Routes>
 				{!userData && (

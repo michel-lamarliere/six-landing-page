@@ -13,8 +13,9 @@ import userIcon from '../../_shared/assets/icons/user-icon.svg';
 
 import classes from './Sidebar.module.scss';
 import RefreshSpinner from '../../_shared/assets/svgs/refresh-spinner';
+import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 
-const Sidebar: React.FC = () => {
+const Sidebar: React.FC<{ className: string }> = (props) => {
 	const { sendRequest } = useRequest();
 	const dispatch = useDispatch();
 
@@ -107,8 +108,8 @@ const Sidebar: React.FC = () => {
 		formatUserName();
 	}, [userState]);
 
-	return ReactDOM.createPortal(
-		<>
+	return (
+		<div className={props.className}>
 			<div className={classes.wrapper}>
 				<div className={classes.user}>
 					<Link to='/profil' className={classes['user__name-img']}>
@@ -129,16 +130,24 @@ const Sidebar: React.FC = () => {
 					{logLinks.map((link) => (
 						<React.Fragment key={link.key}>
 							{link.url && (
-								<NavLink
-									className={({ isActive }) =>
-										isActive
-											? classes['links__link--active']
-											: classes['links__link']
+								<div
+									onClick={() =>
+										dispatch({
+											type: UIElementsActionTypes.HIDE_MOBILE_SIDEBAR,
+										})
 									}
-									to={link.url}
 								>
-									{link.text}
-								</NavLink>
+									<NavLink
+										className={({ isActive }) =>
+											isActive
+												? classes['links__link--active']
+												: classes['links__link']
+										}
+										to={link.url}
+									>
+										{link.text}
+									</NavLink>
+								</div>
 							)}
 						</React.Fragment>
 					))}
@@ -153,8 +162,7 @@ const Sidebar: React.FC = () => {
 					Mentions Légales
 				</Link>
 			</footer>
-		</>,
-		document.getElementById('sidebar')!
+		</div>
 	);
 };
 
