@@ -7,13 +7,20 @@ interface Props {
 	img: string;
 }
 
-const GridItem: React.FC<Props> = (props) => {
+export const Slide2GridItem: React.FC<Props> = (props) => {
 	return (
 		<div className={classes.wrapper}>
-			<img src={props.img} alt={props.title} className={classes.img} />
+			<img src={props.img} alt={props.title} className={classes['img-2']} />
 			<div className={classes.title}>{props.title}</div>
 		</div>
 	);
 };
 
-export default GridItem;
+export const Slide3GridItem: React.FC<Props> = (props) => {
+	return (
+		<div className={classes.wrapper}>
+			<img src={props.img} alt={props.title} className={classes['img-3']} />
+			<div className={classes.title}>{props.title}</div>
+		</div>
+	);
+};

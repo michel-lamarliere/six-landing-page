@@ -1,10 +1,10 @@
-<svg id="Groupe_170" data-name="Groupe 170" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1700" height="1080" viewBox="0 0 1700 1080">
+<svg id="deskstop-bg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1700" height="1577.579" viewBox="0 0 1700 1577.579">
   <defs>
     <clipPath id="clip-path">
-      <rect id="Rectangle_536" data-name="Rectangle 536" width="1700" height="1080" fill="#191b34"/>
+      <rect id="Rectangle_912" data-name="Rectangle 912" width="1700" height="1577.579" transform="translate(0 0.001)" fill="none"/>
     </clipPath>
   </defs>
-  <g id="Groupe_169" data-name="Groupe 169" clip-path="url(#clip-path)">
-    <path id="Tracé_42" data-name="Tracé 42" d="M0,1080C51.911,976.993,150.782,916.96,250.214,885.1s203.437-40.852,303.272-70.985,199.775-86.3,255.65-186.5c71.97-129.065,54.725-296.151,79.7-446.935C900.664,109.277,926.956,33.913,982.621,0L1700,1.416V1078.584Z" fill="#191b34"/>
+  <g id="Groupe_713" data-name="Groupe 713" transform="translate(0 -0.001)" clip-path="url(#clip-path)">
+    <path id="Tracé_234" data-name="Tracé 234" d="M0,1577.58c51.911-103.007,150.782-163.04,250.214-194.9s203.437-40.852,303.272-70.985,199.775-86.3,255.65-186.5c71.97-129.065,51.987-320.236,103.393-464.17,48.184-134.912,136.111-261.7,175.445-313.674,74.431-98.355,236.284-236.306,364.535-281.353C1606.333,11.963,1700,0,1700,0V1576.164Z" fill="#191b34"/>
   </g>
 </svg>

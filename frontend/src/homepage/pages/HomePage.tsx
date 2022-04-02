@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Button } from '../../_shared/components/UIElements/Buttons';
 import { buttonColors } from '../../_shared/components/UIElements/Buttons';
-import GridItem from '../components/GridItem';
+import { Slide2GridItem, Slide3GridItem } from '../components/GridItem';
 import CarouselButton from '../components/CarouselButton';
 
 import SixIcon from '../../_shared/assets/icons/logo.svg';
@@ -12,9 +12,13 @@ import SportsIcon from '../../_shared/assets/icons/sports.svg';
 import RelaxationIcon from '../../_shared/assets/icons/relaxation.svg';
 import WorkIcon from '../../_shared/assets/icons/work.svg';
 import SocialIcon from '../../_shared/assets/icons/social.svg';
+import TaskFullIcon from '../../_shared/assets/icons/tutorial-full.svg';
+import TaskHalfIcon from '../../_shared/assets/icons/tutorial-half.svg';
+import TaskEmptyIcon from '../../_shared/assets/icons/tutorial-empty.svg';
 
 import classes from './HomePage.module.scss';
 import LoginSignupForms from '../../login-signup/pages/LoginSignupForms';
+import { Link } from 'react-router-dom';
 
 const HomePage: React.FC = () => {
 	const carousel = [
@@ -45,12 +49,12 @@ const HomePage: React.FC = () => {
 				Nos six objectifs journaliers :
 			</div>
 			<div className={classes.carousel__text__grid}>
-				<GridItem title={'Alimentation'} img={FoodIcon} />
-				<GridItem title={'Sommeil'} img={SleepIcon} />
-				<GridItem title={'Sport'} img={SportsIcon} />
-				<GridItem title={'Relaxation'} img={RelaxationIcon} />
-				<GridItem title={'Projets'} img={WorkIcon} />
-				<GridItem title={'Vie Sociale'} img={SocialIcon} />
+				<Slide2GridItem title={'Alimentation'} img={FoodIcon} />
+				<Slide2GridItem title={'Sommeil'} img={SleepIcon} />
+				<Slide2GridItem title={'Sport'} img={SportsIcon} />
+				<Slide2GridItem title={'Relaxation'} img={RelaxationIcon} />
+				<Slide2GridItem title={'Projets'} img={WorkIcon} />
+				<Slide2GridItem title={'Vie Sociale'} img={SocialIcon} />
 			</div>
 		</>,
 		<>
@@ -60,7 +64,14 @@ const HomePage: React.FC = () => {
 			<div className={classes['carousel__text__header-two']}>
 				Il suffit de cliquer jusqu’à obtenir le niveau accompli.
 			</div>
-			<div className={classes.carousel__text__grid}></div>
+			<div className={classes.carousel__text__grid}>
+				<Slide3GridItem title={'Atteint'} img={TaskFullIcon} />
+				<Slide3GridItem title={'Presque atteint'} img={TaskHalfIcon} />
+				<Slide3GridItem title={'Non atteint'} img={TaskEmptyIcon} />
+			</div>
+			<Link to='' className={classes.carousel__text__link}>
+				En savoir plus
+			</Link>
 		</>,
 	];
 

@@ -5,10 +5,9 @@
 	flex-direction: column;
 	justify-content: space-between;
 	width: 100%;
-	height: auto;
 	padding: 3.5rem;
-	background: #3e379b;
-	// background: #3e379b url('../../_shared/assets/svgs/homepage-bg.svg') no-repeat bottom;
+	background: #3e379b url('../../_shared/assets/svgs/mobile-bg.svg') no-repeat bottom
+		left -200px;
 }
 
 .carousel {
@@ -38,6 +37,15 @@
 			}
 		}
 
+		&__link {
+			font-family: $fontMedium;
+			font-size: 14px;
+			text-decoration: underline;
+			color: #8d88ff;
+			text-align: center;
+			margin-top: 5.71em;
+		}
+
 		&__header {
 			font-family: $fontSemiBold;
 			font-size: 16px;
@@ -59,7 +67,8 @@
 		&__grid {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
-			gap: 1.15rem;
+			column-gap: 1.15rem;
+			row-gap: 2.5rem;
 			margin: 3rem auto 0 auto;
 		}
 	}
@@ -85,30 +94,36 @@
 
 @media screen and (min-width: 1200px) {
 	.wrapper {
+		display: flex;
 		flex-direction: row;
+		justify-content: space-between;
 		padding: 6rem;
+		background: #3e379b url('../../_shared/assets/svgs/desktop-bg.svg') no-repeat
+			right;
 	}
 
 	.carousel {
-		float: left;
 		width: 25%;
 		min-width: 25rem;
 		min-height: 30rem;
+		max-height: 30rem;
 		margin: 0 auto;
-		border: 1px solid #ffffff;
 
 		&__text {
 			width: 100%;
+
+			&__grid {
+				gap: 2.5rem;
+				margin: 3rem 0 0 0;
+			}
 		}
 	}
 
 	.forms {
-		float: right;
 		display: flex;
 		width: 25%;
 		min-width: 25rem;
-		min-height: 40rem;
-		border: 1px solid black;
+		max-height: 50rem;
 		border-radius: 2rem;
 		overflow: hidden;
 	}

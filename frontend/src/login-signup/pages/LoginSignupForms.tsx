@@ -5,7 +5,7 @@ import SignupForm from '../components/SignupForm';
 
 import classes from './LoginSignupForms.module.scss';
 
-const Header: React.FC = () => {
+const Forms: React.FC = () => {
 	const [showLoginForm, setShowLoginForm] = useState(true);
 
 	// const logInUser = (responseData: {
@@ -64,4 +64,4 @@ const Header: React.FC = () => {
 	);
 };
 
-export default Header;
+export default Forms;
