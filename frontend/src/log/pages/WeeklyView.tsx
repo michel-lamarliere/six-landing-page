@@ -8,6 +8,7 @@ import { ErrorPopupActionTypes } from '../../_shared/store/error';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
 import { getMonthFnTypes, useDatesFn } from '../../_shared/hooks/dates-hook';
+import { useTask } from '../../_shared/classes/task-hook';
 
 import WeekViewTasks from '../components/WeeklyViewTasks';
 import WeeklyCalendar from '../../_shared/components/Calendar/WeeklyCalendar';
@@ -15,9 +16,11 @@ import WeeklyCalendar from '../../_shared/components/Calendar/WeeklyCalendar';
 import classes from './WeeklyView.module.scss';
 
 const WeekView: React.FC = () => {
+	const dispatch = useDispatch();
+
 	const { sendRequest, sendData } = useRequest();
 	const { getMonthFn } = useDatesFn();
-	const dispatch = useDispatch();
+	const { Task } = useTask();
 
 	const userState = useSelector((state: RootState) => state.user);
 
@@ -32,29 +35,27 @@ const WeekView: React.FC = () => {
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const dateAndTaskStr = (event.target as HTMLElement).id;
-		const prevLevel = parseInt((event.target as HTMLButtonElement).value);
+		const previousLevel = parseInt((event.target as HTMLButtonElement).value);
 
-		if (userState.id) {
-			const responseData = await sendData(userState.id, dateAndTaskStr, prevLevel);
+		const date = dateAndTaskStr.split('_')[0];
+		const task = dateAndTaskStr.split('_')[1];
 
-			if (!responseData) {
-				return;
-			}
+		const newTaskObj = {
+			date,
+			task,
+			previousLevel,
+		};
 
-			if (responseData.error) {
-				dispatch({
-					type: ErrorPopupActionTypes.SET_ERROR,
-					message: responseData.error,
-				});
-			}
+		const newTask = new Task(newTaskObj);
 
-			getWeekData(userState.id, formattedFirstOfWeek);
-		}
+		await newTask.save();
+
+		getWeekData();
 	};
 
-	const getWeekData = async (userId: string, formattedFirstOfWeekStr: string) => {
+	const getWeekData = async () => {
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/log/weekly/${userId}/${formattedFirstOfWeekStr}`,
+			`http://localhost:8080/api/log/weekly/${userState.id}/${formattedFirstOfWeek}`,
 			'GET'
 		);
 
@@ -68,7 +69,7 @@ const WeekView: React.FC = () => {
 
 	useEffect(() => {
 		if (userState.id) {
-			getWeekData(userState.id, formattedFirstOfWeek);
+			getWeekData();
 			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), false, setMonthStr);
 		}
 	}, [userState.id, chosenDate]);

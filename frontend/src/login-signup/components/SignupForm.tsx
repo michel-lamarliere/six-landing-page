@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
-import { useUser } from '../../_shared/hooks/user-hook';
+import { useUser } from '../../_shared/classes/user-hook';
 
 import FormContainer from './FormContainer';
 import Input from '../../_shared/components/FormElements/Input';

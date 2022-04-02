@@ -54,15 +54,7 @@ export const useUser = () => {
 			}
 		}
 
-		// 	dispatch({
-		// 		type: UserActionTypes.LOG_IN,
-		// 		token: token,
-		// 		expiration: tokenExpiration.toISOString(),
-		// 		id: id,
-		// 		name: name,
-		// 		email: email,
-		// 		confirmedEmail: confirmedEmail,
-		// 	});
+		logOut() {}
 	}
 
 	return { User };

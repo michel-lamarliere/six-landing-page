@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
-import { useUser } from '../../_shared/hooks/user-hook';
+import { useUser } from '../../_shared/classes/user-hook';
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
 import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 

@@ -8,6 +8,7 @@ import { ErrorPopupActionTypes } from '../../_shared/store/error';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
 import { getMonthFnTypes, useDatesFn } from '../../_shared/hooks/dates-hook';
+import { useTask } from '../../_shared/classes/task-hook';
 
 import MonthlyCalendar from '../../_shared/components/Calendar/MonthlyCalendar';
 import { DataButton } from '../components/Buttons';
@@ -16,8 +17,10 @@ import classes from './MonthlyView.module.scss';
 
 const MonthlyView: React.FC = () => {
 	const dispatch = useDispatch();
+
 	const { sendRequest, sendData } = useRequest();
 	const { getMonthFn } = useDatesFn();
+	const { Task } = useTask();
 
 	const userState = useSelector((state: RootState) => state.user);
 
@@ -30,22 +33,21 @@ const MonthlyView: React.FC = () => {
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const dateAndTaskStr = (event.target as HTMLElement).id;
-		const prevLevel = parseInt((event.target as HTMLButtonElement).value);
+		const previousLevel = parseInt((event.target as HTMLButtonElement).value);
 
-		if (userState.id && userState.email) {
-			const responseData = await sendData(userState.id, dateAndTaskStr, prevLevel);
+		const date = dateAndTaskStr.split('_')[0];
+		const task = dateAndTaskStr.split('_')[1];
 
-			if (!responseData) {
-				return;
-			}
+		const newTaskObj = {
+			date,
+			task,
+			previousLevel,
+		};
 
-			if (responseData.error) {
-				dispatch({
-					type: ErrorPopupActionTypes.SET_ERROR,
-					message: responseData.error,
-				});
-			}
-		}
+		const newTask = new Task(newTaskObj);
+
+		await newTask.save();
+
 		getMonthlyData();
 	};
 

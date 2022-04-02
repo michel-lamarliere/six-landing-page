@@ -8,6 +8,7 @@ import { ErrorPopupActionTypes } from '../../_shared/store/error';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
 import { getMonthFnTypes, useDatesFn } from '../../_shared/hooks/dates-hook';
+import { useTask } from '../../_shared/classes/task-hook';
 
 import { DataButton } from '../components/Buttons';
 import DailyCalendar from '../../_shared/components/Calendar/DailyCalendar';
@@ -16,8 +17,10 @@ import classes from './DailyView.module.scss';
 
 const DailyView: React.FC = () => {
 	const dispatch = useDispatch();
+
 	const { sendRequest, sendData } = useRequest();
 	const { getDayFn, getMonthFn } = useDatesFn();
+	const { Task } = useTask();
 
 	const userState = useSelector((state: RootState) => state.user);
 
@@ -31,33 +34,33 @@ const DailyView: React.FC = () => {
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const dateAndTaskStr = (event.target as HTMLElement).id;
-		const prevLevel = parseInt((event.target as HTMLButtonElement).value);
+		const previousLevel = parseInt((event.target as HTMLButtonElement).value);
 
-		if (userState.id) {
-			const responseData = await sendData(userState.id, dateAndTaskStr, prevLevel);
+		const date = dateAndTaskStr.split('_')[0];
+		const task = dateAndTaskStr.split('_')[1];
 
-			if (!responseData) {
-				return;
-			}
+		const newTaskObj = {
+			date,
+			task,
+			previousLevel,
+		};
 
-			if (responseData.error) {
-				dispatch({
-					type: ErrorPopupActionTypes.SET_ERROR,
-					message: responseData.error,
-				});
-				return;
-			}
-			if (responseData) {
-				getDailyData(userState.id, chosenDate.toISOString().slice(0, 10));
-			}
-		}
+		const newTask = new Task(newTaskObj);
+
+		await newTask.save();
+
+		getDailyData();
 	};
 
-	const getDailyData = async (userId: string, date: string) => {
+	const getDailyData = async () => {
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/log/daily/${userId}/${date}`,
+			`http://localhost:8080/api/log/daily/${userState.id}/${chosenDate
+				.toISOString()
+				.slice(0, 10)}`,
 			'GET'
 		);
+
+		console.log(responseData);
 
 		if (!responseData) {
 			return;
@@ -69,7 +72,7 @@ const DailyView: React.FC = () => {
 
 	useEffect(() => {
 		if (userState.id) {
-			getDailyData(userState.id, chosenDate.toISOString().slice(0, 10));
+			getDailyData();
 			getDayFn(getDay(chosenDate), setDayStr);
 			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), false, setMonthStr);
 		}
