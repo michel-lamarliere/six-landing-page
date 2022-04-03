@@ -7,6 +7,7 @@ import { RootState } from '../../_shared/store/store';
 
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
 import { useRequest } from '../../_shared/hooks/http-hook';
+import { useUser } from '../../_shared/classes/user-hook';
 
 import Input from '../../_shared/components/FormElements/Input';
 
@@ -16,6 +17,8 @@ import formClasses from '../components/UserForms.module.scss';
 const ChangeName: React.FC = () => {
 	const dispatch = useDispatch();
 	const { sendRequest } = useRequest();
+	const { User } = useUser();
+
 	const userState = useSelector((state: RootState) => state.user);
 
 	const [response, setResponse] = useState('');
@@ -45,7 +48,8 @@ const ChangeName: React.FC = () => {
 			setResponse('');
 		}, 3000);
 
-		dispatch({ type: UserActionTypes.REFRESH_NAME, name: responseData.name });
+		User.refreshData();
+
 		setNewName({ value: '', isValid: false, isTouched: false });
 	};
 
