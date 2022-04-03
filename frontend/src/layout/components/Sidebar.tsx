@@ -96,28 +96,6 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 		},
 	];
 
-	const formatUserName = () => {
-		if (!userState.name) return;
-
-		if (userState.name.match(/-/)) {
-			let part1 = userState.name.split('-')[0];
-			part1 = part1.slice(0, 1).toUpperCase() + part1.slice(1);
-
-			let part2 = userState.name.split('-')[1];
-			part2 = part2.slice(0, 1).toUpperCase() + part2.slice(1);
-
-			return setUserName(`${part1}-${part2}`);
-		} else {
-			setUserName(
-				userState.name?.slice(0, 1).toUpperCase() + userState.name.slice(1)
-			);
-		}
-	};
-
-	useEffect(() => {
-		formatUserName();
-	}, [userState]);
-
 	return (
 		<div className={props.className}>
 			<div className={classes.wrapper}>

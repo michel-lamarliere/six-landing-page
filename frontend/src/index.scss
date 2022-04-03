@@ -8,7 +8,7 @@
 	background-color: #191b34;
 	display: flex;
 	justify-content: center;
-	transition: all 0.3s ease-in-out;
+	transition: margin-right 0.3s ease-in-out;
 }
 
 #mobile-sidebar {
@@ -23,7 +23,7 @@
 	font-family: $fontMedium;
 	float: right;
 	background-color: #3e379b;
-	transition: all 0.3s ease-in-out;
+	transition: width 0.3s ease-in-out;
 	z-index: 4;
 }
 
