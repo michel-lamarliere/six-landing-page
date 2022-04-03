@@ -8,17 +8,20 @@ import { UserActionTypes } from '../../_shared/store/user';
 import { ErrorPopupActionTypes } from '../../_shared/store/error';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
+import { useUser } from '../../_shared/classes/user-hook';
 
 import userIcon from '../../_shared/assets/icons/user-icon.svg';
 import sixIcon from '../../_shared/assets/icons/logo.svg';
 
-import classes from './Sidebar.module.scss';
 import RefreshSpinner from '../../_shared/assets/svgs/refresh-spinner';
 import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 
+import classes from './Sidebar.module.scss';
+
 const Sidebar: React.FC<{ className: string }> = (props) => {
-	const { sendRequest } = useRequest();
 	const dispatch = useDispatch();
+	const { sendRequest } = useRequest();
+	const { User } = useUser();
 
 	const userState = useSelector((state: RootState) => state.user);
 
@@ -30,42 +33,20 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 		setSpinButton(true);
 		setSpinnerClasses(classes['user__refresh__spinner--active']);
 
-		const responseData = await sendRequest(
-			`http://localhost:8080/api/user/${userState.id}`,
-			'GET'
-		);
-
-		if (!responseData) {
-			return;
-		}
-
-		if (responseData.error) {
-			dispatch({
-				type: ErrorPopupActionTypes.SET_ERROR,
-				message: responseData.error,
-			});
-			return;
-		}
-
-		dispatch({
-			type: UserActionTypes.REFRESH_DATA,
-			name: responseData.user.name,
-			email: responseData.user.email,
-			confirmedEmail: responseData.user.confirmation.confirmed,
-		});
+		User.refreshData();
 
 		const spinner = setTimeout(() => {
 			setSpinnerClasses(classes['user__refresh__spinner--done']);
 		}, 1000);
 
-		const test = setTimeout(() => {
+		const doneSpinning = setTimeout(() => {
 			setSpinnerClasses('');
 			setSpinButton(false);
 		}, 1500);
 
 		return () => {
-			clearTimeout(test);
 			clearTimeout(spinner);
+			clearTimeout(doneSpinning);
 		};
 	};
 
@@ -95,6 +76,12 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 			onClick: closeMobileSidebar,
 		},
 	];
+
+	useEffect(() => {
+		if (userState.name) {
+			setUserName(userState.name);
+		}
+	}, [userState.name]);
 
 	return (
 		<div className={props.className}>

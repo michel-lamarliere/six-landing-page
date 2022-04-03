@@ -3,13 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addHours } from 'date-fns';
 
+import { useRequest } from '../hooks/http-hook';
+
 import { EmailConfirmationActionTypes } from '../store/email-confirmation';
 import { UserActionTypes } from '../store/user';
 import { RootState } from '../store/store';
+import { ErrorPopupActionTypes } from '../store/error';
 
 export const useUser = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+	const { sendRequest } = useRequest();
+
+	const userState = useSelector((state: RootState) => state.user);
 
 	const loggedInUser = useSelector((state: RootState) => state.user);
 
@@ -77,6 +84,32 @@ export const useUser = () => {
 			}
 
 			navigate('/journal/quotidien');
+		}
+
+		static async refreshData() {
+			const responseData = await sendRequest(
+				`http://localhost:8080/api/user/${userState.id}`,
+				'GET'
+			);
+
+			if (!responseData) {
+				return;
+			}
+
+			if (responseData.error) {
+				dispatch({
+					type: ErrorPopupActionTypes.SET_ERROR,
+					message: responseData.error,
+				});
+				return;
+			}
+
+			dispatch({
+				type: UserActionTypes.REFRESH_DATA,
+				name: formatUserName(responseData.user.name),
+				email: responseData.user.email,
+				confirmedEmail: responseData.user.confirmation.confirmed,
+			});
 		}
 
 		static logOut() {
