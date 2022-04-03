@@ -8,6 +8,7 @@ import { UserActionTypes } from '../../_shared/store/user';
 import { EmailConfirmationActionTypes } from '../../_shared/store/email-confirmation';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
+import { useUser } from '../../_shared/classes/user-hook';
 
 import PasswordForm from '../components/PasswordForm';
 
@@ -18,6 +19,7 @@ import classes from './Profile.module.scss';
 const Profile: React.FC = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const { User } = useUser();
 	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
@@ -52,9 +54,7 @@ const Profile: React.FC = () => {
 	};
 
 	const logoutHandler = () => {
-		dispatch({ type: UserActionTypes.LOG_OUT });
-		dispatch({ type: EmailConfirmationActionTypes.HIDE });
-		navigate('/');
+		User.logOut();
 	};
 
 	return (
