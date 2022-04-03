@@ -10,6 +10,7 @@ import { ErrorPopupActionTypes } from '../../_shared/store/error';
 import { useRequest } from '../../_shared/hooks/http-hook';
 
 import userIcon from '../../_shared/assets/icons/user-icon.svg';
+import sixIcon from '../../_shared/assets/icons/logo.svg';
 
 import classes from './Sidebar.module.scss';
 import RefreshSpinner from '../../_shared/assets/svgs/refresh-spinner';
@@ -68,21 +69,30 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 		};
 	};
 
+	const closeMobileSidebar = () => {
+		dispatch({
+			type: UIElementsActionTypes.HIDE_MOBILE_SIDEBAR,
+		});
+	};
+
 	const logLinks = [
 		{
 			text: 'Jour',
 			url: '/journal/quotidien',
 			key: 'log-daily-key',
+			onClick: closeMobileSidebar,
 		},
 		{
 			text: 'Semaine',
 			url: '/journal/hebdomadaire',
 			key: 'log-weekly-key',
+			onClick: closeMobileSidebar,
 		},
 		{
 			text: 'Mois',
 			url: '/journal/mensuel',
 			key: 'log-monthly-key',
+			onClick: closeMobileSidebar,
 		},
 	];
 
@@ -112,16 +122,16 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 		<div className={props.className}>
 			<div className={classes.wrapper}>
 				<div className={classes.user}>
-					<div
-						onClick={() =>
-							dispatch({
-								type: UIElementsActionTypes.HIDE_MOBILE_SIDEBAR,
-							})
-						}
-					>
+					<div onClick={closeMobileSidebar}>
 						<Link to='/profil' className={classes['user__name-img']}>
-							<img src={userIcon} alt='Icône Utilisateur' />
-							<div>{userName}</div>
+							<img
+								src={userIcon}
+								alt='Icône Utilisateur'
+								className={classes['user__name-img__img']}
+							/>
+							<div className={classes['user__name-img__name']}>
+								{userName}
+							</div>
 						</Link>
 					</div>
 					<button
@@ -138,13 +148,7 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 					{logLinks.map((link) => (
 						<React.Fragment key={link.key}>
 							{link.url && (
-								<div
-									onClick={() =>
-										dispatch({
-											type: UIElementsActionTypes.HIDE_MOBILE_SIDEBAR,
-										})
-									}
-								>
+								<div onClick={link.onClick}>
 									<NavLink
 										className={({ isActive }) =>
 											isActive
@@ -166,9 +170,12 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 					<Link to='/'>Aide</Link>
 					<Link to='/'>Nous Contacter</Link>
 				</div>
-				<Link to='/' className={classes['footer__legal-notice']}>
-					Mentions Légales
-				</Link>
+				<div className={classes['footer__legal-notice']}>
+					<Link to='/' className={classes['footer__legal-notice__text']}>
+						Mentions Légales
+					</Link>
+					<img src={sixIcon} alt='six' />
+				</div>
 			</footer>
 		</div>
 	);

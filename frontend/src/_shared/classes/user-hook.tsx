@@ -57,6 +57,8 @@ export const useUser = () => {
 			if (!this.confirmedEmail) {
 				dispatch({ type: EmailConfirmationActionTypes.SHOW });
 			}
+
+			navigate('/journal/quotidien');
 		}
 
 		static logOut() {

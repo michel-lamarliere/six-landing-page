@@ -16,8 +16,8 @@ const MobileSidebar: React.FC = () => {
 		let main = document.getElementById('root')!;
 
 		if (uiElementsState.showMobileSidebar) {
-			mobileSidebar.style.width = '80%';
-			main.style.marginRight = '80%';
+			mobileSidebar.style.width = '75%';
+			main.style.marginRight = '75%';
 		} else {
 			mobileSidebar.style.width = '0%';
 			main.style.marginRight = '0%';
