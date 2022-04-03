@@ -35,20 +35,6 @@
 	}
 }
 
-.hamburger.hamburger_open {
-	& .hamburger__lign {
-		background: transparent;
-	}
-	& .hamburger__lign:before {
-		transform: rotate(45deg);
-		background-color: white;
-	}
-	& .hamburger__lign:after {
-		transform: rotate(-45deg);
-		background-color: white;
-	}
-}
-
 @media screen and (min-width: 1200px) {
 	.wrapper {
 		display: none;

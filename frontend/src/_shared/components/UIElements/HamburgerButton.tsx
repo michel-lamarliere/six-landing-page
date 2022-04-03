@@ -23,11 +23,7 @@ const HamburgerButton: React.FC = () => {
 
 	return (
 		<div className={classes.wrapper} onClick={hamburgerButtonHandler}>
-			<div
-				className={`${classes.hamburger} ${
-					mobileSidebarIsOpen ? classes.hamburger_open : ''
-				}`}
-			>
+			<div className={classes.hamburger}>
 				<span className={classes.hamburger__lign}></span>
 			</div>
 		</div>
