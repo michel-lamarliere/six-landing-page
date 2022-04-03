@@ -1,14 +1,17 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useNavigate } from 'react-router-dom';
 import { addHours } from 'date-fns';
 
 import { EmailConfirmationActionTypes } from '../store/email-confirmation';
 import { UserActionTypes } from '../store/user';
+import { RootState } from '../store/store';
 
 export const useUser = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+	const loggedInUser = useSelector((state: RootState) => state.user);
 
 	class User {
 		token: any;
@@ -60,6 +63,10 @@ export const useUser = () => {
 			dispatch({ type: UserActionTypes.LOG_OUT });
 			dispatch({ type: EmailConfirmationActionTypes.HIDE });
 			navigate('/');
+		}
+
+		static displayInfo() {
+			return loggedInUser;
 		}
 	}
 

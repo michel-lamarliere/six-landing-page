@@ -80,6 +80,8 @@ const LoginForm: React.FC<Props> = (props) => {
 
 		if (rememberEmail) {
 			user.rememberEmail();
+		} else {
+			user.forgetEmail();
 		}
 
 		user.logIn();
