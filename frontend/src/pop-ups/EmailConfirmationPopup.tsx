@@ -7,6 +7,10 @@ import { EmailConfirmationActionTypes } from '../_shared/store/email-confirmatio
 
 import { useRequest } from '../_shared/hooks/http-hook';
 
+import warningIcon from '../_shared/assets/icons/warning.svg';
+import closeIcon from '../_shared/assets/icons/close.svg';
+import sentIcon from '../_shared/assets/icons/validated.svg';
+
 import classes from './EmailConfirmationPopup.module.scss';
 
 const EmailPopup: React.FC = () => {
@@ -55,22 +59,33 @@ const EmailPopup: React.FC = () => {
 
 	return ReactDOM.createPortal(
 		<div className={classes.wrapper}>
+			<button onClick={closePopup} className={classes['close-button']}>
+				<img src={closeIcon} alt='Fermer' />
+			</button>
 			{!sent ? (
-				<>
-					<h1 className={classes.title}>
-						Votre adresse mail n'est pas confirmée.
-					</h1>
+				<div className={classes['wrapper--not-sent']}>
+					<img src={warningIcon} alt='Alerte' className={classes.icon} />
+					<div className={classes.title}>
+						Veuillez confirmer votre adresse mail.
+					</div>
+					<div className={classes.text}>
+						Nous vous avons envoyé un mail lors de votre inscription. Pensez à
+						vérifier votre boîte de réception et vos spams.
+						<br /> <br /> Vous n’avez rien reçu ?
+					</div>
 					<button
-						className={classes.text}
+						className={classes.button}
 						onClick={resendEmailConfirmationHandler}
 					>
-						Renvoyer un mail
+						Renvoyer
 					</button>
-				</>
+				</div>
 			) : (
-				<h1 className={classes.title}>{responseMessage}</h1>
+				<div className={classes['wrapper--sent']}>
+					<img src={sentIcon} alt='Envoyé' className={classes.icon} />
+					<div className={classes.response}>{responseMessage}</div>
+				</div>
 			)}
-			<button onClick={closePopup}>X</button>
 		</div>,
 		document.getElementById('email-confirmation-popup')!
 	);
