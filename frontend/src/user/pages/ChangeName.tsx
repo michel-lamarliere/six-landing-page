@@ -9,10 +9,11 @@ import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
 import { useRequest } from '../../_shared/hooks/http-hook';
 import { useUser } from '../../_shared/classes/user-hook';
 
-import Input from '../../_shared/components/FormElements/Input';
+import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 
 import classes from './ChangeName.module.scss';
 import formClasses from '../components/UserForms.module.scss';
+import Form from '../components/Form';
 
 const ChangeName: React.FC = () => {
 	const dispatch = useDispatch();
@@ -61,32 +62,20 @@ const ChangeName: React.FC = () => {
 	} = useInput({ type: useInputTypes.NAME, validate: true });
 
 	return (
-		<div className={formClasses.basic}>
-			<Link to='/profil'>{'< Profil'}</Link>
-			<div className={formClasses['name-wrapper']}>
-				<Input
-					id='Nouveau Nom'
-					type='text'
-					placeholder='Jean'
-					errorText='Minimum 2 caractères, sans espaces.'
-					value={newName.value}
-					isValid={newName.isValid}
-					isTouched={newName.isTouched}
-					onChange={newNameOnChangeHandler}
-					onBlur={newNameOnBlurHandler}
-				/>
-				<button
-					onClick={changeNameHandler}
-					disabled={!newName.isValid}
-					className={`${formClasses['submit-button']} ${
-						!newName.isValid && formClasses['submit-button--disabled']
-					}`}
-				>
-					Changer Nom
-				</button>
-			</div>
-			<div>{response}</div>
-		</div>
+		<Form button_onClick={changeNameHandler} response={response}>
+			<Input
+				styling={InputStyles.PROFILE_FORM}
+				id='Nouveau Nom'
+				type='text'
+				placeholder='Jean'
+				errorText='Minimum 2 caractères, sans espaces.'
+				value={newName.value}
+				isValid={newName.isValid}
+				isTouched={newName.isTouched}
+				onChange={newNameOnChangeHandler}
+				onBlur={newNameOnBlurHandler}
+			/>
+		</Form>
 	);
 };
 

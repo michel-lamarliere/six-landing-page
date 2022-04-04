@@ -5,7 +5,7 @@ import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
 import { useUser } from '../../_shared/classes/user-hook';
 
 import FormContainer from './FormContainer';
-import Input from '../../_shared/components/FormElements/Input';
+import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 
 import classes from './SignupForm.module.scss';
 
@@ -110,6 +110,7 @@ const SingupForm: React.FC<Props> = (props) => {
 			responseMessage={responseMessage}
 		>
 			<Input
+				styling={InputStyles.BASIC_FORM}
 				id='Nom'
 				type='text'
 				placeholder='Jean'
@@ -121,6 +122,7 @@ const SingupForm: React.FC<Props> = (props) => {
 				onBlur={nameOnBlurHandler}
 			/>
 			<Input
+				styling={InputStyles.BASIC_FORM}
 				id='Email'
 				type='text'
 				placeholder='jean@email.fr'
@@ -132,6 +134,7 @@ const SingupForm: React.FC<Props> = (props) => {
 				onBlur={emailOnBlurHandler}
 			/>
 			<Input
+				styling={InputStyles.BASIC_FORM}
 				id='mot de passe'
 				type='password'
 				placeholder='Mot de passe'
@@ -144,6 +147,7 @@ const SingupForm: React.FC<Props> = (props) => {
 				password={true}
 			/>
 			<Input
+				styling={InputStyles.BASIC_FORM}
 				id='mot de passe'
 				type='password'
 				placeholder='Confirmation mot de passe'

@@ -1,18 +1,18 @@
 @import '../../_shared/style/variables.scss';
 
-.name-wrapper {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 20rem;
-	height: auto;
-	margin: 2rem 0;
-	padding: 2rem 1rem;
-	background-color: #191b34;
-	border: 1px solid #8d88ff;
-	border-radius: 1.85rem;
-	gap: 1rem;
-}
+// .name-wrapper {
+// 	display: flex;
+// 	flex-direction: column;
+// 	align-items: center;
+// 	width: 20rem;
+// 	height: auto;
+// 	margin: 2rem 0;
+// 	padding: 2rem 1rem;
+// 	background-color: #191b34;
+// 	border: 1px solid #8d88ff;
+// 	border-radius: 1.85rem;
+// 	gap: 1rem;
+// }
 
 .password-wrapper {
 	display: flex;
@@ -25,22 +25,6 @@
 	border: 1px solid #8d88ff;
 	border-radius: 1.85rem;
 	gap: 1rem;
-}
-
-.submit-button {
-	background-color: #3e379b;
-	font-family: $fontSemiBold;
-	font-size: 14px;
-	padding: 0.68em 2em;
-	border-radius: 2.31em;
-	color: white;
-	cursor: pointer;
-
-	&--disabled {
-		background-color: darkgrey;
-		color: grey;
-		cursor: default;
-	}
 }
 
 .basic {

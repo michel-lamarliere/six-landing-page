@@ -20,7 +20,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
 
 	if (props.link) {
 		button = (
-			<button className={`${classes.button} ${classes[`button_${props.color}`]}`}>
+			<button className={`${classes.button} ${classes[`button--${props.color}`]}`}>
 				<Link to={props.link}>{props.text}</Link>
 			</button>
 		);

@@ -51,33 +51,13 @@ const changeName: RequestHandler = async (req, res, next) => {
 	res.status(200).json({ success: 'Nom modifié !', name: reqNewName });
 };
 
-const comparePasswords: RequestHandler = async (req, res, next) => {
-	const reqId = new ObjectId(req.params.id);
-	const reqPassword = req.params.password;
-
-	const databaseConnect = await database.getDb('six-dev').collection('users');
-
-	// CHECKS IF THE USER EXISTS
-	const user = await databaseConnect.findOne({ _id: reqId });
-
-	if (!user) {
-		res.status(404).json({ fatal: true });
-		return;
-	}
-
-	// CHECKS IF THE PASSWORD MATCHES THE USER'S HASHED PASSWORD
-	const matchingPasswords = await bcrypt.compare(reqPassword, user.password);
-
-	if (!matchingPasswords) {
-		res.status(400).json({ error: 'Mots de passe non identiques' });
-		return;
-	}
-
-	res.status(200).json({ success: 'Mots de passe identiques' });
-};
-
 const changePassword: RequestHandler = async (req, res, next) => {
-	const { id: reqIdStr, newPassword: reqNewPassword } = req.body;
+	const {
+		id: reqIdStr,
+		oldPassword: reqOldPassword,
+		newPassword: reqNewPassword,
+		newPasswordConfirmation: reqNewPasswordConfirmation,
+	} = req.body;
 
 	const reqId = new ObjectId(reqIdStr);
 
@@ -91,23 +71,47 @@ const changePassword: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	// COMPARES THE NEW PASSWORD TO THE OLD ONE
-	const samePasswords = await bcrypt.compare(user.password, reqNewPassword);
+	let validInputs = {
+		oldPassword: false,
+		newPassword: {
+			differentThanOld: false,
+			format: false,
+		},
+		newPasswordConfirmation: false,
+	};
 
-	if (samePasswords) {
-		res.json({
-			error: "Le nouveau mot de passe ne peut pas être identique à l'ancien.",
+	// CHECKS IF THE PASSWORD MATCHES THE USER'S HASHED PASSWORD
+	validInputs.oldPassword = await bcrypt.compare(reqOldPassword, user.password);
+
+	if (!validInputs.oldPassword) {
+		res.status(400).json({
+			error: 'Veuillez corriger les erreurs.',
+			validInputs: validInputs.oldPassword,
 		});
-		return;
 	}
 
+	// COMPARES THE NEW PASSWORD TO THE OLD ONE
+	const newPasswordIsSameAsOld = await bcrypt.compare(reqNewPassword, user.password);
+	validInputs.newPassword.differentThanOld = !newPasswordIsSameAsOld;
+
 	// CHECKS IF THE PASSWORD IS IN THE CORRECT FORMAT
-	const newPasswordIsValid = reqNewPassword.match(
+	validInputs.newPassword.format = reqNewPassword.match(
 		/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
 	);
 
-	if (!newPasswordIsValid) {
-		res.status(400).json({ error: 'Nouveau Mot de Passe Invalide.' });
+	// CHECKS IF THE NEW PASSWORDS ARE IDENTICAL
+	validInputs.newPasswordConfirmation = reqNewPassword === reqNewPasswordConfirmation;
+
+	if (
+		!validInputs.oldPassword ||
+		!validInputs.newPassword.differentThanOld ||
+		!validInputs.newPassword.format ||
+		!validInputs.newPasswordConfirmation
+	) {
+		res.status(400).json({
+			error: 'Veuillez corriger les erreurs.',
+			validInputs,
+		});
 		return;
 	}
 
@@ -227,7 +231,6 @@ const checkForgotPasswordAuth: RequestHandler = async (req, res, next) => {
 
 exports.changeName = changeName;
 exports.changeEmail = changeEmail;
-exports.comparePasswords = comparePasswords;
 exports.changePassword = changePassword;
 exports.sendEmailForgotPassword = sendEmailForgotPassword;
 exports.checkForgotPasswordAuth = checkForgotPasswordAuth;

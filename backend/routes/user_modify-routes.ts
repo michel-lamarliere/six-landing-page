@@ -20,6 +20,4 @@ router.patch('/modify/name', userModifyControllers.changeName);
 
 router.patch('/modify/email', userModifyControllers.changeEmail);
 
-router.get('/compare/passwords/:id/:password', userModifyControllers.comparePasswords);
-
 module.exports = router;

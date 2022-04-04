@@ -8,7 +8,7 @@ import { RootState } from '../../_shared/store/store';
 
 import classes from './ChangeEmail.module.scss';
 import formClasses from '../components/UserForms.module.scss';
-import Input from '../../_shared/components/FormElements/Input';
+import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 import { useRequest } from '../../_shared/hooks/http-hook';
 
 const ChangeEmail: React.FC = () => {
@@ -36,6 +36,7 @@ const ChangeEmail: React.FC = () => {
 
 			<form onSubmit={formHandler}>
 				<Input
+					styling={InputStyles.PROFILE_FORM}
 					id={'email'}
 					type={'email'}
 					placeholder={'Nouvelle adresse mail'}

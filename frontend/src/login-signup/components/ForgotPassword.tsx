@@ -6,7 +6,7 @@ import { RootState } from '../../_shared/store/store';
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
 import { useRequest } from '../../_shared/hooks/http-hook';
 
-import Input from '../../_shared/components/FormElements/Input';
+import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 
 import CloseIcon from '../../_shared/assets/icons/close.svg';
 
@@ -76,6 +76,7 @@ const ForgotPassword: React.FC = () => {
 						instructions.
 					</div>
 					<Input
+						styling={InputStyles.BASIC_FORM}
 						id='Email'
 						type='text'
 						placeholder='jean@email.fr'

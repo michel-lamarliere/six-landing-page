@@ -14,7 +14,6 @@ export const useInput = (data: {
 		| useInputTypes.NAME
 		| useInputTypes.EMAIL
 		| useInputTypes.PASSWORD
-		| useInputTypes.NEW_PASSWORD
 		| useInputTypes.PASSWORD_COMPARISON
 		| useInputTypes.NONE;
 	validate: boolean;
@@ -33,14 +32,20 @@ export const useInput = (data: {
 	});
 
 	const inputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setInput((prev) => ({ ...prev, value: event.target.value }));
+		setInput((prev) => ({ ...prev, value: event.target.value, isTouched: false }));
 	};
 
-	useEffect(() => {
-		if (display) {
+	const inputOnBlurHandler = () => {
+		if (input.value.trim().length >= 1 && validate && display) {
 			setInput((prev) => ({ ...prev, isTouched: true }));
 		}
-	}, [display]);
+	};
+
+	// useEffect(() => {
+	// 	if (display) {
+	// 		setInput((prev) => ({ ...prev, isTouched: true }));
+	// 	}
+	// }, [display]);
 
 	useEffect(() => {
 		if (type === 'NAME' && validate) {
@@ -72,28 +77,12 @@ export const useInput = (data: {
 	}, [input.value]);
 
 	useEffect(() => {
-		if (type === 'NEW_PASSWORD' && validate) {
-			input.value.match(
-				/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
-			)
-				? setInput((prev) => ({ ...prev, isValid: true }))
-				: setInput((prev) => ({ ...prev, isValid: false }));
-		}
-	}, [input.value, compareTo]);
-
-	useEffect(() => {
 		if (type === 'PASSWORD_COMPARISON' && validate) {
 			input.value === compareTo
 				? setInput((prev) => ({ ...prev, isValid: true }))
 				: setInput((prev) => ({ ...prev, isValid: false }));
 		}
 	}, [input.value, compareTo]);
-
-	const inputOnBlurHandler = () => {
-		if (input.value.trim().length >= 1 && validate) {
-			setInput((prev) => ({ ...prev, isTouched: true }));
-		}
-	};
 
 	return {
 		input,

@@ -7,7 +7,7 @@ import { ErrorPopupActionTypes } from '../../_shared/store/error';
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
 import { useRequest } from '../../_shared/hooks/http-hook';
 
-import Input from '../../_shared/components/FormElements/Input';
+import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 
 import formClasses from './UserForms.module.scss';
 
@@ -52,7 +52,7 @@ const PasswordForm: React.FC<{
 		setInput: setNewPassword,
 		inputOnChangeHandler: newPasswordOnChangeHandler,
 		inputOnBlurHandler: newPasswordOnBlurHandler,
-	} = useInput({ type: useInputTypes.NEW_PASSWORD, validate: true });
+	} = useInput({ type: useInputTypes.PASSWORD, validate: true });
 
 	const {
 		input: newPasswordConfirmation,
@@ -76,14 +76,10 @@ const PasswordForm: React.FC<{
 		}
 
 		if (responseData.error) {
-			// CHOISIR
 			setErrorMessage(responseData.error);
-			// dispatch({
-			// 	type: ErrorPopupActionTypes.SET_ERROR,
-			// 	message: responseData.error,
-			// });
 			return;
 		}
+
 		resetForm();
 
 		setResponse('Mot de passe modifié!');
@@ -157,6 +153,7 @@ const PasswordForm: React.FC<{
 			<div className={formClasses['password-wrapper']}>
 				{!props.forgotForm && (
 					<Input
+						styling={InputStyles.PROFILE_FORM}
 						id='Ancien Mot de Passe'
 						type='password'
 						placeholder='Ancien mot de passe'
@@ -170,6 +167,7 @@ const PasswordForm: React.FC<{
 					/>
 				)}
 				<Input
+					styling={InputStyles.PROFILE_FORM}
 					id='Nouveau Mot de Passe'
 					type='password'
 					placeholder='Nouveau mot de passe'
@@ -182,6 +180,7 @@ const PasswordForm: React.FC<{
 					password={true}
 				/>
 				<Input
+					styling={InputStyles.PROFILE_FORM}
 					id='Confirmer Nouveau Mot de Passe'
 					type='password'
 					placeholder='Confirmation mot de passe'

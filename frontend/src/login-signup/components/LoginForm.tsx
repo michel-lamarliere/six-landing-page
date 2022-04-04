@@ -6,7 +6,7 @@ import { useUser } from '../../_shared/classes/user-hook';
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
 import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 
-import Input from '../../_shared/components/FormElements/Input';
+import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 import FormContainer from './FormContainer';
 
 import RememberMeTrueSVG from '../../_shared/assets/icons/remember-me_true.svg';
@@ -117,6 +117,7 @@ const LoginForm: React.FC<Props> = (props) => {
 			responseMessage={responseMessage}
 		>
 			<Input
+				styling={InputStyles.BASIC_FORM}
 				id='Email'
 				type='text'
 				placeholder='jean@email.fr'
@@ -128,6 +129,7 @@ const LoginForm: React.FC<Props> = (props) => {
 				onBlur={emailOnBlurHandler}
 			/>
 			<Input
+				styling={InputStyles.BASIC_FORM}
 				id='mot de passe'
 				type='password'
 				placeholder='Mot de passe'
