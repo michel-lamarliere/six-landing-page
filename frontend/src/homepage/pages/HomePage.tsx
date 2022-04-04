@@ -5,19 +5,19 @@ import { buttonColors } from '../../_shared/components/UIElements/Buttons';
 import { Slide2GridItem, Slide3GridItem } from '../components/GridItem';
 import CarouselButton from '../components/CarouselButton';
 
-import SixIcon from '../../_shared/assets/icons/logo.svg';
-import FoodIcon from '../../_shared/assets/icons/food.svg';
-import SleepIcon from '../../_shared/assets/icons/sleep.svg';
-import SportsIcon from '../../_shared/assets/icons/sports.svg';
-import RelaxationIcon from '../../_shared/assets/icons/relaxation.svg';
-import WorkIcon from '../../_shared/assets/icons/work.svg';
-import SocialIcon from '../../_shared/assets/icons/social.svg';
-import TaskFullIcon from '../../_shared/assets/icons/tutorial-full.svg';
-import TaskHalfIcon from '../../_shared/assets/icons/tutorial-half.svg';
-import TaskEmptyIcon from '../../_shared/assets/icons/tutorial-empty.svg';
+import SixIcon from '../../_shared/assets/imgs/icons/logo.svg';
+import FoodIcon from '../../_shared/assets/imgs/icons/food.svg';
+import SleepIcon from '../../_shared/assets/imgs/icons/sleep.svg';
+import SportsIcon from '../../_shared/assets/imgs/icons/sports.svg';
+import RelaxationIcon from '../../_shared/assets/imgs/icons/relaxation.svg';
+import WorkIcon from '../../_shared/assets/imgs/icons/work.svg';
+import SocialIcon from '../../_shared/assets/imgs/icons/social.svg';
+import TaskFullIcon from '../../_shared/assets/imgs/icons/tutorial-full.svg';
+import TaskHalfIcon from '../../_shared/assets/imgs/icons/tutorial-half.svg';
+import TaskEmptyIcon from '../../_shared/assets/imgs/icons/tutorial-empty.svg';
 
 import classes from './HomePage.module.scss';
-import LoginSignupForms from '../../login-signup/pages/LoginSignupForms';
+import LoginSignupForms from '../../user/login-signup-forms/pages/LoginSignupForms';
 import { Link } from 'react-router-dom';
 
 const HomePage: React.FC = () => {

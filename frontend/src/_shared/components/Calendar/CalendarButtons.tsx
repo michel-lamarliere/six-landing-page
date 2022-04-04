@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { UIElementsActionTypes } from '../../store/ui-elements';
 
-import TopArrow from '../../assets/icons/top-arrow.svg';
-import CalendarIcon from '../../assets/icons/calendar_icon.svg';
-import FoodIcon from '../../assets/icons/food.svg';
-import SleepIcon from '../../assets/icons/sleep.svg';
-import SportsIcon from '../../assets/icons/sports.svg';
-import RelaxationIcon from '../../assets/icons/relaxation.svg';
-import WorkIcon from '../../assets/icons/work.svg';
-import SocialIcon from '../../assets/icons/social.svg';
+import TopArrow from '../../assets/imgs/icons/top-arrow.svg';
+import CalendarIcon from '../../assets/imgs/icons/calendar_icon.svg';
+import FoodIcon from '../../assets/imgs/icons/food.svg';
+import SleepIcon from '../../assets/imgs/icons/sleep.svg';
+import SportsIcon from '../../assets/imgs/icons/sports.svg';
+import RelaxationIcon from '../../assets/imgs/icons/relaxation.svg';
+import WorkIcon from '../../assets/imgs/icons/work.svg';
+import SocialIcon from '../../assets/imgs/icons/social.svg';
 
 import calendarClasses from './Calendar.module.scss';
 

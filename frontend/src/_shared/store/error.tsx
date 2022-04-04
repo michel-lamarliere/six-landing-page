@@ -8,8 +8,7 @@ interface Action {
 }
 
 const initialStateReducer: State = {
-	message:
-		'Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio enim ratione at tempore explicabo laudantium, quis ad perspiciatis repellendus repudiandae accusamus officiis, ullam impedit delectus similique velit assumenda reiciendis ipsa!',
+	message: null,
 };
 
 export const enum ErrorPopupActionTypes {

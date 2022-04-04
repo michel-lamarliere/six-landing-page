@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { RootState } from '../../store/store';
 import { UIElementsActionTypes } from '../../store/ui-elements';
 
 import DaysOfWeek from './DaysOfWeek';
 import { CalendarButton, TaskSelectorButton } from './CalendarButtons';
 
-import LeftArrow from '../../assets/icons/left-arrow.svg';
-import DoubleLeftArrow from '../../assets/icons/double-left-arrow.svg';
-import RightArrow from '../../assets/icons/right-arrow.svg';
-import DoubleRightArrow from '../../assets/icons/double-right-arrow.svg';
+import LeftArrow from '../../assets/imgs/icons/left-arrow.svg';
+import DoubleLeftArrow from '../../assets/imgs/icons/double-left-arrow.svg';
+import RightArrow from '../../assets/imgs/icons/right-arrow.svg';
+import DoubleRightArrow from '../../assets/imgs/icons/double-right-arrow.svg';
 
 import classes from './Calendar.module.scss';
-import { RootState } from '../../store/store';
 
 export enum calendarTypes {
 	DAILY = 'DAILY',

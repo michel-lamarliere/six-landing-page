@@ -1,0 +1,22 @@
+@import '../../../../_shared/style/variables.scss';
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	align-self: flex-start;
+	gap: 0.4rem;
+}
+
+.label {
+	margin: 0;
+	font-family: $fontRegular;
+	font-size: 16px;
+	color: #6f7497;
+}
+
+.email {
+	font-family: $fontSemiBold;
+	font-size: 16px;
+	color: #ffffff;
+}
