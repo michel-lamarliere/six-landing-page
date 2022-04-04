@@ -118,7 +118,6 @@ const ChangePassword: React.FC = () => {
 		if (sent === true) {
 			setSent(false);
 		}
-		console.log(sent);
 	}, [oldPassword, newPassword.value, newPasswordConfirmation.value]);
 
 	return (

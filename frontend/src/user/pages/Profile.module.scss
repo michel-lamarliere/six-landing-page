@@ -108,6 +108,13 @@
 	}
 }
 
+.delete-button {
+	margin-top: 0.5rem;
+	font-family: $fontSemiBoldItalic;
+	font-size: 13px;
+	color: #8d88ff;
+}
+
 .log-out {
 	position: absolute;
 	display: flex;

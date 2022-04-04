@@ -135,7 +135,7 @@ const App: React.FC = () => {
 						<Route path='/profil/modifier/nom' element={<ChangeName />} />
 						<Route path='/profil/modifier/email' element={<ChangeEmail />} />
 						<Route
-							path='/profil/modifier/motdepasse'
+							path='/profil/modifier/mot-de-passe'
 							element={<ChangePassword />}
 						/>
 					</>

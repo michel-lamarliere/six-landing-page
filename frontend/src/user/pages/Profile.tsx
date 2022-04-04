@@ -133,7 +133,7 @@ const Profile: React.FC = () => {
 							Adresse Mail
 						</Link>
 						<Link
-							to='/profil/modifier/motdepasse'
+							to='/profil/modifier/mot-de-passe'
 							className={classes['edit-button']}
 						>
 							<img
@@ -142,6 +142,12 @@ const Profile: React.FC = () => {
 								className={classes['edit-button__img']}
 							/>
 							Mot de Passe
+						</Link>
+						<Link
+							to='/profil/modifier/supprimer-compte'
+							className={classes['delete-button']}
+						>
+							Supprimer mon compte
 						</Link>
 					</>
 				)}
