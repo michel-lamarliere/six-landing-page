@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../_shared/store/_store';
 
@@ -19,8 +19,11 @@ import logOutIcon from '../../_shared/assets/imgs/icons/profile/profile-log-out.
 
 import classes from './Profile.module.scss';
 import LogOutConfirmation from '../components/LogOutConfirmation';
+import { PopUpActionTypes } from '../../_shared/store/pop-ups';
 
 const Profile: React.FC = () => {
+	const dispatch = useDispatch();
+
 	const { User } = useUser();
 	const { sendRequest } = useRequest();
 
@@ -42,26 +45,8 @@ const Profile: React.FC = () => {
 		setPromptLogOut(false);
 	};
 
-	const resendEmail = async () => {
-		const responseData = await sendRequest(
-			'http://localhost:8080/api/user/email/email-confirmation',
-			'POST',
-			JSON.stringify({ id: userState.id })
-		);
-
-		if (!responseData) {
-			return;
-		}
-
-		if (responseData.error) {
-			setResponse(responseData.error);
-		} else if (responseData.success) {
-			setResponse(responseData.success);
-		}
-
-		setTimeout(() => {
-			setResponse('');
-		}, 5000);
+	const confirmEmailAddressHandler = () => {
+		dispatch({ type: PopUpActionTypes.SHOW_EMAIL_CONFIRMATION });
 	};
 
 	return (
@@ -71,7 +56,10 @@ const Profile: React.FC = () => {
 				<div className={classes.user__name}>{userState.name}</div>
 			</div>
 			{!userState.confirmedEmail && (
-				<button className={classes['confirmed-email']}>
+				<button
+					className={classes['confirmed-email']}
+					onClick={confirmEmailAddressHandler}
+				>
 					Adresse mail non confirmée
 					<img src={confirmedEmailIcon} alt='Confirmer adresse mail' />
 				</button>
