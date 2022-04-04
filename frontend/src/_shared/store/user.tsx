@@ -23,7 +23,6 @@ const initialStateReducer: State = {
 export const enum UserActionTypes {
 	LOG_IN = 'LOG_IN',
 	LOG_OUT = 'LOG_OUT',
-	REFRESH_NAME = 'REFRESH_NAME',
 	REFRESH_DATA = 'REFRESH_DATA',
 }
 
@@ -65,9 +64,6 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 				confirmedEmail: null,
 			};
 		}
-
-		case UserActionTypes.REFRESH_NAME:
-			return { ...state, name: action.name };
 
 		case UserActionTypes.REFRESH_DATA: {
 			localStorage.setItem(

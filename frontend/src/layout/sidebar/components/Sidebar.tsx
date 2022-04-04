@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import { Link, NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { RootState } from '../../../_shared/store/store';
+import { RootState } from '../../../_shared/store/_store';
 import { UserActionTypes } from '../../../_shared/store/user';
-import { ErrorPopupActionTypes } from '../../../_shared/store/error';
+import { PopUpActionTypes } from '../../../_shared/store/pop-ups';
 import { UIElementsActionTypes } from '../../../_shared/store/ui-elements';
 
 import { useRequest } from '../../../_shared/hooks/http-hook';
@@ -14,7 +14,7 @@ import { useUser } from '../../../_shared/classes/user-hook';
 import userIcon from '../../../_shared/assets/imgs/icons/user-icon.svg';
 import sixIcon from '../../../_shared/assets/imgs/icons/logo.svg';
 
-import RefreshSpinner from '../../../_shared/components/svgs/refresh-spinner';
+import RefreshSpinner from '../../../_shared/components/_svgs/refresh-spinner';
 
 import classes from './Sidebar.module.scss';
 

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState } from '../_shared/store/store';
-import { EmailConfirmationActionTypes } from '../_shared/store/email-confirmation';
+import { RootState } from '../_shared/store/_store';
+import { PopUpActionTypes } from '../_shared/store/pop-ups';
 import { UIElementsActionTypes } from '../_shared/store/ui-elements';
 
 import { useRequest } from '../_shared/hooks/http-hook';
@@ -19,7 +19,6 @@ const EmailPopup: React.FC = () => {
 	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
-	const emailState = useSelector((state: RootState) => state.email);
 
 	const [sent, setSent] = useState(false);
 	const [responseMessage, setResponseMessage] = useState('');
@@ -40,21 +39,21 @@ const EmailPopup: React.FC = () => {
 		setSent(true);
 
 		setTimeout(() => {
-			dispatch({ type: EmailConfirmationActionTypes.HIDE });
+			dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
 		}, 5000);
 	};
 
 	const closePopup = () => {
 		sessionStorage.setItem('showEmailConfirmationPopup', JSON.stringify(false));
-		dispatch({ type: EmailConfirmationActionTypes.HIDE });
+		dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
 	};
 
 	useEffect(() => {
 		if (userState.confirmedEmail) {
-			dispatch({ type: EmailConfirmationActionTypes.HIDE });
+			dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
 			dispatch({ type: UIElementsActionTypes.SHOW_OVERLAY });
 		} else {
-			dispatch({ type: EmailConfirmationActionTypes.SHOW });
+			dispatch({ type: PopUpActionTypes.SHOW_EMAIL_CONFIRMATION });
 			dispatch({ type: UIElementsActionTypes.HIDE_OVERLAY });
 		}
 	}, [userState.confirmedEmail]);

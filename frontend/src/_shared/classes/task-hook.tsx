@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useNavigate } from 'react-router-dom';
 
-import { ErrorPopupActionTypes } from '../store/error';
-import { RootState } from '../store/store';
+import { PopUpActionTypes } from '../store/pop-ups';
+import { RootState } from '../store/_store';
 import { UserActionTypes } from '../store/user';
 
 export const useTask = () => {
@@ -44,7 +44,7 @@ export const useTask = () => {
 			if (responseData.fatal) {
 				dispatch({ type: UserActionTypes.LOG_OUT });
 				dispatch({
-					type: ErrorPopupActionTypes.SET_ERROR,
+					type: PopUpActionTypes.SET_AND_SHOW_ERROR,
 					message:
 						"Il semble que votre compte n'existe plus, veuillez en créer un autre ou nous contacter.",
 				});

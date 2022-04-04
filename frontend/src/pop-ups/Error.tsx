@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState } from '../_shared/store/store';
-import { ErrorPopupActionTypes } from '../_shared/store/error';
+import { RootState } from '../_shared/store/_store';
+import { PopUpActionTypes } from '../_shared/store/pop-ups';
 
 import closeButton from '../_shared/assets/imgs/icons/close.svg';
 import warningButton from '../_shared/assets/imgs/icons/warning.svg';
@@ -12,10 +12,9 @@ import classes from './Error.module.scss';
 
 const ErrorPopup: React.FC<{ message: string }> = (props) => {
 	const dispatch = useDispatch();
-	const errorState = useSelector((state: RootState) => state.error);
 
 	const closePopup = () => {
-		dispatch({ type: ErrorPopupActionTypes.REMOVE_ERROR });
+		dispatch({ type: PopUpActionTypes.REMOVE_ERROR });
 	};
 
 	return ReactDOM.createPortal(

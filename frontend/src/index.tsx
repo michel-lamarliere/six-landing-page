@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import store from './_shared/store/store';
+import store from './_shared/store/_store';
 
 import App from './App';
 

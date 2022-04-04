@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState } from '../../store/store';
+import { RootState } from '../../store/_store';
 import { UIElementsActionTypes } from '../../store/ui-elements';
 
 import TopArrow from '../../assets/imgs/icons/top-arrow.svg';

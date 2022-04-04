@@ -5,10 +5,9 @@ import { addHours } from 'date-fns';
 
 import { useRequest } from '../hooks/http-hook';
 
-import { EmailConfirmationActionTypes } from '../store/email-confirmation';
+import { PopUpActionTypes } from '../store/pop-ups';
 import { UserActionTypes } from '../store/user';
-import { RootState } from '../store/store';
-import { ErrorPopupActionTypes } from '../store/error';
+import { RootState } from '../store/_store';
 
 export const useUser = () => {
 	const dispatch = useDispatch();
@@ -80,7 +79,7 @@ export const useUser = () => {
 			);
 
 			if (!this.confirmedEmail) {
-				dispatch({ type: EmailConfirmationActionTypes.SHOW });
+				dispatch({ type: PopUpActionTypes.SHOW_EMAIL_CONFIRMATION });
 			}
 
 			navigate('/journal/quotidien');
@@ -98,7 +97,7 @@ export const useUser = () => {
 
 			if (responseData.error) {
 				dispatch({
-					type: ErrorPopupActionTypes.SET_ERROR,
+					type: PopUpActionTypes.SET_AND_SHOW_ERROR,
 					message: responseData.error,
 				});
 				return;
@@ -114,7 +113,7 @@ export const useUser = () => {
 
 		static logOut() {
 			dispatch({ type: UserActionTypes.LOG_OUT });
-			dispatch({ type: EmailConfirmationActionTypes.HIDE });
+			dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
 			navigate('/');
 		}
 

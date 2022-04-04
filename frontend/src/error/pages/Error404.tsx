@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { RootState } from '../../_shared/store/store';
+import { RootState } from '../../_shared/store/_store';
 
 import classes from './Error404.module.scss';
 

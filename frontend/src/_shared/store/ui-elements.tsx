@@ -33,7 +33,7 @@ export enum UIElementsActionTypes {
 	HIDE_TASK_SELECTOR = 'HIDE_TASK_SELECTOR',
 }
 
-const UIReducer = (state = initialStateReducer, action: Action) => {
+const uIReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
 		// OVERLAY
 		case UIElementsActionTypes.SHOW_OVERLAY:
@@ -65,4 +65,4 @@ const UIReducer = (state = initialStateReducer, action: Action) => {
 	}
 };
 
-export default UIReducer;
+export default uIReducer;

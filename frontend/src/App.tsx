@@ -4,27 +4,26 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { isBefore } from 'date-fns';
 
-import { RootState } from './_shared/store/store';
+import { RootState } from './_shared/store/_store';
 import { UserActionTypes } from './_shared/store/user';
-import { EmailConfirmationActionTypes } from './_shared/store/email-confirmation';
-import { ErrorPopupActionTypes } from './_shared/store/error';
+import { PopUpActionTypes } from './_shared/store/pop-ups';
 
-import LoginSignupForms from './user/login-signup-forms/pages/LoginSignupForms';
+import LoginSignupForms from './login-signup-forms/pages/LoginSignupForms';
 import DailyView from './views/daily/pages/DailyView';
 import WeeklyView from './views/weekly/pages/WeeklyView';
 import MonthlyView from './views/monthly/pages/MonthlyView';
 import Error404 from './error/pages/Error404';
 import ErrorPopup from './pop-ups/Error';
 import EmailPopup from './pop-ups/EmailConfirmation';
-import ConfirmEmailAddress from './user/modify/logged-out/pages/ConfirmEmail';
-import ForgotPassword from './user/modify/logged-out/pages/ForgotPassword';
+import ConfirmEmailAddress from './modify-user/logged-out/pages/ConfirmEmail';
+import ForgotPassword from './modify-user/logged-out/pages/ForgotPassword';
 import Overlay from './_shared/components/UIElements/Overlay';
 import HamburgerButton from './_shared/components/UIElements/HamburgerButton';
-import Profile from './user/profile/pages/Profile';
-import ChangeName from './user/modify/logged-in/pages/ChangeName';
-import ChangeEmail from './user/modify/logged-in/pages/ChangeEmail';
-import ChangePassword from './user/modify/logged-in/pages/ChangePassword';
-import ChangeImage from './user/modify/logged-in/pages/ChangeImage';
+import Profile from './profile/pages/Profile';
+import ChangeName from './modify-user/logged-in/pages/ChangeName';
+import ChangeEmail from './modify-user/logged-in/pages/ChangeEmail';
+import ChangePassword from './modify-user/logged-in/pages/ChangePassword';
+import ChangeImage from './modify-user/logged-in/pages/ChangeImage';
 import AnnualChart from './charts/pages/AnnualChart';
 import HomePage from './homepage/pages/HomePage';
 import DesktopSidebar from './layout/sidebar/pages/DesktopSidebar';
@@ -35,9 +34,8 @@ const App: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const userState = useSelector((state: RootState) => state.user);
-	const errorState = useSelector((state: RootState) => state.error);
-	const emailState = useSelector((state: RootState) => state.email);
 	const uiElementsState = useSelector((state: RootState) => state.uiElements);
+	const popUpsState = useSelector((state: RootState) => state.popUps);
 
 	const autoLogIn = async () => {
 		const storedUserData = localStorage.getItem('userData');
@@ -71,7 +69,7 @@ const App: React.FC = () => {
 
 		if (!userData.confirmedEmail && showEmailConfirmationPopup) {
 			dispatch({
-				type: EmailConfirmationActionTypes.SHOW,
+				type: PopUpActionTypes.SHOW_EMAIL_CONFIRMATION,
 			});
 		}
 	};
@@ -90,10 +88,10 @@ const App: React.FC = () => {
 
 		setTimeout(() => {
 			dispatch({
-				type: ErrorPopupActionTypes.SET_ERROR,
+				type: PopUpActionTypes.SET_AND_SHOW_ERROR,
 				message: 'Votre session a expiré, veuillez vous reconnecter.',
 			});
-			dispatch({ type: EmailConfirmationActionTypes.HIDE });
+			dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
 
 			dispatch({ type: UserActionTypes.LOG_OUT });
 
@@ -149,9 +147,10 @@ const App: React.FC = () => {
 				/>
 				<Route path='*' element={<Error404 />} />
 			</Routes>
-
-			{errorState.message && <ErrorPopup message={errorState.message} />}
-			{emailState.show && <EmailPopup />}
+			{popUpsState.errorMessage && (
+				<ErrorPopup message={popUpsState.errorMessage} />
+			)}
+			{popUpsState.showEmailConfirmation && <EmailPopup />}
 		</>
 	);
 };

@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getDate, getDay, getYear, format } from 'date-fns';
 
-import { RootState } from '../../../_shared/store/store';
-import { ErrorPopupActionTypes } from '../../../_shared/store/error';
+import { RootState } from '../../../_shared/store/_store';
 
 import { useRequest } from '../../../_shared/hooks/http-hook';
 import { getMonthFnTypes, useDatesFn } from '../../../_shared/hooks/dates-hook';

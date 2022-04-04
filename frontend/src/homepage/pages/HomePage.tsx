@@ -17,7 +17,7 @@ import TaskHalfIcon from '../../_shared/assets/imgs/icons/tutorial-half.svg';
 import TaskEmptyIcon from '../../_shared/assets/imgs/icons/tutorial-empty.svg';
 
 import classes from './HomePage.module.scss';
-import LoginSignupForms from '../../user/login-signup-forms/pages/LoginSignupForms';
+import LoginSignupForms from '../../login-signup-forms/pages/LoginSignupForms';
 import { Link } from 'react-router-dom';
 
 const HomePage: React.FC = () => {

@@ -13,7 +13,7 @@ import {
 	YAxis,
 } from 'recharts';
 
-import { RootState } from '../../_shared/store/store';
+import { RootState } from '../../_shared/store/_store';
 import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
