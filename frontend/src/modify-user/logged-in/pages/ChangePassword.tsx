@@ -6,10 +6,9 @@ import Input, { InputStyles } from '../../../_shared/components/FormElements/Inp
 import { useRequest } from '../../../_shared/hooks/http-hook';
 import { useInput, useInputTypes } from '../../../_shared/hooks/input-hook';
 import { RootState } from '../../../_shared/store/_store';
-import Form from '../components/FormWrapper';
+import Form, { FormWrapperTypes } from '../components/FormWrapper';
 import PasswordForm from '../../logged-out/components/PasswordForm';
 
-import formClasses from '../components/UserForms.module.scss';
 import classes from './ChangePassword.module.scss';
 
 const ChangePassword: React.FC = () => {
@@ -44,7 +43,7 @@ const ChangePassword: React.FC = () => {
 		inputOnChangeHandler: newPasswordConfirmationOnChangeHandler,
 		inputOnBlurHandler: newPasswordConfirmationOnBlurHandler,
 	} = useInput({
-		type: useInputTypes.PASSWORD_COMPARISON,
+		type: useInputTypes.COMPARISON,
 		validate: true,
 		compareTo: newPassword.value,
 		display: sent,
@@ -76,7 +75,7 @@ const ChangePassword: React.FC = () => {
 
 		if (responseData.error) {
 			const { validInputs } = responseData;
-			setResponse(responseData.error);
+			// setResponse(responseData.error);
 
 			if (!validInputs.oldPassword) {
 				setOldPassword((prev) => ({ ...prev, isValid: false, isTouched: true }));
@@ -121,7 +120,11 @@ const ChangePassword: React.FC = () => {
 	}, [oldPassword, newPassword.value, newPasswordConfirmation.value]);
 
 	return (
-		<Form button_onClick={changePasswordHandler} response={response}>
+		<Form
+			type={FormWrapperTypes.MODIFY}
+			button_onClick={changePasswordHandler}
+			response={response}
+		>
 			<div className={classes.inputs}>
 				<Input
 					styling={InputStyles.PROFILE_FORM}
@@ -142,7 +145,6 @@ const ChangePassword: React.FC = () => {
 					id='Nouveau Mot de Passe'
 					type='password'
 					placeholder='Nouveau mot de passe'
-					// errorText='8 caractères minimum dont 1 minuscule, 1 majuscule, 1 chiffre et un caractère spécial.'
 					errorText={newPasswordErrorText}
 					value={newPassword.value}
 					isValid={newPassword.isValid}

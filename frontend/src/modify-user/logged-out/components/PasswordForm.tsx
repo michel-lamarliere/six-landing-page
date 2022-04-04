@@ -56,7 +56,7 @@ const PasswordForm: React.FC<{
 		setInput: setNewPasswordConfirmation,
 		inputOnChangeHandler: newPasswordConfirmationOnChangeHandler,
 		inputOnBlurHandler: newPasswordConfirmationOnBlurHandler,
-	} = useInput({ type: useInputTypes.PASSWORD_COMPARISON, validate: true });
+	} = useInput({ type: useInputTypes.COMPARISON, validate: true });
 
 	const changePasswordHandler = async () => {
 		const responseData = await sendRequest(

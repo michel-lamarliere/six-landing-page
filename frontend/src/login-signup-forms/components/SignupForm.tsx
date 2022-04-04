@@ -48,7 +48,7 @@ const SingupForm: React.FC<Props> = (props) => {
 		inputOnChangeHandler: passwordConfirmationOnChangeHandler,
 		inputOnBlurHandler: passwordConfirmationOnBlurHandler,
 	} = useInput({
-		type: useInputTypes.PASSWORD_COMPARISON,
+		type: useInputTypes.COMPARISON,
 		validate: true,
 		display: sumbitted,
 		compareTo: passwordInput.value,

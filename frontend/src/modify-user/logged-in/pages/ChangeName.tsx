@@ -10,10 +10,9 @@ import { useRequest } from '../../../_shared/hooks/http-hook';
 import { useUser } from '../../../_shared/classes/user-hook';
 
 import Input, { InputStyles } from '../../../_shared/components/FormElements/Input';
+import Form, { FormWrapperTypes } from '../components/FormWrapper';
 
 import classes from './ChangeName.module.scss';
-import formClasses from '../components/UserForms.module.scss';
-import Form from '../components/FormWrapper';
 
 const ChangeName: React.FC = () => {
 	const dispatch = useDispatch();
@@ -40,6 +39,8 @@ const ChangeName: React.FC = () => {
 		}
 
 		if (responseData.error) {
+			setNewName((prev) => ({ ...prev, isValid: false, isTouched: true }));
+			// setResponse(responseData.error);
 			return;
 		}
 
@@ -62,13 +63,17 @@ const ChangeName: React.FC = () => {
 	} = useInput({ type: useInputTypes.NAME, validate: true });
 
 	return (
-		<Form button_onClick={changeNameHandler} response={response}>
+		<Form
+			type={FormWrapperTypes.MODIFY}
+			button_onClick={changeNameHandler}
+			response={response}
+		>
 			<Input
 				styling={InputStyles.PROFILE_FORM}
 				id='Nouveau Nom'
 				type='text'
 				placeholder='Jean'
-				errorText='Minimum 2 caractères, sans espaces.'
+				errorText='Minimum 2 caractères, sans espaces et sans caractères spéciaux.'
 				value={newName.value}
 				isValid={newName.isValid}
 				isTouched={newName.isTouched}

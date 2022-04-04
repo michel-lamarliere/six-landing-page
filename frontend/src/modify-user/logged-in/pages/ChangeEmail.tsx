@@ -8,7 +8,7 @@ import { useInput, useInputTypes } from '../../../_shared/hooks/input-hook';
 import { useRequest } from '../../../_shared/hooks/http-hook';
 
 import Input, { InputStyles } from '../../../_shared/components/FormElements/Input';
-import Form from '../components/FormWrapper';
+import Form, { FormWrapperTypes } from '../components/FormWrapper';
 
 import classes from './ChangeEmail.module.scss';
 
@@ -28,7 +28,11 @@ const ChangeEmail: React.FC = () => {
 	const submitHandler = () => {};
 
 	return (
-		<Form button_onClick={submitHandler} response={response}>
+		<Form
+			type={FormWrapperTypes.MODIFY}
+			button_onClick={submitHandler}
+			response={response}
+		>
 			<div className={classes.wrapper}>
 				<div className={classes.label}>Adresse mail actuelle:</div>
 				<div className={classes.email}>{userState.email}</div>

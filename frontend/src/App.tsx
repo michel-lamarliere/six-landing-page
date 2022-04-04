@@ -12,7 +12,7 @@ import LoginSignupForms from './login-signup-forms/pages/LoginSignupForms';
 import DailyView from './views/daily/pages/DailyView';
 import WeeklyView from './views/weekly/pages/WeeklyView';
 import MonthlyView from './views/monthly/pages/MonthlyView';
-import Error404 from './error/pages/Error404';
+import Error404 from './error404/Error404';
 import ErrorPopup from './pop-ups/Error';
 import EmailPopup from './pop-ups/EmailConfirmation';
 import ConfirmEmailAddress from './modify-user/logged-out/pages/ConfirmEmail';
@@ -28,6 +28,7 @@ import AnnualChart from './charts/pages/AnnualChart';
 import Homepage from './homepage/pages/Homepage';
 import DesktopSidebar from './layout/sidebar/pages/DesktopSidebar';
 import MobileSidebar from './layout/sidebar/pages/MobileSidebar';
+import DeleteAccount from './modify-user/logged-in/pages/DeleteAccount';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
@@ -134,6 +135,10 @@ const App: React.FC = () => {
 						<Route
 							path='/profil/modifier/mot-de-passe'
 							element={<ChangePassword />}
+						/>
+						<Route
+							path='/profil/modifier/supprimer-compte'
+							element={<DeleteAccount />}
 						/>
 					</>
 				)}

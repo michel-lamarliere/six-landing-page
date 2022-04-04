@@ -5,7 +5,7 @@ export enum useInputTypes {
 	EMAIL = 'EMAIL',
 	PASSWORD = 'PASSWORD',
 	NEW_PASSWORD = 'NEW_PASSWORD',
-	PASSWORD_COMPARISON = 'PASSWORD_COMPARISON',
+	COMPARISON = 'COMPARISON',
 	NONE = 'NONE',
 }
 
@@ -14,7 +14,7 @@ export const useInput = (data: {
 		| useInputTypes.NAME
 		| useInputTypes.EMAIL
 		| useInputTypes.PASSWORD
-		| useInputTypes.PASSWORD_COMPARISON
+		| useInputTypes.COMPARISON
 		| useInputTypes.NONE;
 	validate: boolean;
 	display?: boolean;
@@ -77,7 +77,7 @@ export const useInput = (data: {
 	}, [input.value]);
 
 	useEffect(() => {
-		if (type === 'PASSWORD_COMPARISON' && validate) {
+		if (type === 'COMPARISON' && validate) {
 			input.value === compareTo
 				? setInput((prev) => ({ ...prev, isValid: true }))
 				: setInput((prev) => ({ ...prev, isValid: false }));
