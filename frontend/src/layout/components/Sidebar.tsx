@@ -31,18 +31,18 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 
 	const refreshDataHandler = async () => {
 		setSpinButton(true);
-		setSpinnerClasses(classes['user__refresh__spinner--active']);
+		setSpinnerClasses(classes['user__refresh-spinner__img--active']);
 
 		User.refreshData();
 
 		const spinner = setTimeout(() => {
-			setSpinnerClasses(classes['user__refresh__spinner--done']);
-		}, 1000);
+			setSpinnerClasses(classes['user__refresh-spinner__img--done']);
+		}, 1500);
 
 		const doneSpinning = setTimeout(() => {
 			setSpinnerClasses('');
 			setSpinButton(false);
-		}, 1500);
+		}, 2500);
 
 		return () => {
 			clearTimeout(spinner);
@@ -101,8 +101,8 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 					</div>
 					<button
 						onClick={refreshDataHandler}
-						className={`${classes.user__refresh} ${
-							spinButton && classes['user__refresh--active']
+						className={`${classes['user__refresh-spinner']} ${
+							spinButton && classes['user__refresh-spinner--active']
 						}`}
 						disabled={spinButton}
 					>

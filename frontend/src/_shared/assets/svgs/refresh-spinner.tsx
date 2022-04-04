@@ -2,48 +2,23 @@ import React from 'react';
 
 const RefreshSpinner: React.FC<{ className: string }> = (props) => {
 	return (
-		<svg
-			xmlns='http://www.w3.org/2000/svg'
-			width='34.239'
-			height='27.115'
-			viewBox='0 0 34.239 27.115'
-		>
-			<g id='refresh-spinner' transform='translate(0.619 -2.946)'>
-				<path
-					id='Tracé_15'
-					data-name='Tracé 15'
-					d='M33.682,6v8H25.5'
-					transform='translate(-2.182 -0.166)'
-					fill='none'
-					stroke='#8d88ff'
-					stroke-linecap='round'
-					stroke-linejoin='round'
-					stroke-width='3'
-					className={props.className}
-				/>
-				<path
-					id='Tracé_16'
-					data-name='Tracé 16'
-					d='M1.5,29V21H9.682'
-					transform='translate(0 -1.829)'
-					fill='none'
-					stroke='#8d88ff'
-					stroke-linecap='round'
-					stroke-linejoin='round'
-					stroke-width='3'
-					className={props.className}
-				/>
-				<path
-					id='Tracé_17'
-					data-name='Tracé 17'
-					d='M4.923,12.5a12.184,12.184,0,0,1,8.861-7.7A12.457,12.457,0,0,1,25.173,8.021L31.5,13.836m-30,5.335,6.327,5.815a12.457,12.457,0,0,0,11.389,3.222,12.184,12.184,0,0,0,8.861-7.7'
-					fill='none'
-					stroke='#8d88ff'
-					stroke-linecap='round'
-					stroke-linejoin='round'
-					stroke-width='3'
-					className={props.className}
-				/>
+		<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'>
+			<g id='a' />
+			<g id='b'>
+				<g id='c'>
+					<g>
+						<path
+							fill={'#8D88FF'}
+							className={`d ${props.className}`}
+							d='M2.99,14.34c.27-4.68,3.28-8.98,7.98-10.65,3.9-1.38,8.05-.61,11.15,1.69h-1.16c-.83-.01-1.51,.66-1.51,1.49s.66,1.5,1.49,1.51l5,.03h0c.18,0,.35-.03,.51-.09,.58-.21,1-.76,1-1.41l.03-5c0-.83-.66-1.5-1.49-1.51-.83,0-1.5,.66-1.51,1.49v1.53C20.56,.2,15.11-.96,9.96,.86,6.04,2.26,3.06,5.12,1.43,8.6h0c-.45,.96-.8,1.96-1.03,3C.11,12.8-.03,14.04,0,15.29c0,.02,0,.04,0,.07,.12,.7,.73,1.24,1.47,1.24,.78,0,1.42-.58,1.49-1.33,0-.32,0-.63,.02-.94Z'
+						/>
+						<path
+							fill={'#8D88FF'}
+							className={`d ${props.className}`}
+							d='M29.99,14.63c-.12-.7-.73-1.24-1.47-1.24-.78,0-1.42,.58-1.49,1.33,0,.32,0,.63-.02,.94-.27,4.68-3.28,8.98-7.98,10.65-3.9,1.38-8.05,.61-11.15-1.69h1.16c.83,.01,1.51-.66,1.51-1.49s-.66-1.5-1.49-1.51l-5-.03h0c-.18,0-.35,.03-.51,.09-.58,.21-1,.76-1,1.41l-.03,5c0,.83,.66,1.5,1.49,1.51,.83,0,1.5-.66,1.51-1.49v-1.53c3.93,3.22,9.38,4.38,14.52,2.55,3.92-1.39,6.9-4.25,8.53-7.74h0c.45-.96,.8-1.96,1.03-3,.29-1.2,.42-2.44,.39-3.69,0-.02,0-.04,0-.07Z'
+						/>
+					</g>
+				</g>
 			</g>
 		</svg>
 	);
