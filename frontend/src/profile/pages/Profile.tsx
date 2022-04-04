@@ -7,17 +7,18 @@ import { RootState } from '../../_shared/store/_store';
 import { useRequest } from '../../_shared/hooks/http-hook';
 import { useUser } from '../../_shared/classes/user-hook';
 
-import confirmedEmailIcon from '../../_shared/assets/imgs/icons/profile-confirmed-email-arrow.svg';
+import confirmedEmailIcon from '../../_shared/assets/imgs/icons/profile/profile-confirmed-email-arrow.svg';
 import arrow from '../../_shared/assets/imgs/icons/arrow-bottom-purple.svg';
 import userIcon from '../../_shared/assets/imgs/icons/user-icon.svg';
-import recapIcon from '../../_shared/assets/imgs/icons/profile-stats.svg';
-import imageIcon from '../../_shared/assets/imgs/icons/profile-modify-image.svg';
-import nameIcon from '../../_shared/assets/imgs/icons/profile-modify-name.svg';
-import emailIcon from '../../_shared/assets/imgs/icons/profile-modify-email.svg';
-import passwordIcon from '../../_shared/assets/imgs/icons/profile-modify-password.svg';
-import logOutIcon from '../../_shared/assets/imgs/icons/profile-log-out.svg';
+import recapIcon from '../../_shared/assets/imgs/icons/profile/profile-stats.svg';
+import imageIcon from '../../_shared/assets/imgs/icons/profile/profile-modify-image.svg';
+import nameIcon from '../../_shared/assets/imgs/icons/profile/profile-modify-name.svg';
+import emailIcon from '../../_shared/assets/imgs/icons/profile/profile-modify-email.svg';
+import passwordIcon from '../../_shared/assets/imgs/icons/profile/profile-modify-password.svg';
+import logOutIcon from '../../_shared/assets/imgs/icons/profile/profile-log-out.svg';
 
 import classes from './Profile.module.scss';
+import LogOutConfirmation from '../components/LogOutConfirmation';
 
 const Profile: React.FC = () => {
 	const { User } = useUser();
@@ -27,9 +28,18 @@ const Profile: React.FC = () => {
 
 	const [showEditProfile, setShowEditProfile] = useState(true);
 	const [response, setResponse] = useState('');
+	const [promptLogOut, setPromptLogOut] = useState(false);
 
 	const editProfileHandler = () => {
 		setShowEditProfile((prev) => !prev);
+	};
+
+	const promptLogOutHandler = () => {
+		setPromptLogOut(true);
+	};
+
+	const removeLogOutPrompt = () => {
+		setPromptLogOut(false);
 	};
 
 	const resendEmail = async () => {
@@ -52,10 +62,6 @@ const Profile: React.FC = () => {
 		setTimeout(() => {
 			setResponse('');
 		}, 5000);
-	};
-
-	const logoutHandler = () => {
-		User.logOut();
 	};
 
 	return (
@@ -145,10 +151,13 @@ const Profile: React.FC = () => {
 					</>
 				)}
 			</div>
-			<button onClick={logoutHandler} className={classes['log-out']}>
+			<button onClick={promptLogOutHandler} className={classes['log-out']}>
 				<img src={logOutIcon} alt='Déconnexion' />
 				<div className={classes['log-out__text']}>Déconnexion</div>
 			</button>
+			{promptLogOut && (
+				<LogOutConfirmation cancelLogOutHandler={removeLogOutPrompt} />
+			)}
 		</div>
 	);
 };

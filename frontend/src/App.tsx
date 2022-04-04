@@ -25,7 +25,7 @@ import ChangeEmail from './modify-user/logged-in/pages/ChangeEmail';
 import ChangePassword from './modify-user/logged-in/pages/ChangePassword';
 import ChangeImage from './modify-user/logged-in/pages/ChangeImage';
 import AnnualChart from './charts/pages/AnnualChart';
-import HomePage from './homepage/pages/HomePage';
+import Homepage from './homepage/pages/Homepage';
 import DesktopSidebar from './layout/sidebar/pages/DesktopSidebar';
 import MobileSidebar from './layout/sidebar/pages/MobileSidebar';
 
@@ -115,7 +115,7 @@ const App: React.FC = () => {
 			<Routes>
 				{!userData && (
 					<>
-						<Route path='/' element={<HomePage />} />
+						<Route path='/' element={<Homepage />} />
 						<Route path='/login-signup' element={<LoginSignupForms />} />
 					</>
 				)}

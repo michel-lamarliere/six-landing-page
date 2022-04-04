@@ -12,7 +12,7 @@ import { useRequest } from '../../../_shared/hooks/http-hook';
 import { useUser } from '../../../_shared/classes/user-hook';
 
 import userIcon from '../../../_shared/assets/imgs/icons/user-icon.svg';
-import sixIcon from '../../../_shared/assets/imgs/icons/logo.svg';
+import sixIcon from '../../../_shared/assets/imgs/icons/app/logo.svg';
 
 import RefreshSpinner from '../../../_shared/components/_svgs/refresh-spinner';
 

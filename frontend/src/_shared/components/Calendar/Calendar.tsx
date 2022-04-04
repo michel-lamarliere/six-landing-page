@@ -7,10 +7,10 @@ import { UIElementsActionTypes } from '../../store/ui-elements';
 import DaysOfWeek from './DaysOfWeek';
 import { CalendarButton, TaskSelectorButton } from './CalendarButtons';
 
-import LeftArrow from '../../assets/imgs/icons/left-arrow.svg';
-import DoubleLeftArrow from '../../assets/imgs/icons/double-left-arrow.svg';
-import RightArrow from '../../assets/imgs/icons/right-arrow.svg';
-import DoubleRightArrow from '../../assets/imgs/icons/double-right-arrow.svg';
+import LeftArrow from '../../assets/imgs/icons/calendar/left-arrow.svg';
+import DoubleLeftArrow from '../../assets/imgs/icons/calendar/double-left-arrow.svg';
+import RightArrow from '../../assets/imgs/icons/calendar/right-arrow.svg';
+import DoubleRightArrow from '../../assets/imgs/icons/calendar/double-right-arrow.svg';
 
 import classes from './Calendar.module.scss';
 

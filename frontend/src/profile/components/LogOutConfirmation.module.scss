@@ -1,0 +1,63 @@
+@import '../../_shared/style/variables.scss';
+
+.wrapper {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 1rem;
+	width: 100%;
+	min-height: 4rem;
+	padding: 1rem 0;
+	border-radius: 1rem 1rem 0 0;
+	background-color: #ffffff;
+	font-size: 16px;
+}
+
+.message {
+	font-family: $fontMedium;
+	font-size: 14px;
+	color: black;
+}
+
+.buttons {
+	display: flex;
+	gap: 1rem;
+
+	&__button {
+		width: 9.6rem;
+		padding: 0.8em 1.4em;
+		border-radius: 2.46em;
+		font-family: $fontBold;
+		font-size: 15px;
+		cursor: pointer;
+
+		&--cancel {
+			border: 0.13rem solid black;
+			background-color: white;
+			color: black;
+		}
+
+		&--confirm {
+			background-color: #24263e;
+			border: 0.13rem solid #24263e;
+			color: white;
+		}
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	.wrapper {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		justify-content: center;
+		max-width: 25rem;
+		height: 8rem;
+		border-radius: 1rem;
+	}
+}

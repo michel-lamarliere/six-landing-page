@@ -5,13 +5,13 @@ import { RootState } from '../../store/_store';
 import { UIElementsActionTypes } from '../../store/ui-elements';
 
 import TopArrow from '../../assets/imgs/icons/top-arrow.svg';
-import CalendarIcon from '../../assets/imgs/icons/calendar_icon.svg';
-import FoodIcon from '../../assets/imgs/icons/food.svg';
-import SleepIcon from '../../assets/imgs/icons/sleep.svg';
-import SportsIcon from '../../assets/imgs/icons/sports.svg';
-import RelaxationIcon from '../../assets/imgs/icons/relaxation.svg';
-import WorkIcon from '../../assets/imgs/icons/work.svg';
-import SocialIcon from '../../assets/imgs/icons/social.svg';
+import CalendarIcon from '../../assets/imgs/icons/calendar/calendar_icon.svg';
+import FoodIcon from '../../assets/imgs/icons/six/food.svg';
+import SleepIcon from '../../assets/imgs/icons/six/sleep.svg';
+import SportsIcon from '../../assets/imgs/icons/six/sports.svg';
+import RelaxationIcon from '../../assets/imgs/icons/six/relaxation.svg';
+import WorkIcon from '../../assets/imgs/icons/six/work.svg';
+import SocialIcon from '../../assets/imgs/icons/six/social.svg';
 
 import calendarClasses from './Calendar.module.scss';
 

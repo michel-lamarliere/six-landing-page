@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Button } from '../../_shared/components/UIElements/Buttons';
 import { buttonColors } from '../../_shared/components/UIElements/Buttons';
 import { Slide2GridItem, Slide3GridItem } from '../components/GridItem';
 import CarouselButton from '../components/CarouselButton';
-
-import SixIcon from '../../_shared/assets/imgs/icons/logo.svg';
-import FoodIcon from '../../_shared/assets/imgs/icons/food.svg';
-import SleepIcon from '../../_shared/assets/imgs/icons/sleep.svg';
-import SportsIcon from '../../_shared/assets/imgs/icons/sports.svg';
-import RelaxationIcon from '../../_shared/assets/imgs/icons/relaxation.svg';
-import WorkIcon from '../../_shared/assets/imgs/icons/work.svg';
-import SocialIcon from '../../_shared/assets/imgs/icons/social.svg';
-import TaskFullIcon from '../../_shared/assets/imgs/icons/tutorial-full.svg';
-import TaskHalfIcon from '../../_shared/assets/imgs/icons/tutorial-half.svg';
-import TaskEmptyIcon from '../../_shared/assets/imgs/icons/tutorial-empty.svg';
-
-import classes from './HomePage.module.scss';
 import LoginSignupForms from '../../login-signup-forms/pages/LoginSignupForms';
-import { Link } from 'react-router-dom';
+
+import SixIcon from '../../_shared/assets/imgs/icons/app/logo.svg';
+import FoodIcon from '../../_shared/assets/imgs/icons/six/food.svg';
+import SleepIcon from '../../_shared/assets/imgs/icons/six/sleep.svg';
+import SportsIcon from '../../_shared/assets/imgs/icons/six/sports.svg';
+import RelaxationIcon from '../../_shared/assets/imgs/icons/six/relaxation.svg';
+import WorkIcon from '../../_shared/assets/imgs/icons/six/work.svg';
+import SocialIcon from '../../_shared/assets/imgs/icons/six/social.svg';
+import TaskFullIcon from '../../_shared/assets/imgs/icons/tutorial/tutorial-full.svg';
+import TaskHalfIcon from '../../_shared/assets/imgs/icons/tutorial/tutorial-half.svg';
+import TaskEmptyIcon from '../../_shared/assets/imgs/icons/tutorial/tutorial-empty.svg';
+
+import classes from './Homepage.module.scss';
 
 const HomePage: React.FC = () => {
 	const carousel = [

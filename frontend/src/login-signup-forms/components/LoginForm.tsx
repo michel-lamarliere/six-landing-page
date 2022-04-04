@@ -9,8 +9,8 @@ import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 import FormContainer from './FormContainer';
 
-import RememberMeTrueSVG from '../../_shared/assets/imgs/icons/remember-me_true.svg';
-import RememberMeFalseSVG from '../../_shared/assets/imgs/icons/remember-me_false.svg';
+import RememberMeTrueSVG from '../../_shared/assets/imgs/icons/form&input/remember-me_true.svg';
+import RememberMeFalseSVG from '../../_shared/assets/imgs/icons/form&input/remember-me_false.svg';
 
 import classes from './LoginForm.module.scss';
 
