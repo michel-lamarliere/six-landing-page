@@ -26,7 +26,7 @@ const ChangeName: React.FC = () => {
 	const changeNameHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
 		const responseData = await sendRequest(
-			'http://localhost:8080/api/user_modify/modify/name',
+			'http://localhost:8080/api/user_modify/name',
 			'PATCH',
 			JSON.stringify({
 				id: userState.id,
@@ -64,7 +64,9 @@ const ChangeName: React.FC = () => {
 
 	return (
 		<Form
+			title={'Nom'}
 			type={FormWrapperTypes.MODIFY}
+			displaySubmitButton={true}
 			button_onClick={changeNameHandler}
 			response={response}
 		>

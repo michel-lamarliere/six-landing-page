@@ -12,6 +12,8 @@ export enum FormWrapperTypes {
 
 interface Props {
 	type: FormWrapperTypes;
+	title: string;
+	displaySubmitButton?: boolean;
 	button_onClick?: any;
 	response?: string;
 }
@@ -20,20 +22,24 @@ const Form: React.FC<Props> = (props) => {
 	let rendered =
 		props.type === FormWrapperTypes.MODIFY ? (
 			<div className={classes.wrapper}>
+				<div className={classes.title}>{props.title}</div>
 				<Link to='/profil' className={classes['back-button']}>
 					<img src={backButton} alt='Retour' />
 				</Link>
 				{props.children}
-				<button
-					className={classes['submit-button']}
-					onClick={props.button_onClick}
-				>
-					Enregistrer
-				</button>
+				{props.displaySubmitButton && (
+					<button
+						className={classes['submit-button']}
+						onClick={props.button_onClick}
+					>
+						Enregistrer
+					</button>
+				)}
 				<div className={classes.response}>{props.response}</div>
 			</div>
 		) : (
 			<div className={classes.wrapper}>
+				<div className={classes.title}>{props.title}</div>
 				<Link to='/profil' className={classes['back-button']}>
 					<img src={backButton} alt='Retour' />
 				</Link>

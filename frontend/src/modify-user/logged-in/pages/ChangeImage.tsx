@@ -9,6 +9,8 @@ const ChangeImage: React.FC = () => {
 	return (
 		<FormWrapper
 			type={FormWrapperTypes.MODIFY}
+			title={'Image'}
+			displaySubmitButton={true}
 			button_onClick={undefined}
 			response={''}
 		></FormWrapper>

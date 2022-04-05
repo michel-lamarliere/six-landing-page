@@ -88,6 +88,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 
 	// CREATES THE USER'S OBJECT
 	const newUser = {
+		image: 0,
 		name: reqName,
 		email: reqEmail,
 		password: hashedPassword,
@@ -100,6 +101,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 			code: hashedConfirmationCode,
 			nextEmail: addMinutes(new Date(), 5),
 		},
+		deleteCode: null,
 		log: [],
 	};
 

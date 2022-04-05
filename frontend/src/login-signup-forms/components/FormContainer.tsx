@@ -63,6 +63,7 @@ const FormContainer: React.FC<Props> = (props) => {
 				{!userData && (
 					<>
 						<div className={classes.footer__text}>{props.footer_text}</div>
+						&nbsp;
 						<button
 							onClick={props.switchFormHandler}
 							className={classes.footer__button}

@@ -60,7 +60,7 @@ const PasswordForm: React.FC<{
 
 	const changePasswordHandler = async () => {
 		const responseData = await sendRequest(
-			'http://localhost:8080/api/user_modify/modify/password',
+			'http://localhost:8080/api/user_modify/password',
 			'PATCH',
 			JSON.stringify({
 				id: props.forgotForm ? props.userId : userState.id,

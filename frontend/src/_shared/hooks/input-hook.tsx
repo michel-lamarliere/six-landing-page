@@ -41,11 +41,11 @@ export const useInput = (data: {
 		}
 	};
 
-	// useEffect(() => {
-	// 	if (display) {
-	// 		setInput((prev) => ({ ...prev, isTouched: true }));
-	// 	}
-	// }, [display]);
+	useEffect(() => {
+		if (display) {
+			setInput((prev) => ({ ...prev, isTouched: true }));
+		}
+	}, [display]);
 
 	useEffect(() => {
 		if (type === 'NAME' && validate) {

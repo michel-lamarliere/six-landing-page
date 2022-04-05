@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/user', userRoutes);
-app.use('/api/user_modify', userModifyRoutes);
+app.use('/api/user-modify', userModifyRoutes);
 app.use('/api/log', logRoutes);
 app.use('/api/charts', chartsRoutes);
 

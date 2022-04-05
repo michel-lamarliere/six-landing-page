@@ -29,6 +29,8 @@ import Homepage from './homepage/pages/Homepage';
 import DesktopSidebar from './layout/sidebar/pages/DesktopSidebar';
 import MobileSidebar from './layout/sidebar/pages/MobileSidebar';
 import DeleteAccount from './modify-user/logged-in/pages/DeleteAccount';
+import DeleteAccountConfirm from './modify-user/logged-in/pages/DeleteAccountConfirm';
+import ChangeEmailConfirm from './modify-user/logged-in/pages/ChangeEmailConfirm';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
@@ -145,6 +147,14 @@ const App: React.FC = () => {
 				<Route
 					path='/profil/confirmer/:email/:code'
 					element={<ConfirmEmailAddress />}
+				/>
+				<Route
+					path='/supprimer-compte/confirmation/:email/:code'
+					element={<DeleteAccountConfirm />}
+				/>
+				<Route
+					path='/modifier-email/confirmation/:oldEmail/:newEmail'
+					element={<ChangeEmailConfirm />}
 				/>
 				<Route
 					path='/modifier/motdepasse/:email/:uniqueId'

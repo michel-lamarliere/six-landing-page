@@ -57,7 +57,7 @@ const ChangePassword: React.FC = () => {
 
 	const changePasswordHandler = async () => {
 		const responseData = await sendRequest(
-			'http://localhost:8080/api/user_modify/modify/password',
+			'http://localhost:8080/api/user_modify/password',
 			'PATCH',
 			JSON.stringify({
 				id: userState.id,
@@ -122,6 +122,8 @@ const ChangePassword: React.FC = () => {
 	return (
 		<Form
 			type={FormWrapperTypes.MODIFY}
+			title={'Mot de passe'}
+			displaySubmitButton={true}
 			button_onClick={changePasswordHandler}
 			response={response}
 		>

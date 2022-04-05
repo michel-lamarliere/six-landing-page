@@ -7,7 +7,96 @@ const crypto = require('crypto');
 const database = require('../util/db-connect');
 const { createNodemailerTransporter } = require('../util/nodemailer-transporter');
 
-const changeEmail: RequestHandler = async (req, res, next) => {};
+const changeImage: RequestHandler = async (req, res, next) => {};
+
+const changeEmail: RequestHandler = async (req, res, next) => {
+	const { oldEmail: reqOldEmail, newEmail: reqNewEmail } = req.body;
+
+	const databaseConnect = await database.getDb('six-dev').collection('users');
+
+	// CHECKS IF THE USER EXISTS
+	const user = await databaseConnect.findOne({ email: reqOldEmail });
+
+	if (!user) {
+		res.status(404).json({ fatal: true });
+		return;
+	}
+
+	const existingUserWithNewEmail = await databaseConnect.findOne({
+		email: reqNewEmail,
+	});
+
+	if (existingUserWithNewEmail) {
+		res.json({ used: true, error: 'Email adresse déjà utilisée.' });
+	}
+
+	const transporter = createNodemailerTransporter();
+
+	const oldEmailWasSent = await transporter.sendMail({
+		from: '"Six App" <contact@michel-lamarliere.com>',
+		to: 'lamarliere.michel@icloud.com',
+		subject: "Demande de changement d'adresse mail",
+		// text: 'Cliquez',
+		html: `<div>Une demande a été faite pour changer d'adresse mail. Un mail a également été envoyé sur la nouvelle ${reqNewEmail}. </div>`,
+	});
+
+	const newEmailWasSent = await transporter.sendMail({
+		from: '"Six App" <contact@michel-lamarliere.com>',
+		to: 'lamarliere.michel@icloud.com',
+		subject: "Demande de changement d'adresse mail",
+		// text: 'Cliquez',
+		html: `<div>Une demande a été faite pour changer d'adresse mail. Un mail a également été envoyé sur l'ancienne ${reqOldEmail}. Cliquez <a href=http://localhost:3000/modifier-email/confirmation/${reqOldEmail}/${reqNewEmail} >ici</a> pour confirmer le changement. </div>`,
+	});
+
+	if (!oldEmailWasSent || !newEmailWasSent) {
+		res.status(400).json({
+			error: "Une erreur est survenue lors de l'envoi des mail",
+		});
+		return;
+	}
+
+	res.status(200).json({
+		success: true,
+		message:
+			'Email envoyé, veuillez vérifier la boite email de votre nouvelle adresse mail.',
+	});
+};
+
+const changeEmailConfirmation: RequestHandler = async (req, res, next) => {
+	const { oldEmail: reqOldEmail, newEmail: reqNewEmail } = req.body;
+
+	const databaseConnect = await database.getDb('six-dev').collection('users');
+
+	// CHECKS IF THE USER EXISTS
+	const user = await databaseConnect.findOne({ email: reqOldEmail });
+
+	if (!user) {
+		res.status(404).json({ fatal: true });
+		return;
+	}
+
+	const newEmailExists = await databaseConnect.findOne({ email: reqNewEmail });
+
+	if (newEmailExists) {
+		res.status(400).json({
+			error: 'Un compte avec votre nouvelle adresse email existe déjà.',
+		});
+		return;
+	}
+
+	await databaseConnect.updateOne(
+		{ email: reqOldEmail },
+		{ $set: { email: reqNewEmail } }
+	);
+
+	res.status(200).json({
+		success: true,
+		message:
+			'Adresse mail modifiée, veuillez vous connecter avec votre nouvelle adresse email.',
+	});
+
+	console.log('done');
+};
 
 const changeName: RequestHandler = async (req, res, next) => {
 	const { id: reqIdStr, newName: reqNewName } = req.body;
@@ -229,8 +318,98 @@ const checkForgotPasswordAuth: RequestHandler = async (req, res, next) => {
 	res.status(200).json({ success: 'Autorisé !', id: user._id });
 };
 
+const deleteAccountEmail: RequestHandler = async (req, res, next) => {
+	const { id: reqIdStr } = req.body;
+
+	const reqId = new ObjectId(reqIdStr);
+
+	const databaseConnect = await database.getDb('six-dev').collection('users');
+
+	// CHECKS IF THE USER EXISTS
+	const user = await databaseConnect.findOne({ _id: reqId });
+
+	console.log(user);
+
+	if (!user) {
+		res.status(404).json({ fatal: true });
+		return;
+	}
+
+	const generatedForgotPasswordCode = crypto.randomBytes(20).toString('hex');
+
+	await databaseConnect.updateOne(
+		{ _id: reqId },
+		{
+			$set: {
+				deleteCode: generatedForgotPasswordCode,
+			},
+		}
+	);
+
+	const transporter = createNodemailerTransporter();
+
+	const emailWasSent = await transporter.sendMail({
+		from: '"Six App" <contact@michel-lamarliere.com>',
+		to: 'lamarliere.michel@icloud.com',
+		subject: 'Suppression de votre compte',
+		// text: 'Cliquez',
+		html: `<div>Cliquez <a href="http://localhost:3000/supprimer-compte/confirmation/${encodeURI(
+			user.email
+		)}/${encodeURI(
+			generatedForgotPasswordCode
+		)}">ici</a> pour supprimer votre compte, cliquez sur ce lien</div>`,
+	});
+
+	if (emailWasSent) {
+		res.status(200).json({ success: true, message: 'Email envoyé !' });
+	} else {
+		res.status(400).json({ error: true, message: "Erreur lors de l'envoi de mail" });
+	}
+};
+
+const deleteAccountConfirm: RequestHandler = async (req, res, next) => {
+	const { email: reqEmail, code: reqCode } = req.body;
+
+	// const reqId = new ObjectId(reqIdStr);
+
+	const databaseConnect = await database.getDb('six-dev').collection('users');
+
+	// CHECKS IF THE USER EXISTS
+	const user = await databaseConnect.findOne({ email: reqEmail });
+
+	if (!user) {
+		res.status(404).json({ fatal: true });
+		return;
+	}
+
+	if (reqCode !== user.deleteCode) {
+		res.status(400).json({
+			error: 'Erreur lors de la suppression de votre compte. Veuillez nous contacter',
+		});
+		return;
+	}
+
+	await databaseConnect.deleteOne({ email: reqEmail });
+
+	const transporter = createNodemailerTransporter();
+
+	await transporter.sendMail({
+		from: '"Six App" <contact@michel-lamarliere.com>',
+		to: 'lamarliere.michel@icloud.com',
+		subject: 'Compte supprimé',
+		// text: 'Cliquez',
+		html: `Nous sommes tristes de vous voir partir.`,
+	});
+
+	res.json({ success: true, message: 'Compte supprimé.' });
+};
+
+exports.changeImage = changeImage;
 exports.changeName = changeName;
 exports.changeEmail = changeEmail;
+exports.changeEmailConfirmation = changeEmailConfirmation;
 exports.changePassword = changePassword;
 exports.sendEmailForgotPassword = sendEmailForgotPassword;
 exports.checkForgotPasswordAuth = checkForgotPasswordAuth;
+exports.deleteAccountEmail = deleteAccountEmail;
+exports.deleteAccountConfirm = deleteAccountConfirm;

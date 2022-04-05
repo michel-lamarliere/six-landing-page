@@ -12,7 +12,7 @@ export const useRequest = () => {
 
 	const sendRequest = async (
 		url: string,
-		method: 'POST' | 'GET' | 'PATCH',
+		method: 'POST' | 'GET' | 'PATCH' | 'DELETE',
 		body: string | null = null
 	) => {
 		const response = await fetch(url, {

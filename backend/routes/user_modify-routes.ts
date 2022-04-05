@@ -12,12 +12,20 @@ router.get(
 
 router.get('/:email/:uniqueId', userModifyControllers.checkForgotPasswordAuth);
 
-router.patch('/modify/password/', userModifyControllers.changePassword);
+router.patch('/email/confirmation', userModifyControllers.changeEmailConfirmation);
+
+router.patch('/password/', userModifyControllers.changePassword);
+
+router.delete('/delete-account/confirmation', userModifyControllers.deleteAccountConfirm);
 
 router.use(checkAuth);
 
-router.patch('/modify/name', userModifyControllers.changeName);
+router.patch('/name', userModifyControllers.changeName);
 
-router.patch('/modify/email', userModifyControllers.changeEmail);
+router.patch('/image', userModifyControllers.changeImage);
+
+router.patch('/email', userModifyControllers.changeEmail);
+
+router.patch('/delete-account', userModifyControllers.deleteAccountEmail);
 
 module.exports = router;
