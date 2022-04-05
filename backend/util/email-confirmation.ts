@@ -8,8 +8,10 @@ export const emailConfirmationEmail = async (email: string, code: string) => {
 		to: 'lamarliere.michel@icloud.com',
 		subject: "Confirmation de l'adresse mail. ",
 		text: 'Veuillez confirmer votre adresse mail en cliquant sur ce lien.',
-		html: `<div><b>Bien ou quoi?</b><a href="http://localhost:3000/profil/confirmation/${encodeURI(
-			email
-		)}/${encodeURI(code)}"> Cliquez ici pour confirmer votre adresse mail.</a></div>`,
+		html: `<div><b>Bien ou quoi?</b><a href="${
+			process.env.FRONT_END_URL
+		}/profil/confirmation/${encodeURI(email)}/${encodeURI(
+			code
+		)}"> Cliquez ici pour confirmer votre adresse mail.</a></div>`,
 	});
 };

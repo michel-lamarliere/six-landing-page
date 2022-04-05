@@ -54,7 +54,7 @@ const WeekView: React.FC = () => {
 
 	const getWeekData = async () => {
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/log/weekly/${userState.id}/${formattedFirstOfWeek}`,
+			`${process.env.REACT_APP_BACKEND_URL}/log/weekly/${userState.id}/${formattedFirstOfWeek}`,
 			'GET'
 		);
 

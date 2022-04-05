@@ -49,7 +49,7 @@ const ChangeEmail: React.FC = () => {
 		}
 
 		const responseData = await sendRequest(
-			'http://localhost:8080/api/user-modify/email',
+			`${process.env.REACT_APP_BACKEND_URL}/user-modify/email`,
 			'PATCH',
 			JSON.stringify({ oldEmail: userState.email, newEmail: newEmailInput.value })
 		);

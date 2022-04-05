@@ -87,7 +87,7 @@ export const useUser = () => {
 
 		static async refreshData() {
 			const responseData = await sendRequest(
-				`http://localhost:8080/api/user/${userState.id}`,
+				`${process.env.REACT_APP_BACKEND_URL}/user/${userState.id}`,
 				'GET'
 			);
 

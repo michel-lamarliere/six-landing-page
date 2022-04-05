@@ -24,7 +24,7 @@ const PasswordForm: React.FC<{
 	const fetchOldPassword = async () => {
 		if (oldPassword.value.trim().length > 0) {
 			const responseData = await sendRequest(
-				`http://localhost:8080/api/user_modify/compare/passwords/${userState.id}/${oldPassword.value}`,
+				`${process.env.REACT_APP_BACKEND_URL}/user_modify/compare/passwords/${userState.id}/${oldPassword.value}`,
 				'GET'
 			);
 
@@ -60,7 +60,7 @@ const PasswordForm: React.FC<{
 
 	const changePasswordHandler = async () => {
 		const responseData = await sendRequest(
-			'http://localhost:8080/api/user_modify/password',
+			`${process.env.REACT_APP_BACKEND_URL}/user_modify/password`,
 			'PATCH',
 			JSON.stringify({
 				id: props.forgotForm ? props.userId : userState.id,

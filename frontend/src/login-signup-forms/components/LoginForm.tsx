@@ -62,7 +62,7 @@ const LoginForm: React.FC<Props> = (props) => {
 		}
 
 		const responseData = await sendRequest(
-			'http://localhost:8080/api/user/signin',
+			`${process.env.REACT_APP_BACKEND_URL}/user/signin`,
 			'POST',
 			JSON.stringify({
 				email: emailInput.value.trim().toLowerCase(),

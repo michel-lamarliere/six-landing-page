@@ -32,7 +32,7 @@ const ForgotPassword: React.FC = () => {
 		event.preventDefault();
 
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/user_modify/email/forgot-password/${forgotPasswordEmailInput.value}`,
+			`${process.env.REACT_APP_BACKEND_URL}/user_modify/email/forgot-password/${forgotPasswordEmailInput.value}`,
 			'GET',
 			null
 		);

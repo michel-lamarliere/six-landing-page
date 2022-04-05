@@ -45,7 +45,7 @@ export const useRequest = () => {
 		const date = dateAndTaskStr.split('_')[0];
 		const task = dateAndTaskStr.split('_')[1];
 
-		const response = await fetch('http://localhost:8080/api/log/task', {
+		const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/log/task`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

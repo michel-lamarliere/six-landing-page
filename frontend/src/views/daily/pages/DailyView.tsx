@@ -53,7 +53,7 @@ const DailyView: React.FC = () => {
 
 	const getDailyData = async () => {
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/log/daily/${userState.id}/${chosenDate
+			`${process.env.REACT_APP_BACKEND_URL}/log/daily/${userState.id}/${chosenDate
 				.toISOString()
 				.slice(0, 10)}`,
 			'GET'

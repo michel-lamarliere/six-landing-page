@@ -54,7 +54,7 @@ const MonthlyView: React.FC = () => {
 		const chosenMonthStr = format(chosenDate, 'yyyy-MM-dd');
 
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/log/monthly/${userState.id}/${chosenMonthStr}/${chosenTask}`,
+			`${process.env.REACT_APP_BACKEND_URL}/log/monthly/${userState.id}/${chosenMonthStr}/${chosenTask}`,
 			'GET'
 		);
 

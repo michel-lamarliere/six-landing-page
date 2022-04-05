@@ -57,7 +57,7 @@ const ChangePassword: React.FC = () => {
 
 	const changePasswordHandler = async () => {
 		const responseData = await sendRequest(
-			'http://localhost:8080/api/user_modify/password',
+			`${process.env.REACT_APP_BACKEND_URL}/user_modify/password`,
 			'PATCH',
 			JSON.stringify({
 				id: userState.id,

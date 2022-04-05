@@ -25,7 +25,7 @@ const EmailPopup: React.FC = () => {
 
 	const resendEmailConfirmationHandler = async () => {
 		const responseData = await sendRequest(
-			'http://localhost:8080/api/user/email/email-confirmation',
+			`${process.env.REACT_APP_BACKEND_URL}/user/email/email-confirmation`,
 			'POST',
 			JSON.stringify({ id: userState.id })
 		);

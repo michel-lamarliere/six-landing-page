@@ -20,7 +20,7 @@ const ChangeEmailConfirm: React.FC = () => {
 
 	const modifyEmailAdressHandler = async () => {
 		const responseData = await sendRequest(
-			'http://localhost:8080/api/user-modify/email/confirmation',
+			`${process.env.REACT_APP_BACKEND_URL}/user-modify/email/confirmation`,
 			'PATCH',
 			JSON.stringify({
 				oldEmail,

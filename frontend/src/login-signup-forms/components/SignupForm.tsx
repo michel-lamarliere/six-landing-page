@@ -79,7 +79,7 @@ const SingupForm: React.FC<Props> = (props) => {
 		console.log(passwordConfirmationInput.value);
 
 		const responseData = await sendRequest(
-			'http://localhost:8080/api/user/signup',
+			`${process.env.REACT_APP_BACKEND_URL}/user/signup`,
 			'POST',
 			JSON.stringify({
 				name: nameInput.value.trim().toLowerCase(),

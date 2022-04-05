@@ -14,7 +14,7 @@ const ConfirmEmailAddress: React.FC = () => {
 
 	const confirmationHandler = async () => {
 		const responseData = await sendRequest(
-			'http://localhost:8080/api/user/confirm/email',
+			`${process.env.REACT_APP_BACKEND_URL}/user/confirm/email`,
 			'PATCH',
 			JSON.stringify({ email: email, code: code })
 		);

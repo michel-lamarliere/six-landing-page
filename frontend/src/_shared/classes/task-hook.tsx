@@ -24,20 +24,23 @@ export const useTask = () => {
 		}
 
 		async save() {
-			const response = await fetch('http://localhost:8080/api/log/task', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `BEARER ${userData.token}`,
-				},
-				body: JSON.stringify({
-					_id: userData.id,
-					date: this.date,
-					task: this.task,
-					levelOfCompletion:
-						this.previousLevel !== 2 ? this.previousLevel + 1 : 0,
-				}),
-			});
+			const response = await fetch(
+				`${process.env.REACT_APP_BACKEND_URL}/log/task`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `BEARER ${userData.token}`,
+					},
+					body: JSON.stringify({
+						_id: userData.id,
+						date: this.date,
+						task: this.task,
+						levelOfCompletion:
+							this.previousLevel !== 2 ? this.previousLevel + 1 : 0,
+					}),
+				}
+			);
 
 			const responseData = await response.json();
 

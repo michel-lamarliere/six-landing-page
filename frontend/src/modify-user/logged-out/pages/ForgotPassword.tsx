@@ -44,7 +44,7 @@ const ForgotPasswordForm: React.FC = () => {
 		}
 
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/user_modify/${email}/${uniqueId}`,
+			`${process.env.REACT_APP_BACKEND_URL}/user_modify/${email}/${uniqueId}`,
 			'GET'
 		);
 

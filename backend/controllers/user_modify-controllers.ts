@@ -45,7 +45,7 @@ const changeEmail: RequestHandler = async (req, res, next) => {
 		to: 'lamarliere.michel@icloud.com',
 		subject: "Demande de changement d'adresse mail",
 		// text: 'Cliquez',
-		html: `<div>Une demande a été faite pour changer d'adresse mail. Un mail a également été envoyé sur l'ancienne ${reqOldEmail}. Cliquez <a href=http://localhost:3000/modifier-email/confirmation/${reqOldEmail}/${reqNewEmail} >ici</a> pour confirmer le changement. </div>`,
+		html: `<div>Une demande a été faite pour changer d'adresse mail. Un mail a également été envoyé sur l'ancienne ${reqOldEmail}. Cliquez <a href=${process.env.FRONT_END_URL}/modifier-email/confirmation/${reqOldEmail}/${reqNewEmail} >ici</a> pour confirmer le changement. </div>`,
 	});
 
 	if (!oldEmailWasSent || !newEmailWasSent) {
@@ -282,9 +282,11 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 			to: 'lamarliere.michel@icloud.com',
 			subject: 'Modification de votre mot de passe',
 			text: 'Pour modifier votre mot de passe, cliquez sur ce lien.',
-			html: `<div><b>Mot de passe oublié?</b><a href="http://localhost:3000/modify/password/${encodeURI(
-				reqEmail
-			)}/${encodeURI(generatedForgotPasswordCode)}">Cliquez ici !</a></div>`,
+			html: `<div><b>Mot de passe oublié?</b><a href="${
+				process.env.FRONT_END_URL
+			}/modify/password/${encodeURI(reqEmail)}/${encodeURI(
+				generatedForgotPasswordCode
+			)}">Cliquez ici !</a></div>`,
 		});
 
 		console.log('Message sent: %s', info.messageId);
@@ -353,9 +355,9 @@ const deleteAccountEmail: RequestHandler = async (req, res, next) => {
 		to: 'lamarliere.michel@icloud.com',
 		subject: 'Suppression de votre compte',
 		// text: 'Cliquez',
-		html: `<div>Cliquez <a href="http://localhost:3000/supprimer-compte/confirmation/${encodeURI(
-			user.email
-		)}/${encodeURI(
+		html: `<div>Cliquez <a href="${
+			process.env.FRONT_END_URL
+		}/supprimer-compte/confirmation/${encodeURI(user.email)}/${encodeURI(
 			generatedForgotPasswordCode
 		)}">ici</a> pour supprimer votre compte, cliquez sur ce lien</div>`,
 	});

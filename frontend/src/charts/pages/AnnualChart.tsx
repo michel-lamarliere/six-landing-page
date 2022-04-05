@@ -50,7 +50,7 @@ const AnnualGraph: React.FC = () => {
 
 	const getGraph = async () => {
 		const responseData = await sendRequest(
-			`http://localhost:8080/api/charts/annual/${userState.id}/${getYear(
+			`${process.env.REACT_APP_BACKEND_URL}/charts/annual/${userState.id}/${getYear(
 				chosenYear
 			)}/${chosenTask}`,
 			'GET'
