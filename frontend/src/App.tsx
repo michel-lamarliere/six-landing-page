@@ -31,6 +31,7 @@ import MobileSidebar from './layout/sidebar/pages/MobileSidebar';
 import DeleteAccount from './modify-user/logged-in/pages/DeleteAccount';
 import DeleteAccountConfirm from './modify-user/logged-in/pages/DeleteAccountConfirm';
 import ChangeEmailConfirm from './modify-user/logged-in/pages/ChangeEmailConfirm';
+import AlertPopup from './pop-ups/Alert';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
@@ -91,7 +92,7 @@ const App: React.FC = () => {
 
 		setTimeout(() => {
 			dispatch({
-				type: PopUpActionTypes.SET_AND_SHOW_ERROR,
+				type: PopUpActionTypes.SET_AND_SHOW_ALERT,
 				message: 'Votre session a expiré, veuillez vous reconnecter.',
 			});
 			dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
@@ -145,7 +146,7 @@ const App: React.FC = () => {
 					</>
 				)}
 				<Route
-					path='/profil/confirmer/:email/:code'
+					path='/profil/confirmation/:email/:code'
 					element={<ConfirmEmailAddress />}
 				/>
 				<Route
@@ -162,6 +163,9 @@ const App: React.FC = () => {
 				/>
 				<Route path='*' element={<Error404 />} />
 			</Routes>
+			{popUpsState.alertMessage && (
+				<AlertPopup message={popUpsState.alertMessage} />
+			)}
 			{popUpsState.errorMessage && (
 				<ErrorPopup message={popUpsState.errorMessage} />
 			)}

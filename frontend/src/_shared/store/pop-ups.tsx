@@ -1,5 +1,6 @@
 interface State {
 	// IF ERROR !== NULL, ERROR MESSAGE IS DISPLAYED
+	alertMessage: null | string;
 	errorMessage: null | string;
 	showEmailConfirmation: boolean;
 }
@@ -10,11 +11,15 @@ interface Action {
 }
 
 const initialStateReducer: State = {
+	alertMessage: null,
 	errorMessage: null,
 	showEmailConfirmation: false,
 };
 
 export const enum PopUpActionTypes {
+	SET_AND_SHOW_ALERT = 'SET_ALERT',
+	REMOVE_ALERT = 'REMOVE_ALERT',
+
 	SET_AND_SHOW_ERROR = 'SET_ERROR',
 	REMOVE_ERROR = 'REMOVE_ERROR',
 
@@ -24,6 +29,21 @@ export const enum PopUpActionTypes {
 
 const popUpsReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
+		// ALERT
+		case PopUpActionTypes.SET_AND_SHOW_ALERT: {
+			return {
+				...state,
+				alertMessage: action.message,
+			};
+		}
+
+		case PopUpActionTypes.REMOVE_ALERT: {
+			return {
+				...state,
+				alertMessage: null,
+			};
+		}
+
 		// ERROR
 		case PopUpActionTypes.SET_AND_SHOW_ERROR: {
 			return {
@@ -38,6 +58,7 @@ const popUpsReducer = (state = initialStateReducer, action: Action) => {
 				errorMessage: null,
 			};
 		}
+
 		// EMAIL CONFIRMATION
 		case PopUpActionTypes.SHOW_EMAIL_CONFIRMATION: {
 			return { ...state, showEmailConfirmation: true };

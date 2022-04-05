@@ -14,12 +14,12 @@ const Error404: React.FC = () => {
 		userState.expiration &&
 		userState.id &&
 		userState.name &&
-		userState.email &&
-		userState.confirmedEmail;
+		userState.email;
 
 	return (
 		<div>
 			<h1>Erreur 404: Page Introuvable.</h1>
+			{userData && <Link to='/journal/quotidien'>Voir mon journal quotidien</Link>}
 			{!userData && <Link to='/'>Se connecter / S'inscrire</Link>}
 		</div>
 	);

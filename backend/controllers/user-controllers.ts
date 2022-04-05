@@ -230,26 +230,24 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 	}
 
 	// CHECKS IF THE USER SENT AN EMAIL DURING THE LAST 5 MINUTES
-	if (user.confirmation.nextEmail) {
-		const fiveMinutesBetweenSends = !isBefore(
-			user.confirmation.nextEmail,
-			new Date()
-		);
+	// if (user.confirmation.nextEmail) {
+	// 	const fiveMinutesBetweenSends = !isBefore(
+	// 		user.confirmation.nextEmail,
+	// 		new Date()
+	// 	);
 
-		// IF HE DID
-		if (fiveMinutesBetweenSends) {
-			res.status(405).json({
-				error: "Veuillez attendre 5 minutes entre chaque demande d'envoi de mail de confirmation.",
-			});
-			return;
-		}
-	}
+	// 	// IF HE DID
+	// 	if (fiveMinutesBetweenSends) {
+	// 		res.status(405).json({
+	// 			error: "Veuillez attendre 5 minutes entre chaque demande d'envoi de mail de confirmation.",
+	// 		});
+	// 		return;
+	// 	}
+	// }
 
 	try {
 		await emailConfirmationEmail(user.email, user.confirmation.code);
 	} catch (error) {
-		console.log(error);
-
 		return res.status(500).json({ error: 'Une erreur est survenue.' });
 	}
 
