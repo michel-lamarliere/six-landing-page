@@ -7,9 +7,10 @@ import { RootState } from '../../_shared/store/_store';
 import { useRequest } from '../../_shared/hooks/http-hook';
 import { useUser } from '../../_shared/classes/user-hook';
 
+import userIcon from '../../_shared/assets/imgs/icons/user/icon_1.svg';
+
 import confirmedEmailIcon from '../../_shared/assets/imgs/icons/profile/profile-confirmed-email-arrow.svg';
 import arrow from '../../_shared/assets/imgs/icons/arrow-bottom-purple.svg';
-import userIcon from '../../_shared/assets/imgs/icons/user-icon.svg';
 import recapIcon from '../../_shared/assets/imgs/icons/profile/profile-stats.svg';
 import imageIcon from '../../_shared/assets/imgs/icons/profile/profile-modify-image.svg';
 import nameIcon from '../../_shared/assets/imgs/icons/profile/profile-modify-name.svg';
@@ -20,6 +21,7 @@ import logOutIcon from '../../_shared/assets/imgs/icons/profile/profile-log-out.
 import classes from './Profile.module.scss';
 import LogOutConfirmation from '../components/LogOutConfirmation';
 import { PopUpActionTypes } from '../../_shared/store/pop-ups';
+import UserIcon from '../../_shared/components/UserIcon/UserIcon';
 
 const Profile: React.FC = () => {
 	const dispatch = useDispatch();
@@ -52,7 +54,8 @@ const Profile: React.FC = () => {
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.user}>
-				<img src={userIcon} alt='Utilisateur' className={classes.user__img} />
+				{/* <img src={userIcon} alt='Utilisateur' className={classes.user__img} /> */}
+				<UserIcon className={classes.user__img} icon={User.getInfo().icon} />
 				<div className={classes.user__name}>{userState.name}</div>
 			</div>
 			{!userState.confirmedEmail && (

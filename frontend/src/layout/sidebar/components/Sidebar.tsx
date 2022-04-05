@@ -11,12 +11,13 @@ import { UIElementsActionTypes } from '../../../_shared/store/ui-elements';
 import { useRequest } from '../../../_shared/hooks/http-hook';
 import { useUser } from '../../../_shared/classes/user-hook';
 
-import userIcon from '../../../_shared/assets/imgs/icons/user-icon.svg';
+import userIcon from '../../../_shared/assets/imgs/icons/user/icon_1.svg';
 import sixIcon from '../../../_shared/assets/imgs/icons/app/logo.svg';
 
 import RefreshSpinner from '../../../_shared/components/_svgs/refresh-spinner';
 
 import classes from './Sidebar.module.scss';
+import UserIcon from '../../../_shared/components/UserIcon/UserIcon';
 
 const Sidebar: React.FC<{ className: string }> = (props) => {
 	const dispatch = useDispatch();
@@ -89,10 +90,14 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 				<div className={classes.user}>
 					<div onClick={closeMobileSidebar}>
 						<Link to='/profil' className={classes['user__name-img']}>
-							<img
-								src={userIcon}
+							{/* <img
+								src={`${userIcon}${User.getInfo().icon}`}
 								alt='Icône Utilisateur'
 								className={classes['user__name-img__img']}
+							/> */}
+							<UserIcon
+								className={classes['user__name-img__img']}
+								icon={User.getInfo().icon}
 							/>
 							<div className={classes['user__name-img__name']}>
 								{userName}

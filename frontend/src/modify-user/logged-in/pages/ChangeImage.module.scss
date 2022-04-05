@@ -1,0 +1,28 @@
+.icons {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.5rem;
+
+	&__button {
+		display: grid;
+		place-content: center;
+		background-color: transparent;
+		border: 0.2rem solid transparent;
+
+		cursor: pointer;
+
+		&--active {
+			border: 0.2rem solid white;
+			border-radius: 50%;
+		}
+
+		&--chosen {
+			border: 0.2rem solid #8d88ff;
+			border-radius: 50%;
+		}
+
+		& > img {
+			margin: 0.3rem;
+		}
+	}
+}

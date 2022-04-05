@@ -1,0 +1,52 @@
+<svg id="Groupe_464" data-name="Groupe 464" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_748" data-name="Rectangle 748" width="60" height="60" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-3">
+      <rect id="Rectangle_743" data-name="Rectangle 743" width="60" height="52.4" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-4">
+      <rect id="Rectangle_746" data-name="Rectangle 746" width="39.88" height="49.997" transform="translate(10.06 10.003)" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-5">
+      <rect id="Rectangle_744" data-name="Rectangle 744" width="20" height="20" transform="translate(20 10.003)" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-6">
+      <rect id="Rectangle_745" data-name="Rectangle 745" width="39.88" height="26.21" transform="translate(10.06 33.79)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Groupe_463" data-name="Groupe 463" clip-path="url(#clip-path)">
+    <g id="Groupe_462" data-name="Groupe 462">
+      <g id="Groupe_461" data-name="Groupe 461" clip-path="url(#clip-path)">
+        <g id="Groupe_451" data-name="Groupe 451" opacity="0.997" style="mix-blend-mode: normal;isolation: isolate">
+          <g id="Groupe_450" data-name="Groupe 450">
+            <g id="Groupe_449" data-name="Groupe 449" clip-path="url(#clip-path-3)">
+              <path id="Tracé_103" data-name="Tracé 103" d="M60,30A29.885,29.885,0,0,1,49.94,52.4a19.988,19.988,0,0,0-39.88,0A30,30,0,1,1,60,30" fill="#564bef"/>
+            </g>
+          </g>
+        </g>
+        <g id="Groupe_460" data-name="Groupe 460" opacity="0.997" style="mix-blend-mode: normal;isolation: isolate">
+          <g id="Groupe_459" data-name="Groupe 459">
+            <g id="Groupe_458" data-name="Groupe 458" clip-path="url(#clip-path-4)">
+              <g id="Groupe_454" data-name="Groupe 454" opacity="0.997" style="mix-blend-mode: normal;isolation: isolate">
+                <g id="Groupe_453" data-name="Groupe 453">
+                  <g id="Groupe_452" data-name="Groupe 452" clip-path="url(#clip-path-5)">
+                    <path id="Tracé_104" data-name="Tracé 104" d="M40,20A10,10,0,1,1,30,10,10,10,0,0,1,40,20" fill="#8d88ff"/>
+                  </g>
+                </g>
+              </g>
+              <g id="Groupe_457" data-name="Groupe 457" opacity="0.997" style="mix-blend-mode: normal;isolation: isolate">
+                <g id="Groupe_456" data-name="Groupe 456">
+                  <g id="Groupe_455" data-name="Groupe 455" clip-path="url(#clip-path-6)">
+                    <path id="Tracé_105" data-name="Tracé 105" d="M49.94,52.4a29.958,29.958,0,0,1-39.88,0,19.987,19.987,0,0,1,39.88,0" fill="#8d88ff"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,43 @@
+<svg id="Groupe_387" data-name="Groupe 387" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_719" data-name="Rectangle 719" width="60" height="60" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-3">
+      <rect id="Rectangle_715" data-name="Rectangle 715" width="60" height="52.4" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-4">
+      <rect id="Rectangle_716" data-name="Rectangle 716" width="20" height="20" transform="translate(20 10.003)" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-5">
+      <rect id="Rectangle_717" data-name="Rectangle 717" width="39.88" height="26.21" transform="translate(10.06 33.79)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Groupe_386" data-name="Groupe 386" clip-path="url(#clip-path)">
+    <g id="Groupe_385" data-name="Groupe 385">
+      <g id="Groupe_384" data-name="Groupe 384" clip-path="url(#clip-path)">
+        <g id="Groupe_377" data-name="Groupe 377" opacity="0.997" style="mix-blend-mode: normal;isolation: isolate">
+          <g id="Groupe_376" data-name="Groupe 376">
+            <g id="Groupe_375" data-name="Groupe 375" clip-path="url(#clip-path-3)">
+              <path id="Tracé_88" data-name="Tracé 88" d="M60,30A29.885,29.885,0,0,1,49.94,52.4a19.988,19.988,0,0,0-39.88,0A30,30,0,1,1,60,30" fill="#1cc1e6"/>
+            </g>
+          </g>
+        </g>
+        <g id="Groupe_380" data-name="Groupe 380" opacity="0.997" style="mix-blend-mode: normal;isolation: isolate">
+          <g id="Groupe_379" data-name="Groupe 379">
+            <g id="Groupe_378" data-name="Groupe 378" clip-path="url(#clip-path-4)">
+              <path id="Tracé_89" data-name="Tracé 89" d="M40,20A10,10,0,1,1,30,10,10,10,0,0,1,40,20" fill="#fff"/>
+            </g>
+          </g>
+        </g>
+        <g id="Groupe_383" data-name="Groupe 383" opacity="0.997" style="mix-blend-mode: normal;isolation: isolate">
+          <g id="Groupe_382" data-name="Groupe 382">
+            <g id="Groupe_381" data-name="Groupe 381" clip-path="url(#clip-path-5)">
+              <path id="Tracé_90" data-name="Tracé 90" d="M49.94,52.4a29.958,29.958,0,0,1-39.88,0,19.987,19.987,0,0,1,39.88,0" fill="#fff"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

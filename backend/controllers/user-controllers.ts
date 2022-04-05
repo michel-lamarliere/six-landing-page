@@ -88,7 +88,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 
 	// CREATES THE USER'S OBJECT
 	const newUser = {
-		image: 0,
+		icon: 0,
 		name: reqName,
 		email: reqEmail,
 		password: hashedPassword,
@@ -171,6 +171,7 @@ const signIn: RequestHandler = async (req, res, next) => {
 	res.status(200).json({
 		token,
 		id: user._id,
+		icon: user.icon,
 		name: user.name,
 		email: user.email,
 		confirmedEmail: user.confirmation.confirmed,
@@ -230,20 +231,20 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 	}
 
 	// CHECKS IF THE USER SENT AN EMAIL DURING THE LAST 5 MINUTES
-	// if (user.confirmation.nextEmail) {
-	// 	const fiveMinutesBetweenSends = !isBefore(
-	// 		user.confirmation.nextEmail,
-	// 		new Date()
-	// 	);
+	if (user.confirmation.nextEmail) {
+		const fiveMinutesBetweenSends = !isBefore(
+			user.confirmation.nextEmail,
+			new Date()
+		);
 
-	// 	// IF HE DID
-	// 	if (fiveMinutesBetweenSends) {
-	// 		res.status(405).json({
-	// 			error: "Veuillez attendre 5 minutes entre chaque demande d'envoi de mail de confirmation.",
-	// 		});
-	// 		return;
-	// 	}
-	// }
+		// IF HE DID
+		if (fiveMinutesBetweenSends) {
+			res.status(405).json({
+				error: "Veuillez attendre 5 minutes entre chaque demande d'envoi de mail de confirmation.",
+			});
+			return;
+		}
+	}
 
 	try {
 		await emailConfirmationEmail(user.email, user.confirmation.code);

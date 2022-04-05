@@ -2,6 +2,7 @@ interface State {
 	token: null | string;
 	expiration: null | Date;
 	id: null | string;
+	icon: any;
 	name: null | string;
 	email: null | string;
 	confirmedEmail: boolean | null;
@@ -15,6 +16,7 @@ const initialStateReducer: State = {
 	token: null,
 	expiration: null,
 	id: null,
+	icon: null,
 	name: null,
 	email: null,
 	confirmedEmail: null,
@@ -35,6 +37,7 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 					token: action.token,
 					expiration: action.expiration,
 					id: action.id,
+					icon: action.icon,
 					name: action.name,
 					email: action.email,
 					confirmedEmail: action.confirmedEmail,
@@ -45,6 +48,7 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 				token: action.token,
 				expiration: action.expiration,
 				id: action.id,
+				icon: action.icon,
 				name: action.name,
 				email: action.email,
 				confirmedEmail: action.confirmedEmail,
@@ -59,6 +63,7 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 				token: null,
 				expiration: null,
 				id: null,
+				icon: null,
 				name: null,
 				email: null,
 				confirmedEmail: null,
@@ -72,6 +77,7 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 					token: state.token,
 					expiration: state.expiration,
 					id: state.id,
+					icon: action.icon,
 					name: action.name,
 					email: action.email,
 					confirmedEmail: action.confirmedEmail,
@@ -82,7 +88,13 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 				JSON.stringify(!action.confirmedEmail)
 			);
 
-			return { ...state, name: action.name, confirmedEmail: action.confirmedEmail };
+			return {
+				...state,
+				icon: action.icon,
+				name: action.name,
+				email: action.email,
+				confirmedEmail: action.confirmedEmail,
+			};
 		}
 
 		default:

@@ -40,6 +40,7 @@ export const useUser = () => {
 	class User {
 		token: any;
 		id: any;
+		icon: any;
 		name: any;
 		email: any;
 		confirmedEmail: any;
@@ -47,6 +48,7 @@ export const useUser = () => {
 		constructor(userData: any) {
 			this.token = userData.token;
 			this.id = userData.id;
+			this.icon = userData.icon;
 			this.name = userData.name;
 			this.email = userData.email;
 			this.confirmedEmail = userData.confirmedEmail;
@@ -68,6 +70,7 @@ export const useUser = () => {
 				token: this.token,
 				expiration: tokenExpiration.toISOString(),
 				id: this.id,
+				icon: this.icon,
 				name: formatUserName(this.name),
 				email: this.email,
 				confirmedEmail: this.confirmedEmail,
@@ -105,10 +108,15 @@ export const useUser = () => {
 
 			dispatch({
 				type: UserActionTypes.REFRESH_DATA,
+				icon: responseData.user.icon,
 				name: formatUserName(responseData.user.name),
 				email: responseData.user.email,
 				confirmedEmail: responseData.user.confirmation.confirmed,
 			});
+
+			return responseData.user;
+
+			console.log('refreshed');
 		}
 
 		static logOut() {
@@ -117,7 +125,7 @@ export const useUser = () => {
 			navigate('/');
 		}
 
-		static displayInfo() {
+		static getInfo() {
 			return loggedInUser;
 		}
 	}

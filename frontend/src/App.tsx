@@ -66,6 +66,7 @@ const App: React.FC = () => {
 			token: userData.token,
 			expiration: userData.expiration,
 			id: userData.id,
+			icon: userData.icon,
 			email: userData.email,
 			confirmedEmail: userData.confirmedEmail,
 			name: userData.name,

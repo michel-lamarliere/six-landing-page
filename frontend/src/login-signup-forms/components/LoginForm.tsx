@@ -13,6 +13,7 @@ import RememberMeTrueSVG from '../../_shared/assets/imgs/icons/form&input/rememb
 import RememberMeFalseSVG from '../../_shared/assets/imgs/icons/form&input/remember-me_false.svg';
 
 import classes from './LoginForm.module.scss';
+import { SSL_OP_LEGACY_SERVER_CONNECT } from 'constants';
 
 interface Props {
 	switchFormHandler: () => void;
@@ -72,9 +73,10 @@ const LoginForm: React.FC<Props> = (props) => {
 
 		if (responseData.error) {
 			setResponseMessage(responseData.error);
-			console.log('erreur');
 			return;
 		}
+
+		console.log(responseData);
 
 		const user = new User(responseData);
 
@@ -83,6 +85,8 @@ const LoginForm: React.FC<Props> = (props) => {
 		} else {
 			user.forgetEmail();
 		}
+
+		console.log(user);
 
 		user.logIn();
 	};
