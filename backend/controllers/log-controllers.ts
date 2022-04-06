@@ -55,7 +55,9 @@ const addData: RequestHandler = async (req, res, next) => {
 	// CHECKS IF DATE IS IN THE FUTURE
 	if (isAfter(reqDate, new Date())) {
 		return res.status(400).json({
-			error: "Impossible d'enregistrer des données dont la date est dans le futur.",
+			error: true,
+			message:
+				"Impossible d'enregistrer des données dont la date est dans le futur.",
 		});
 	} else inputsAreValid.date.pastOrPresent = true;
 
@@ -87,7 +89,9 @@ const addData: RequestHandler = async (req, res, next) => {
 
 	if (!inputsAreValid.all) {
 		return res.status(400).json({
-			error: "Erreur lors de l'enregistrement de données, certaines données sont invalides.",
+			error: true,
+			message:
+				"Erreur lors de l'enregistrement de données, certaines données sont invalides.",
 		});
 	}
 

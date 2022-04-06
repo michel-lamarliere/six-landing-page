@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const { v5: uuidv5 } = require('uuid');
 
 const database = require('../util/db-connect');
-const { emailConfirmationEmail } = require('../util/email-confirmation');
+const { sendEmailConfirmationEmail } = require('../util/send-email-confirmation-email');
 
 const signUp: RequestHandler = async (req, res, next) => {
 	const {
@@ -25,7 +25,9 @@ const signUp: RequestHandler = async (req, res, next) => {
 
 	if (user) {
 		res.status(400).json({
-			error: 'Adresse email déjà utilisée, veuillez en choisir une autre ou vous connecter.',
+			error: true,
+			message:
+				'Adresse email déjà utilisée, veuillez en choisir une autre ou vous connecter.',
 		});
 		return;
 	}
@@ -126,16 +128,15 @@ const signUp: RequestHandler = async (req, res, next) => {
 	let token = await jwt.sign(
 		{ id: findingNewUser._id, email: findingNewUser.email },
 		process.env.JWT_SECRET,
-
-		// 'je_mange_du_pain_blanc_enola',
 		{ expiresIn: '1h' }
 	);
 
 	// SEND AN EMAIL CONFIRMATION EMAIL
-	emailConfirmationEmail(reqEmail, hashedConfirmationCode);
+	sendEmailConfirmationEmail({ to: reqEmail, uniqueCode: hashedConfirmationCode });
 
 	res.status(201).json({
-		success: 'Compte créé.',
+		success: true,
+		message: 'Compte créé.',
 		token: token,
 		id: findingNewUser._id,
 		icon: findingNewUser.icon,
@@ -154,7 +155,8 @@ const signIn: RequestHandler = async (req, res, next) => {
 
 	if (!user) {
 		res.status(404).json({
-			error: 'Adresse email non trouvée, veuillez créer un compte.',
+			error: true,
+			message: 'Adresse email non trouvée, veuillez créer un compte.',
 		});
 		return;
 	}
@@ -164,7 +166,7 @@ const signIn: RequestHandler = async (req, res, next) => {
 
 	// IF THE PASSWORDS DON'T MATCH
 	if (!matchingPasswords) {
-		res.status(400).json({ error: 'Mot de passe incorrect.' });
+		res.status(400).json({ error: true, message: 'Mot de passe incorrect.' });
 		return;
 	}
 
@@ -232,7 +234,8 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 	// IF THE ACCOUNT IS ALREADY CONFIRMED
 	if (user.confirmation.confirmed) {
 		res.status(400).json({
-			error: 'Compte déjà confirmé, veuillez rafraichir vos données.',
+			error: true,
+			message: 'Compte déjà confirmé, veuillez rafraichir vos données.',
 		});
 		return;
 	}
@@ -247,14 +250,16 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 		// IF HE DID
 		if (fiveMinutesBetweenSends) {
 			res.status(405).json({
-				error: "Veuillez attendre 5 minutes entre chaque demande d'envoi de mail de confirmation.",
+				error: true,
+				message:
+					"Veuillez attendre 5 minutes entre chaque demande d'envoi de mail de confirmation.",
 			});
 			return;
 		}
 	}
 
 	try {
-		await emailConfirmationEmail(user.email, user.confirmation.code);
+		await sendEmailConfirmationEmail(user.email, user.confirmation.code);
 	} catch (error) {
 		return res.status(500).json({ error: true, message: 'Une erreur est survenue.' });
 	}

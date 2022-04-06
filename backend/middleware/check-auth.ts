@@ -21,7 +21,8 @@ const checkAuth: RequestHandler = (
 
 		if (!token) {
 			res.status(403).json({
-				error: "Vous n'êtes pas autorisé à effectuer cette action.",
+				error: true,
+				message: "Vous n'êtes pas autorisé à effectuer cette action.",
 			});
 			return;
 		}

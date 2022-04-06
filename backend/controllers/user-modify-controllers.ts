@@ -6,6 +6,7 @@ const crypto = require('crypto');
 
 const database = require('../util/db-connect');
 const { createNodemailerTransporter } = require('../util/nodemailer-transporter');
+const sendEmail = require('../util/send-email');
 
 const changeImage: RequestHandler = async (req, res, next) => {
 	const { id: reqIdStr, icon: reqIcon } = req.body;
@@ -21,7 +22,7 @@ const changeImage: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	const updated = await databaseConnect.updateOne(
+	await databaseConnect.updateOne(
 		{ _id: reqId },
 		{
 			$set: {
@@ -51,30 +52,23 @@ const changeEmail: RequestHandler = async (req, res, next) => {
 	});
 
 	if (existingUserWithNewEmail) {
-		res.json({ used: true, error: 'Email adresse déjà utilisée.' });
+		res.json({ used: true, error: true, message: 'Email adresse déjà utilisée.' });
 	}
 
-	const transporter = createNodemailerTransporter();
-
-	const oldEmailWasSent = await transporter.sendMail({
-		from: '"Six App" <contact@michel-lamarliere.com>',
-		to: 'lamarliere.michel@icloud.com',
-		subject: "Demande de changement d'adresse mail",
-		// text: 'Cliquez',
-		html: `<div>Une demande a été faite pour changer d'adresse mail. Un mail a également été envoyé sur la nouvelle ${reqNewEmail}. </div>`,
+	const oldEmailWasSent = await sendEmail({
+		to: reqOldEmail,
+		subject: `<div>Une demande a été faite pour changer d'adresse mail. Un mail a également été envoyé sur l'ancienne ${reqOldEmail}. Cliquez <a href=${process.env.FRONT_END_URL}/modifier-email/confirmation/${reqOldEmail}/${reqNewEmail} >ici</a> pour confirmer le changement. </div>`,
 	});
 
-	const newEmailWasSent = await transporter.sendMail({
-		from: '"Six App" <contact@michel-lamarliere.com>',
-		to: 'lamarliere.michel@icloud.com',
-		subject: "Demande de changement d'adresse mail",
-		// text: 'Cliquez',
-		html: `<div>Une demande a été faite pour changer d'adresse mail. Un mail a également été envoyé sur l'ancienne ${reqOldEmail}. Cliquez <a href=${process.env.FRONT_END_URL}/modifier-email/confirmation/${reqOldEmail}/${reqNewEmail} >ici</a> pour confirmer le changement. </div>`,
+	const newEmailWasSent = await sendEmail({
+		to: reqNewEmail,
+		subject: `<div>Une demande a été faite pour changer d'adresse mail. Un mail a également été envoyé sur l'ancienne ${reqOldEmail}. Cliquez <a href=${process.env.FRONT_END_URL}/modifier-email/confirmation/${reqOldEmail}/${reqNewEmail} >ici</a> pour confirmer le changement. </div>`,
 	});
 
 	if (!oldEmailWasSent || !newEmailWasSent) {
 		res.status(400).json({
-			error: "Une erreur est survenue lors de l'envoi des mail",
+			error: true,
+			message: "Une erreur est survenue lors de l'envoi des mail",
 		});
 		return;
 	}
@@ -103,7 +97,8 @@ const changeEmailConfirmation: RequestHandler = async (req, res, next) => {
 
 	if (newEmailExists) {
 		res.status(400).json({
-			error: 'Un compte avec votre nouvelle adresse email existe déjà.',
+			error: true,
+			message: 'Un compte avec votre nouvelle adresse email existe déjà.',
 		});
 		return;
 	}
@@ -200,7 +195,8 @@ const changePassword: RequestHandler = async (req, res, next) => {
 
 	if (!validInputs.oldPassword) {
 		res.status(400).json({
-			error: 'Veuillez corriger les erreurs.',
+			error: true,
+			message: 'Veuillez corriger les erreurs.',
 			validInputs: {
 				oldPassword: false,
 				newPassword: {
@@ -234,7 +230,8 @@ const changePassword: RequestHandler = async (req, res, next) => {
 	) {
 		console.log(validInputs);
 		res.status(400).json({
-			error: 'Veuillez corriger les erreurs.',
+			error: true,
+			message: 'Veuillez corriger les erreurs.',
 			validInputs,
 		});
 		return;
@@ -267,7 +264,8 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 
 	if (!user) {
 		res.status(404).json({
-			error: 'Cette adresse mail introuvable, veuillez créer un compte.',
+			error: true,
+			message: 'Cette adresse mail introuvable, veuillez créer un compte.',
 		});
 		return;
 	}
@@ -286,7 +284,8 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 		!isBefore(user.forgotPassword.nextEmail, new Date())
 	) {
 		res.status(403).json({
-			error: 'Veuillez attendre 5 minutes entre chaque envoi de mail.',
+			error: true,
+			message: 'Veuillez attendre 5 minutes entre chaque envoi de mail.',
 		});
 		return;
 	}
@@ -309,29 +308,28 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 		}
 	);
 
-	const transporter = createNodemailerTransporter();
+	const emailWasSent = await sendEmail({
+		to: reqEmail,
+		subject: 'Modification de votre mot de passe',
+		text: `Pour modifier votre mot de passe, cliquez sur ce lien. ${reqEmail}`,
+		html: `<div><b>Mot de passe oublié?</b><a href="${
+			process.env.FRONT_END_URL
+		}/modifier/mot-de-passe/${encodeURI(reqEmail)}/${encodeURI(
+			generatedForgotPasswordCode
+		)}">Cliquez ici !</a></div>`,
+	});
 
-	// SEND THE NEW ACCOUNT CONFIRMATION EMAIL
-	try {
-		const info = await transporter.sendMail({
-			from: '"Six App" <contact@michel-lamarliere.com>',
-			to: 'lamarliere.michel@icloud.com',
-			subject: 'Modification de votre mot de passe',
-			text: `Pour modifier votre mot de passe, cliquez sur ce lien.  ${reqEmail}`,
-			html: `<div><b>Mot de passe oublié?</b><a href="${
-				process.env.FRONT_END_URL
-			}/modifier/mot-de-passe/${encodeURI(reqEmail)}/${encodeURI(
-				generatedForgotPasswordCode
-			)}">Cliquez ici !</a></div>`,
+	if (!emailWasSent) {
+		res.status(403).json({
+			error: true,
+			message: "Erreur lors de l'envoi de mail. Veuillez réessayer plus tard.",
 		});
-
-		console.log('Message sent: %s', info.messageId);
-	} catch (error) {
-		console.log(error);
+		return;
 	}
 
 	res.status(200).json({
-		success: 'Email envoyé, veuillez consulter votre boite de réception.',
+		success: true,
+		message: 'Email envoyé, veuillez consulter votre boite de réception.',
 	});
 };
 
@@ -431,13 +429,9 @@ const deleteAccountEmail: RequestHandler = async (req, res, next) => {
 		}
 	);
 
-	const transporter = createNodemailerTransporter();
-
-	const emailWasSent = await transporter.sendMail({
-		from: '"Six App" <contact@michel-lamarliere.com>',
-		to: 'lamarliere.michel@icloud.com',
+	const emailWasSent = await sendEmail({
+		to: user.email,
 		subject: 'Suppression de votre compte',
-		// text: 'Cliquez',
 		html: `<div>Cliquez <a href="${
 			process.env.FRONT_END_URL
 		}/supprimer-compte/confirmation/${encodeURI(user.email)}/${encodeURI(
@@ -445,11 +439,12 @@ const deleteAccountEmail: RequestHandler = async (req, res, next) => {
 		)}">ici</a> pour supprimer votre compte, cliquez sur ce lien</div>`,
 	});
 
-	if (emailWasSent) {
-		res.status(200).json({ success: true, message: 'Email envoyé.' });
-	} else {
+	if (!emailWasSent) {
 		res.status(400).json({ error: true, message: "Erreur lors de l'envoi de mail." });
+		return;
 	}
+
+	res.status(200).json({ success: true, message: 'Email envoyé.' });
 };
 
 const deleteAccountConfirm: RequestHandler = async (req, res, next) => {
@@ -469,22 +464,25 @@ const deleteAccountConfirm: RequestHandler = async (req, res, next) => {
 
 	if (reqCode !== user.deleteCode) {
 		res.status(400).json({
-			error: 'Erreur lors de la suppression de votre compte. Veuillez nous contacter via mail ou via le formulaire présent sur le site.',
+			error: true,
+			message:
+				'Erreur lors de la suppression de votre compte. Veuillez nous contacter via mail ou via le formulaire présent sur le site.',
 		});
 		return;
 	}
 
 	await databaseConnect.deleteOne({ email: reqEmail });
 
-	const transporter = createNodemailerTransporter();
-
-	await transporter.sendMail({
-		from: '"Six App" <contact@michel-lamarliere.com>',
-		to: 'lamarliere.michel@icloud.com',
+	const emailWasSent = sendEmail({
+		to: reqEmail,
 		subject: 'Compte supprimé',
-		// text: 'Cliquez',
 		html: `Nous sommes tristes de vous voir partir.`,
 	});
+
+	if (!emailWasSent) {
+		res.status(400).json({ error: true, message: "Erreur lors de l'envoi de mail." });
+		return;
+	}
 
 	res.json({ success: true, message: 'Compte supprimé.' });
 };

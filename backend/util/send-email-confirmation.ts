@@ -1,17 +1,21 @@
 const { createNodemailerTransporter } = require('./nodemailer-transporter');
+const sendEmail = require('./send-email');
 
-export const emailConfirmationEmail = async (email: string, code: string) => {
-	const transporter = createNodemailerTransporter();
+export const sendEmailConfirmationEmail = async (data: {
+	to: string;
+	uniqueCode: string;
+}) => {
+	const { to, uniqueCode } = data;
 
-	await transporter.sendMail({
-		from: '"Six App" <contact@michel-lamarliere.com>',
-		to: 'lamarliere.michel@icloud.com',
+	await sendEmail({
+		// REPLACE BY TO WHEN DEPLOYING
+		to: to,
 		subject: "Confirmation de l'adresse mail. ",
 		text: 'Veuillez confirmer votre adresse mail en cliquant sur ce lien.',
 		html: `<div><b>Bien ou quoi?</b><a href="${
 			process.env.FRONT_END_URL
-		}/profil/confirmation/${encodeURI(email)}/${encodeURI(
-			code
+		}/profil/confirmation/${encodeURI(to)}/${encodeURI(
+			uniqueCode
 		)}"> Cliquez ici pour confirmer votre adresse mail.</a></div>`,
 	});
 };
