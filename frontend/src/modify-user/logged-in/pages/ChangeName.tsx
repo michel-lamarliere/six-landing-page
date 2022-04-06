@@ -42,11 +42,11 @@ const ChangeName: React.FC = () => {
 
 		if (responseData.error) {
 			setNewName((prev) => ({ ...prev, isValid: false, isTouched: true }));
-			// setResponse(responseData.error);
+			setResponse(responseData.message);
 			return;
 		}
 
-		setResponse(responseData.success);
+		setResponse(responseData.message);
 
 		setTimeout(() => {
 			setResponse('');

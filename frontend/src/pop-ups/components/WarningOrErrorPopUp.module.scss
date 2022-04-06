@@ -1,4 +1,4 @@
-@import '../_shared/style/variables.scss';
+@import '../../_shared/style/variables.scss';
 
 .wrapper {
 	position: absolute;
@@ -19,7 +19,7 @@
 
 .warning-img {
 	position: absolute;
-	top: 1rem;
+	top: 1.5rem;
 	left: 2rem;
 	width: 1.65rem;
 	height: 1.65rem;
@@ -27,7 +27,7 @@
 
 .close-button {
 	position: absolute;
-	top: 1rem;
+	top: 1.5rem;
 	right: 2rem;
 	width: 1.15rem;
 	height: 1.15rem;
@@ -38,11 +38,12 @@
 .title {
 	font-family: $fontSemiBold;
 	color: #8d88ff;
+	font-size: 22px;
 }
 
 .message {
 	font-family: $fontRegular;
-	font-size: 12px;
+	font-size: 14px;
 	color: #000000;
 	margin: 0 2rem;
 	text-align: center;
@@ -60,8 +61,17 @@
 
 @media screen and (min-width: 1200px) {
 	.wrapper {
+		position: absolute;
+		bottom: auto;
+		top: 50%;
 		left: 50%;
-		transform: translateX(-50%);
-		max-width: 30rem;
+		transform: translate(-50%, -50%);
+		max-width: 20rem;
+		padding: 1.5rem 0;
+		border-radius: 1rem;
+	}
+
+	.message {
+		font-size: 14px;
 	}
 }

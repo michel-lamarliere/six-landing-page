@@ -56,7 +56,7 @@ const DeleteAccount: React.FC = () => {
 		setSubmitted(true);
 
 		if (responseData.error) {
-			setResponse(responseData.error);
+			setResponse(responseData.message);
 			setSubmitted(true);
 			return;
 		}

@@ -101,7 +101,7 @@ export const useUserClass = () => {
 			if (responseData.error) {
 				dispatch({
 					type: PopUpActionTypes.SET_AND_SHOW_ERROR,
-					message: responseData.error,
+					message: responseData.message,
 				});
 				return;
 			}
@@ -115,8 +115,6 @@ export const useUserClass = () => {
 			});
 
 			return responseData.user;
-
-			console.log('refreshed');
 		}
 
 		static logOut() {

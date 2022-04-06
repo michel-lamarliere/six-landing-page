@@ -87,7 +87,7 @@ const ChangePassword: React.FC = () => {
 
 		if (responseData.error) {
 			const { validInputs } = responseData;
-			// setResponse(responseData.error);
+			setResponse(responseData.message);
 
 			if (!validInputs.oldPassword) {
 				setOldPassword((prev) => ({ ...prev, isValid: false, isTouched: true }));

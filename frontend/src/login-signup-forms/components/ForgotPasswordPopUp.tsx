@@ -14,6 +14,7 @@ import closeIcon from '../../_shared/assets/imgs/icons/close.svg';
 import successIcon from '../../_shared/assets/imgs/icons/validated.svg';
 
 import classes from './ForgotPasswordPopUp.module.scss';
+import PopUp, { PopUpTypes } from '../../_shared/components/UIElements/PopUp';
 
 const ForgotPassword: React.FC = () => {
 	const dispatch = useDispatch();
@@ -39,15 +40,12 @@ const ForgotPassword: React.FC = () => {
 			null
 		);
 
-		console.log(responseData);
-
 		if (!responseData) {
 			return;
 		}
 
 		if (responseData.error) {
-			// setResponseMessage(responseData.error);
-			setInputErrorMessage(responseData.error);
+			setInputErrorMessage(responseData.message);
 			setForgotPasswordEmailInput((prev) => ({
 				...prev,
 				isValid: false,
@@ -57,22 +55,18 @@ const ForgotPassword: React.FC = () => {
 		}
 
 		setSent(true);
-		setResponseMessage(responseData.success);
+		setResponseMessage(responseData.message);
 	};
 
-	const closeButtonHandler = (event: React.FormEvent) => {
-		event.preventDefault();
+	const closePopUp = () => {
 		dispatch({ type: UIElementsActionTypes.HIDE_OVERLAY });
 		dispatch({ type: UIElementsActionTypes.HIDE_FORGOT_PASSWORD_FORM });
 	};
 
 	return (
-		<div className={classes.wrapper}>
-			<button onClick={closeButtonHandler} className={classes['close-button']}>
-				<img src={closeIcon} alt='fermer' />
-			</button>
+		<PopUp type={PopUpTypes.CONFIRM_EMAIL_ADDRESS} closePopUp={closePopUp}>
 			{!sent ? (
-				<div className={classes.form}>
+				<>
 					<div className={classes.text}>
 						Veuillez saisir votre adresse mail et nous vous enverrons les
 						instructions.
@@ -89,23 +83,19 @@ const ForgotPassword: React.FC = () => {
 						onChange={forgotPasswordEmailOnChangeHandler}
 						onBlur={forgotPasswordEmailOnBlurHandler}
 					/>
-					<div>{responseMessage}</div>
 					<RoundedButton
 						text={'Envoyer'}
 						onClick={sendEmailForgotPassword}
 						className={classes['submit-button']}
 					/>
-				</div>
+				</>
 			) : (
-				<div className={classes.sent}>
+				<>
 					<img src={successIcon} alt='Succès' />
-					<div className={classes['text-sent']}>
-						Un mail vient de vous être envoyé. Veuillez vérifier votre boîte
-						mail.
-					</div>
-				</div>
+					<div className={classes['text-sent']}>{responseMessage}</div>
+				</>
 			)}
-		</div>
+		</PopUp>
 	);
 };
 

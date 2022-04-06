@@ -75,10 +75,6 @@ const Profile: React.FC = () => {
 			>
 				<img src={recapIcon} alt='Stats' className={classes.recap__img} />
 			</RoundedButton>
-			{/* <Link to='/graphique' className={classes.recap}>
-				Voir mes statistiques
-				<img src={recapIcon} alt='Stats' className={classes.recap__img} />
-			</Link> */}
 			<div className={classes['edit-profile']}>
 				<button
 					className={`${classes['edit-profile__button']} ${

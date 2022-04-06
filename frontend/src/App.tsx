@@ -13,8 +13,8 @@ import DailyView from './views/daily/pages/DailyView';
 import WeeklyView from './views/weekly/pages/WeeklyView';
 import MonthlyView from './views/monthly/pages/MonthlyView';
 import Error404 from './error404/Error404';
-import ErrorPopup from './pop-ups/ErrorPopUp';
-import EmailPopup from './pop-ups/EmailConfirmationPopUp';
+import ErrorPopup from './pop-ups/pages/ErrorPopUp';
+import EmailPopup from './pop-ups/pages/EmailConfirmationPopUp';
 import ConfirmEmailAddress from './modify-user/logged-out/pages/ChangeEmailAddressConfirmation';
 import ChangeForgottenPassword from './modify-user/logged-out/pages/ChangeForgottenPassword';
 import Overlay from './_shared/components/UIElements/Overlay';
@@ -31,7 +31,7 @@ import MobileSidebar from './layout/sidebar/pages/MobileSidebar';
 import DeleteAccount from './modify-user/logged-in/pages/DeleteAccount';
 import DeleteAccountConfirm from './modify-user/logged-in/pages/DeleteAccountConfirmation';
 import ChangeEmailConfirm from './modify-user/logged-in/pages/ChangeEmailConfirm';
-import AlertPopup from './pop-ups/AlertPopUp';
+import AlertPopup from './pop-ups/pages/AlertPopUp';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
@@ -170,6 +170,7 @@ const App: React.FC = () => {
 			{popUpsState.errorMessage && (
 				<ErrorPopup message={popUpsState.errorMessage} />
 			)}
+
 			{popUpsState.showEmailConfirmation && <EmailPopup />}
 		</>
 	);

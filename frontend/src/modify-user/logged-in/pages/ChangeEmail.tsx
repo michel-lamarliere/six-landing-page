@@ -58,7 +58,7 @@ const ChangeEmail: React.FC = () => {
 
 		if (responseData.used) {
 			setNewEmailInput((prev) => ({ ...prev, isValid: false }));
-			setInputErrorText(responseData.error);
+			setInputErrorText(responseData.message);
 			return;
 		}
 

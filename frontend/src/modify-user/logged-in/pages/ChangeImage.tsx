@@ -69,7 +69,7 @@ const ChangeImage: React.FC = () => {
 		);
 
 		if (responseData.error) {
-			setResponse(responseData.error);
+			setResponse(responseData.message);
 			return;
 		}
 

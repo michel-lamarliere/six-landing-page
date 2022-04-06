@@ -72,7 +72,7 @@ const LoginForm: React.FC<Props> = (props) => {
 		);
 
 		if (responseData.error) {
-			setResponseMessage(responseData.error);
+			setResponseMessage(responseData.message);
 			return;
 		}
 

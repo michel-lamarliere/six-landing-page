@@ -20,11 +20,11 @@ const ConfirmEmailAddress: React.FC = () => {
 		);
 
 		if (responseData.error) {
-			setResponse(responseData.error);
+			setResponse(responseData.message);
 			return;
 		}
 
-		setResponse(responseData.success);
+		setResponse(responseData.message);
 	};
 
 	useEffect(() => {

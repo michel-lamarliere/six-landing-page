@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState } from '../_shared/store/_store';
-import { PopUpActionTypes } from '../_shared/store/pop-ups';
-import { UIElementsActionTypes } from '../_shared/store/ui-elements';
+import { RootState } from '../../_shared/store/_store';
+import { PopUpActionTypes } from '../../_shared/store/pop-ups';
+import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 
-import { useRequest } from '../_shared/hooks/http-hook';
+import { useRequest } from '../../_shared/hooks/http-hook';
 
-import warningIcon from '../_shared/assets/imgs/icons/warning.svg';
-import closeIcon from '../_shared/assets/imgs/icons/close.svg';
-import sentIcon from '../_shared/assets/imgs/icons/validated.svg';
+import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
+
+import warningIcon from '../../_shared/assets/imgs/icons/warning.svg';
+import closeIcon from '../../_shared/assets/imgs/icons/close.svg';
+import sentIcon from '../../_shared/assets/imgs/icons/validated.svg';
 
 import classes from './EmailConfirmationPopUp.module.scss';
-import RoundedButton from '../_shared/components/UIElements/RoundedButton';
+import PopUp, { PopUpTypes } from '../../_shared/components/UIElements/PopUp';
 
 const EmailPopup: React.FC = () => {
 	const dispatch = useDispatch();
@@ -32,10 +34,11 @@ const EmailPopup: React.FC = () => {
 		);
 
 		if (responseData.error) {
-			setResponseMessage(responseData.error);
-		} else if (responseData.success) {
-			setResponseMessage(responseData.success);
+			setResponseMessage(responseData.message);
+			return;
 		}
+
+		setResponseMessage(responseData.message);
 
 		setSent(true);
 
@@ -60,13 +63,9 @@ const EmailPopup: React.FC = () => {
 	}, [userState.confirmedEmail]);
 
 	return ReactDOM.createPortal(
-		<div className={classes.wrapper}>
-			<button onClick={closePopup} className={classes['close-button']}>
-				<img src={closeIcon} alt='Fermer' />
-			</button>
+		<PopUp type={PopUpTypes.CONFIRM_EMAIL_ADDRESS} closePopUp={closePopup}>
 			{!sent ? (
-				<div className={classes['wrapper--not-sent']}>
-					<img src={warningIcon} alt='Alerte' className={classes.icon} />
+				<>
 					<div className={classes.title}>
 						Veuillez confirmer votre adresse mail.
 					</div>
@@ -80,14 +79,14 @@ const EmailPopup: React.FC = () => {
 						onClick={resendEmailConfirmationHandler}
 						className={classes['submit-button']}
 					/>
-				</div>
+				</>
 			) : (
-				<div className={classes['wrapper--sent']}>
+				<>
 					<img src={sentIcon} alt='Envoyé' className={classes.icon} />
 					<div className={classes.response}>{responseMessage}</div>
-				</div>
+				</>
 			)}
-		</div>,
+		</PopUp>,
 		document.getElementById('email-confirmation-popup')!
 	);
 };
