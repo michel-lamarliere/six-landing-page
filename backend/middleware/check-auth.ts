@@ -12,7 +12,7 @@ const checkAuth: RequestHandler = (
 	}
 
 	if (!req.headers.authorization) {
-		res.status(403).json({ error: 'Pas de req.header.authorization' });
+		res.status(403).json({ error: true, message: 'Pas de req.header.authorization' });
 		return;
 	}
 
@@ -30,7 +30,10 @@ const checkAuth: RequestHandler = (
 		req.userData = { id: decodedToken.id };
 		next();
 	} catch (error) {
-		res.status(500).json({ error: "Erreur lors de la vérification d'autorisation." });
+		res.status(500).json({
+			error: true,
+			message: "Erreur lors de la vérification d'autorisation.",
+		});
 		return;
 	}
 };

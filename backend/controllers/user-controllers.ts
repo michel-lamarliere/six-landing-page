@@ -78,7 +78,10 @@ const signUp: RequestHandler = async (req, res, next) => {
 	}
 
 	if (!inputsAreValid.all) {
-		res.status(400).json({ error: 'Erreur lors de la création de compte.' });
+		res.status(400).json({
+			error: true,
+			message: 'Erreur lors de la création de compte.',
+		});
 		return;
 	}
 
@@ -112,7 +115,10 @@ const signUp: RequestHandler = async (req, res, next) => {
 	let findingNewUser = await databaseConnect.findOne({ email: reqEmail });
 
 	if (!findingNewUser) {
-		res.status(404).json({ error: 'Erreur, veuillez réessayer plus tard.' });
+		res.status(404).json({
+			error: true,
+			message: 'Erreur, veuillez réessayer plus tard.',
+		});
 		return;
 	}
 
@@ -129,7 +135,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 	emailConfirmationEmail(reqEmail, hashedConfirmationCode);
 
 	res.status(201).json({
-		success: 'Compte créé !',
+		success: 'Compte créé.',
 		token: token,
 		id: findingNewUser._id,
 		icon: findingNewUser.icon,
@@ -193,7 +199,7 @@ const confirmEmailAddress: RequestHandler = async (req, res, next) => {
 
 	// IF IT DOESN'T MATCH
 	if (!user) {
-		res.status(400).json({ error: 'Code invalide' });
+		res.status(400).json({ error: true, message: 'Code invalide' });
 		return;
 	}
 
@@ -207,7 +213,7 @@ const confirmEmailAddress: RequestHandler = async (req, res, next) => {
 		}
 	);
 
-	res.status(200).json({ success: 'Compte confirmé.' });
+	res.status(200).json({ success: true, message: 'Compte confirmé.' });
 };
 
 const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
@@ -250,7 +256,7 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 	try {
 		await emailConfirmationEmail(user.email, user.confirmation.code);
 	} catch (error) {
-		return res.status(500).json({ error: 'Une erreur est survenue.' });
+		return res.status(500).json({ error: true, message: 'Une erreur est survenue.' });
 	}
 
 	// ADDS THE NEW TIME INTERVAL IN THE DB
@@ -266,8 +272,9 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 	);
 
 	res.status(200).json({
-		success:
-			'Email envoyé ! Veuillez vérifier votre boîte de réception ou votre dossier spam.',
+		success: true,
+		message:
+			'Email envoyé. Veuillez vérifier votre boîte de réception ou votre dossier spam.',
 	});
 };
 
@@ -284,7 +291,7 @@ const refreshData: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	res.status(200).json({ success: 'Données rafraichies', user });
+	res.status(200).json({ success: true, message: 'Données rafraichies.', user });
 };
 
 exports.signUp = signUp;

@@ -30,7 +30,7 @@ const changeImage: RequestHandler = async (req, res, next) => {
 		}
 	);
 
-	res.status(200).json({ success: true, message: 'Icône modifié.' });
+	res.status(200).json({ success: true, message: 'Icône modifiée.' });
 };
 
 const changeEmail: RequestHandler = async (req, res, next) => {
@@ -147,7 +147,7 @@ const changeName: RequestHandler = async (req, res, next) => {
 	}
 
 	if (!validateNewName) {
-		res.status(400).json({ error: 'Nouveau Nom Invalide !' });
+		res.status(400).json({ error: true, message: 'Nouveau nom invalide.' });
 		return;
 	}
 
@@ -161,7 +161,7 @@ const changeName: RequestHandler = async (req, res, next) => {
 		}
 	);
 
-	res.status(200).json({ success: 'Nom modifié !', name: reqNewName });
+	res.status(200).json({ success: true, message: 'Nom modifié.', name: reqNewName });
 };
 
 const changePassword: RequestHandler = async (req, res, next) => {
@@ -254,7 +254,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
 		}
 	);
 
-	res.status(200).json({ success: 'Mot de passe modifié.' });
+	res.status(200).json({ success: true, message: 'Mot de passe modifié.' });
 };
 
 const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
@@ -349,11 +349,11 @@ const checkForgotPasswordAuth: RequestHandler = async (req, res, next) => {
 	});
 
 	if (!user) {
-		res.status(403).json({ error: 'Non autorisé' });
+		res.status(403).json({ error: true, message: 'Non autorisé.' });
 		return;
 	}
 
-	res.status(200).json({ success: 'Autorisé !', id: user._id });
+	res.status(200).json({ success: true, message: 'Autorisé.', id: user._id });
 };
 
 const changeForgottenPassword: RequestHandler = async (req, res, next) => {
@@ -389,7 +389,7 @@ const changeForgottenPassword: RequestHandler = async (req, res, next) => {
 	console.log(validInputs.newPasswordConfirmation);
 
 	if (!validInputs.newPassword || !validInputs.newPasswordConfirmation) {
-		res.status(400).json({ error: true, message: 'Champs invalides', validInputs });
+		res.status(400).json({ error: true, message: 'Champs invalides.', validInputs });
 		return;
 	}
 
@@ -446,9 +446,9 @@ const deleteAccountEmail: RequestHandler = async (req, res, next) => {
 	});
 
 	if (emailWasSent) {
-		res.status(200).json({ success: true, message: 'Email envoyé !' });
+		res.status(200).json({ success: true, message: 'Email envoyé.' });
 	} else {
-		res.status(400).json({ error: true, message: "Erreur lors de l'envoi de mail" });
+		res.status(400).json({ error: true, message: "Erreur lors de l'envoi de mail." });
 	}
 };
 
@@ -469,7 +469,7 @@ const deleteAccountConfirm: RequestHandler = async (req, res, next) => {
 
 	if (reqCode !== user.deleteCode) {
 		res.status(400).json({
-			error: 'Erreur lors de la suppression de votre compte. Veuillez nous contacter',
+			error: 'Erreur lors de la suppression de votre compte. Veuillez nous contacter via mail ou via le formulaire présent sur le site.',
 		});
 		return;
 	}
