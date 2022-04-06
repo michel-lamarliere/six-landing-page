@@ -132,6 +132,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 		success: 'Compte créé !',
 		token: token,
 		id: findingNewUser._id,
+		icon: findingNewUser.icon,
 		name: findingNewUser.name,
 		email: findingNewUser.email,
 		confirmedEmail: findingNewUser.confirmation.confirmed,

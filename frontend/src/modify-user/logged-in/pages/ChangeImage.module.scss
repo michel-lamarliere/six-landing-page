@@ -8,17 +8,15 @@
 		place-content: center;
 		background-color: transparent;
 		border: 0.2rem solid transparent;
-
+		border-radius: 50%;
 		cursor: pointer;
 
 		&--active {
-			border: 0.2rem solid white;
-			border-radius: 50%;
+			border: 0.2rem solid #8d88ff;
 		}
 
 		&--chosen {
-			border: 0.2rem solid #8d88ff;
-			border-radius: 50%;
+			border: 0.2rem solid white;
 		}
 
 		& > img {

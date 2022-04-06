@@ -28,7 +28,7 @@ const ChangePassword: React.FC = () => {
 		setInput: setOldPassword,
 		inputOnChangeHandler: oldPasswordOnChangeHandler,
 		inputOnBlurHandler: oldPasswordOnBlurHandler,
-	} = useInput({ type: useInputTypes.PASSWORD, validate: false, display: sent });
+	} = useInput({ type: useInputTypes.NONE, validate: false, display: sent });
 
 	const {
 		input: newPassword,
@@ -50,14 +50,22 @@ const ChangePassword: React.FC = () => {
 	});
 
 	const resetForm = () => {
-		setOldPassword((prev) => ({ ...prev, value: '' }));
-		setNewPassword((prev) => ({ ...prev, value: '' }));
-		setNewPasswordConfirmation((prev) => ({ ...prev, value: '' }));
+		setOldPassword((prev) => ({ ...prev, value: '', isTouched: false }));
+		setNewPassword((prev) => ({ ...prev, value: '', isTouched: false }));
+		setNewPasswordConfirmation((prev) => ({ ...prev, value: '', isTouched: false }));
 	};
 
 	const changePasswordHandler = async () => {
+		if (
+			oldPassword.value.trim().length === 0 ||
+			newPassword.value.trim().length === 0 ||
+			newPasswordConfirmation.value.trim().length === 0
+		) {
+			return;
+		}
+
 		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user_modify/password`,
+			`${process.env.REACT_APP_BACKEND_URL}/user-modify/password`,
 			'PATCH',
 			JSON.stringify({
 				id: userState.id,
@@ -72,6 +80,8 @@ const ChangePassword: React.FC = () => {
 		if (!responseData) {
 			return;
 		}
+
+		console.log(responseData);
 
 		if (responseData.error) {
 			const { validInputs } = responseData;
@@ -104,6 +114,7 @@ const ChangePassword: React.FC = () => {
 			}
 			return;
 		}
+
 		resetForm();
 
 		setResponse('Mot de passe modifié!');

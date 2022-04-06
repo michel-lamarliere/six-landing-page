@@ -31,6 +31,10 @@ export const useInput = (data: {
 		isTouched: false,
 	});
 
+	// if (!validate) {
+	// 	setInput((prev) => ({ ...prev, isValid: true }));
+	// }
+
 	const inputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setInput((prev) => ({ ...prev, value: event.target.value, isTouched: false }));
 	};
@@ -46,6 +50,12 @@ export const useInput = (data: {
 			setInput((prev) => ({ ...prev, isTouched: true }));
 		}
 	}, [display]);
+
+	useEffect(() => {
+		if (!validate) {
+			setInput((prev) => ({ ...prev, isValid: true }));
+		}
+	}, []);
 
 	useEffect(() => {
 		if (type === 'NAME' && validate) {
@@ -83,6 +93,12 @@ export const useInput = (data: {
 				: setInput((prev) => ({ ...prev, isValid: false }));
 		}
 	}, [input.value, compareTo]);
+
+	useEffect(() => {
+		if (type === 'NONE') {
+			setInput((prev) => ({ ...prev, isValid: true }));
+		}
+	}, [input.value]);
 
 	return {
 		input,

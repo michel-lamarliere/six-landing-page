@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 const checkAuth = require('../middleware/check-auth');
-const userModifyControllers = require('../controllers/user_modify-controllers');
+const userModifyControllers = require('../controllers/user-modify-controllers');
 
 const router = Router();
 

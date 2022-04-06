@@ -26,7 +26,7 @@ const ChangeName: React.FC = () => {
 	const changeNameHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
 		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user_modify/name`,
+			`${process.env.REACT_APP_BACKEND_URL}/user-modify/name`,
 			'PATCH',
 			JSON.stringify({
 				id: userState.id,

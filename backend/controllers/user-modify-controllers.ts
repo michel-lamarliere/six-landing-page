@@ -196,11 +196,22 @@ const changePassword: RequestHandler = async (req, res, next) => {
 	// CHECKS IF THE PASSWORD MATCHES THE USER'S HASHED PASSWORD
 	validInputs.oldPassword = await bcrypt.compare(reqOldPassword, user.password);
 
+	console.log(validInputs.oldPassword);
+
 	if (!validInputs.oldPassword) {
 		res.status(400).json({
 			error: 'Veuillez corriger les erreurs.',
-			validInputs: validInputs.oldPassword,
+			validInputs: {
+				oldPassword: false,
+				newPassword: {
+					differentThanOld: true,
+					format: true,
+				},
+				newPasswordConfirmation: true,
+			},
 		});
+		console.log('here');
+		return;
 	}
 
 	// COMPARES THE NEW PASSWORD TO THE OLD ONE
@@ -221,6 +232,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
 		!validInputs.newPassword.format ||
 		!validInputs.newPasswordConfirmation
 	) {
+		console.log(validInputs);
 		res.status(400).json({
 			error: 'Veuillez corriger les erreurs.',
 			validInputs,
