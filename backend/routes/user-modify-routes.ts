@@ -5,16 +5,18 @@ const userModifyControllers = require('../controllers/user-modify-controllers');
 
 const router = Router();
 
+router.get('/forgot-password/:email', userModifyControllers.sendEmailForgotPassword);
+
 router.get(
-	'/email/forgot-password/:email',
-	userModifyControllers.sendEmailForgotPassword
+	'/forgot-password/confirmation/:email/:uniqueId',
+	userModifyControllers.checkForgotPasswordAuth
 );
 
-router.get('/:email/:uniqueId', userModifyControllers.checkForgotPasswordAuth);
+router.patch('/forgot-password/modify', userModifyControllers.changeForgottenPassword);
 
 router.patch('/email/confirmation', userModifyControllers.changeEmailConfirmation);
 
-router.patch('/password/', userModifyControllers.changePassword);
+router.patch('/password', userModifyControllers.changePassword);
 
 router.delete('/delete-account/confirmation', userModifyControllers.deleteAccountConfirm);
 

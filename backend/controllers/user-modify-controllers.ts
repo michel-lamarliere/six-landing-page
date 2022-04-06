@@ -273,12 +273,12 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 	}
 
 	// CHECKS IF THE USER CONFIRMED HIS ACCOUNT
-	if (!user.confirmation.confirmed) {
-		res.status(403).json({
-			error: "Cette adresse mail n'est pas confirmée. Envoi de mail impossible.",
-		});
-		return;
-	}
+	// if (!user.confirmation.confirmed) {
+	// 	res.status(403).json({
+	// 		error: "Cette adresse mail n'est pas confirmée. Envoi de mail impossible.",
+	// 	});
+	// 	return;
+	// }
 
 	// CHECKS IF THE LAST EMAIL WAS SENT IN THE LAST 5 MINUTES
 	if (
@@ -317,10 +317,10 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 			from: '"Six App" <contact@michel-lamarliere.com>',
 			to: 'lamarliere.michel@icloud.com',
 			subject: 'Modification de votre mot de passe',
-			text: 'Pour modifier votre mot de passe, cliquez sur ce lien.',
+			text: `Pour modifier votre mot de passe, cliquez sur ce lien.  ${reqEmail}`,
 			html: `<div><b>Mot de passe oublié?</b><a href="${
 				process.env.FRONT_END_URL
-			}/modify/password/${encodeURI(reqEmail)}/${encodeURI(
+			}/modifier/mot-de-passe/${encodeURI(reqEmail)}/${encodeURI(
 				generatedForgotPasswordCode
 			)}">Cliquez ici !</a></div>`,
 		});
@@ -354,6 +354,53 @@ const checkForgotPasswordAuth: RequestHandler = async (req, res, next) => {
 	}
 
 	res.status(200).json({ success: 'Autorisé !', id: user._id });
+};
+
+const changeForgottenPassword: RequestHandler = async (req, res, next) => {
+	const {
+		id: reqIdStr,
+		newPassword: reqNewPassword,
+		newPasswordConfirmation: reqNewPasswordConfirmation,
+	} = req.body;
+
+	const reqId = new ObjectId(reqIdStr);
+
+	const databaseConnect = await database.getDb('six-dev').collection('users');
+
+	// CHECKS IF THE USER EXISTS
+	const user = await databaseConnect.findOne({ _id: reqId });
+
+	if (!user) {
+		res.status(404).json({ fatal: true });
+		return;
+	}
+
+	let validInputs = {
+		newPassword: false,
+		newPasswordConfirmation: false,
+	};
+
+	validInputs.newPassword = reqNewPassword.match(
+		/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
+	);
+
+	validInputs.newPasswordConfirmation = reqNewPassword === reqNewPasswordConfirmation;
+
+	console.log(validInputs.newPasswordConfirmation);
+
+	if (!validInputs.newPassword || !validInputs.newPasswordConfirmation) {
+		res.status(400).json({ error: true, message: 'Champs invalides', validInputs });
+		return;
+	}
+
+	const hashedNewPassword = await bcrypt.hash(reqNewPassword, 10);
+
+	await databaseConnect.updateOne(
+		{ _id: reqId },
+		{ $set: { password: hashedNewPassword } }
+	);
+
+	res.status(200).json({ success: true, message: 'Mot de passe modifié.' });
 };
 
 const deleteAccountEmail: RequestHandler = async (req, res, next) => {
@@ -449,5 +496,6 @@ exports.changeEmailConfirmation = changeEmailConfirmation;
 exports.changePassword = changePassword;
 exports.sendEmailForgotPassword = sendEmailForgotPassword;
 exports.checkForgotPasswordAuth = checkForgotPasswordAuth;
+exports.changeForgottenPassword = changeForgottenPassword;
 exports.deleteAccountEmail = deleteAccountEmail;
 exports.deleteAccountConfirm = deleteAccountConfirm;

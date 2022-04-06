@@ -159,7 +159,7 @@ const App: React.FC = () => {
 					element={<ChangeEmailConfirm />}
 				/>
 				<Route
-					path='/modifier/motdepasse/:email/:uniqueId'
+					path='/modifier/mot-de-passe/:email/:uniqueId'
 					element={<ForgotPassword />}
 				/>
 				<Route path='*' element={<Error404 />} />

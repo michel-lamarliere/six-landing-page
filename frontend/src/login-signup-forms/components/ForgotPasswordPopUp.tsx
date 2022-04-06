@@ -9,7 +9,8 @@ import { useRequest } from '../../_shared/hooks/http-hook';
 
 import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 
-import CloseIcon from '../../_shared/assets/imgs/icons/close.svg';
+import closeIcon from '../../_shared/assets/imgs/icons/close.svg';
+import successIcon from '../../_shared/assets/imgs/icons/validated.svg';
 
 import classes from './ForgotPasswordPopUp.module.scss';
 
@@ -32,7 +33,7 @@ const ForgotPassword: React.FC = () => {
 		event.preventDefault();
 
 		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user_modify/email/forgot-password/${forgotPasswordEmailInput.value}`,
+			`${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/${forgotPasswordEmailInput.value}`,
 			'GET',
 			null
 		);
@@ -67,7 +68,7 @@ const ForgotPassword: React.FC = () => {
 	return (
 		<div className={classes.wrapper}>
 			<button onClick={closeButtonHandler} className={classes['close-button']}>
-				<img src={CloseIcon} alt='fermer' />
+				<img src={closeIcon} alt='fermer' />
 			</button>
 			{!sent ? (
 				<>
@@ -96,12 +97,13 @@ const ForgotPassword: React.FC = () => {
 					</button>
 				</>
 			) : (
-				<>
+				<div className={classes.sent}>
+					<img src={successIcon} alt='Succès' />
 					<div className={classes['text-sent']}>
 						Un mail vient de vous être envoyé. Veuillez vérifier votre boîte
 						mail.
 					</div>
-				</>
+				</div>
 			)}
 		</div>
 	);

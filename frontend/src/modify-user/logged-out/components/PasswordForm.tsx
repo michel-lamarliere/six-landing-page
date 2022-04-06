@@ -21,22 +21,6 @@ const PasswordForm: React.FC<{
 	const [response, setResponse] = useState('');
 	const [passwordFormIsValid, setPasswordFormIsValid] = useState(true);
 
-	const fetchOldPassword = async () => {
-		if (oldPassword.value.trim().length > 0) {
-			const responseData = await sendRequest(
-				`${process.env.REACT_APP_BACKEND_URL}/user_modify/compare/passwords/${userState.id}/${oldPassword.value}`,
-				'GET'
-			);
-
-			if (responseData.error) {
-				setOldPassword((prev) => ({ ...prev, isValid: false }));
-				return;
-			}
-
-			setOldPassword((prev) => ({ ...prev, isValid: true }));
-		}
-	};
-
 	const {
 		input: oldPassword,
 		setInput: setOldPassword,
@@ -59,27 +43,30 @@ const PasswordForm: React.FC<{
 	} = useInput({ type: useInputTypes.COMPARISON, validate: true });
 
 	const changePasswordHandler = async () => {
+		console.log('click');
 		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user_modify/password`,
+			`${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/modify`,
 			'PATCH',
 			JSON.stringify({
 				id: props.forgotForm ? props.userId : userState.id,
 				newPassword: newPassword.value,
+				newPasswordConfirmation: newPasswordConfirmation.value,
 			})
 		);
 
+		console.log(responseData);
 		if (!responseData) {
 			return;
 		}
 
 		if (responseData.error) {
-			setErrorMessage(responseData.error);
+			setErrorMessage(responseData.message);
 			return;
 		}
 
 		resetForm();
 
-		setResponse('Mot de passe modifié!');
+		setResponse(responseData.message);
 
 		setTimeout(() => {
 			setResponse('');
@@ -147,7 +134,6 @@ const PasswordForm: React.FC<{
 
 	return (
 		<div>
-			{/* <div className={formClasses['password-wrapper']}> */}
 			<div>
 				{!props.forgotForm && (
 					<Input
@@ -191,15 +177,7 @@ const PasswordForm: React.FC<{
 					password={true}
 				/>
 				<div>{errorMessage}</div>
-				<button
-					onClick={changePasswordHandler}
-					disabled={!passwordFormIsValid}
-					// className={`${formClasses['submit-button']} ${
-					// 	!passwordFormIsValid && formClasses['submit-button--disabled']
-					// }`}
-				>
-					Changer Mot de Passe
-				</button>
+				<button onClick={changePasswordHandler}>Changer Mot de Passe</button>
 				Tester1@
 			</div>
 			<div>{response}</div>
