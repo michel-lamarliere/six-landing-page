@@ -220,6 +220,7 @@ const confirmEmailAddress: RequestHandler = async (req, res, next) => {
 
 const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 	const id = new ObjectId(req.body.id);
+	console.log('HEY');
 
 	const databaseConnect = await database.getDb('six-dev').collection('users');
 
@@ -258,10 +259,16 @@ const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 		}
 	}
 
-	try {
-		await sendEmailConfirmationEmail(user.email, user.confirmation.code);
-	} catch (error) {
-		return res.status(500).json({ error: true, message: 'Une erreur est survenue.' });
+	const emailWasSent = sendEmailConfirmationEmail({
+		to: user.email,
+		uniqueCode: user.confirmation.code,
+	});
+
+	if (!emailWasSent) {
+		return res.status(500).json({
+			error: true,
+			message: "Une erreur est survenue lors de l'envoi du mail.",
+		});
 	}
 
 	// ADDS THE NEW TIME INTERVAL IN THE DB

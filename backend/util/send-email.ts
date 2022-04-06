@@ -1,6 +1,6 @@
-import { createNodemailerTransporter } from './nodemailer-transporter';
+import { createNodemailerTransporter } from './create-nodemailer-transporter';
 
-const sendEmail = async (data: any): Promise<any> => {
+const sendEmail = async (data: any) => {
 	const { to, subject, text, html } = data;
 
 	const transporter = createNodemailerTransporter();
@@ -8,7 +8,9 @@ const sendEmail = async (data: any): Promise<any> => {
 	// REMOVE WHEN DEPLOYING
 	let toTemp = 'lamarliere.michel@icloud.com';
 
-	await transporter.sendMail({
+	let emailWasSent = false;
+
+	emailWasSent = await transporter.sendMail({
 		// REPLACE BY TO WHEN DEPLOYING
 		to: toTemp,
 		from: '"Six App" <contact@michel-lamarliere.com>',
@@ -16,6 +18,8 @@ const sendEmail = async (data: any): Promise<any> => {
 		text: text,
 		html: html,
 	});
+
+	return emailWasSent;
 };
 
-exports.default = sendEmail;
+exports.sendEmail = sendEmail;

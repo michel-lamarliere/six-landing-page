@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 
 const database = require('../util/db-connect');
-const { createNodemailerTransporter } = require('../util/nodemailer-transporter');
 const sendEmail = require('../util/send-email');
 
 const changeImage: RequestHandler = async (req, res, next) => {
