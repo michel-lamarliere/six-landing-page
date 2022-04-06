@@ -2,7 +2,7 @@ import React from 'react';
 
 import classes from './DaysOfWeek.module.scss';
 
-const DaysOfWeek: React.FC = () => {
+const CalendarDaysOfWeek: React.FC = () => {
 	const daysOfWeek = ['LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM', 'DIM'];
 
 	return (
@@ -14,4 +14,4 @@ const DaysOfWeek: React.FC = () => {
 	);
 };
 
-export default DaysOfWeek;
+export default CalendarDaysOfWeek;

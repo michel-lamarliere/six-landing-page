@@ -23,13 +23,12 @@
 
 .submit-button {
 	background-color: #3e379b;
-	font-family: $fontSemiBold;
-	font-size: 14px;
-	padding: 0.68em 2em;
-	max-width: 10em;
-	border-radius: 2.31em;
 	color: white;
-	cursor: pointer;
+
+	&:hover {
+		background-color: white;
+		color: #3e379b;
+	}
 }
 
 .response {

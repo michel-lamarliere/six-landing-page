@@ -2,7 +2,7 @@ import React from 'react';
 
 import { format, isAfter } from 'date-fns';
 
-import { DataButton } from '../../components/Buttons';
+import { DataButton } from '../../components/ViewButtons';
 
 import classes from './WeeklyViewTasks.module.scss';
 

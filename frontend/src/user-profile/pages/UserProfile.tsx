@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../_shared/store/_store';
+import { PopUpActionTypes } from '../../_shared/store/pop-ups';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
-import { useUser } from '../../_shared/classes/user-hook';
-
-import userIcon from '../../_shared/assets/imgs/icons/user/icon_1.svg';
+import { useUserClass } from '../../_shared/classes/user-class-hook';
 
 import confirmedEmailIcon from '../../_shared/assets/imgs/icons/profile/profile-confirmed-email-arrow.svg';
 import arrow from '../../_shared/assets/imgs/icons/arrow-bottom-purple.svg';
@@ -18,15 +17,16 @@ import emailIcon from '../../_shared/assets/imgs/icons/profile/profile-modify-em
 import passwordIcon from '../../_shared/assets/imgs/icons/profile/profile-modify-password.svg';
 import logOutIcon from '../../_shared/assets/imgs/icons/profile/profile-log-out.svg';
 
-import classes from './Profile.module.scss';
 import LogOutConfirmation from '../components/LogOutConfirmation';
-import { PopUpActionTypes } from '../../_shared/store/pop-ups';
 import UserIcon from '../../_shared/components/UserIcon/UserIcon';
+import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
+
+import classes from './UserProfile.module.scss';
 
 const Profile: React.FC = () => {
 	const dispatch = useDispatch();
 
-	const { User } = useUser();
+	const { User } = useUserClass();
 	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
@@ -67,10 +67,18 @@ const Profile: React.FC = () => {
 					<img src={confirmedEmailIcon} alt='Confirmer adresse mail' />
 				</button>
 			)}
-			<Link to='/graphique' className={classes.recap}>
+			<RoundedButton
+				text={'Voir mes statistiques'}
+				link='/graphique'
+				onClick={confirmEmailAddressHandler}
+				className={classes.recap}
+			>
+				<img src={recapIcon} alt='Stats' className={classes.recap__img} />
+			</RoundedButton>
+			{/* <Link to='/graphique' className={classes.recap}>
 				Voir mes statistiques
 				<img src={recapIcon} alt='Stats' className={classes.recap__img} />
-			</Link>
+			</Link> */}
 			<div className={classes['edit-profile']}>
 				<button
 					className={`${classes['edit-profile__button']} ${

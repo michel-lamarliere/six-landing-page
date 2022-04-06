@@ -9,7 +9,7 @@ import { PopUpActionTypes } from '../store/pop-ups';
 import { UserActionTypes } from '../store/user';
 import { RootState } from '../store/_store';
 
-export const useUser = () => {
+export const useUserClass = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 

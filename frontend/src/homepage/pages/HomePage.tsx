@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button } from '../../_shared/components/UIElements/Buttons';
-import { buttonColors } from '../../_shared/components/UIElements/Buttons';
-import { Slide2GridItem, Slide3GridItem } from '../components/GridItem';
-import CarouselButton from '../components/CarouselButton';
+import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
+import { Slide2GridItem, Slide3GridItem } from '../components/HomepageGridItem';
+import HomepageCarouselButton from '../components/HomepageCarouselButton';
 import LoginSignupForms from '../../login-signup-forms/pages/LoginSignupForms';
 
 import SixIcon from '../../_shared/assets/imgs/icons/app/logo.svg';
@@ -86,17 +85,17 @@ const HomePage: React.FC = () => {
 			<div className={classes.carousel}>
 				<div className={classes.carousel__text}>{carousel[carouselIndex]}</div>
 				<div className={classes.carousel__buttons}>
-					<CarouselButton
+					<HomepageCarouselButton
 						carouselIndex={carouselIndex}
 						slideIndex={0}
 						onClick={() => carouselHandler(0)}
 					/>
-					<CarouselButton
+					<HomepageCarouselButton
 						carouselIndex={carouselIndex}
 						slideIndex={1}
 						onClick={() => carouselHandler(1)}
 					/>
-					<CarouselButton
+					<HomepageCarouselButton
 						carouselIndex={carouselIndex}
 						slideIndex={2}
 						onClick={() => carouselHandler(2)}
@@ -104,15 +103,15 @@ const HomePage: React.FC = () => {
 				</div>
 			</div>
 			<div className={classes.buttons}>
-				<Button
-					color={buttonColors.COLOR_WHITE}
+				<RoundedButton
 					text={'Se connecter'}
 					link={'/login-signup'}
+					className={`${classes.buttons__button} ${classes['buttons__button--log-in']}`}
 				/>
-				<Button
-					color={buttonColors.COLOR_PURPLE}
+				<RoundedButton
 					text={"S'inscrire"}
 					link={'/login-signup'}
+					className={`${classes.buttons__button} ${classes['buttons__button--sign-up']}`}
 				/>
 			</div>
 			<div className={classes.forms}>

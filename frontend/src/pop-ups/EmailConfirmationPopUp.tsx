@@ -12,7 +12,8 @@ import warningIcon from '../_shared/assets/imgs/icons/warning.svg';
 import closeIcon from '../_shared/assets/imgs/icons/close.svg';
 import sentIcon from '../_shared/assets/imgs/icons/validated.svg';
 
-import classes from './EmailConfirmation.module.scss';
+import classes from './EmailConfirmationPopUp.module.scss';
+import RoundedButton from '../_shared/components/UIElements/RoundedButton';
 
 const EmailPopup: React.FC = () => {
 	const dispatch = useDispatch();
@@ -74,12 +75,11 @@ const EmailPopup: React.FC = () => {
 						vérifier votre boîte de réception et vos spams.
 						<br /> <br /> Vous n’avez rien reçu ?
 					</div>
-					<button
-						className={classes.button}
+					<RoundedButton
+						text={'Renvoyer'}
 						onClick={resendEmailConfirmationHandler}
-					>
-						Renvoyer
-					</button>
+						className={classes['submit-button']}
+					/>
 				</div>
 			) : (
 				<div className={classes['wrapper--sent']}>

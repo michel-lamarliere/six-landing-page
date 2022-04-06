@@ -7,9 +7,9 @@ import { RootState } from '../../../_shared/store/_store';
 
 import { useRequest } from '../../../_shared/hooks/http-hook';
 
-import PasswordForm from '../components/PasswordForm';
+import PasswordForm from '../../components/PasswordForm';
 
-import classes from './ForgotPassword.module.scss';
+import classes from './ChangeForgottenPassword.module.scss';
 
 const ForgotPasswordForm: React.FC = () => {
 	const { sendRequest } = useRequest();

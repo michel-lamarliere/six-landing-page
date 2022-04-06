@@ -1,0 +1,22 @@
+@import '../../style/variables.scss';
+
+.button {
+	// max-width: 8rem;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	padding: 0.6rem 1.2rem;
+	text-align: center;
+	background-color: #ffffff;
+	color: #3e379b;
+	font-family: $fontBold;
+	font-size: 15px;
+	border: 0.175rem solid transparent;
+	border-radius: 1.15rem;
+	cursor: pointer;
+
+	&:active {
+		box-shadow: rgba(0, 0, 0, 0.2) 0px 30px 60px -12px inset,
+			rgba(0, 0, 0, 0.2) 0px 18px 36px -18px inset;
+	}
+}

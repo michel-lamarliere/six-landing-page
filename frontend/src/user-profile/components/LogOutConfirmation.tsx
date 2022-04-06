@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { useUser } from '../../_shared/classes/user-hook';
+import { useUserClass } from '../../_shared/classes/user-class-hook';
+
+import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
 
 import classes from './LogOutConfirmation.module.scss';
 
@@ -9,7 +11,7 @@ interface Props {
 }
 
 const LogOutConfirmation: React.FC<Props> = (props) => {
-	const { User } = useUser();
+	const { User } = useUserClass();
 
 	const cancelHandler = () => {
 		props.cancelLogOutHandler();
@@ -25,18 +27,16 @@ const LogOutConfirmation: React.FC<Props> = (props) => {
 				Souhaitez-vous vraiment vous déconnecter ?
 			</div>
 			<div className={classes.buttons}>
-				<button
+				<RoundedButton
+					text={'Annuler'}
 					className={`${classes.buttons__button} ${classes['buttons__button--cancel']}`}
 					onClick={cancelHandler}
-				>
-					Annuler
-				</button>
-				<button
+				/>
+				<RoundedButton
+					text={'Déconnexion'}
 					className={`${classes.buttons__button} ${classes['buttons__button--confirm']}`}
 					onClick={logoutHandler}
-				>
-					Déconnexion
-				</button>
+				/>
 			</div>
 		</div>
 	);

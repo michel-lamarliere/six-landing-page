@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
-import { useUser } from '../../_shared/classes/user-hook';
+import { useUserClass } from '../../_shared/classes/user-class-hook';
 
 import FormContainer from './FormContainer';
 import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
+import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
 
 import classes from './SignupForm.module.scss';
 
@@ -15,7 +16,7 @@ interface Props {
 
 const SingupForm: React.FC<Props> = (props) => {
 	const { sendRequest } = useRequest();
-	const { User } = useUser();
+	const { User } = useUserClass();
 
 	const [responseMessage, setResponseMessage] = useState('');
 
@@ -159,7 +160,7 @@ const SingupForm: React.FC<Props> = (props) => {
 				onBlur={passwordConfirmationOnBlurHandler}
 				password={true}
 			/>
-			<button className={classes['submit-button']}>Inscription</button>
+			<RoundedButton text={'Inscription'} />
 		</FormContainer>
 	);
 };

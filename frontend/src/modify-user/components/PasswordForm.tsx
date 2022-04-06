@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState } from '../../../_shared/store/_store';
+import { RootState } from '../../_shared/store/_store';
 
-import { useInput, useInputTypes } from '../../../_shared/hooks/input-hook';
-import { useRequest } from '../../../_shared/hooks/http-hook';
+import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
+import { useRequest } from '../../_shared/hooks/http-hook';
 
-import Input, { InputStyles } from '../../../_shared/components/FormElements/Input';
+import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 
 const PasswordForm: React.FC<{
 	forgotForm?: boolean;
@@ -43,7 +43,6 @@ const PasswordForm: React.FC<{
 	} = useInput({ type: useInputTypes.COMPARISON, validate: true });
 
 	const changePasswordHandler = async () => {
-		console.log('click');
 		const responseData = await sendRequest(
 			`${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/modify`,
 			'PATCH',

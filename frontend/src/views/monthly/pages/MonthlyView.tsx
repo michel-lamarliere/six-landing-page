@@ -7,10 +7,10 @@ import { RootState } from '../../../_shared/store/_store';
 
 import { useRequest } from '../../../_shared/hooks/http-hook';
 import { getMonthFnTypes, useDatesFn } from '../../../_shared/hooks/dates-hook';
-import { useTask } from '../../../_shared/classes/task-hook';
+import { useTaskClass } from '../../../_shared/classes/task-class-hook';
 
 import MonthlyCalendar from '../components/MonthlyCalendar';
-import { DataButton } from '../../components/Buttons';
+import { DataButton } from '../../components/ViewButtons';
 
 import classes from './MonthlyView.module.scss';
 
@@ -19,7 +19,7 @@ const MonthlyView: React.FC = () => {
 
 	const { sendRequest, sendData } = useRequest();
 	const { getMonthFn } = useDatesFn();
-	const { Task } = useTask();
+	const { Task } = useTaskClass();
 
 	const userState = useSelector((state: RootState) => state.user);
 

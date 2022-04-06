@@ -7,17 +7,19 @@ import { RootState } from '../../../_shared/store/_store';
 
 import { useInput, useInputTypes } from '../../../_shared/hooks/input-hook';
 import { useRequest } from '../../../_shared/hooks/http-hook';
-import { useUser } from '../../../_shared/classes/user-hook';
+import { useUserClass } from '../../../_shared/classes/user-class-hook';
 
 import Input, { InputStyles } from '../../../_shared/components/FormElements/Input';
-import Form, { FormWrapperTypes } from '../components/FormWrapper';
+import EditProfileFormWrapper, {
+	EditProfileFormWrapperTypes,
+} from '../components/EditProfileFormWrapper';
 
 import classes from './ChangeName.module.scss';
 
 const ChangeName: React.FC = () => {
 	const dispatch = useDispatch();
 	const { sendRequest } = useRequest();
-	const { User } = useUser();
+	const { User } = useUserClass();
 
 	const userState = useSelector((state: RootState) => state.user);
 
@@ -63,9 +65,9 @@ const ChangeName: React.FC = () => {
 	} = useInput({ type: useInputTypes.NAME, validate: true });
 
 	return (
-		<Form
+		<EditProfileFormWrapper
 			title={'Nom'}
-			type={FormWrapperTypes.MODIFY}
+			type={EditProfileFormWrapperTypes.MODIFY}
 			displaySubmitButton={true}
 			button_onClick={changeNameHandler}
 			response={response}
@@ -82,7 +84,7 @@ const ChangeName: React.FC = () => {
 				onChange={newNameOnChangeHandler}
 				onBlur={newNameOnBlurHandler}
 			/>
-		</Form>
+		</EditProfileFormWrapper>
 	);
 };
 

@@ -13,13 +13,13 @@ import DailyView from './views/daily/pages/DailyView';
 import WeeklyView from './views/weekly/pages/WeeklyView';
 import MonthlyView from './views/monthly/pages/MonthlyView';
 import Error404 from './error404/Error404';
-import ErrorPopup from './pop-ups/Error';
-import EmailPopup from './pop-ups/EmailConfirmation';
-import ConfirmEmailAddress from './modify-user/logged-out/pages/ConfirmEmail';
-import ForgotPassword from './modify-user/logged-out/pages/ForgotPassword';
+import ErrorPopup from './pop-ups/ErrorPopUp';
+import EmailPopup from './pop-ups/EmailConfirmationPopUp';
+import ConfirmEmailAddress from './modify-user/logged-out/pages/ChangeEmailAddressConfirmation';
+import ChangeForgottenPassword from './modify-user/logged-out/pages/ChangeForgottenPassword';
 import Overlay from './_shared/components/UIElements/Overlay';
 import HamburgerButton from './_shared/components/UIElements/HamburgerButton';
-import Profile from './profile/pages/Profile';
+import Profile from './user-profile/pages/UserProfile';
 import ChangeName from './modify-user/logged-in/pages/ChangeName';
 import ChangeEmail from './modify-user/logged-in/pages/ChangeEmail';
 import ChangePassword from './modify-user/logged-in/pages/ChangePassword';
@@ -29,9 +29,9 @@ import Homepage from './homepage/pages/Homepage';
 import DesktopSidebar from './layout/sidebar/pages/DesktopSidebar';
 import MobileSidebar from './layout/sidebar/pages/MobileSidebar';
 import DeleteAccount from './modify-user/logged-in/pages/DeleteAccount';
-import DeleteAccountConfirm from './modify-user/logged-in/pages/DeleteAccountConfirm';
+import DeleteAccountConfirm from './modify-user/logged-in/pages/DeleteAccountConfirmation';
 import ChangeEmailConfirm from './modify-user/logged-in/pages/ChangeEmailConfirm';
-import AlertPopup from './pop-ups/Alert';
+import AlertPopup from './pop-ups/AlertPopUp';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
@@ -160,7 +160,7 @@ const App: React.FC = () => {
 				/>
 				<Route
 					path='/modifier/mot-de-passe/:email/:uniqueId'
-					element={<ForgotPassword />}
+					element={<ChangeForgottenPassword />}
 				/>
 				<Route path='*' element={<Error404 />} />
 			</Routes>

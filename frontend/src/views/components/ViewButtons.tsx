@@ -1,6 +1,6 @@
 import React from 'react';
 
-import classes from './Buttons.module.scss';
+import classes from './ViewButtons.module.scss';
 
 export const DataButton: React.FC<{
 	value: number;

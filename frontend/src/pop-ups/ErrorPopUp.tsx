@@ -8,7 +8,7 @@ import { PopUpActionTypes } from '../_shared/store/pop-ups';
 import closeButton from '../_shared/assets/imgs/icons/close.svg';
 import warningButton from '../_shared/assets/imgs/icons/warning.svg';
 
-import classes from './Error.module.scss';
+import classes from './ErrorPopUp.module.scss';
 
 const ErrorPopup: React.FC<{ message: string }> = (props) => {
 	const dispatch = useDispatch();

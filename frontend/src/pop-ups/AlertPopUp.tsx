@@ -7,7 +7,7 @@ import { PopUpActionTypes } from '../_shared/store/pop-ups';
 import closeButton from '../_shared/assets/imgs/icons/close.svg';
 import warningButton from '../_shared/assets/imgs/icons/warning.svg';
 
-import classes from './Alert.module.scss';
+import classes from './AlertPopUp.module.scss';
 
 interface Props {
 	message: string;

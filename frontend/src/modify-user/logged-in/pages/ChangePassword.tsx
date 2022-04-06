@@ -6,8 +6,10 @@ import Input, { InputStyles } from '../../../_shared/components/FormElements/Inp
 import { useRequest } from '../../../_shared/hooks/http-hook';
 import { useInput, useInputTypes } from '../../../_shared/hooks/input-hook';
 import { RootState } from '../../../_shared/store/_store';
-import Form, { FormWrapperTypes } from '../components/FormWrapper';
-import PasswordForm from '../../logged-out/components/PasswordForm';
+import EditProfileFormWrapper, {
+	EditProfileFormWrapperTypes,
+} from '../components/EditProfileFormWrapper';
+import PasswordForm from '../../components/PasswordForm';
 
 import classes from './ChangePassword.module.scss';
 
@@ -131,8 +133,8 @@ const ChangePassword: React.FC = () => {
 	}, [oldPassword, newPassword.value, newPasswordConfirmation.value]);
 
 	return (
-		<Form
-			type={FormWrapperTypes.MODIFY}
+		<EditProfileFormWrapper
+			type={EditProfileFormWrapperTypes.MODIFY}
 			title={'Mot de passe'}
 			displaySubmitButton={true}
 			button_onClick={changePasswordHandler}
@@ -180,7 +182,7 @@ const ChangePassword: React.FC = () => {
 				/>
 				Tester1@
 			</div>
-		</Form>
+		</EditProfileFormWrapper>
 	);
 };
 

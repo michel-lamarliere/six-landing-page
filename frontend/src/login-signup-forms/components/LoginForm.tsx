@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
-import { useUser } from '../../_shared/classes/user-hook';
+import { useUserClass } from '../../_shared/classes/user-class-hook';
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
 import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 
 import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 import FormContainer from './FormContainer';
+import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
 
 import RememberMeTrueSVG from '../../_shared/assets/imgs/icons/form&input/remember-me_true.svg';
 import RememberMeFalseSVG from '../../_shared/assets/imgs/icons/form&input/remember-me_false.svg';
 
 import classes from './LoginForm.module.scss';
-import { SSL_OP_LEGACY_SERVER_CONNECT } from 'constants';
 
 interface Props {
 	switchFormHandler: () => void;
@@ -22,7 +22,7 @@ interface Props {
 const LoginForm: React.FC<Props> = (props) => {
 	const dispatch = useDispatch();
 	const { sendRequest } = useRequest();
-	const { User } = useUser();
+	const { User } = useUserClass();
 
 	const [rememberEmail, setRememberEmail] = useState(false);
 	const [responseMessage, setResponseMessage] = useState('');
@@ -166,7 +166,7 @@ const LoginForm: React.FC<Props> = (props) => {
 			>
 				Mot de passe oublié?
 			</button>
-			<button className={classes['submit-button']}>Connexion</button>
+			<RoundedButton text={'Connexion'} />
 		</FormContainer>
 	);
 };

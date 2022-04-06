@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RefreshSpinner: React.FC<{ className: string }> = (props) => {
+const RefreshSpinnerSVG: React.FC<{ className: string }> = (props) => {
 	return (
 		<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'>
 			<g id='a' />
@@ -24,4 +24,4 @@ const RefreshSpinner: React.FC<{ className: string }> = (props) => {
 	);
 };
 
-export default RefreshSpinner;
+export default RefreshSpinnerSVG;

@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from './CarouselButton.module.scss';
+import classes from './HomepageCarouselButton.module.scss';
 
 interface Props {
 	carouselIndex: number;
@@ -11,7 +11,7 @@ const CarouselButton: React.FC<Props> = (props) => {
 	return (
 		<button
 			className={`${classes.button} ${
-				props.carouselIndex === props.slideIndex && classes.button_active
+				props.carouselIndex === props.slideIndex && classes['button--active']
 			}`}
 			onClick={props.onClick}
 		></button>

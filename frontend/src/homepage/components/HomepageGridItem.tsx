@@ -1,6 +1,6 @@
 import React from 'react';
 
-import classes from './GridItem.module.scss';
+import classes from './HomepageGridItem.module.scss';
 
 interface Props {
 	title: string;

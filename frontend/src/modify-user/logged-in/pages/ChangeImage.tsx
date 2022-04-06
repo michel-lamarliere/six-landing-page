@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { useUser } from '../../../_shared/classes/user-hook';
+import { useUserClass } from '../../../_shared/classes/user-class-hook';
 import { useRequest } from '../../../_shared/hooks/http-hook';
 
 import userIcon0 from '../../../_shared/assets/imgs/icons/user/icon_0.svg';
@@ -18,7 +18,9 @@ import userIcon9 from '../../../_shared/assets/imgs/icons/user/icon_9.svg';
 import userIcon10 from '../../../_shared/assets/imgs/icons/user/icon_10.svg';
 import userIcon11 from '../../../_shared/assets/imgs/icons/user/icon_11.svg';
 
-import FormWrapper, { FormWrapperTypes } from '../components/FormWrapper';
+import EditProfileFormWrapper, {
+	EditProfileFormWrapperTypes,
+} from '../components/EditProfileFormWrapper';
 
 import { RootState } from '../../../_shared/store/_store';
 
@@ -26,7 +28,7 @@ import classes from './ChangeImage.module.scss';
 
 const ChangeImage: React.FC = () => {
 	const { sendRequest } = useRequest();
-	const { User } = useUser();
+	const { User } = useUserClass();
 
 	const userState = useSelector((state: RootState) => state.user);
 
@@ -82,8 +84,8 @@ const ChangeImage: React.FC = () => {
 	};
 
 	return (
-		<FormWrapper
-			type={FormWrapperTypes.MODIFY}
+		<EditProfileFormWrapper
+			type={EditProfileFormWrapperTypes.MODIFY}
 			title={'Image'}
 			displaySubmitButton={true}
 			button_onClick={changeImageHandler}
@@ -104,7 +106,7 @@ const ChangeImage: React.FC = () => {
 					</button>
 				))}
 			</div>
-		</FormWrapper>
+		</EditProfileFormWrapper>
 	);
 };
 

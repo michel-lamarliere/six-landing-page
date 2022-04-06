@@ -86,6 +86,18 @@
 	max-width: 15rem;
 	margin: 0 auto;
 	gap: 1.3rem;
+
+	&__button {
+		&--log-in {
+			background-color: white;
+			color: #564bef;
+		}
+
+		&--sign-up {
+			background-color: #564bef;
+			color: white;
+		}
+	}
 }
 
 .forms {

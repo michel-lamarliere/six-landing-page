@@ -28,22 +28,15 @@
 	gap: 1rem;
 
 	&__button {
-		width: 9.6rem;
-		padding: 0.8em 1.4em;
-		border-radius: 2.46em;
-		font-family: $fontBold;
-		font-size: 15px;
-		cursor: pointer;
-
 		&--cancel {
-			border: 0.13rem solid black;
+			border-color: black;
 			background-color: white;
 			color: black;
 		}
 
 		&--confirm {
 			background-color: #24263e;
-			border: 0.13rem solid #24263e;
+			border-color: #24263e;
 			color: white;
 		}
 	}

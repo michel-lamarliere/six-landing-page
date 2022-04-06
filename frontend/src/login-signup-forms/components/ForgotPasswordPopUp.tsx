@@ -8,6 +8,7 @@ import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
 import { useRequest } from '../../_shared/hooks/http-hook';
 
 import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
+import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
 
 import closeIcon from '../../_shared/assets/imgs/icons/close.svg';
 import successIcon from '../../_shared/assets/imgs/icons/validated.svg';
@@ -71,7 +72,7 @@ const ForgotPassword: React.FC = () => {
 				<img src={closeIcon} alt='fermer' />
 			</button>
 			{!sent ? (
-				<>
+				<div className={classes.form}>
 					<div className={classes.text}>
 						Veuillez saisir votre adresse mail et nous vous enverrons les
 						instructions.
@@ -89,13 +90,12 @@ const ForgotPassword: React.FC = () => {
 						onBlur={forgotPasswordEmailOnBlurHandler}
 					/>
 					<div>{responseMessage}</div>
-					<button
+					<RoundedButton
+						text={'Envoyer'}
 						onClick={sendEmailForgotPassword}
 						className={classes['submit-button']}
-					>
-						Envoyer
-					</button>
-				</>
+					/>
+				</div>
 			) : (
 				<div className={classes.sent}>
 					<img src={successIcon} alt='Succès' />

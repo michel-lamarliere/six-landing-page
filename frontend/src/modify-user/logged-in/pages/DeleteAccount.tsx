@@ -8,11 +8,14 @@ import { useInput, useInputTypes } from '../../../_shared/hooks/input-hook';
 import { useRequest } from '../../../_shared/hooks/http-hook';
 
 import Input, { InputStyles } from '../../../_shared/components/FormElements/Input';
-import FormWrapper, { FormWrapperTypes } from '../components/FormWrapper';
+import EditProfileFormWrapper, {
+	EditProfileFormWrapperTypes,
+} from '../components/EditProfileFormWrapper';
 
 import successIcon from '../../../_shared/assets/imgs/icons/validated.svg';
 
 import classes from './DeleteAccount.module.scss';
+import RoundedButton from '../../../_shared/components/UIElements/RoundedButton';
 
 const DeleteAccount: React.FC = () => {
 	const navigate = useNavigate();
@@ -76,7 +79,10 @@ const DeleteAccount: React.FC = () => {
 	});
 
 	return (
-		<FormWrapper type={FormWrapperTypes.DELETE} title={'Suppression de compte'}>
+		<EditProfileFormWrapper
+			type={EditProfileFormWrapperTypes.DELETE}
+			title={'Suppression de compte'}
+		>
 			{!submitted && (
 				<>
 					<div className={classes.text}>
@@ -96,18 +102,29 @@ const DeleteAccount: React.FC = () => {
 						onBlur={nconfirmationInputOnBlurHandler}
 					/>
 					<div className={classes.buttons}>
-						<button
+						<RoundedButton
+							text={'Annuler'}
+							onClick={cancelHandler}
+							className={`${classes['buttons__button']} ${classes['buttons__button--cancel']}`}
+						/>
+
+						{/* <button
 							className={`${classes['buttons__button']} ${classes['buttons__button--cancel']}`}
 							onClick={cancelHandler}
 						>
 							Annuler
-						</button>
-						<button
+						</button> */}
+						{/* <button
 							className={`${classes['buttons__button']} ${classes['buttons__button--confirm']}`}
 							onClick={textValidationHandler}
 						>
 							Supprimer le compte
-						</button>
+						</button> */}
+						<RoundedButton
+							text={'Supprimer le compte'}
+							onClick={textValidationHandler}
+							className={`${classes['buttons__button']} ${classes['buttons__button--confirm']}`}
+						/>
 					</div>
 					<div className={classes.instructions}>
 						Après avoir envoyé ce formulaire, vous recevrez un mail avec un
@@ -129,7 +146,7 @@ const DeleteAccount: React.FC = () => {
 					<div className={classes.response__text}>{response}</div>
 				</div>
 			)}
-		</FormWrapper>
+		</EditProfileFormWrapper>
 	);
 };
 

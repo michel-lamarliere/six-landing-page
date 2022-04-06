@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/_store';
 import { UIElementsActionTypes } from '../../store/ui-elements';
 
-import DaysOfWeek from './DaysOfWeek';
+import CalendarDaysOfWeek from './CalendarDaysOfWeek';
 import { CalendarButton, TaskSelectorButton } from './CalendarButtons';
 
 import LeftArrow from '../../assets/imgs/icons/calendar/left-arrow.svg';
@@ -160,7 +160,9 @@ const Calendar: React.FC<Props> = (props) => {
 					</div>
 					<div className={classes.calendar__calendar}>
 						{(props.calendar === calendarTypes.DAILY ||
-							props.calendar === calendarTypes.WEEKLY) && <DaysOfWeek />}
+							props.calendar === calendarTypes.WEEKLY) && (
+							<CalendarDaysOfWeek />
+						)}
 						{props.children}
 					</div>
 				</div>

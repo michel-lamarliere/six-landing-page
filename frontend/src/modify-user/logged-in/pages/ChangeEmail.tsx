@@ -8,7 +8,9 @@ import { useInput, useInputTypes } from '../../../_shared/hooks/input-hook';
 import { useRequest } from '../../../_shared/hooks/http-hook';
 
 import Input, { InputStyles } from '../../../_shared/components/FormElements/Input';
-import Form, { FormWrapperTypes } from '../components/FormWrapper';
+import EditProfileFormWrapper, {
+	EditProfileFormWrapperTypes,
+} from '../components/EditProfileFormWrapper';
 
 import successIcon from '../../../_shared/assets/imgs/icons/validated.svg';
 
@@ -66,8 +68,8 @@ const ChangeEmail: React.FC = () => {
 	};
 
 	return (
-		<Form
-			type={FormWrapperTypes.MODIFY}
+		<EditProfileFormWrapper
+			type={EditProfileFormWrapperTypes.MODIFY}
 			title={'Adresse mail'}
 			displaySubmitButton={!submitted}
 			button_onClick={submitHandler}
@@ -108,7 +110,7 @@ const ChangeEmail: React.FC = () => {
 					/>
 				</div>
 			)}
-		</Form>
+		</EditProfileFormWrapper>
 	);
 };
 

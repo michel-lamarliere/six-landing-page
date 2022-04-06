@@ -40,16 +40,8 @@
 }
 
 .recap {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	min-width: 13em;
-	padding: 0.8em 1.33em;
 	background-color: #564bef;
-	font-family: $fontBold;
-	font-size: 15px;
-	text-align: center;
-	border-radius: 2.31em;
+	color: white;
 
 	&__img {
 		width: 0.9rem;

@@ -6,7 +6,7 @@ import { PopUpActionTypes } from '../store/pop-ups';
 import { RootState } from '../store/_store';
 import { UserActionTypes } from '../store/user';
 
-export const useTask = () => {
+export const useTaskClass = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 

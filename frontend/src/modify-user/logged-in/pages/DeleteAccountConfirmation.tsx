@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useUser } from '../../../_shared/classes/user-hook';
+import { useUserClass } from '../../../_shared/classes/user-class-hook';
 import { useRequest } from '../../../_shared/hooks/http-hook';
 
 import classes from './DeleteAccountConfirm.module.scss';
 
 const DeleteAccountConfirm: React.FC = () => {
 	const { email, code } = useParams();
-	const { User } = useUser();
+	const { User } = useUserClass();
 
 	const { sendRequest } = useRequest();
 
