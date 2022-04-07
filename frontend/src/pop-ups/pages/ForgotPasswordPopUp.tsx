@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
+import { ForgotPasswordPopUpActionTypes } from '../../_shared/store/pop-ups/forgot-password-pop-up';
+import { OverlayActionTypes } from '../../_shared/store/overlay';
 
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
 import { useRequest } from '../../_shared/hooks/http-hook';
@@ -57,8 +58,8 @@ const ForgotPassword: React.FC = () => {
 	};
 
 	const closePopUp = () => {
-		dispatch({ type: UIElementsActionTypes.HIDE_OVERLAY });
-		dispatch({ type: UIElementsActionTypes.HIDE_FORGOT_PASSWORD_FORM });
+		dispatch({ type: OverlayActionTypes.HIDE });
+		dispatch({ type: ForgotPasswordPopUpActionTypes.HIDE });
 	};
 
 	return (

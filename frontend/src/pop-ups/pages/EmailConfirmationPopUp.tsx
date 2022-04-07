@@ -3,19 +3,17 @@ import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../_shared/store/_store';
-import { PopUpActionTypes } from '../../_shared/store/pop-ups';
-import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
+import { EmailConfirmationPopUpActionTypes } from '../../_shared/store/pop-ups/email-confirmation-pop-up';
+import { OverlayActionTypes } from '../../_shared/store/overlay';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
 
 import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
+import PopUp, { PopUpTypes } from '../../_shared/components/UIElements/PopUp';
 
-import warningIcon from '../../_shared/assets/imgs/icons/warning.svg';
-import closeIcon from '../../_shared/assets/imgs/icons/close.svg';
 import sentIcon from '../../_shared/assets/imgs/icons/validated.svg';
 
 import classes from './EmailConfirmationPopUp.module.scss';
-import PopUp, { PopUpTypes } from '../../_shared/components/UIElements/PopUp';
 
 const EmailPopup: React.FC = () => {
 	const dispatch = useDispatch();
@@ -43,22 +41,22 @@ const EmailPopup: React.FC = () => {
 		setSent(true);
 
 		setTimeout(() => {
-			dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
+			dispatch({ type: EmailConfirmationPopUpActionTypes.HIDE });
 		}, 5000);
 	};
 
 	const closePopup = () => {
 		sessionStorage.setItem('showEmailConfirmationPopup', JSON.stringify(false));
-		dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
+		dispatch({ type: EmailConfirmationPopUpActionTypes.HIDE });
 	};
 
 	useEffect(() => {
 		if (userState.confirmedEmail) {
-			dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
-			dispatch({ type: UIElementsActionTypes.SHOW_OVERLAY });
+			dispatch({ type: EmailConfirmationPopUpActionTypes.HIDE });
+			dispatch({ type: OverlayActionTypes.SHOW });
 		} else {
-			dispatch({ type: PopUpActionTypes.SHOW_EMAIL_CONFIRMATION });
-			dispatch({ type: UIElementsActionTypes.HIDE_OVERLAY });
+			dispatch({ type: EmailConfirmationPopUpActionTypes.SHOW });
+			dispatch({ type: OverlayActionTypes.HIDE });
 		}
 	}, [userState.confirmedEmail]);
 

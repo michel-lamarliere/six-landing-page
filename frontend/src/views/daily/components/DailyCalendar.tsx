@@ -15,8 +15,9 @@ import {
 	startOfMonth,
 } from 'date-fns';
 
+import { CalendarActionTypes } from '../../../_shared/store/calendar';
+
 import { getMonthFnTypes, useDatesFn } from '../../../_shared/hooks/dates-hook';
-import { UIElementsActionTypes } from '../../../_shared/store/ui-elements';
 
 import Calendar, { calendarTypes } from '../../../_shared/components/Calendar/Calendar';
 
@@ -91,7 +92,7 @@ const DailyCalendar: React.FC<{
 
 		props.setChosenDate(addHours(new Date(+year, +month, +day), 1));
 
-		dispatch({ type: UIElementsActionTypes.HIDE_CALENDAR });
+		dispatch({ type: CalendarActionTypes.HIDE });
 	};
 
 	useEffect(() => {

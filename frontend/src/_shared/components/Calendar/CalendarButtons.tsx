@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../store/_store';
-import { UIElementsActionTypes } from '../../store/ui-elements';
 
 import TopArrow from '../../assets/imgs/icons/top-arrow.svg';
 import CalendarIcon from '../../assets/imgs/icons/calendar/calendar_icon.svg';
@@ -14,23 +13,27 @@ import WorkIcon from '../../assets/imgs/icons/six/work.svg';
 import SocialIcon from '../../assets/imgs/icons/six/social.svg';
 
 import calendarClasses from './Calendar.module.scss';
+import { CalendarActionTypes } from '../../store/calendar';
+import { OverlayActionTypes } from '../../store/overlay';
+import { TaskSelectorActionTypes } from '../../store/task-selector';
 
 export const CalendarButton: React.FC = () => {
 	const dispatch = useDispatch();
 
-	const uiElementsState = useSelector((state: RootState) => state.uiElements);
+	const calendarState = useSelector((state: RootState) => state.calendar);
 
 	const calendarButtonHandler = () => {
-		dispatch({ type: UIElementsActionTypes.SHOW_CALENDAR });
+		// dispatch({ type: UIElementsActionTypes.SHOW_CALENDAR });
+		dispatch({ type: CalendarActionTypes.SHOW });
 	};
 
 	useEffect(() => {
-		if (uiElementsState.showCalendar) {
-			dispatch({ type: UIElementsActionTypes.SHOW_OVERLAY });
+		if (calendarState.show) {
+			dispatch({ type: OverlayActionTypes.SHOW });
 		} else {
-			dispatch({ type: UIElementsActionTypes.HIDE_OVERLAY });
+			dispatch({ type: OverlayActionTypes.HIDE });
 		}
-	}, [uiElementsState.showCalendar]);
+	}, [calendarState.show]);
 
 	return (
 		<button
@@ -45,8 +48,7 @@ export const CalendarButton: React.FC = () => {
 			<img
 				src={TopArrow}
 				className={`${calendarClasses.buttons__button__arrow} ${
-					uiElementsState.showCalendar &&
-					calendarClasses['buttons__button__arrow--open']
+					calendarState.show && calendarClasses['buttons__button__arrow--open']
 				}`}
 				alt='Flêche Calendrier'
 			/>
@@ -60,11 +62,11 @@ export const TaskSelectorButton: React.FC<{
 }> = (props) => {
 	const dispatch = useDispatch();
 
-	const uiElementsState = useSelector((state: RootState) => state.uiElements);
+	const taskSelectorState = useSelector((state: RootState) => state.taskSelector);
 
 	const taskButtonHandler = () => {
-		dispatch({ type: UIElementsActionTypes.SHOW_TASK_SELECTOR });
-		dispatch({ type: UIElementsActionTypes.SHOW_OVERLAY });
+		dispatch({ type: TaskSelectorActionTypes.SHOW });
+		dispatch({ type: OverlayActionTypes.SHOW });
 	};
 
 	const getTaskImage = () => {
@@ -91,12 +93,12 @@ export const TaskSelectorButton: React.FC<{
 	};
 
 	useEffect(() => {
-		if (uiElementsState.showTaskSelector) {
-			dispatch({ type: UIElementsActionTypes.SHOW_OVERLAY });
+		if (taskSelectorState.show) {
+			dispatch({ type: OverlayActionTypes.SHOW });
 		} else {
-			dispatch({ type: UIElementsActionTypes.HIDE_OVERLAY });
+			dispatch({ type: OverlayActionTypes.HIDE });
 		}
-	}, [uiElementsState.showTaskSelector]);
+	}, [taskSelectorState.show]);
 
 	return (
 		<div className={calendarClasses.buttons}>
@@ -112,13 +114,13 @@ export const TaskSelectorButton: React.FC<{
 				<img
 					src={TopArrow}
 					className={`${calendarClasses.buttons__button__arrow} ${
-						uiElementsState.showTaskSelector &&
+						taskSelectorState.show &&
 						calendarClasses['buttons__button__arrow--open']
 					}`}
 					alt='Flêche Calendrier'
 				/>
 			</button>
-			{uiElementsState.showTaskSelector && (
+			{taskSelectorState.show && (
 				<div className={calendarClasses.selector}>
 					<button
 						value='food'

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { OverlayActionTypes } from '../../_shared/store/overlay';
+import { ForgotPasswordPopUpActionTypes } from '../../_shared/store/pop-ups/forgot-password-pop-up';
+
 import { useRequest } from '../../_shared/hooks/http-hook';
 import { useUserClass } from '../../_shared/classes/user-class-hook';
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
-import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 
 import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 import FormContainer from './FormContainer';
@@ -98,8 +100,8 @@ const LoginForm: React.FC<Props> = (props) => {
 
 	const forgotPasswordHandler = (event: React.FormEvent) => {
 		event.preventDefault();
-		dispatch({ type: UIElementsActionTypes.SHOW_OVERLAY });
-		dispatch({ type: UIElementsActionTypes.SHOW_FORGOT_PASSWORD_FORM });
+		dispatch({ type: OverlayActionTypes.SHOW });
+		dispatch({ type: ForgotPasswordPopUpActionTypes.SHOW });
 	};
 
 	useEffect(() => {

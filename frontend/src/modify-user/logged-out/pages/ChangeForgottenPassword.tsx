@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { PopUpActionTypes } from '../../../_shared/store/pop-ups';
 import { RootState } from '../../../_shared/store/_store';
+import { ErrorPopUpActionTypes } from '../../../_shared/store/pop-ups/error-pop-up';
 
 import { useRequest } from '../../../_shared/hooks/http-hook';
 
 import PasswordForm from '../../components/PasswordForm';
-
-import classes from './ChangeForgottenPassword.module.scss';
 
 const ForgotPasswordForm: React.FC = () => {
 	const { sendRequest } = useRequest();
@@ -19,7 +17,6 @@ const ForgotPasswordForm: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
-	const [showChangePassword, setShowChangePassword] = useState(false);
 	const [response, setResponse] = useState('');
 	const [changedPassword, setChangedPassword] = useState(false);
 
@@ -37,7 +34,7 @@ const ForgotPasswordForm: React.FC = () => {
 		if (userData) {
 			navigate('/');
 			dispatch({
-				type: PopUpActionTypes.SET_AND_SHOW_ERROR,
+				type: ErrorPopUpActionTypes.SET_AND_SHOW,
 				message: 'Chemin interdit.',
 			});
 			return;
@@ -52,7 +49,7 @@ const ForgotPasswordForm: React.FC = () => {
 
 		if (responseData.error) {
 			dispatch({
-				type: PopUpActionTypes.SET_AND_SHOW_ERROR,
+				type: ErrorPopUpActionTypes.SET_AND_SHOW,
 				message: 'Chemin interdit.',
 			});
 			navigate('/');

@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
+import { AlertPopUpActionTypes } from '../../../_shared/store/pop-ups/alert-pop-up';
+
 import { useUserClass } from '../../../_shared/classes/user-class-hook';
 import { useRequest } from '../../../_shared/hooks/http-hook';
-import { PopUpActionTypes } from '../../../_shared/store/pop-ups';
-
-import classes from './ChangeEmailConfirm.module.scss';
 
 const ChangeEmailConfirm: React.FC = () => {
 	const dispatch = useDispatch();
@@ -36,7 +35,7 @@ const ChangeEmailConfirm: React.FC = () => {
 		User.logOut();
 
 		dispatch({
-			type: PopUpActionTypes.SET_AND_SHOW_ALERT,
+			type: AlertPopUpActionTypes.SET_AND_SHOW,
 			message: responseData.message,
 		});
 	};

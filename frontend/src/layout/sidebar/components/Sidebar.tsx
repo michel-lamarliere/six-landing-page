@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
 import { Link, NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from '../../../_shared/store/_store';
-import { UserActionTypes } from '../../../_shared/store/user';
-import { PopUpActionTypes } from '../../../_shared/store/pop-ups';
-import { UIElementsActionTypes } from '../../../_shared/store/ui-elements';
+import { MobileSidebarActionTypes } from '../../../_shared/store/mobile-sidebar';
 
-import { useRequest } from '../../../_shared/hooks/http-hook';
 import { useUserClass } from '../../../_shared/classes/user-class-hook';
 
-import userIcon from '../../../_shared/assets/imgs/icons/user/icon_1.svg';
 import sixIcon from '../../../_shared/assets/imgs/icons/app/logo.svg';
 
 import RefreshSpinnerSVG from '../../../_shared/components/_svgs/RefreshSpinnerSVG';
@@ -21,7 +16,6 @@ import UserIcon from '../../../_shared/components/UserIcon/UserIcon';
 
 const Sidebar: React.FC<{ className: string }> = (props) => {
 	const dispatch = useDispatch();
-	const { sendRequest } = useRequest();
 	const { User } = useUserClass();
 
 	const userState = useSelector((state: RootState) => state.user);
@@ -53,7 +47,7 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 
 	const closeMobileSidebar = () => {
 		dispatch({
-			type: UIElementsActionTypes.HIDE_MOBILE_SIDEBAR,
+			type: MobileSidebarActionTypes.HIDE,
 		});
 	};
 

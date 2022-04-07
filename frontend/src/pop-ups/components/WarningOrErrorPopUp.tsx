@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { PopUpActionTypes } from '../../_shared/store/pop-ups';
+import { ErrorPopUpActionTypes } from '../../_shared/store/pop-ups/error-pop-up';
+import { AlertPopUpActionTypes } from '../../_shared/store/pop-ups/alert-pop-up';
 
 import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
 
@@ -28,9 +29,9 @@ const WarningOrErrorPopUp: React.FC<Props> = (props) => {
 
 	const closePopUp = () => {
 		if (error) {
-			dispatch({ type: PopUpActionTypes.REMOVE_ERROR });
+			dispatch({ type: ErrorPopUpActionTypes.REMOVE_AND_HIDE });
 		} else if (warning) {
-			dispatch({ type: PopUpActionTypes.REMOVE_ALERT });
+			dispatch({ type: AlertPopUpActionTypes.REMOVE_AND_HIDE });
 		}
 	};
 

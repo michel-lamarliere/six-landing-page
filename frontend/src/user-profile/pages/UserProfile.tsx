@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../_shared/store/_store';
-import { PopUpActionTypes } from '../../_shared/store/pop-ups';
+import { EmailConfirmationPopUpActionTypes } from '../../_shared/store/pop-ups/email-confirmation-pop-up';
 
-import { useRequest } from '../../_shared/hooks/http-hook';
 import { useUserClass } from '../../_shared/classes/user-class-hook';
 
 import confirmedEmailIcon from '../../_shared/assets/imgs/icons/profile/profile-confirmed-email-arrow.svg';
@@ -27,12 +26,10 @@ const Profile: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const { User } = useUserClass();
-	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
 
 	const [showEditProfile, setShowEditProfile] = useState(true);
-	const [response, setResponse] = useState('');
 	const [promptLogOut, setPromptLogOut] = useState(false);
 
 	const editProfileHandler = () => {
@@ -48,7 +45,7 @@ const Profile: React.FC = () => {
 	};
 
 	const confirmEmailAddressHandler = () => {
-		dispatch({ type: PopUpActionTypes.SHOW_EMAIL_CONFIRMATION });
+		dispatch({ type: EmailConfirmationPopUpActionTypes.SHOW });
 	};
 
 	return (

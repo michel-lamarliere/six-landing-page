@@ -1,12 +1,24 @@
 import { createStore, combineReducers } from 'redux';
 import userReducer from './user';
-import uiElementsReducer from './ui-elements';
-import popUpsReducer from './pop-ups';
+import overlayReducer from './overlay';
+import mobileSidebarReducer from './mobile-sidebar';
+import calendarReducer from './calendar';
+import taskSelectorReducer from './task-selector';
+import alertPopUpReducer from './pop-ups/alert-pop-up';
+import errorPopUpReducer from './pop-ups/error-pop-up';
+import emailConfirmationPopUpReducer from './pop-ups/email-confirmation-pop-up';
+import forgotPasswordPopUpReducer from './pop-ups/forgot-password-pop-up';
 
 const rootReducer = combineReducers({
 	user: userReducer,
-	uiElements: uiElementsReducer,
-	popUps: popUpsReducer,
+	overlay: overlayReducer,
+	mobileSidebar: mobileSidebarReducer,
+	calendar: calendarReducer,
+	taskSelector: taskSelectorReducer,
+	alertPopUp: alertPopUpReducer,
+	errorPopUp: errorPopUpReducer,
+	emailConfirmationPopUp: emailConfirmationPopUpReducer,
+	forgotPasswordPopUp: forgotPasswordPopUpReducer,
 });
 
 const store = createStore(rootReducer);

@@ -5,9 +5,10 @@ import { addHours } from 'date-fns';
 
 import { useRequest } from '../hooks/http-hook';
 
-import { PopUpActionTypes } from '../store/pop-ups';
 import { UserActionTypes } from '../store/user';
 import { RootState } from '../store/_store';
+import { EmailConfirmationPopUpActionTypes } from '../store/pop-ups/email-confirmation-pop-up';
+import { ErrorPopUpActionTypes } from '../store/pop-ups/error-pop-up';
 
 export const useUserClass = () => {
 	const dispatch = useDispatch();
@@ -82,7 +83,8 @@ export const useUserClass = () => {
 			);
 
 			if (!this.confirmedEmail) {
-				dispatch({ type: PopUpActionTypes.SHOW_EMAIL_CONFIRMATION });
+				// dispatch({ type: PopUpActionTypes.SHOW_EMAIL_CONFIRMATION });
+				dispatch({ type: EmailConfirmationPopUpActionTypes.SHOW });
 			}
 
 			navigate('/journal/quotidien');
@@ -100,7 +102,8 @@ export const useUserClass = () => {
 
 			if (responseData.error) {
 				dispatch({
-					type: PopUpActionTypes.SET_AND_SHOW_ERROR,
+					// type: PopUpActionTypes.SET_AND_SHOW_ERROR,
+					type: ErrorPopUpActionTypes.SET_AND_SHOW,
 					message: responseData.message,
 				});
 				return;
@@ -119,7 +122,8 @@ export const useUserClass = () => {
 
 		static logOut() {
 			dispatch({ type: UserActionTypes.LOG_OUT });
-			dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
+			// dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
+			dispatch({ type: EmailConfirmationPopUpActionTypes.HIDE });
 			navigate('/');
 		}
 

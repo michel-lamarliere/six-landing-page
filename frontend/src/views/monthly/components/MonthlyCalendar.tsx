@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 
 import { addHours, addMonths, addYears, getYear, isBefore } from 'date-fns';
 
-import { UIElementsActionTypes } from '../../../_shared/store/ui-elements';
+import { TaskSelectorActionTypes } from '../../../_shared/store/task-selector';
+import { CalendarActionTypes } from '../../../_shared/store/calendar';
 
 import Calendar, { calendarTypes } from '../../../_shared/components/Calendar/Calendar';
 
@@ -38,7 +39,7 @@ const MonthlyCalendar: React.FC<{
 	const selectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		props.setChosenTask((event.target as HTMLButtonElement).value);
 
-		dispatch({ type: UIElementsActionTypes.HIDE_TASK_SELECTOR });
+		dispatch({ type: TaskSelectorActionTypes.HIDE });
 	};
 
 	const previousHandler = () => {
@@ -60,7 +61,7 @@ const MonthlyCalendar: React.FC<{
 	const monthOnClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		props.setChosenDate(new Date((event.target as HTMLButtonElement).id));
 
-		dispatch({ type: UIElementsActionTypes.HIDE_CALENDAR });
+		dispatch({ type: CalendarActionTypes.HIDE });
 	};
 
 	return (

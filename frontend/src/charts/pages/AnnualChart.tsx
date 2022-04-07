@@ -2,19 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addYears, getYear, isBefore, addMonths } from 'date-fns';
-import {
-	Bar,
-	BarChart,
-	CartesianGrid,
-	Legend,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis,
-} from 'recharts';
+import { Bar, BarChart, ResponsiveContainer, XAxis } from 'recharts';
 
 import { RootState } from '../../_shared/store/_store';
-import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
+import { TaskSelectorActionTypes } from '../../_shared/store/task-selector';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
 import { getMonthFnTypes, useDatesFn } from '../../_shared/hooks/dates-hook';
@@ -45,7 +36,7 @@ const AnnualGraph: React.FC = () => {
 	const selectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setChosenTask((event.target as HTMLButtonElement).value);
 
-		dispatch({ type: UIElementsActionTypes.HIDE_TASK_SELECTOR });
+		dispatch({ type: TaskSelectorActionTypes.HIDE });
 	};
 
 	const getGraph = async () => {

@@ -6,7 +6,6 @@ import { isBefore } from 'date-fns';
 
 import { RootState } from './_shared/store/_store';
 import { UserActionTypes } from './_shared/store/user';
-import { PopUpActionTypes } from './_shared/store/pop-ups';
 
 import LoginSignupForms from './login-signup-forms/pages/LoginSignupForms';
 import DailyView from './views/daily/pages/DailyView';
@@ -32,14 +31,20 @@ import DeleteAccount from './modify-user/logged-in/pages/DeleteAccount';
 import DeleteAccountConfirm from './modify-user/logged-in/pages/DeleteAccountConfirmation';
 import ChangeEmailConfirm from './modify-user/logged-in/pages/ChangeEmailConfirm';
 import AlertPopup from './pop-ups/pages/AlertPopUp';
+import { EmailConfirmationPopUpActionTypes } from './_shared/store/pop-ups/email-confirmation-pop-up';
+import { AlertPopUpActionTypes } from './_shared/store/pop-ups/alert-pop-up';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const userState = useSelector((state: RootState) => state.user);
-	const uiElementsState = useSelector((state: RootState) => state.uiElements);
-	const popUpsState = useSelector((state: RootState) => state.popUps);
+	const overlayState = useSelector((state: RootState) => state.overlay);
+	const alertPopUpState = useSelector((state: RootState) => state.alertPopUp);
+	const errorPopUpState = useSelector((state: RootState) => state.errorPopUp);
+	const emailConfirmationPopUpState = useSelector(
+		(state: RootState) => state.emailConfirmationPopUp
+	);
 
 	const autoLogIn = async () => {
 		const storedUserData = localStorage.getItem('userData');
@@ -74,7 +79,8 @@ const App: React.FC = () => {
 
 		if (!userData.confirmedEmail && showEmailConfirmationPopup) {
 			dispatch({
-				type: PopUpActionTypes.SHOW_EMAIL_CONFIRMATION,
+				// type: PopUpActionTypes.SHOW_EMAIL_CONFIRMATION,
+				type: EmailConfirmationPopUpActionTypes.SHOW,
 			});
 		}
 	};
@@ -93,10 +99,12 @@ const App: React.FC = () => {
 
 		setTimeout(() => {
 			dispatch({
-				type: PopUpActionTypes.SET_AND_SHOW_ALERT,
+				// type: PopUpActionTypes.SET_AND_SHOW_ALERT,
+				type: AlertPopUpActionTypes.SET_AND_SHOW,
 				message: 'Votre session a expiré, veuillez vous reconnecter.',
 			});
-			dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
+			// dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
+			dispatch({ type: EmailConfirmationPopUpActionTypes.HIDE });
 
 			dispatch({ type: UserActionTypes.LOG_OUT });
 
@@ -116,7 +124,8 @@ const App: React.FC = () => {
 			{userData && <HamburgerButton />}
 			{userData && <DesktopSidebar />}
 			{userData && <MobileSidebar />}
-			{uiElementsState.showOverlay && <Overlay />}
+			{/* {uiElementsState.showOverlay && <Overlay />} */}
+			{overlayState.show && <Overlay />}
 			<Routes>
 				{!userData && (
 					<>
@@ -164,14 +173,14 @@ const App: React.FC = () => {
 				/>
 				<Route path='*' element={<Error404 />} />
 			</Routes>
-			{popUpsState.alertMessage && (
+			{/* {popUpsState.alertMessage && (
 				<AlertPopup message={popUpsState.alertMessage} />
-			)}
-			{popUpsState.errorMessage && (
-				<ErrorPopup message={popUpsState.errorMessage} />
-			)}
+			)} */}
+			{alertPopUpState.message && <AlertPopup message={alertPopUpState.message} />}
 
-			{popUpsState.showEmailConfirmation && <EmailPopup />}
+			{errorPopUpState.message && <ErrorPopup message={errorPopUpState.message} />}
+
+			{emailConfirmationPopUpState.show && <EmailPopup />}
 		</>
 	);
 };

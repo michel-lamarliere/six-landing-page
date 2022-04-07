@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { RootState } from '../../_shared/store/_store';
 
-import ForgotPassword from './ForgotPasswordPopUp';
+import ForgotPassword from '../../pop-ups/pages/ForgotPasswordPopUp';
 
 import BackButton from '../../_shared/assets/imgs/icons/log_in-sign_up-back-button.svg';
 
@@ -23,7 +23,9 @@ const FormContainer: React.FC<Props> = (props) => {
 	const navigate = useNavigate();
 
 	const userState = useSelector((state: RootState) => state.user);
-	const uiElementsState = useSelector((state: RootState) => state.uiElements);
+	const forgotPasswordPopUpState = useSelector(
+		(state: RootState) => state.forgotPasswordPopUp
+	);
 
 	const backButton = (event: React.FormEvent) => {
 		event.preventDefault();
@@ -53,7 +55,7 @@ const FormContainer: React.FC<Props> = (props) => {
 			{!userData && (
 				<>
 					<form onSubmit={props.formHandler} className={classes.form}>
-						{uiElementsState.showForgotPasswordForm && <ForgotPassword />}
+						{forgotPasswordPopUpState.show && <ForgotPassword />}
 						{props.children}
 					</form>
 					<div className={classes['response-message']}>

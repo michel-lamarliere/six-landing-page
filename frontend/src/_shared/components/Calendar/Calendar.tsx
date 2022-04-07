@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { RootState } from '../../store/_store';
-import { UIElementsActionTypes } from '../../store/ui-elements';
 
 import CalendarDaysOfWeek from './CalendarDaysOfWeek';
 import { CalendarButton, TaskSelectorButton } from './CalendarButtons';
@@ -77,7 +76,7 @@ type TestProps =
 type Props = CommonProps & TestProps;
 
 const Calendar: React.FC<Props> = (props) => {
-	const uiElementsState = useSelector((state: RootState) => state.uiElements);
+	const calendarState = useSelector((state: RootState) => state.calendar);
 
 	return (
 		<div className={classes.wrapper}>
@@ -112,7 +111,7 @@ const Calendar: React.FC<Props> = (props) => {
 					</button>
 				)}
 			</div>
-			{uiElementsState.showCalendar && (
+			{calendarState.show && (
 				<div className={classes.calendar}>
 					<div className={classes.calendar__header}>
 						{!props.calendarPreviousYearHandlerDisabled && (
