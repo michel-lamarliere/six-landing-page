@@ -112,8 +112,6 @@ const changeEmailConfirmation: RequestHandler = async (req, res, next) => {
 		message:
 			'Adresse mail modifiée, veuillez vous connecter avec votre nouvelle adresse email.',
 	});
-
-	console.log('done');
 };
 
 const changeName: RequestHandler = async (req, res, next) => {
@@ -132,6 +130,13 @@ const changeName: RequestHandler = async (req, res, next) => {
 
 	let validateNewName = false;
 
+	if (reqNewName === user.name) {
+		res.status(400).json({
+			error: true,
+			details: { sameName: true },
+		});
+	}
+
 	// CHECKS IF THE NAME IS VALID
 	if (
 		reqNewName.trim().length >= 2 &&
@@ -141,7 +146,10 @@ const changeName: RequestHandler = async (req, res, next) => {
 	}
 
 	if (!validateNewName) {
-		res.status(400).json({ error: true, message: 'Nouveau nom invalide.' });
+		res.status(400).json({
+			error: true,
+			details: { format: true },
+		});
 		return;
 	}
 

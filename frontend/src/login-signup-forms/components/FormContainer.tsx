@@ -6,7 +6,7 @@ import { RootState } from '../../_shared/store/_store';
 
 import ForgotPassword from './ForgotPasswordPopUp';
 
-import BackButton from '../../_shared/assets/imgs/icons/back-button.svg';
+import BackButton from '../../_shared/assets/imgs/icons/log_in-sign_up-back-button.svg';
 
 import classes from './FormContainer.module.scss';
 

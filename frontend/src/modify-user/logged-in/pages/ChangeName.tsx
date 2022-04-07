@@ -24,9 +24,47 @@ const ChangeName: React.FC = () => {
 	const userState = useSelector((state: RootState) => state.user);
 
 	const [response, setResponse] = useState('');
+	const [inputErrorMessage, setInputErrorMessage] = useState('');
+
+	const {
+		input: newName,
+		setInput: setNewName,
+		inputOnChangeHandler: newNameOnChangeHandler,
+		inputOnBlurHandler: newNameOnBlurHandler,
+	} = useInput({ type: useInputTypes.NAME, validate: true });
+
+	const validateName = () => {
+		if (!userState.name) {
+			return false;
+		}
+
+		if (newName.value.trim().toLowerCase() === userState.name.trim().toLowerCase()) {
+			setNewName((prev) => ({ ...prev, isValid: false, isTouched: true }));
+			setInputErrorMessage("Veuillez choisir un nom différent de l'actuel.");
+			return false;
+		}
+
+		if (
+			newName.value.trim().length < 2 ||
+			!newName.value.trim().match(/^['’\p{L}\p{M}]*-?['’\p{L}\p{M}]*$/giu)
+		) {
+			setNewName((prev) => ({ ...prev, isValid: false, isTouched: true }));
+			setInputErrorMessage(
+				'Minimum 2 caractères, sans espaces et sans caractères spéciaux.'
+			);
+			return false;
+		}
+
+		return true;
+	};
 
 	const changeNameHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
+
+		if (!validateName()) {
+			return;
+		}
+
 		const responseData = await sendRequest(
 			`${process.env.REACT_APP_BACKEND_URL}/user-modify/name`,
 			'PATCH',
@@ -42,7 +80,14 @@ const ChangeName: React.FC = () => {
 
 		if (responseData.error) {
 			setNewName((prev) => ({ ...prev, isValid: false, isTouched: true }));
-			setResponse(responseData.message);
+
+			if (responseData.details.sameName) {
+				setInputErrorMessage("Veuillez choisir un nom différent de l'actuel.");
+			} else if (responseData.details.format) {
+				setInputErrorMessage(
+					'Minimum 2 caractères, sans espaces et sans caractères spéciaux.'
+				);
+			}
 			return;
 		}
 
@@ -57,13 +102,6 @@ const ChangeName: React.FC = () => {
 		setNewName({ value: '', isValid: false, isTouched: false });
 	};
 
-	const {
-		input: newName,
-		setInput: setNewName,
-		inputOnChangeHandler: newNameOnChangeHandler,
-		inputOnBlurHandler: newNameOnBlurHandler,
-	} = useInput({ type: useInputTypes.NAME, validate: true });
-
 	return (
 		<EditProfileFormWrapper
 			title={'Nom'}
@@ -77,7 +115,7 @@ const ChangeName: React.FC = () => {
 				id='Nouveau Nom'
 				type='text'
 				placeholder='Jean'
-				errorText='Minimum 2 caractères, sans espaces et sans caractères spéciaux.'
+				errorText={inputErrorMessage}
 				value={newName.value}
 				isValid={newName.isValid}
 				isTouched={newName.isTouched}
