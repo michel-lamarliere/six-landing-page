@@ -9,23 +9,23 @@ import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
 import closeButtonIcon from '../../_shared/assets/imgs/icons/close.svg';
 import warningButtonIcon from '../../_shared/assets/imgs/icons/warning.svg';
 
-import classes from './WarningOrErrorPopUp.module.scss';
+import classes from './AlertOrErrorPopUp.module.scss';
 
-export enum WarningOrErrorPopUpTypes {
+export enum AlertOrErrorPopUpTypes {
 	ERROR = 'ERROR',
 	WARNING = 'WARNING',
 }
 
 interface Props {
-	type: WarningOrErrorPopUpTypes;
+	type: AlertOrErrorPopUpTypes;
 	message: string;
 }
 
-const WarningOrErrorPopUp: React.FC<Props> = (props) => {
+const AlertOrErrorPopUp: React.FC<Props> = (props) => {
 	const dispatch = useDispatch();
 
-	const error = props.type === WarningOrErrorPopUpTypes.ERROR;
-	const warning = props.type === WarningOrErrorPopUpTypes.WARNING;
+	const error = props.type === AlertOrErrorPopUpTypes.ERROR;
+	const warning = props.type === AlertOrErrorPopUpTypes.WARNING;
 
 	const closePopUp = () => {
 		if (error) {
@@ -37,9 +37,13 @@ const WarningOrErrorPopUp: React.FC<Props> = (props) => {
 
 	return (
 		<div className={classes.wrapper}>
-			<img src={closeButtonIcon} alt='Alerte' className={classes['warning-img']} />
+			<img
+				src={warningButtonIcon}
+				alt='Alerte'
+				className={classes['warning-img']}
+			/>
 			<button onClick={closePopUp} className={classes['close-button']}>
-				<img src={warningButtonIcon} alt='Fermer' />
+				<img src={closeButtonIcon} alt='Fermer' />
 			</button>
 			<div className={classes.title}>
 				{error && 'Erreur'} {warning && 'Alerte'}
@@ -52,4 +56,4 @@ const WarningOrErrorPopUp: React.FC<Props> = (props) => {
 	);
 };
 
-export default WarningOrErrorPopUp;
+export default AlertOrErrorPopUp;

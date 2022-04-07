@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import WarningOrErrorPopUp, {
-	WarningOrErrorPopUpTypes,
-} from '../components/WarningOrErrorPopUp';
+import AlertOrErrorPopUp, {
+	AlertOrErrorPopUpTypes,
+} from '../components/AlertOrErrorPopUp';
 
 interface Props {
 	message: string;
@@ -11,10 +11,7 @@ interface Props {
 
 const ErrorPopup: React.FC<Props> = (props) => {
 	return ReactDOM.createPortal(
-		<WarningOrErrorPopUp
-			type={WarningOrErrorPopUpTypes.ERROR}
-			message={props.message}
-		/>,
+		<AlertOrErrorPopUp type={AlertOrErrorPopUpTypes.ERROR} message={props.message} />,
 		document.getElementById('error-popup')!
 	);
 };

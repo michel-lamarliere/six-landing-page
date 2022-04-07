@@ -7,18 +7,19 @@ import { EmailConfirmationPopUpActionTypes } from '../../_shared/store/pop-ups/e
 
 import { useUserClass } from '../../_shared/classes/user-class-hook';
 
+import UserProfileEditButton from '../components/UserProfileEditButton';
+import LogOutConfirmation from '../components/LogOutConfirmation';
+import UserIcon from '../../_shared/components/UserIcon/UserIcon';
+import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
+
 import confirmedEmailIcon from '../../_shared/assets/imgs/icons/profile/profile-confirmed-email-arrow.svg';
-import arrow from '../../_shared/assets/imgs/icons/arrow-bottom-purple.svg';
+import arrowIcon from '../../_shared/assets/imgs/icons/arrow-bottom-purple.svg';
 import recapIcon from '../../_shared/assets/imgs/icons/profile/profile-stats.svg';
 import imageIcon from '../../_shared/assets/imgs/icons/profile/profile-modify-image.svg';
 import nameIcon from '../../_shared/assets/imgs/icons/profile/profile-modify-name.svg';
 import emailIcon from '../../_shared/assets/imgs/icons/profile/profile-modify-email.svg';
 import passwordIcon from '../../_shared/assets/imgs/icons/profile/profile-modify-password.svg';
 import logOutIcon from '../../_shared/assets/imgs/icons/profile/profile-log-out.svg';
-
-import LogOutConfirmation from '../components/LogOutConfirmation';
-import UserIcon from '../../_shared/components/UserIcon/UserIcon';
-import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
 
 import classes from './UserProfile.module.scss';
 
@@ -82,7 +83,7 @@ const Profile: React.FC = () => {
 				>
 					<div className={classes['edit-profile__text']}>Éditer le profil</div>
 					<img
-						src={arrow}
+						src={arrowIcon}
 						alt='Flêche'
 						className={`${classes['edit-profile__img']} ${
 							!showEditProfile && classes['edit-profile__img--closed']
@@ -91,50 +92,26 @@ const Profile: React.FC = () => {
 				</button>
 				{showEditProfile && (
 					<>
-						<Link
-							to='/profil/modifier/image'
-							className={classes['edit-button']}
-						>
-							<img
-								src={imageIcon}
-								alt='Icône'
-								className={classes['edit-button__img']}
-							/>
-							Image
-						</Link>
-						<Link
-							to='/profil/modifier/nom'
-							className={classes['edit-button']}
-						>
-							<img
-								src={nameIcon}
-								alt='Nom'
-								className={classes['edit-button__img']}
-							/>
-							Nom
-						</Link>
-						<Link
-							to='/profil/modifier/email'
-							className={classes['edit-button']}
-						>
-							<img
-								src={emailIcon}
-								alt='Adresse mail'
-								className={classes['edit-button__img']}
-							/>
-							Adresse Mail
-						</Link>
-						<Link
-							to='/profil/modifier/mot-de-passe'
-							className={classes['edit-button']}
-						>
-							<img
-								src={passwordIcon}
-								alt='Mot de passe'
-								className={classes['edit-button__img']}
-							/>
-							Mot de Passe
-						</Link>
+						<UserProfileEditButton
+							icon={imageIcon}
+							text={'Image'}
+							to={'/profil/modifier/image'}
+						/>
+						<UserProfileEditButton
+							icon={nameIcon}
+							text={'Nom'}
+							to={'/profil/modifier/nom'}
+						/>
+						<UserProfileEditButton
+							icon={emailIcon}
+							text={'Adresse mail'}
+							to={'/profil/modifier/email'}
+						/>
+						<UserProfileEditButton
+							icon={passwordIcon}
+							text={'Mot de passe'}
+							to={'/profil/modifier/mot-de-passe'}
+						/>
 						<Link
 							to='/profil/modifier/supprimer-compte'
 							className={classes['delete-button']}

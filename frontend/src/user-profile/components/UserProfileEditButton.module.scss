@@ -1,0 +1,23 @@
+@import '../../_shared/style/variables.scss';
+
+.edit-button {
+	display: flex;
+	gap: 0.5rem;
+	background: transparent;
+	color: #6f7497;
+	font-family: $fontMedium;
+	font-size: 16px;
+	cursor: pointer;
+
+	&:active {
+		color: white;
+
+		& > .edit-button__img {
+			opacity: 1;
+		}
+	}
+
+	.edit-button__img {
+		opacity: 0.5;
+	}
+}

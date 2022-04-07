@@ -128,11 +128,11 @@ const App: React.FC = () => {
 			{userData && <HamburgerButton />}
 			{userData && <DesktopSidebar />}
 			{userData && <MobileSidebar />}
-			{/* {overlayState.show && <Overlay />} */}
+			{overlayState.show && <Overlay />}
 			{alertPopUpState.message && <AlertPopup message={alertPopUpState.message} />}
 			{errorPopUpState.message && <ErrorPopup message={errorPopUpState.message} />}
 			{emailConfirmationPopUpState.show && <EmailConfirmationPopup />}
-			{/* {forgotPasswordPopUpState.show && <ForgotPasswordPopUp />} */}
+			{forgotPasswordPopUpState.show && <ForgotPasswordPopUp />}
 			<Routes>
 				{!userData && (
 					// LOGGED OUT
