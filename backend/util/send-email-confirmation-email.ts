@@ -1,4 +1,4 @@
-const { sendEmail } = require('./send-email');
+const sendEmail = require('./send-email');
 
 const sendEmailConfirmationEmail = (data: { to: string; uniqueCode: string }) => {
 	const { to, uniqueCode } = data;
@@ -18,4 +18,4 @@ const sendEmailConfirmationEmail = (data: { to: string; uniqueCode: string }) =>
 	return emailWasSent;
 };
 
-exports.sendEmailConfirmationEmail = sendEmailConfirmationEmail;
+module.exports = sendEmailConfirmationEmail;

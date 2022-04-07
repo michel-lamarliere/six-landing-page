@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../_shared/store/_store';
 import { PopUpActionTypes } from '../../_shared/store/pop-ups';
+
 import WarningOrErrorPopUp, {
 	WarningOrErrorPopUpTypes,
 } from '../components/WarningOrErrorPopUp';
-
 import closeButton from '../../_shared/assets/imgs/icons/close.svg';
 import warningButton from '../../_shared/assets/imgs/icons/warning.svg';
 

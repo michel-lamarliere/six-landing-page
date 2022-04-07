@@ -22,4 +22,4 @@ const sendEmail = async (data: any) => {
 	return emailWasSent;
 };
 
-exports.sendEmail = sendEmail;
+module.exports = sendEmail;

@@ -63,7 +63,11 @@ const EmailPopup: React.FC = () => {
 	}, [userState.confirmedEmail]);
 
 	return ReactDOM.createPortal(
-		<PopUp type={PopUpTypes.CONFIRM_EMAIL_ADDRESS} closePopUp={closePopup}>
+		<PopUp
+			type={PopUpTypes.CONFIRM_EMAIL_ADDRESS}
+			closePopUp={closePopup}
+			displayNextMessage={sent}
+		>
 			{!sent ? (
 				<>
 					<div className={classes.title}>

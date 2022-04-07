@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,9 +12,9 @@ import classes from './FormContainer.module.scss';
 
 interface Props {
 	formHandler: (event: React.FormEvent) => void;
-	header_title: string;
-	footer_text: string;
-	footer_text_link: string;
+	headerTitle: string;
+	footerText: string;
+	footerTextLink: string;
 	switchFormHandler: () => void;
 	responseMessage: string;
 }
@@ -42,9 +42,13 @@ const FormContainer: React.FC<Props> = (props) => {
 		<div className={classes.wrapper}>
 			<div className={classes.header}>
 				<button onClick={backButton} className={classes['header__back-button']}>
-					<img src={BackButton} alt='Retour' />
+					<img
+						src={BackButton}
+						alt='Retour'
+						className={classes['header__back-button__img']}
+					/>
 				</button>
-				<h1 className={classes.header__title}>{props.header_title}</h1>
+				<h1 className={classes.header__title}>{props.headerTitle}</h1>
 			</div>
 			{!userData && (
 				<>
@@ -62,13 +66,13 @@ const FormContainer: React.FC<Props> = (props) => {
 			<div className={classes.footer}>
 				{!userData && (
 					<>
-						<div className={classes.footer__text}>{props.footer_text}</div>
+						<div className={classes.footer__text}>{props.footerText}</div>
 						&nbsp;
 						<button
 							onClick={props.switchFormHandler}
 							className={classes.footer__button}
 						>
-							{props.footer_text_link}
+							{props.footerTextLink}
 						</button>
 					</>
 				)}

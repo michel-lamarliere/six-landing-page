@@ -104,9 +104,9 @@ const SingupForm: React.FC<Props> = (props) => {
 	return (
 		<FormContainer
 			formHandler={signupFormHandler}
-			header_title={'Bienvenue !'}
-			footer_text={'Déjà membre ?'}
-			footer_text_link={'Connectez-vous !'}
+			headerTitle={'Bienvenue !'}
+			footerText={'Déjà membre ?'}
+			footerTextLink={'Connectez-vous !'}
 			switchFormHandler={props.switchFormHandler}
 			responseMessage={responseMessage}
 		>

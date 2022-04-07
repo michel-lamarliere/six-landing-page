@@ -28,6 +28,11 @@
 		background: #4740a0;
 		border-radius: 50%;
 		cursor: pointer;
+
+		&__img {
+			width: 0.5rem;
+			height: 0.75rem;
+		}
 	}
 
 	&__title {

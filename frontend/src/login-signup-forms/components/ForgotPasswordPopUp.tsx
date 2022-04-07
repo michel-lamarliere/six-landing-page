@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { RootState } from '../../_shared/store/_store';
 import { UIElementsActionTypes } from '../../_shared/store/ui-elements';
 
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
@@ -9,12 +8,11 @@ import { useRequest } from '../../_shared/hooks/http-hook';
 
 import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
+import PopUp, { PopUpTypes } from '../../_shared/components/UIElements/PopUp';
 
-import closeIcon from '../../_shared/assets/imgs/icons/close.svg';
 import successIcon from '../../_shared/assets/imgs/icons/validated.svg';
 
 import classes from './ForgotPasswordPopUp.module.scss';
-import PopUp, { PopUpTypes } from '../../_shared/components/UIElements/PopUp';
 
 const ForgotPassword: React.FC = () => {
 	const dispatch = useDispatch();
@@ -64,7 +62,11 @@ const ForgotPassword: React.FC = () => {
 	};
 
 	return (
-		<PopUp type={PopUpTypes.CONFIRM_EMAIL_ADDRESS} closePopUp={closePopUp}>
+		<PopUp
+			type={PopUpTypes.CONFIRM_EMAIL_ADDRESS}
+			closePopUp={closePopUp}
+			displayNextMessage={sent}
+		>
 			{!sent ? (
 				<>
 					<div className={classes.text}>

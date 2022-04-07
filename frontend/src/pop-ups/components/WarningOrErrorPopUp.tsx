@@ -23,33 +23,28 @@ interface Props {
 const WarningOrErrorPopUp: React.FC<Props> = (props) => {
 	const dispatch = useDispatch();
 
-	const error = WarningOrErrorPopUpTypes.ERROR;
-
-	const warning = WarningOrErrorPopUpTypes.WARNING;
+	const error = props.type === WarningOrErrorPopUpTypes.ERROR;
+	const warning = props.type === WarningOrErrorPopUpTypes.WARNING;
 
 	const closePopUp = () => {
-		if (props.type === error) {
+		if (error) {
 			dispatch({ type: PopUpActionTypes.REMOVE_ERROR });
-		} else if (props.type === warning) {
+		} else if (warning) {
 			dispatch({ type: PopUpActionTypes.REMOVE_ALERT });
 		}
 	};
 
 	return (
 		<div className={classes.wrapper}>
-			<img
-				src={warningButtonIcon}
-				alt='Alerte'
-				className={classes['warning-img']}
-			/>
+			<img src={closeButtonIcon} alt='Alerte' className={classes['warning-img']} />
 			<button onClick={closePopUp} className={classes['close-button']}>
-				<img src={closeButtonIcon} alt='Fermer' />
+				<img src={warningButtonIcon} alt='Fermer' />
 			</button>
 			<div className={classes.title}>
-				{props.type === error && 'Erreur'} {props.type === warning && 'Alerte'}
+				{error && 'Erreur'} {warning && 'Alerte'}
 			</div>
 			<div className={classes.message}>{props.message}</div>
-			{props.type === error && (
+			{error && (
 				<RoundedButton text={'Signaler le problème'} className={classes.button} />
 			)}
 		</div>

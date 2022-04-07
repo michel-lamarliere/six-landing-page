@@ -114,9 +114,9 @@ const LoginForm: React.FC<Props> = (props) => {
 	return (
 		<FormContainer
 			formHandler={loginFormHandler}
-			header_title={'Vous revoilà !'}
-			footer_text={'Pas de compte ?'}
-			footer_text_link={'Inscrivez-vous !'}
+			headerTitle={'Vous revoilà !'}
+			footerText={'Pas de compte ?'}
+			footerTextLink={'Inscrivez-vous !'}
 			switchFormHandler={props.switchFormHandler}
 			responseMessage={responseMessage}
 		>
