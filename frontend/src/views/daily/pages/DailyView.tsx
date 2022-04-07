@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { getDate, getDay, getYear, format } from 'date-fns';
 
@@ -15,9 +15,7 @@ import DailyCalendar from '../components/DailyCalendar';
 import classes from './DailyView.module.scss';
 
 const DailyView: React.FC = () => {
-	const dispatch = useDispatch();
-
-	const { sendRequest, sendData } = useRequest();
+	const { sendRequest } = useRequest();
 	const { getDayFn, getMonthFn } = useDatesFn();
 	const { Task } = useTaskClass();
 

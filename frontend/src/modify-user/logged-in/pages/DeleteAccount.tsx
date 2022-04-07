@@ -11,11 +11,11 @@ import Input, { InputStyles } from '../../../_shared/components/FormElements/Inp
 import EditProfileFormWrapper, {
 	EditProfileFormWrapperTypes,
 } from '../components/EditProfileFormWrapper';
+import RoundedButton from '../../../_shared/components/UIElements/RoundedButton';
 
 import successIcon from '../../../_shared/assets/imgs/icons/validated.svg';
 
 import classes from './DeleteAccount.module.scss';
-import RoundedButton from '../../../_shared/components/UIElements/RoundedButton';
 
 const DeleteAccount: React.FC = () => {
 	const navigate = useNavigate();

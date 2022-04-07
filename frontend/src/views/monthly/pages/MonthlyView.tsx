@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { getDay, format, isAfter, startOfMonth } from 'date-fns';
 
@@ -15,9 +15,7 @@ import { DataButton } from '../../components/ViewButtons';
 import classes from './MonthlyView.module.scss';
 
 const MonthlyView: React.FC = () => {
-	const dispatch = useDispatch();
-
-	const { sendRequest, sendData } = useRequest();
+	const { sendRequest } = useRequest();
 	const { getMonthFn } = useDatesFn();
 	const { Task } = useTaskClass();
 

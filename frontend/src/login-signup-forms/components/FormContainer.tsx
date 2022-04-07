@@ -6,7 +6,7 @@ import { RootState } from '../../_shared/store/_store';
 
 import ForgotPassword from '../../pop-ups/pages/ForgotPasswordPopUp';
 
-import BackButton from '../../_shared/assets/imgs/icons/log_in-sign_up-back-button.svg';
+import backButtonIcon from '../../_shared/assets/imgs/icons/log_in-sign_up-back-button.svg';
 
 import classes from './FormContainer.module.scss';
 
@@ -45,7 +45,7 @@ const FormContainer: React.FC<Props> = (props) => {
 			<div className={classes.header}>
 				<button onClick={backButton} className={classes['header__back-button']}>
 					<img
-						src={BackButton}
+						src={backButtonIcon}
 						alt='Retour'
 						className={classes['header__back-button__img']}
 					/>

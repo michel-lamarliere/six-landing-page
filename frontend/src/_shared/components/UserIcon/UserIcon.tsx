@@ -13,8 +13,6 @@ import userIcon9 from '../../../_shared/assets/imgs/icons/user/icon_9.svg';
 import userIcon10 from '../../../_shared/assets/imgs/icons/user/icon_10.svg';
 import userIcon11 from '../../../_shared/assets/imgs/icons/user/icon_11.svg';
 
-import classes from './UserIcon.module.scss';
-
 interface Props {
 	icon: number;
 	className: string;

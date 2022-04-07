@@ -7,12 +7,12 @@ import { MobileSidebarActionTypes } from '../../../_shared/store/mobile-sidebar'
 
 import { useUserClass } from '../../../_shared/classes/user-class-hook';
 
-import sixIcon from '../../../_shared/assets/imgs/icons/app/logo.svg';
-
+import UserIcon from '../../../_shared/components/UserIcon/UserIcon';
 import RefreshSpinnerSVG from '../../../_shared/components/_svgs/RefreshSpinnerSVG';
 
+import sixIcon from '../../../_shared/assets/imgs/icons/app/logo.svg';
+
 import classes from './Sidebar.module.scss';
-import UserIcon from '../../../_shared/components/UserIcon/UserIcon';
 
 const Sidebar: React.FC<{ className: string }> = (props) => {
 	const dispatch = useDispatch();

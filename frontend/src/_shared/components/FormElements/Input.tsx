@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import PasswordShowSVG from '../../assets/imgs/icons/form&input/password_show.svg';
-import PasswordHideSVG from '../../assets/imgs/icons/form&input/password_hide.svg';
+import passwordShowIcon from '../../assets/imgs/icons/form&input/password_show.svg';
+import passwordHideIcon from '../../assets/imgs/icons/form&input/password_hide.svg';
 
 import classes from './Input.module.scss';
 
@@ -69,7 +69,7 @@ const FormInput: React.FC<{
 						className={classes['input__show-password']}
 					>
 						<img
-							src={showPassword ? PasswordShowSVG : PasswordHideSVG}
+							src={showPassword ? passwordShowIcon : passwordHideIcon}
 							alt='Icone mot de passe'
 						/>
 					</button>

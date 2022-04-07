@@ -1,6 +1,6 @@
 import React from 'react';
 
-import classes from './DaysOfWeek.module.scss';
+import classes from './CalendarDaysOfWeek.module.scss';
 
 const CalendarDaysOfWeek: React.FC = () => {
 	const daysOfWeek = ['LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM', 'DIM'];

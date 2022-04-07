@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MobileSidebarActionTypes } from '../../store/mobile-sidebar';
 
 import { RootState } from '../../store/_store';
+import { MobileSidebarActionTypes } from '../../store/mobile-sidebar';
 
 import classes from './HamburgerButton.module.scss';
 

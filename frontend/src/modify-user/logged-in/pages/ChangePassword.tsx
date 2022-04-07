@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import Input, { InputStyles } from '../../../_shared/components/FormElements/Input';
+import { RootState } from '../../../_shared/store/_store';
+
 import { useRequest } from '../../../_shared/hooks/http-hook';
 import { useInput, useInputTypes } from '../../../_shared/hooks/input-hook';
-import { RootState } from '../../../_shared/store/_store';
+
+import Input, { InputStyles } from '../../../_shared/components/FormElements/Input';
 import EditProfileFormWrapper, {
 	EditProfileFormWrapperTypes,
 } from '../components/EditProfileFormWrapper';
-import PasswordForm from '../../components/PasswordForm';
 
 import classes from './ChangePassword.module.scss';
 
 const ChangePassword: React.FC = () => {
-	const dispatch = useDispatch();
-
 	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);

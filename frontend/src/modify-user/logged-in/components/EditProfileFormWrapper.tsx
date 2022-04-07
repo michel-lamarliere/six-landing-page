@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import backButton from '../../../_shared/assets/imgs/icons/back-button.svg';
 import RoundedButton from '../../../_shared/components/UIElements/RoundedButton';
+
+import backButtonIcon from '../../../_shared/assets/imgs/icons/back-button.svg';
 
 import classes from './EditProfileFormWrapper.module.scss';
 
@@ -25,7 +26,7 @@ const Form: React.FC<Props> = (props) => {
 			<div className={classes.wrapper}>
 				<div className={classes.title}>{props.title}</div>
 				<Link to='/profil' className={classes['back-button']}>
-					<img src={backButton} alt='Retour' />
+					<img src={backButtonIcon} alt='Retour' />
 				</Link>
 				{props.children}
 				{props.displaySubmitButton && (
@@ -41,7 +42,7 @@ const Form: React.FC<Props> = (props) => {
 			<div className={classes.wrapper}>
 				<div className={classes.title}>{props.title}</div>
 				<Link to='/profil' className={classes['back-button']}>
-					<img src={backButton} alt='Retour' />
+					<img src={backButtonIcon} alt='Retour' />
 				</Link>
 				{props.children}
 				<div className={classes.response}>{props.response}</div>

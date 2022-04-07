@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
+
 import { useUserClass } from '../../_shared/classes/user-class-hook';
 
 import FormContainer from './FormContainer';
 import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
-
-import classes from './SignupForm.module.scss';
 
 interface Props {
 	switchFormHandler: () => void;

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { UserActionTypes } from '../../../_shared/store/user';
 import { RootState } from '../../../_shared/store/_store';
 
 import { useInput, useInputTypes } from '../../../_shared/hooks/input-hook';
@@ -14,10 +12,7 @@ import EditProfileFormWrapper, {
 	EditProfileFormWrapperTypes,
 } from '../components/EditProfileFormWrapper';
 
-import classes from './ChangeName.module.scss';
-
 const ChangeName: React.FC = () => {
-	const dispatch = useDispatch();
 	const { sendRequest } = useRequest();
 	const { User } = useUserClass();
 

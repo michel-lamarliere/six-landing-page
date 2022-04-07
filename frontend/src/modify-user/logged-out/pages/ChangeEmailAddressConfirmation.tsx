@@ -3,8 +3,6 @@ import { useParams } from 'react-router-dom';
 
 import { useRequest } from '../../../_shared/hooks/http-hook';
 
-import classes from './ConfirmedEmailAddress.module.scss';
-
 const ConfirmEmailAddress: React.FC = () => {
 	const { sendRequest } = useRequest();
 

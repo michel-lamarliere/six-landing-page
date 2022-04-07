@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { addDays, getISOWeek, startOfWeek, format, getYear } from 'date-fns';
 
@@ -15,9 +15,7 @@ import WeeklyCalendar from '../components/WeeklyCalendar';
 import classes from './WeeklyView.module.scss';
 
 const WeekView: React.FC = () => {
-	const dispatch = useDispatch();
-
-	const { sendRequest, sendData } = useRequest();
+	const { sendRequest } = useRequest();
 	const { getMonthFn } = useDatesFn();
 	const { Task } = useTaskClass();
 

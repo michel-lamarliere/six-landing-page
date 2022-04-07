@@ -15,12 +15,13 @@ import {
 	startOfMonth,
 } from 'date-fns';
 
+import { CalendarActionTypes } from '../../../_shared/store/calendar';
+
 import { getMonthFnTypes, useDatesFn } from '../../../_shared/hooks/dates-hook';
 
 import Calendar, { calendarTypes } from '../../../_shared/components/Calendar/Calendar';
 
 import calendarClasses from '../../../_shared/components/Calendar/Calendar.module.scss';
-import { CalendarActionTypes } from '../../../_shared/store/calendar';
 
 const WeeklyCalendar: React.FC<{
 	chosenDate: Date;

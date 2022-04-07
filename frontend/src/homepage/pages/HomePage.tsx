@@ -6,16 +6,16 @@ import { Slide2GridItem, Slide3GridItem } from '../components/HomepageGridItem';
 import HomepageCarouselButton from '../components/HomepageCarouselButton';
 import LoginSignupForms from '../../login-signup-forms/pages/LoginSignupForms';
 
-import SixIcon from '../../_shared/assets/imgs/icons/app/logo.svg';
-import FoodIcon from '../../_shared/assets/imgs/icons/six/food.svg';
-import SleepIcon from '../../_shared/assets/imgs/icons/six/sleep.svg';
-import SportsIcon from '../../_shared/assets/imgs/icons/six/sports.svg';
-import RelaxationIcon from '../../_shared/assets/imgs/icons/six/relaxation.svg';
-import WorkIcon from '../../_shared/assets/imgs/icons/six/work.svg';
-import SocialIcon from '../../_shared/assets/imgs/icons/six/social.svg';
-import TaskFullIcon from '../../_shared/assets/imgs/icons/tutorial/tutorial-full.svg';
-import TaskHalfIcon from '../../_shared/assets/imgs/icons/tutorial/tutorial-half.svg';
-import TaskEmptyIcon from '../../_shared/assets/imgs/icons/tutorial/tutorial-empty.svg';
+import sixIcon from '../../_shared/assets/imgs/icons/app/logo.svg';
+import foodIcon from '../../_shared/assets/imgs/icons/six/food.svg';
+import sleepIcon from '../../_shared/assets/imgs/icons/six/sleep.svg';
+import sportsIcon from '../../_shared/assets/imgs/icons/six/sports.svg';
+import relaxationIcon from '../../_shared/assets/imgs/icons/six/relaxation.svg';
+import workIcon from '../../_shared/assets/imgs/icons/six/work.svg';
+import socialIcon from '../../_shared/assets/imgs/icons/six/social.svg';
+import taskFullIcon from '../../_shared/assets/imgs/icons/tutorial/tutorial-full.svg';
+import taskHalfIcon from '../../_shared/assets/imgs/icons/tutorial/tutorial-half.svg';
+import taskEmptyIcon from '../../_shared/assets/imgs/icons/tutorial/tutorial-empty.svg';
 
 import classes from './Homepage.module.scss';
 
@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
 			<div className={classes.carousel__text__title}>
 				C'est quoi {'    '}
 				<img
-					src={SixIcon}
+					src={sixIcon}
 					alt='six'
 					className={classes.carousel__text__title__icon}
 				/>{' '}
@@ -48,12 +48,12 @@ const HomePage: React.FC = () => {
 				Nos six objectifs journaliers :
 			</div>
 			<div className={classes.carousel__text__grid}>
-				<Slide2GridItem title={'Alimentation'} img={FoodIcon} />
-				<Slide2GridItem title={'Sommeil'} img={SleepIcon} />
-				<Slide2GridItem title={'Sport'} img={SportsIcon} />
-				<Slide2GridItem title={'Relaxation'} img={RelaxationIcon} />
-				<Slide2GridItem title={'Projets'} img={WorkIcon} />
-				<Slide2GridItem title={'Vie Sociale'} img={SocialIcon} />
+				<Slide2GridItem title={'Alimentation'} img={foodIcon} />
+				<Slide2GridItem title={'Sommeil'} img={sleepIcon} />
+				<Slide2GridItem title={'Sport'} img={sportsIcon} />
+				<Slide2GridItem title={'Relaxation'} img={relaxationIcon} />
+				<Slide2GridItem title={'Projets'} img={workIcon} />
+				<Slide2GridItem title={'Vie Sociale'} img={socialIcon} />
 			</div>
 		</>,
 		<>
@@ -64,9 +64,9 @@ const HomePage: React.FC = () => {
 				Il suffit de cliquer jusqu’à obtenir le niveau accompli.
 			</div>
 			<div className={classes.carousel__text__grid}>
-				<Slide3GridItem title={'Atteint'} img={TaskFullIcon} />
-				<Slide3GridItem title={'Presque atteint'} img={TaskHalfIcon} />
-				<Slide3GridItem title={'Non atteint'} img={TaskEmptyIcon} />
+				<Slide3GridItem title={'Atteint'} img={taskFullIcon} />
+				<Slide3GridItem title={'Presque atteint'} img={taskHalfIcon} />
+				<Slide3GridItem title={'Non atteint'} img={taskEmptyIcon} />
 			</div>
 			<Link to='' className={classes.carousel__text__link}>
 				En savoir plus

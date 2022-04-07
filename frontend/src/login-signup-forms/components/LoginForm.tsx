@@ -5,15 +5,16 @@ import { OverlayActionTypes } from '../../_shared/store/overlay';
 import { ForgotPasswordPopUpActionTypes } from '../../_shared/store/pop-ups/forgot-password-pop-up';
 
 import { useRequest } from '../../_shared/hooks/http-hook';
-import { useUserClass } from '../../_shared/classes/user-class-hook';
 import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
+
+import { useUserClass } from '../../_shared/classes/user-class-hook';
 
 import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 import FormContainer from './FormContainer';
 import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
 
-import RememberMeTrueSVG from '../../_shared/assets/imgs/icons/form&input/remember-me_true.svg';
-import RememberMeFalseSVG from '../../_shared/assets/imgs/icons/form&input/remember-me_false.svg';
+import rememberMeTrueIcon from '../../_shared/assets/imgs/icons/form&input/remember-me_true.svg';
+import rememberMeFalseIcon from '../../_shared/assets/imgs/icons/form&input/remember-me_false.svg';
 
 import classes from './LoginForm.module.scss';
 
@@ -151,7 +152,7 @@ const LoginForm: React.FC<Props> = (props) => {
 				>
 					<img
 						className={classes['remember-me__button__img']}
-						src={rememberEmail ? RememberMeTrueSVG : RememberMeFalseSVG}
+						src={rememberEmail ? rememberMeTrueIcon : rememberMeFalseIcon}
 						alt='Se souvenir de moi'
 					/>
 				</button>

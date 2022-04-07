@@ -1,12 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { useDispatch } from 'react-redux';
 
 import classes from './Overlay.module.scss';
 
 const Overlay: React.FC = () => {
-	const dispatch = useDispatch();
-
 	const hideOverlay = () => {};
 
 	return ReactDOM.createPortal(

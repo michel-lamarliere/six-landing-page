@@ -6,10 +6,10 @@ import { RootState } from '../../store/_store';
 import CalendarDaysOfWeek from './CalendarDaysOfWeek';
 import { CalendarButton, TaskSelectorButton } from './CalendarButtons';
 
-import LeftArrow from '../../assets/imgs/icons/calendar/left-arrow.svg';
-import DoubleLeftArrow from '../../assets/imgs/icons/calendar/double-left-arrow.svg';
-import RightArrow from '../../assets/imgs/icons/calendar/right-arrow.svg';
-import DoubleRightArrow from '../../assets/imgs/icons/calendar/double-right-arrow.svg';
+import leftArrowIcon from '../../assets/imgs/icons/calendar/left-arrow.svg';
+import doubleLeftArrowIcon from '../../assets/imgs/icons/calendar/double-left-arrow.svg';
+import rightArrowIcon from '../../assets/imgs/icons/calendar/right-arrow.svg';
+import doubleRightArrowIcon from '../../assets/imgs/icons/calendar/double-right-arrow.svg';
 
 import classes from './Calendar.module.scss';
 
@@ -97,7 +97,7 @@ const Calendar: React.FC<Props> = (props) => {
 						onClick={props.previousHandler}
 						disabled={props.previousHandlerDisabled}
 					>
-						<img src={LeftArrow} alt='Flêche gauche' />
+						<img src={leftArrowIcon} alt='Flêche gauche' />
 					</button>
 				)}
 				<h1 className={classes.header__text}>{props.headerText}</h1>
@@ -107,7 +107,7 @@ const Calendar: React.FC<Props> = (props) => {
 						onClick={props.nextHandler}
 						disabled={props.nextHandlerDisabled}
 					>
-						<img src={RightArrow} alt='Flêche droite' />
+						<img src={rightArrowIcon} alt='Flêche droite' />
 					</button>
 				)}
 			</div>
@@ -120,7 +120,7 @@ const Calendar: React.FC<Props> = (props) => {
 								onClick={props.calendarPreviousYearHandler}
 							>
 								<img
-									src={DoubleLeftArrow}
+									src={doubleLeftArrowIcon}
 									alt='Flêche Année Précédente'
 								/>
 							</button>
@@ -132,7 +132,10 @@ const Calendar: React.FC<Props> = (props) => {
 									className={`${classes.calendar__header__button} ${classes['calendar__header__button--left']}`}
 									onClick={props.calendarPreviousMonthHandler}
 								>
-									<img src={LeftArrow} alt='Flêche Mois Précédente' />
+									<img
+										src={leftArrowIcon}
+										alt='Flêche Mois Précédente'
+									/>
 								</button>
 							)}
 						<div className={classes.calendar__header__text}>
@@ -145,7 +148,7 @@ const Calendar: React.FC<Props> = (props) => {
 									className={`${classes.calendar__header__button} ${classes['calendar__header__button--right']}`}
 									onClick={props.calendarNextMonthHandler}
 								>
-									<img src={RightArrow} alt='Flêche Mois Suivant' />
+									<img src={rightArrowIcon} alt='Flêche Mois Suivant' />
 								</button>
 							)}
 						{!props.calendarNextYearHandlerDisabled && (
@@ -153,7 +156,10 @@ const Calendar: React.FC<Props> = (props) => {
 								className={`${classes.calendar__header__button} ${classes['calendar__header__button--double-right']}`}
 								onClick={props.calendarNextYearHandler}
 							>
-								<img src={DoubleRightArrow} alt='Flêche Année Suivante' />
+								<img
+									src={doubleRightArrowIcon}
+									alt='Flêche Année Suivante'
+								/>
 							</button>
 						)}
 					</div>

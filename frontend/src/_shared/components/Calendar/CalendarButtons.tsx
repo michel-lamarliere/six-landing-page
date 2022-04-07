@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../store/_store';
-
-import TopArrow from '../../assets/imgs/icons/top-arrow.svg';
-import CalendarIcon from '../../assets/imgs/icons/calendar/calendar_icon.svg';
-import FoodIcon from '../../assets/imgs/icons/six/food.svg';
-import SleepIcon from '../../assets/imgs/icons/six/sleep.svg';
-import SportsIcon from '../../assets/imgs/icons/six/sports.svg';
-import RelaxationIcon from '../../assets/imgs/icons/six/relaxation.svg';
-import WorkIcon from '../../assets/imgs/icons/six/work.svg';
-import SocialIcon from '../../assets/imgs/icons/six/social.svg';
-
-import calendarClasses from './Calendar.module.scss';
 import { CalendarActionTypes } from '../../store/calendar';
 import { OverlayActionTypes } from '../../store/overlay';
 import { TaskSelectorActionTypes } from '../../store/task-selector';
+
+import topArrowIcon from '../../assets/imgs/icons/top-arrow.svg';
+import calendarIcon from '../../assets/imgs/icons/calendar/calendar_icon.svg';
+import foodIcon from '../../assets/imgs/icons/six/food.svg';
+import sleepIcon from '../../assets/imgs/icons/six/sleep.svg';
+import sportsIcon from '../../assets/imgs/icons/six/sports.svg';
+import relaxationIcon from '../../assets/imgs/icons/six/relaxation.svg';
+import workIcon from '../../assets/imgs/icons/six/work.svg';
+import socialIcon from '../../assets/imgs/icons/six/social.svg';
+
+import calendarClasses from './Calendar.module.scss';
 
 export const CalendarButton: React.FC = () => {
 	const dispatch = useDispatch();
@@ -40,12 +40,12 @@ export const CalendarButton: React.FC = () => {
 			onClick={calendarButtonHandler}
 		>
 			<img
-				src={CalendarIcon}
+				src={calendarIcon}
 				alt='LogoCalendrier'
 				className={calendarClasses.buttons__button__calendar}
 			/>
 			<img
-				src={TopArrow}
+				src={topArrowIcon}
 				className={`${calendarClasses.buttons__button__arrow} ${
 					calendarState.show && calendarClasses['buttons__button__arrow--open']
 				}`}
@@ -71,22 +71,22 @@ export const TaskSelectorButton: React.FC<{
 	const getTaskImage = () => {
 		switch (props.chosenTask) {
 			case 'food': {
-				return FoodIcon;
+				return foodIcon;
 			}
 			case 'sleep': {
-				return SleepIcon;
+				return sleepIcon;
 			}
 			case 'sport': {
-				return SportsIcon;
+				return sportsIcon;
 			}
 			case 'relaxation': {
-				return RelaxationIcon;
+				return relaxationIcon;
 			}
 			case 'work': {
-				return WorkIcon;
+				return workIcon;
 			}
 			case 'social': {
-				return SocialIcon;
+				return socialIcon;
 			}
 		}
 	};
@@ -111,7 +111,7 @@ export const TaskSelectorButton: React.FC<{
 					className={calendarClasses.buttons__button__icon}
 				/>
 				<img
-					src={TopArrow}
+					src={topArrowIcon}
 					className={`${calendarClasses.buttons__button__arrow} ${
 						taskSelectorState.show &&
 						calendarClasses['buttons__button__arrow--open']
@@ -129,7 +129,7 @@ export const TaskSelectorButton: React.FC<{
 							calendarClasses.selector__active
 						}`}
 					>
-						<img src={FoodIcon} alt='Alimentation' />
+						<img src={foodIcon} alt='Alimentation' />
 						Alimentation
 					</button>
 
@@ -141,7 +141,7 @@ export const TaskSelectorButton: React.FC<{
 							calendarClasses.selector__active
 						}`}
 					>
-						<img src={SleepIcon} alt='Sommeil' />
+						<img src={sleepIcon} alt='Sommeil' />
 						Sommeil
 					</button>
 
@@ -153,7 +153,7 @@ export const TaskSelectorButton: React.FC<{
 							calendarClasses.selector__active
 						}`}
 					>
-						<img src={SportsIcon} alt='Sport' />
+						<img src={sportsIcon} alt='Sport' />
 						Sport
 					</button>
 
@@ -165,7 +165,7 @@ export const TaskSelectorButton: React.FC<{
 							calendarClasses.selector__active
 						}`}
 					>
-						<img src={RelaxationIcon} alt='Détente' />
+						<img src={relaxationIcon} alt='Détente' />
 						Détente
 					</button>
 
@@ -177,7 +177,7 @@ export const TaskSelectorButton: React.FC<{
 							calendarClasses.selector__active
 						}`}
 					>
-						<img src={WorkIcon} alt='Projets' />
+						<img src={workIcon} alt='Projets' />
 						Projets
 					</button>
 
@@ -189,7 +189,7 @@ export const TaskSelectorButton: React.FC<{
 							calendarClasses.selector__active
 						}`}
 					>
-						<img src={SocialIcon} alt='Vie Sociale' />
+						<img src={socialIcon} alt='Vie Sociale' />
 						Vie Sociale
 					</button>
 				</div>
