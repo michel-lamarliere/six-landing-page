@@ -67,7 +67,7 @@ export const useUserClass = () => {
 			const tokenExpiration = addHours(new Date(), 1);
 
 			dispatch({
-				type: UserActionTypes.LOG_IN,
+				type: UserActionTypes.LOG_USER_IN,
 				token: this.token,
 				expiration: tokenExpiration.toISOString(),
 				id: this.id,
@@ -83,8 +83,9 @@ export const useUserClass = () => {
 			);
 
 			if (!this.confirmedEmail) {
-				// dispatch({ type: PopUpActionTypes.SHOW_EMAIL_CONFIRMATION });
-				dispatch({ type: EmailConfirmationPopUpActionTypes.SHOW });
+				dispatch({
+					type: EmailConfirmationPopUpActionTypes.SHOW_EMAIL_CONFIRMATION_POP_UP,
+				});
 			}
 
 			navigate('/journal/quotidien');
@@ -102,15 +103,14 @@ export const useUserClass = () => {
 
 			if (responseData.error) {
 				dispatch({
-					// type: PopUpActionTypes.SET_AND_SHOW_ERROR,
-					type: ErrorPopUpActionTypes.SET_AND_SHOW,
+					type: ErrorPopUpActionTypes.SET_AND_SHOW_ERROR_POP_UP,
 					message: responseData.message,
 				});
 				return;
 			}
 
 			dispatch({
-				type: UserActionTypes.REFRESH_DATA,
+				type: UserActionTypes.REFRESH_USER_DATA,
 				icon: responseData.user.icon,
 				name: formatUserName(responseData.user.name),
 				email: responseData.user.email,
@@ -121,9 +121,10 @@ export const useUserClass = () => {
 		}
 
 		static logOut() {
-			dispatch({ type: UserActionTypes.LOG_OUT });
-			// dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
-			dispatch({ type: EmailConfirmationPopUpActionTypes.HIDE });
+			dispatch({ type: UserActionTypes.LOG_USER_OUT });
+			dispatch({
+				type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
+			});
 			navigate('/');
 		}
 

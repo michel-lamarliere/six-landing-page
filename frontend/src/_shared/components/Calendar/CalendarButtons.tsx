@@ -23,15 +23,14 @@ export const CalendarButton: React.FC = () => {
 	const calendarState = useSelector((state: RootState) => state.calendar);
 
 	const calendarButtonHandler = () => {
-		// dispatch({ type: UIElementsActionTypes.SHOW_CALENDAR });
-		dispatch({ type: CalendarActionTypes.SHOW });
+		dispatch({ type: CalendarActionTypes.SHOW_CALENDAR });
 	};
 
 	useEffect(() => {
 		if (calendarState.show) {
-			dispatch({ type: OverlayActionTypes.SHOW });
+			dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
 		} else {
-			dispatch({ type: OverlayActionTypes.HIDE });
+			dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
 		}
 	}, [calendarState.show]);
 
@@ -65,8 +64,8 @@ export const TaskSelectorButton: React.FC<{
 	const taskSelectorState = useSelector((state: RootState) => state.taskSelector);
 
 	const taskButtonHandler = () => {
-		dispatch({ type: TaskSelectorActionTypes.SHOW });
-		dispatch({ type: OverlayActionTypes.SHOW });
+		dispatch({ type: TaskSelectorActionTypes.SHOW_TASK_SELECTOR });
+		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
 	};
 
 	const getTaskImage = () => {
@@ -94,9 +93,9 @@ export const TaskSelectorButton: React.FC<{
 
 	useEffect(() => {
 		if (taskSelectorState.show) {
-			dispatch({ type: OverlayActionTypes.SHOW });
+			dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
 		} else {
-			dispatch({ type: OverlayActionTypes.HIDE });
+			dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
 		}
 	}, [taskSelectorState.show]);
 

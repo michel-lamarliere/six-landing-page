@@ -100,7 +100,7 @@ const WeeklyCalendar: React.FC<{
 
 		props.setChosenDate(new Date(+year, +month - 1, +day));
 
-		dispatch({ type: CalendarActionTypes.HIDE });
+		dispatch({ type: CalendarActionTypes.HIDE_CALENDAR });
 	};
 
 	useEffect(() => {

@@ -9,17 +9,17 @@ const initialStateReducer: State = {
 };
 
 export enum MobileSidebarActionTypes {
-	SHOW = 'SHOW',
-	HIDE = 'HIDE',
+	SHOW_MOBILE_SIDEBAR = 'SHOW_MOBILE_SIDEBAR',
+	HIDE_MOBILE_SIDEBAR = 'HIDE_MOBILE_SIDEBAR',
 }
 
 const mobileSidebarReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		case MobileSidebarActionTypes.SHOW:
-			return { ...state, show: true };
+		case MobileSidebarActionTypes.SHOW_MOBILE_SIDEBAR:
+			return { show: true };
 
-		case MobileSidebarActionTypes.HIDE:
-			return { ...state, show: false };
+		case MobileSidebarActionTypes.HIDE_MOBILE_SIDEBAR:
+			return { show: false };
 
 		default:
 			return state;

@@ -9,17 +9,17 @@ const initialStateReducer: State = {
 };
 
 export enum ForgotPasswordPopUpActionTypes {
-	SHOW = 'SHOW',
-	HIDE = 'HIDE',
+	SHOW_FORGOT_PASSWORD_POP_UP = 'SHOW_FORGOT_PASSWORD_POP_UP',
+	HIDE_FORGOT_PASSWORD_POP_UP = 'HIDE_FORGOT_PASSWORD_POP_UP',
 }
 
 const forgotPasswordPopUpReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		case ForgotPasswordPopUpActionTypes.SHOW:
-			return { ...state, show: true };
+		case ForgotPasswordPopUpActionTypes.SHOW_FORGOT_PASSWORD_POP_UP:
+			return { show: true };
 
-		case ForgotPasswordPopUpActionTypes.HIDE:
-			return { ...state, show: false };
+		case ForgotPasswordPopUpActionTypes.HIDE_FORGOT_PASSWORD_POP_UP:
+			return { show: false };
 
 		default:
 			return state;

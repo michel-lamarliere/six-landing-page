@@ -9,17 +9,17 @@ const initialStateReducer: State = {
 };
 
 export enum CalendarActionTypes {
-	SHOW = 'SHOW',
-	HIDE = 'HIDE',
+	SHOW_CALENDAR = 'SHOW_CALENDAR',
+	HIDE_CALENDAR = 'HIDE_CALENDAR',
 }
 
 const calendarReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		case CalendarActionTypes.SHOW:
-			return { ...state, show: true };
+		case CalendarActionTypes.SHOW_CALENDAR:
+			return { show: true };
 
-		case CalendarActionTypes.HIDE:
-			return { ...state, show: false };
+		case CalendarActionTypes.HIDE_CALENDAR:
+			return { show: false };
 
 		default:
 			return state;

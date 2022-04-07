@@ -6,6 +6,8 @@ import { isBefore } from 'date-fns';
 
 import { RootState } from './_shared/store/_store';
 import { UserActionTypes } from './_shared/store/user';
+import { EmailConfirmationPopUpActionTypes } from './_shared/store/pop-ups/email-confirmation-pop-up';
+import { AlertPopUpActionTypes } from './_shared/store/pop-ups/alert-pop-up';
 
 import LoginSignupForms from './login-signup-forms/pages/LoginSignupForms';
 import DailyView from './views/daily/pages/DailyView';
@@ -13,7 +15,7 @@ import WeeklyView from './views/weekly/pages/WeeklyView';
 import MonthlyView from './views/monthly/pages/MonthlyView';
 import Error404 from './error404/Error404';
 import ErrorPopup from './pop-ups/pages/ErrorPopUp';
-import EmailPopup from './pop-ups/pages/EmailConfirmationPopUp';
+import EmailConfirmationPopup from './pop-ups/pages/EmailConfirmationPopUp';
 import ConfirmEmailAddress from './modify-user/logged-out/pages/ChangeEmailAddressConfirmation';
 import ChangeForgottenPassword from './modify-user/logged-out/pages/ChangeForgottenPassword';
 import Overlay from './_shared/components/UIElements/Overlay';
@@ -31,8 +33,7 @@ import DeleteAccount from './modify-user/logged-in/pages/DeleteAccount';
 import DeleteAccountConfirm from './modify-user/logged-in/pages/DeleteAccountConfirmation';
 import ChangeEmailConfirm from './modify-user/logged-in/pages/ChangeEmailConfirm';
 import AlertPopup from './pop-ups/pages/AlertPopUp';
-import { EmailConfirmationPopUpActionTypes } from './_shared/store/pop-ups/email-confirmation-pop-up';
-import { AlertPopUpActionTypes } from './_shared/store/pop-ups/alert-pop-up';
+import ForgotPasswordPopUp from './pop-ups/pages/ForgotPasswordPopUp';
 
 const App: React.FC = () => {
 	const navigate = useNavigate();
@@ -44,6 +45,9 @@ const App: React.FC = () => {
 	const errorPopUpState = useSelector((state: RootState) => state.errorPopUp);
 	const emailConfirmationPopUpState = useSelector(
 		(state: RootState) => state.emailConfirmationPopUp
+	);
+	const forgotPasswordPopUpState = useSelector(
+		(state: RootState) => state.forgotPasswordPopUp
 	);
 
 	const autoLogIn = async () => {
@@ -61,13 +65,13 @@ const App: React.FC = () => {
 		let userData = JSON.parse(storedUserData);
 
 		if (isBefore(new Date(userData.expiration), new Date())) {
-			dispatch({ type: UserActionTypes.LOG_OUT });
+			dispatch({ type: UserActionTypes.LOG_USER_OUT });
 			navigate('/');
 			return;
 		}
 
 		dispatch({
-			type: UserActionTypes.LOG_IN,
+			type: UserActionTypes.LOG_USER_IN,
 			token: userData.token,
 			expiration: userData.expiration,
 			id: userData.id,
@@ -79,8 +83,7 @@ const App: React.FC = () => {
 
 		if (!userData.confirmedEmail && showEmailConfirmationPopup) {
 			dispatch({
-				// type: PopUpActionTypes.SHOW_EMAIL_CONFIRMATION,
-				type: EmailConfirmationPopUpActionTypes.SHOW,
+				type: EmailConfirmationPopUpActionTypes.SHOW_EMAIL_CONFIRMATION_POP_UP,
 			});
 		}
 	};
@@ -99,14 +102,15 @@ const App: React.FC = () => {
 
 		setTimeout(() => {
 			dispatch({
-				// type: PopUpActionTypes.SET_AND_SHOW_ALERT,
-				type: AlertPopUpActionTypes.SET_AND_SHOW,
+				type: AlertPopUpActionTypes.SET_AND_SHOW_ALERT_POP_UP,
 				message: 'Votre session a expiré, veuillez vous reconnecter.',
 			});
-			// dispatch({ type: PopUpActionTypes.HIDE_EMAIL_CONFIRMATION });
-			dispatch({ type: EmailConfirmationPopUpActionTypes.HIDE });
 
-			dispatch({ type: UserActionTypes.LOG_OUT });
+			dispatch({
+				type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
+			});
+
+			dispatch({ type: UserActionTypes.LOG_USER_OUT });
 
 			navigate('/');
 		}, remainingTime);
@@ -124,16 +128,21 @@ const App: React.FC = () => {
 			{userData && <HamburgerButton />}
 			{userData && <DesktopSidebar />}
 			{userData && <MobileSidebar />}
-			{/* {uiElementsState.showOverlay && <Overlay />} */}
-			{overlayState.show && <Overlay />}
+			{/* {overlayState.show && <Overlay />} */}
+			{alertPopUpState.message && <AlertPopup message={alertPopUpState.message} />}
+			{errorPopUpState.message && <ErrorPopup message={errorPopUpState.message} />}
+			{emailConfirmationPopUpState.show && <EmailConfirmationPopup />}
+			{/* {forgotPasswordPopUpState.show && <ForgotPasswordPopUp />} */}
 			<Routes>
 				{!userData && (
+					// LOGGED OUT
 					<>
 						<Route path='/' element={<Homepage />} />
 						<Route path='/login-signup' element={<LoginSignupForms />} />
 					</>
 				)}
 				{userData && (
+					// LOGGED IN
 					<>
 						<Route path='/' element={<DailyView />} />
 						<Route path='/journal/quotidien' element={<DailyView />} />
@@ -155,6 +164,7 @@ const App: React.FC = () => {
 						/>
 					</>
 				)}
+				{/* //LOGGED IN OR OUT*/}
 				<Route
 					path='/profil/confirmation/:email/:code'
 					element={<ConfirmEmailAddress />}
@@ -173,14 +183,6 @@ const App: React.FC = () => {
 				/>
 				<Route path='*' element={<Error404 />} />
 			</Routes>
-			{/* {popUpsState.alertMessage && (
-				<AlertPopup message={popUpsState.alertMessage} />
-			)} */}
-			{alertPopUpState.message && <AlertPopup message={alertPopUpState.message} />}
-
-			{errorPopUpState.message && <ErrorPopup message={errorPopUpState.message} />}
-
-			{emailConfirmationPopUpState.show && <EmailPopup />}
 		</>
 	);
 };

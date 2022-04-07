@@ -29,9 +29,9 @@ const WarningOrErrorPopUp: React.FC<Props> = (props) => {
 
 	const closePopUp = () => {
 		if (error) {
-			dispatch({ type: ErrorPopUpActionTypes.REMOVE_AND_HIDE });
+			dispatch({ type: ErrorPopUpActionTypes.REMOVE_AND_HIDE_ERROR_POP_UP });
 		} else if (warning) {
-			dispatch({ type: AlertPopUpActionTypes.REMOVE_AND_HIDE });
+			dispatch({ type: AlertPopUpActionTypes.REMOVE_AND_HIDE_ALERT_POP_UP });
 		}
 	};
 

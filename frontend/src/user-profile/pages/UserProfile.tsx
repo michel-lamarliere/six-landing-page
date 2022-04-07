@@ -45,13 +45,14 @@ const Profile: React.FC = () => {
 	};
 
 	const confirmEmailAddressHandler = () => {
-		dispatch({ type: EmailConfirmationPopUpActionTypes.SHOW });
+		dispatch({
+			type: EmailConfirmationPopUpActionTypes.SHOW_EMAIL_CONFIRMATION_POP_UP,
+		});
 	};
 
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.user}>
-				{/* <img src={userIcon} alt='Utilisateur' className={classes.user__img} /> */}
 				<UserIcon className={classes.user__img} icon={User.getInfo().icon} />
 				<div className={classes.user__name}>{userState.name}</div>
 			</div>

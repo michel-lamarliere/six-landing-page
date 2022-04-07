@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import { useDispatch } from 'react-redux';
 
 import { ForgotPasswordPopUpActionTypes } from '../../_shared/store/pop-ups/forgot-password-pop-up';
@@ -9,7 +10,7 @@ import { useRequest } from '../../_shared/hooks/http-hook';
 
 import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
-import PopUp, { PopUpTypes } from '../../_shared/components/UIElements/PopUp';
+import PopUp, { PopUpTypes } from '../components/PopUp';
 
 import successIcon from '../../_shared/assets/imgs/icons/validated.svg';
 
@@ -57,12 +58,14 @@ const ForgotPassword: React.FC = () => {
 		setResponseMessage(responseData.message);
 	};
 
-	const closePopUp = () => {
-		dispatch({ type: OverlayActionTypes.HIDE });
-		dispatch({ type: ForgotPasswordPopUpActionTypes.HIDE });
+	const closePopUp = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+
+		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
+		dispatch({ type: ForgotPasswordPopUpActionTypes.HIDE_FORGOT_PASSWORD_POP_UP });
 	};
 
-	return (
+	return ReactDOM.createPortal(
 		<PopUp
 			type={PopUpTypes.CONFIRM_EMAIL_ADDRESS}
 			closePopUp={closePopUp}
@@ -98,7 +101,8 @@ const ForgotPassword: React.FC = () => {
 					<div className={classes['text-sent']}>{responseMessage}</div>
 				</>
 			)}
-		</PopUp>
+		</PopUp>,
+		document.getElementById('forgot-password-pop-up')!
 	);
 };
 

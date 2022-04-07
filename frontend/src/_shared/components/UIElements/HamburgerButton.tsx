@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MobileSidebarActionTypes } from '../../store/mobile-sidebar';
 
@@ -13,9 +13,9 @@ const HamburgerButton: React.FC = () => {
 
 	const hamburgerButtonHandler = () => {
 		if (mobileSidebarState.show) {
-			dispatch({ type: MobileSidebarActionTypes.HIDE });
+			dispatch({ type: MobileSidebarActionTypes.HIDE_MOBILE_SIDEBAR });
 		} else {
-			dispatch({ type: MobileSidebarActionTypes.SHOW });
+			dispatch({ type: MobileSidebarActionTypes.SHOW_MOBILE_SIDEBAR });
 		}
 	};
 

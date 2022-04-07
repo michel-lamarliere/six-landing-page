@@ -23,14 +23,14 @@ const initialStateReducer: State = {
 };
 
 export const enum UserActionTypes {
-	LOG_IN = 'LOG_IN',
-	LOG_OUT = 'LOG_OUT',
-	REFRESH_DATA = 'REFRESH_DATA',
+	LOG_USER_IN = 'LOG_USER_IN',
+	LOG_USER_OUT = 'LOG_USER_OUT',
+	REFRESH_USER_DATA = 'REFRESH_USER_DATA',
 }
 
 const userReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		case UserActionTypes.LOG_IN: {
+		case UserActionTypes.LOG_USER_IN: {
 			localStorage.setItem(
 				'userData',
 				JSON.stringify({
@@ -55,7 +55,7 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 			};
 		}
 
-		case UserActionTypes.LOG_OUT: {
+		case UserActionTypes.LOG_USER_OUT: {
 			localStorage.removeItem('userData');
 			sessionStorage.removeItem('showEmailConfirmationPopup');
 
@@ -70,7 +70,7 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 			};
 		}
 
-		case UserActionTypes.REFRESH_DATA: {
+		case UserActionTypes.REFRESH_USER_DATA: {
 			localStorage.setItem(
 				'userData',
 				JSON.stringify({

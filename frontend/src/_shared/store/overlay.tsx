@@ -9,17 +9,17 @@ const initialStateReducer: State = {
 };
 
 export enum OverlayActionTypes {
-	SHOW = 'SHOW',
-	HIDE = 'HIDE',
+	SHOW_OVERLAY = 'SHOW_OVERLAY',
+	HIDE_OVERLAY = 'HIDE_OVERLAY',
 }
 
 const overlayReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		case OverlayActionTypes.SHOW:
-			return { ...state, show: true };
+		case OverlayActionTypes.SHOW_OVERLAY:
+			return { show: true };
 
-		case OverlayActionTypes.HIDE:
-			return { ...state, show: false };
+		case OverlayActionTypes.HIDE_OVERLAY:
+			return { show: false };
 
 		default:
 			return state;

@@ -92,7 +92,7 @@ const DailyCalendar: React.FC<{
 
 		props.setChosenDate(addHours(new Date(+year, +month, +day), 1));
 
-		dispatch({ type: CalendarActionTypes.HIDE });
+		dispatch({ type: CalendarActionTypes.HIDE_CALENDAR });
 	};
 
 	useEffect(() => {

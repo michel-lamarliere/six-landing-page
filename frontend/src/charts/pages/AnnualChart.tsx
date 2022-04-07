@@ -36,7 +36,7 @@ const AnnualGraph: React.FC = () => {
 	const selectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setChosenTask((event.target as HTMLButtonElement).value);
 
-		dispatch({ type: TaskSelectorActionTypes.HIDE });
+		dispatch({ type: TaskSelectorActionTypes.HIDE_TASK_SELECTOR });
 	};
 
 	const getGraph = async () => {

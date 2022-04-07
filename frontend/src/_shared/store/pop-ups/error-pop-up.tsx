@@ -12,22 +12,20 @@ const initialStateReducer: State = {
 };
 
 export const enum ErrorPopUpActionTypes {
-	SET_AND_SHOW = 'SET_AND_SHOW',
-	REMOVE_AND_HIDE = 'REMOVE_AND_HIDE',
+	SET_AND_SHOW_ERROR_POP_UP = 'SET_AND_SHOW_ERROR_POP_UP',
+	REMOVE_AND_HIDE_ERROR_POP_UP = 'REMOVE_AND_HIDE_ERROR_POP_UP',
 }
 
 const errorPopUpReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		case ErrorPopUpActionTypes.SET_AND_SHOW: {
+		case ErrorPopUpActionTypes.SET_AND_SHOW_ERROR_POP_UP: {
 			return {
-				...state,
 				message: action.message,
 			};
 		}
 
-		case ErrorPopUpActionTypes.REMOVE_AND_HIDE: {
+		case ErrorPopUpActionTypes.REMOVE_AND_HIDE_ERROR_POP_UP: {
 			return {
-				...state,
 				message: null,
 			};
 		}

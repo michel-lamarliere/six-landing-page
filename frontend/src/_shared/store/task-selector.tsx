@@ -9,17 +9,17 @@ const initialStateReducer: State = {
 };
 
 export enum TaskSelectorActionTypes {
-	SHOW = 'SHOW',
-	HIDE = 'HIDE',
+	SHOW_TASK_SELECTOR = 'SHOW_TASK_SELECTOR',
+	HIDE_TASK_SELECTOR = 'HIDE_TASK_SELECTOR',
 }
 
 const taskSelectorReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		case TaskSelectorActionTypes.SHOW:
-			return { ...state, show: true };
+		case TaskSelectorActionTypes.SHOW_TASK_SELECTOR:
+			return { show: true };
 
-		case TaskSelectorActionTypes.HIDE:
-			return { ...state, show: false };
+		case TaskSelectorActionTypes.HIDE_TASK_SELECTOR:
+			return { show: false };
 
 		default:
 			return state;

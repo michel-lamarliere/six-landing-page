@@ -9,7 +9,7 @@ import { OverlayActionTypes } from '../../_shared/store/overlay';
 import { useRequest } from '../../_shared/hooks/http-hook';
 
 import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
-import PopUp, { PopUpTypes } from '../../_shared/components/UIElements/PopUp';
+import PopUp, { PopUpTypes } from '../components/PopUp';
 
 import sentIcon from '../../_shared/assets/imgs/icons/validated.svg';
 
@@ -41,22 +41,30 @@ const EmailPopup: React.FC = () => {
 		setSent(true);
 
 		setTimeout(() => {
-			dispatch({ type: EmailConfirmationPopUpActionTypes.HIDE });
+			dispatch({
+				type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
+			});
 		}, 5000);
 	};
 
 	const closePopup = () => {
 		sessionStorage.setItem('showEmailConfirmationPopup', JSON.stringify(false));
-		dispatch({ type: EmailConfirmationPopUpActionTypes.HIDE });
+		dispatch({
+			type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
+		});
 	};
 
 	useEffect(() => {
 		if (userState.confirmedEmail) {
-			dispatch({ type: EmailConfirmationPopUpActionTypes.HIDE });
-			dispatch({ type: OverlayActionTypes.SHOW });
+			dispatch({
+				type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
+			});
+			dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
 		} else {
-			dispatch({ type: EmailConfirmationPopUpActionTypes.SHOW });
-			dispatch({ type: OverlayActionTypes.HIDE });
+			dispatch({
+				type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
+			});
+			dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
 		}
 	}, [userState.confirmedEmail]);
 
@@ -89,7 +97,7 @@ const EmailPopup: React.FC = () => {
 				</>
 			)}
 		</PopUp>,
-		document.getElementById('email-confirmation-popup')!
+		document.getElementById('email-confirmation-pop-up')!
 	);
 };
 

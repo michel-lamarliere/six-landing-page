@@ -11,18 +11,18 @@ const initialStateReducer: State = {
 };
 
 export const enum EmailConfirmationPopUpActionTypes {
-	SHOW = 'SHOW',
-	HIDE = 'HIDE',
+	SHOW_EMAIL_CONFIRMATION_POP_UP = 'SHOW_EMAIL_CONFIRMATION_POP_UP',
+	HIDE_EMAIL_CONFIRMATION_POP_UP = 'HIDE_EMAIL_CONFIRMATION_POP_UP',
 }
 
 const emailConfirmationPopUpReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		case EmailConfirmationPopUpActionTypes.SHOW: {
-			return { ...state, show: true };
+		case EmailConfirmationPopUpActionTypes.SHOW_EMAIL_CONFIRMATION_POP_UP: {
+			return { show: true };
 		}
 
-		case EmailConfirmationPopUpActionTypes.HIDE: {
-			return { ...state, show: false };
+		case EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP: {
+			return { show: false };
 		}
 
 		default:

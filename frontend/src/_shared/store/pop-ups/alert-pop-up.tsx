@@ -12,22 +12,20 @@ const initialStateReducer: State = {
 };
 
 export const enum AlertPopUpActionTypes {
-	SET_AND_SHOW = 'SET_AND_SHOW',
-	REMOVE_AND_HIDE = 'REMOVE_AND_HIDE',
+	SET_AND_SHOW_ALERT_POP_UP = 'SET_AND_SHOW_ALERT_POP_UP',
+	REMOVE_AND_HIDE_ALERT_POP_UP = 'REMOVE_AND_HIDE_ALERT_POP_UP',
 }
 
 const alertPopUpReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
-		case AlertPopUpActionTypes.SET_AND_SHOW: {
+		case AlertPopUpActionTypes.SET_AND_SHOW_ALERT_POP_UP: {
 			return {
-				...state,
 				message: action.message,
 			};
 		}
 
-		case AlertPopUpActionTypes.REMOVE_AND_HIDE: {
+		case AlertPopUpActionTypes.REMOVE_AND_HIDE_ALERT_POP_UP: {
 			return {
-				...state,
 				message: null,
 			};
 		}

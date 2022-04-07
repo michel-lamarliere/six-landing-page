@@ -1,7 +1,7 @@
 import React from 'react';
 
-import warningIcon from '../../../_shared/assets/imgs/icons/warning.svg';
-import closeIcon from '../../../_shared/assets/imgs/icons/close.svg';
+import warningIcon from '../../_shared/assets/imgs/icons/warning.svg';
+import closeIcon from '../../_shared/assets/imgs/icons/close.svg';
 
 import classes from './PopUp.module.scss';
 

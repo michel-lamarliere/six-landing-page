@@ -47,7 +47,7 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 
 	const closeMobileSidebar = () => {
 		dispatch({
-			type: MobileSidebarActionTypes.HIDE,
+			type: MobileSidebarActionTypes.HIDE_MOBILE_SIDEBAR,
 		});
 	};
 

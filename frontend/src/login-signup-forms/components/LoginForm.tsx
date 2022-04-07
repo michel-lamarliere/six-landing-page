@@ -88,8 +88,6 @@ const LoginForm: React.FC<Props> = (props) => {
 			user.forgetEmail();
 		}
 
-		console.log(user);
-
 		user.logIn();
 	};
 
@@ -100,8 +98,7 @@ const LoginForm: React.FC<Props> = (props) => {
 
 	const forgotPasswordHandler = (event: React.FormEvent) => {
 		event.preventDefault();
-		dispatch({ type: OverlayActionTypes.SHOW });
-		dispatch({ type: ForgotPasswordPopUpActionTypes.SHOW });
+		dispatch({ type: ForgotPasswordPopUpActionTypes.SHOW_FORGOT_PASSWORD_POP_UP });
 	};
 
 	useEffect(() => {
@@ -166,7 +163,7 @@ const LoginForm: React.FC<Props> = (props) => {
 				onClick={forgotPasswordHandler}
 				className={classes['forgot-password-button']}
 			>
-				Mot de passe oublié?
+				Mot de passe oublié ?
 			</button>
 			<RoundedButton text={'Connexion'} />
 		</FormContainer>

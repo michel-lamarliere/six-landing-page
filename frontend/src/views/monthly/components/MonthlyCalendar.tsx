@@ -39,7 +39,7 @@ const MonthlyCalendar: React.FC<{
 	const selectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		props.setChosenTask((event.target as HTMLButtonElement).value);
 
-		dispatch({ type: TaskSelectorActionTypes.HIDE });
+		dispatch({ type: TaskSelectorActionTypes.HIDE_TASK_SELECTOR });
 	};
 
 	const previousHandler = () => {
@@ -61,7 +61,7 @@ const MonthlyCalendar: React.FC<{
 	const monthOnClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		props.setChosenDate(new Date((event.target as HTMLButtonElement).id));
 
-		dispatch({ type: CalendarActionTypes.HIDE });
+		dispatch({ type: CalendarActionTypes.HIDE_CALENDAR });
 	};
 
 	return (

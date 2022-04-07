@@ -35,7 +35,7 @@ const ChangeEmailConfirm: React.FC = () => {
 		User.logOut();
 
 		dispatch({
-			type: AlertPopUpActionTypes.SET_AND_SHOW,
+			type: AlertPopUpActionTypes.SET_AND_SHOW_ALERT_POP_UP,
 			message: responseData.message,
 		});
 	};

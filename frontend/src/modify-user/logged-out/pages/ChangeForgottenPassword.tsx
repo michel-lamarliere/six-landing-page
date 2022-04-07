@@ -34,7 +34,7 @@ const ForgotPasswordForm: React.FC = () => {
 		if (userData) {
 			navigate('/');
 			dispatch({
-				type: ErrorPopUpActionTypes.SET_AND_SHOW,
+				type: ErrorPopUpActionTypes.SET_AND_SHOW_ERROR_POP_UP,
 				message: 'Chemin interdit.',
 			});
 			return;
@@ -49,7 +49,7 @@ const ForgotPasswordForm: React.FC = () => {
 
 		if (responseData.error) {
 			dispatch({
-				type: ErrorPopUpActionTypes.SET_AND_SHOW,
+				type: ErrorPopUpActionTypes.SET_AND_SHOW_ERROR_POP_UP,
 				message: 'Chemin interdit.',
 			});
 			navigate('/');

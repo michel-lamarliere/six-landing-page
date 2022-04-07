@@ -45,10 +45,9 @@ export const useTaskClass = () => {
 			const responseData = await response.json();
 
 			if (responseData.fatal) {
-				dispatch({ type: UserActionTypes.LOG_OUT });
+				dispatch({ type: UserActionTypes.LOG_USER_OUT });
 				dispatch({
-					// type: PopUpActionTypes.SET_AND_SHOW_ERROR,
-					type: ErrorPopUpActionTypes.SET_AND_SHOW,
+					type: ErrorPopUpActionTypes.SET_AND_SHOW_ERROR_POP_UP,
 					message:
 						"Il semble que votre compte n'existe plus, veuillez en créer un autre ou nous contacter.",
 				});
