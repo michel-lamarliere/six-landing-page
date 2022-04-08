@@ -78,7 +78,7 @@ const ChangeImage: React.FC = () => {
 			setResponse('');
 		}, 3000);
 
-		const user = await User.refreshData();
+		const user = await User.refreshInfo();
 		setActiveIcon(user.icon);
 	};
 

@@ -18,8 +18,6 @@ export const useUserClass = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
-	const loggedInUser = useSelector((state: RootState) => state.user);
-
 	const formatUserName = (name: string) => {
 		let formattedName = '';
 		if (!name) return;
@@ -91,7 +89,21 @@ export const useUserClass = () => {
 			navigate('/journal/quotidien');
 		}
 
-		static async refreshData() {
+		static logOut(data: { redirect: boolean }) {
+			const redirect = data.redirect;
+
+			dispatch({ type: UserActionTypes.LOG_USER_OUT });
+
+			dispatch({
+				type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
+			});
+
+			if (redirect) {
+				navigate('/');
+			}
+		}
+
+		static async refreshInfo() {
 			const responseData = await sendRequest(
 				`${process.env.REACT_APP_BACKEND_URL}/user/${userState.id}`,
 				'GET'
@@ -120,16 +132,8 @@ export const useUserClass = () => {
 			return responseData.user;
 		}
 
-		static logOut() {
-			dispatch({ type: UserActionTypes.LOG_USER_OUT });
-			dispatch({
-				type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
-			});
-			// navigate('/');
-		}
-
 		static getInfo() {
-			return loggedInUser;
+			return userState;
 		}
 	}
 

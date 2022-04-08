@@ -122,13 +122,11 @@ const ForgotPasswordForm: React.FC = () => {
 			})
 		);
 
-		// console.log(responseData);
 		if (!responseData) {
 			return;
 		}
 
 		if (responseData.error) {
-			// setErrorMessage(responseData.message);
 			console.log(responseData.validInputs);
 
 			if (!responseData.validInputs.newPassword) {
@@ -146,16 +144,8 @@ const ForgotPasswordForm: React.FC = () => {
 		setChangedPassword(true);
 	};
 
-	// const redirect = () => {
-	// 	setChangedPassword(true);
-
-	// 	setTimeout(() => {
-	// 		navigate('/');
-	// 	}, 5000);
-	// };
-
 	useEffect(() => {
-		User.logOut();
+		User.logOut({ redirect: false });
 		checkEmail();
 	}, []);
 

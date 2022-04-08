@@ -24,11 +24,11 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 	const [spinButton, setSpinButton] = useState(false);
 	const [spinnerClasses, setSpinnerClasses] = useState('');
 
-	const refreshDataHandler = async () => {
+	const refreshUserInfoHandler = async () => {
 		setSpinButton(true);
 		setSpinnerClasses(classes['user__refresh-spinner__img--active']);
 
-		User.refreshData();
+		User.refreshInfo();
 
 		const spinner = setTimeout(() => {
 			setSpinnerClasses(classes['user__refresh-spinner__img--done']);
@@ -84,11 +84,6 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 				<div className={classes.user}>
 					<div onClick={closeMobileSidebar}>
 						<Link to='/profil' className={classes['user__name-img']}>
-							{/* <img
-								src={`${userIcon}${User.getInfo().icon}`}
-								alt='Icône Utilisateur'
-								className={classes['user__name-img__img']}
-							/> */}
 							<UserIcon
 								className={classes['user__name-img__img']}
 								icon={User.getInfo().icon}
@@ -99,7 +94,7 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 						</Link>
 					</div>
 					<button
-						onClick={refreshDataHandler}
+						onClick={refreshUserInfoHandler}
 						className={`${classes['user__refresh-spinner']} ${
 							spinButton && classes['user__refresh-spinner--active']
 						}`}

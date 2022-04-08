@@ -5,7 +5,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 	width: 100%;
-	padding: 3.5rem;
+	padding: 3.5rem 2rem;
 	background: #3e379b url('../../_shared/assets/imgs/backgrounds/mobile-bg.svg')
 		no-repeat bottom left -200px;
 }
@@ -17,9 +17,10 @@
 	gap: 3rem;
 
 	&__text {
+		position: relative;
 		display: flex;
 		flex-direction: column;
-		min-height: 22rem;
+		min-height: 20rem;
 		gap: 1rem;
 
 		&__title {
@@ -38,12 +39,16 @@
 		}
 
 		&__link {
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			transform: translate(-50%);
 			font-family: $fontMedium;
 			font-size: 14px;
 			text-decoration: underline;
 			color: #8d88ff;
 			text-align: center;
-			margin-top: 5.71em;
+			// margin-bottom: 5.71em;
 		}
 
 		&__header {
@@ -67,7 +72,7 @@
 		&__grid {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
-			column-gap: 1.15rem;
+			justify-items: space-between;
 			row-gap: 2.5rem;
 			margin: 3rem auto 0 auto;
 		}

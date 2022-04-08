@@ -92,7 +92,7 @@ const ChangeName: React.FC = () => {
 			setResponse('');
 		}, 3000);
 
-		User.refreshData();
+		User.refreshInfo();
 
 		setNewName({ value: '', isValid: false, isTouched: false });
 	};

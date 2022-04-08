@@ -27,7 +27,7 @@ const DeleteAccountConfirm: React.FC = () => {
 			return;
 		}
 
-		User.logOut();
+		User.logOut({ redirect: true });
 	};
 
 	useEffect(() => {

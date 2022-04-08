@@ -18,7 +18,7 @@ const LogOutConfirmation: React.FC<Props> = (props) => {
 	};
 
 	const logoutHandler = () => {
-		User.logOut();
+		User.logOut({ redirect: true });
 	};
 
 	return (
