@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useNavigate } from 'react-router-dom';
-import { addHours } from 'date-fns';
+import { addHours, addSeconds, isBefore } from 'date-fns';
 
 import { useRequest } from '../hooks/http-hook';
 import { useFormatUserName } from '../hooks/format-user-name-hook';
@@ -10,6 +10,7 @@ import { UserActionTypes } from '../store/user';
 import { RootState } from '../store/_store';
 import { EmailConfirmationPopUpActionTypes } from '../store/pop-ups/email-confirmation-pop-up';
 import { ErrorPopUpActionTypes } from '../store/pop-ups/error-pop-up';
+import { AlertPopUpActionTypes } from '../store/pop-ups/alert-pop-up';
 
 export const useUserClass = () => {
 	const dispatch = useDispatch();
@@ -60,7 +61,8 @@ export const useUserClass = () => {
 			email: string;
 			confirmedEmail: string;
 		}) {
-			const tokenExpiration = addHours(new Date(), 1);
+			// const tokenExpiration = addHours(new Date(), 1);
+			const tokenExpiration = addSeconds(new Date(), 5);
 
 			localStorage.setItem(
 				'userData',
@@ -98,6 +100,45 @@ export const useUserClass = () => {
 			}
 
 			navigate('/journal/quotidien');
+		}
+
+		static autoLogIn() {
+			const storedUserData = localStorage.getItem('userData');
+
+			let showEmailConfirmationPopup = sessionStorage.getItem(
+				'showEmailConfirmationPopup'
+			);
+
+			if (showEmailConfirmationPopup) {
+				showEmailConfirmationPopup = JSON.parse(showEmailConfirmationPopup);
+			}
+
+			if (!storedUserData) return;
+
+			const userData = JSON.parse(storedUserData);
+
+			if (isBefore(new Date(userData.tokenExpiration), new Date())) {
+				dispatch({ type: UserActionTypes.LOG_USER_OUT });
+				navigate('/');
+				return;
+			}
+
+			dispatch({
+				type: UserActionTypes.LOG_USER_IN,
+				token: userData.token,
+				tokenExpiration: userData.tokenExpiration,
+				id: userData.id,
+				icon: userData.icon,
+				email: userData.email,
+				confirmedEmail: userData.confirmedEmail,
+				name: userData.name,
+			});
+
+			if (!userData.confirmedEmail && showEmailConfirmationPopup) {
+				dispatch({
+					type: EmailConfirmationPopUpActionTypes.SHOW_EMAIL_CONFIRMATION_POP_UP,
+				});
+			}
 		}
 
 		static logOut(data: { redirect: boolean }) {
@@ -188,6 +229,27 @@ export const useUserClass = () => {
 				return false;
 			}
 			return true;
+		}
+
+		static checkTokenIsExpired() {
+			if (!userState.tokenExpiration) {
+				return;
+			}
+
+			let remainingTime =
+				new Date(userState.tokenExpiration).getTime() - new Date().getTime();
+
+			setTimeout(() => {
+				dispatch({
+					type: AlertPopUpActionTypes.SET_AND_SHOW_ALERT_POP_UP,
+					message: 'Votre session a expiré, veuillez vous reconnecter.',
+				});
+
+				User.logOut({ redirect: true });
+				return true;
+			}, remainingTime);
+
+			return false;
 		}
 	}
 

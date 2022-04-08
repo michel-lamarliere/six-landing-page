@@ -1,13 +1,8 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { isBefore } from 'date-fns';
+import { Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { RootState } from './_shared/store/_store';
-import { UserActionTypes } from './_shared/store/user';
-import { EmailConfirmationPopUpActionTypes } from './_shared/store/pop-ups/email-confirmation-pop-up';
-import { AlertPopUpActionTypes } from './_shared/store/pop-ups/alert-pop-up';
 
 import { useUserClass } from './_shared/classes/user-class-hook';
 
@@ -38,9 +33,6 @@ import AlertPopup from './pop-ups/pages/AlertPopUp';
 import ForgotPasswordPopUp from './pop-ups/pages/ForgotPasswordPopUp';
 
 const App: React.FC = () => {
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
-
 	const { User } = useUserClass();
 
 	const userState = useSelector((state: RootState) => state.user);
@@ -54,70 +46,12 @@ const App: React.FC = () => {
 		(state: RootState) => state.forgotPasswordPopUp
 	);
 
-	const autoLogIn = async () => {
-		const storedUserData = localStorage.getItem('userData');
-		let showEmailConfirmationPopup = sessionStorage.getItem(
-			'showEmailConfirmationPopup'
-		);
-
-		if (showEmailConfirmationPopup) {
-			showEmailConfirmationPopup = JSON.parse(showEmailConfirmationPopup);
-		}
-
-		if (!storedUserData) return;
-
-		let userData = JSON.parse(storedUserData);
-
-		if (isBefore(new Date(userData.expiration), new Date())) {
-			dispatch({ type: UserActionTypes.LOG_USER_OUT });
-			navigate('/');
-			return;
-		}
-
-		dispatch({
-			type: UserActionTypes.LOG_USER_IN,
-			token: userData.token,
-			expiration: userData.tokenExpiration,
-			id: userData.id,
-			icon: userData.icon,
-			email: userData.email,
-			confirmedEmail: userData.confirmedEmail,
-			name: userData.name,
-		});
-
-		if (!userData.confirmedEmail && showEmailConfirmationPopup) {
-			dispatch({
-				type: EmailConfirmationPopUpActionTypes.SHOW_EMAIL_CONFIRMATION_POP_UP,
-			});
-		}
-	};
-
 	useEffect(() => {
-		autoLogIn();
+		User.autoLogIn();
 	}, []);
 
 	useEffect(() => {
-		if (!userState.tokenExpiration) {
-			return;
-		}
-
-		let remainingTime =
-			new Date(userState.tokenExpiration).getTime() - new Date().getTime();
-
-		setTimeout(() => {
-			dispatch({
-				type: AlertPopUpActionTypes.SET_AND_SHOW_ALERT_POP_UP,
-				message: 'Votre session a expiré, veuillez vous reconnecter.',
-			});
-
-			dispatch({
-				type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
-			});
-
-			dispatch({ type: UserActionTypes.LOG_USER_OUT });
-
-			navigate('/');
-		}, remainingTime);
+		User.checkTokenIsExpired();
 	}, [userState.tokenExpiration]);
 
 	return (
@@ -132,14 +66,12 @@ const App: React.FC = () => {
 			{forgotPasswordPopUpState.show && <ForgotPasswordPopUp />}
 			<Routes>
 				{!User.isLoggedIn() && (
-					// LOGGED OUT
 					<>
 						<Route path='/' element={<Homepage />} />
 						<Route path='/login-signup' element={<LoginSignupForms />} />
 					</>
 				)}
 				{User.isLoggedIn() && (
-					// LOGGED IN
 					<>
 						<Route path='/' element={<DailyView />} />
 						<Route path='/journal/quotidien' element={<DailyView />} />
@@ -161,7 +93,6 @@ const App: React.FC = () => {
 						/>
 					</>
 				)}
-				{/* //LOGGED IN OR OUT*/}
 				<Route
 					path='/profil/confirmation/:email/:code'
 					element={<EmailAddressConfirmation />}
