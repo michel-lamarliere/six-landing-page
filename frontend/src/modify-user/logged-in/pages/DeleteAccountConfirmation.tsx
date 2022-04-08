@@ -13,14 +13,14 @@ const DeleteAccountConfirm: React.FC = () => {
 	const [response, setResponse] = useState('');
 
 	const deleteAccountHandler = async () => {
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user-modify/delete-account/confirmation`,
-			'DELETE',
-			JSON.stringify({
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/delete-account/confirmation`,
+			method: 'DELETE',
+			body: JSON.stringify({
 				email,
 				code,
-			})
-		);
+			}),
+		});
 
 		if (responseData.error) {
 			setResponse(responseData.message);

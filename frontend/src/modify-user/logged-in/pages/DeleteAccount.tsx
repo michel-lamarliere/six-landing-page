@@ -47,11 +47,11 @@ const DeleteAccount: React.FC = () => {
 			return;
 		}
 
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user-modify/delete-account`,
-			'PATCH',
-			JSON.stringify({ id: userState.id })
-		);
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/delete-account`,
+			method: 'PATCH',
+			body: JSON.stringify({ id: userState.id }),
+		});
 
 		setSubmitted(true);
 

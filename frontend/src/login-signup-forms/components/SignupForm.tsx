@@ -78,16 +78,16 @@ const SingupForm: React.FC<Props> = (props) => {
 
 		console.log(passwordConfirmationInput.value);
 
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user/signup`,
-			'POST',
-			JSON.stringify({
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/signup`,
+			method: 'POST',
+			body: JSON.stringify({
 				name: nameInput.value.trim().toLowerCase(),
 				email: emailInput.value.trim().toLowerCase(),
 				password: passwordInput.value,
 				passwordConfirmation: passwordConfirmationInput.value,
-			})
-		);
+			}),
+		});
 
 		if (responseData.error) {
 			setResponseMessage(responseData.message);

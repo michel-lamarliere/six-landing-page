@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useNavigate } from 'react-router-dom';
-import { addHours, addSeconds, isBefore } from 'date-fns';
+import { addHours, isBefore } from 'date-fns';
 
 import { useRequest } from '../hooks/http-hook';
 import { useFormatUserName } from '../hooks/format-user-name-hook';
@@ -22,28 +22,28 @@ export const useUserClass = () => {
 	const userState = useSelector((state: RootState) => state.user);
 
 	class User {
-		token: string;
-		id: string;
-		icon: number;
-		name: string;
-		email: string;
-		confirmedEmail: string;
+		// token: string;
+		// id: string;
+		// icon: number;
+		// name: string;
+		// email: string;
+		// confirmedEmail: string;
 
-		constructor(userData: {
-			token: string;
-			id: string;
-			icon: number;
-			name: string;
-			email: string;
-			confirmedEmail: string;
-		}) {
-			this.token = userData.token;
-			this.id = userData.id;
-			this.icon = userData.icon;
-			this.name = userData.name;
-			this.email = userData.email;
-			this.confirmedEmail = userData.confirmedEmail;
-		}
+		// constructor(userData: {
+		// 	token: string;
+		// 	id: string;
+		// 	icon: number;
+		// 	name: string;
+		// 	email: string;
+		// 	confirmedEmail: string;
+		// }) {
+		// 	this.token = userData.token;
+		// 	this.id = userData.id;
+		// 	this.icon = userData.icon;
+		// 	this.name = userData.name;
+		// 	this.email = userData.email;
+		// 	this.confirmedEmail = userData.confirmedEmail;
+		// }
 
 		static rememberEmail(data: { email: string }) {
 			localStorage.setItem('rememberEmail', data.email);
@@ -61,8 +61,7 @@ export const useUserClass = () => {
 			email: string;
 			confirmedEmail: string;
 		}) {
-			// const tokenExpiration = addHours(new Date(), 1);
-			const tokenExpiration = addSeconds(new Date(), 5);
+			const tokenExpiration = addHours(new Date(), 1);
 
 			localStorage.setItem(
 				'userData',
@@ -159,10 +158,10 @@ export const useUserClass = () => {
 		}
 
 		static async refreshInfo() {
-			const responseData = await sendRequest(
-				`${process.env.REACT_APP_BACKEND_URL}/user/${userState.id}`,
-				'GET'
-			);
+			const responseData = await sendRequest({
+				url: `${process.env.REACT_APP_BACKEND_URL}/user/${userState.id}`,
+				method: 'GET',
+			});
 
 			if (!responseData) {
 				return;
@@ -246,10 +245,7 @@ export const useUserClass = () => {
 				});
 
 				User.logOut({ redirect: true });
-				return true;
 			}, remainingTime);
-
-			return false;
 		}
 	}
 

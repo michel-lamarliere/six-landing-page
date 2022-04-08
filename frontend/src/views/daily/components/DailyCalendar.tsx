@@ -96,12 +96,12 @@ const DailyCalendar: React.FC<{
 	};
 
 	useEffect(() => {
-		getMonthFn(
-			getMonthFnTypes.STATE,
-			calendarDate.getMonth(),
-			true,
-			setCalendarMonthStr
-		);
+		getMonthFn({
+			type: getMonthFnTypes.STATE,
+			monthNumber: calendarDate.getMonth(),
+			abreviation: true,
+			setState: setCalendarMonthStr,
+		});
 		createDayCalendar();
 	}, [calendarDate]);
 

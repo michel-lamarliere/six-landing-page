@@ -51,10 +51,10 @@ const MonthlyView: React.FC = () => {
 	const getMonthlyData = async () => {
 		const chosenMonthStr = format(chosenDate, 'yyyy-MM-dd');
 
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/log/monthly/${userState.id}/${chosenMonthStr}/${chosenTask}`,
-			'GET'
-		);
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/log/monthly/${userState.id}/${chosenMonthStr}/${chosenTask}`,
+			method: 'GET',
+		});
 
 		if (!responseData) {
 			return;
@@ -83,7 +83,12 @@ const MonthlyView: React.FC = () => {
 	useEffect(() => {
 		if (userState.id) {
 			getMonthlyData();
-			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), false, setMonthStr);
+			getMonthFn({
+				type: getMonthFnTypes.STATE,
+				monthNumber: chosenDate.getMonth(),
+				abreviation: false,
+				setState: setMonthStr,
+			});
 		}
 	}, [chosenDate, chosenTask]);
 

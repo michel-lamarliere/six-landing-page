@@ -51,10 +51,10 @@ const WeekView: React.FC = () => {
 	};
 
 	const getWeekData = async () => {
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/log/weekly/${userState.id}/${formattedFirstOfWeek}`,
-			'GET'
-		);
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/log/weekly/${userState.id}/${formattedFirstOfWeek}`,
+			method: 'GET',
+		});
 
 		if (!responseData) {
 			return;
@@ -67,7 +67,12 @@ const WeekView: React.FC = () => {
 	useEffect(() => {
 		if (userState.id) {
 			getWeekData();
-			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), false, setMonthStr);
+			getMonthFn({
+				type: getMonthFnTypes.STATE,
+				monthNumber: chosenDate.getMonth(),
+				abreviation: false,
+				setState: setMonthStr,
+			});
 		}
 	}, [userState.id, chosenDate]);
 

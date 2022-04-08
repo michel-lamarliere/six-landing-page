@@ -60,14 +60,14 @@ const ChangeName: React.FC = () => {
 			return;
 		}
 
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user-modify/name`,
-			'PATCH',
-			JSON.stringify({
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/name`,
+			method: 'PATCH',
+			body: JSON.stringify({
 				id: userState.id,
 				newName: newName.value.trim().toLowerCase(),
-			})
-		);
+			}),
+		});
 
 		if (!responseData) {
 			return;

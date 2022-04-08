@@ -65,21 +65,19 @@ const LoginForm: React.FC<Props> = (props) => {
 			return;
 		}
 
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user/signin`,
-			'POST',
-			JSON.stringify({
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/signin`,
+			method: 'POST',
+			body: JSON.stringify({
 				email: emailInput.value.trim().toLowerCase(),
 				password: passwordInput.value,
-			})
-		);
+			}),
+		});
 
 		if (responseData.error) {
 			setResponseMessage(responseData.message);
 			return;
 		}
-
-		console.log(responseData);
 
 		if (rememberEmail) {
 			User.rememberEmail({ email: responseData.email });

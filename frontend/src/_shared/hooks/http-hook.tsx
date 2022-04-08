@@ -10,11 +10,13 @@ export const useRequest = () => {
 
 	const userData = useSelector((state: RootState) => state.user);
 
-	const sendRequest = async (
-		url: string,
-		method: 'POST' | 'GET' | 'PATCH' | 'DELETE',
-		body: string | null = null
-	) => {
+	const sendRequest = async (args: {
+		url: string;
+		method: 'POST' | 'GET' | 'PATCH' | 'DELETE';
+		body?: string | null;
+	}) => {
+		const { url, method, body } = args;
+
 		const response = await fetch(url, {
 			method,
 			headers: {

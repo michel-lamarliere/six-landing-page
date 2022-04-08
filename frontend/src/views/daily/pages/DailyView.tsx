@@ -50,12 +50,12 @@ const DailyView: React.FC = () => {
 	};
 
 	const getDailyData = async () => {
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/log/daily/${userState.id}/${chosenDate
-				.toISOString()
-				.slice(0, 10)}`,
-			'GET'
-		);
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/log/daily/${
+				userState.id
+			}/${chosenDate.toISOString().slice(0, 10)}`,
+			method: 'GET',
+		});
 
 		if (!responseData) {
 			return;
@@ -68,8 +68,13 @@ const DailyView: React.FC = () => {
 	useEffect(() => {
 		if (userState.id) {
 			getDailyData();
-			getDayFn(getDay(chosenDate), setDayStr);
-			getMonthFn(getMonthFnTypes.STATE, chosenDate.getMonth(), false, setMonthStr);
+			getDayFn({ dayNumber: getDay(chosenDate), setState: setDayStr });
+			getMonthFn({
+				type: getMonthFnTypes.STATE,
+				monthNumber: chosenDate.getMonth(),
+				abreviation: false,
+				setState: setMonthStr,
+			});
 		}
 	}, [chosenDate]);
 

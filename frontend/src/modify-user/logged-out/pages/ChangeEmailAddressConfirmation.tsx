@@ -11,11 +11,11 @@ const ConfirmEmailAddress: React.FC = () => {
 	const [response, setResponse] = useState();
 
 	const confirmationHandler = async () => {
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user/confirm/email`,
-			'PATCH',
-			JSON.stringify({ email: email, code: code })
-		);
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/confirm/email`,
+			method: 'PATCH',
+			body: JSON.stringify({ email: email, code: code }),
+		});
 
 		if (responseData.error) {
 			setResponse(responseData.message);

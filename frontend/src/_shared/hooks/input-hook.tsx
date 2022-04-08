@@ -9,7 +9,7 @@ export enum useInputTypes {
 	NONE = 'NONE',
 }
 
-export const useInput = (data: {
+export const useInput = (args: {
 	type:
 		| useInputTypes.NAME
 		| useInputTypes.EMAIL
@@ -20,10 +20,10 @@ export const useInput = (data: {
 	display?: boolean;
 	compareTo?: string | null;
 }) => {
-	const type = data.type;
-	const validate = data.validate;
-	const display = data.display;
-	const compareTo = data.compareTo;
+	const type = args.type;
+	const validate = args.validate;
+	const display = args.display;
+	const compareTo = args.compareTo;
 
 	const [input, setInput] = useState({
 		value: '',

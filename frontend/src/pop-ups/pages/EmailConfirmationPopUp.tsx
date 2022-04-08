@@ -25,11 +25,11 @@ const EmailPopup: React.FC = () => {
 	const [responseMessage, setResponseMessage] = useState('');
 
 	const resendEmailConfirmationHandler = async () => {
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user/email/email-confirmation`,
-			'POST',
-			JSON.stringify({ id: userState.id })
-		);
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/email/email-confirmation`,
+			method: 'POST',
+			body: JSON.stringify({ id: userState.id }),
+		});
 
 		if (responseData.error) {
 			setResponseMessage(responseData.message);

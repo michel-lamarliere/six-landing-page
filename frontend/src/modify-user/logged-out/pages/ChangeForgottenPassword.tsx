@@ -70,10 +70,10 @@ const ForgotPasswordForm: React.FC = () => {
 			return;
 		}
 
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/confirmation/${email}/${uniqueId}`,
-			'GET'
-		);
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/confirmation/${email}/${uniqueId}`,
+			method: 'GET',
+		});
 
 		console.log(responseData);
 
@@ -96,15 +96,15 @@ const ForgotPasswordForm: React.FC = () => {
 	};
 
 	const changePasswordHandler = async () => {
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/modify`,
-			'PATCH',
-			JSON.stringify({
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/modify`,
+			method: 'PATCH',
+			body: JSON.stringify({
 				id: userId,
 				newPassword: newPassword.value,
 				newPasswordConfirmation: newPasswordConfirmation.value,
-			})
-		);
+			}),
+		});
 
 		if (!responseData) {
 			return;

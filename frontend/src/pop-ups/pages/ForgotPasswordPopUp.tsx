@@ -34,11 +34,10 @@ const ForgotPassword: React.FC = () => {
 	const sendEmailForgotPassword = async (event: React.FormEvent) => {
 		event.preventDefault();
 
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/${forgotPasswordEmailInput.value}`,
-			'GET',
-			null
-		);
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/${forgotPasswordEmailInput.value}`,
+			method: 'GET',
+		});
 
 		if (!responseData) {
 			return;

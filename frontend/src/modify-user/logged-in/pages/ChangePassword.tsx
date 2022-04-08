@@ -64,16 +64,16 @@ const ChangePassword: React.FC = () => {
 			return;
 		}
 
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/user-modify/password`,
-			'PATCH',
-			JSON.stringify({
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/password`,
+			method: 'PATCH',
+			body: JSON.stringify({
 				id: userState.id,
 				oldPassword: oldPassword.value,
 				newPassword: newPassword.value,
 				newPasswordConfirmation: newPasswordConfirmation.value,
-			})
-		);
+			}),
+		});
 
 		setSent(true);
 

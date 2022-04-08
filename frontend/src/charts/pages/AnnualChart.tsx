@@ -40,12 +40,12 @@ const AnnualGraph: React.FC = () => {
 	};
 
 	const getGraph = async () => {
-		const responseData = await sendRequest(
-			`${process.env.REACT_APP_BACKEND_URL}/charts/annual/${userState.id}/${getYear(
-				chosenYear
-			)}/${chosenTask}`,
-			'GET'
-		);
+		const responseData = await sendRequest({
+			url: `${process.env.REACT_APP_BACKEND_URL}/charts/annual/${
+				userState.id
+			}/${getYear(chosenYear)}/${chosenTask}`,
+			method: 'GET',
+		});
 
 		createChartData(responseData.array);
 	};
@@ -56,7 +56,11 @@ const AnnualGraph: React.FC = () => {
 		const data: {}[] = [];
 
 		for (let i = 0; i < array.length; i++) {
-			let month = getMonthFn(getMonthFnTypes.VARIABLE, i, true);
+			let month = getMonthFn({
+				type: getMonthFnTypes.VARIABLE,
+				monthNumber: i,
+				abreviation: true,
+			});
 
 			const thisMonth = {
 				name: month,
