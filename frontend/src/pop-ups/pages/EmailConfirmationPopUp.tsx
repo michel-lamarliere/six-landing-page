@@ -11,7 +11,7 @@ import { useRequest } from '../../_shared/hooks/http-hook';
 import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
 import PopUp, { PopUpTypes } from '../components/PopUp';
 
-import sentIcon from '../../_shared/assets/imgs/icons/validated.svg';
+import successIcon from '../../_shared/assets/imgs/icons/success.svg';
 
 import classes from './EmailConfirmationPopUp.module.scss';
 
@@ -54,19 +54,19 @@ const EmailPopup: React.FC = () => {
 		});
 	};
 
-	useEffect(() => {
-		if (userState.confirmedEmail) {
-			dispatch({
-				type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
-			});
-			dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
-		} else {
-			dispatch({
-				type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
-			});
-			dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
-		}
-	}, [userState.confirmedEmail]);
+	// useEffect(() => {
+	// 	if (userState.confirmedEmail) {
+	// 		dispatch({
+	// 			type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
+	// 		});
+	// 		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
+	// 	} else {
+	// 		dispatch({
+	// 			type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
+	// 		});
+	// 		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
+	// 	}
+	// }, [userState.confirmedEmail]);
 
 	return ReactDOM.createPortal(
 		<PopUp
@@ -92,7 +92,7 @@ const EmailPopup: React.FC = () => {
 				</>
 			) : (
 				<>
-					<img src={sentIcon} alt='Envoyé' className={classes.icon} />
+					<img src={successIcon} alt='Envoyé' className={classes.icon} />
 					<div className={classes.response}>{responseMessage}</div>
 				</>
 			)}

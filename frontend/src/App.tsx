@@ -16,7 +16,7 @@ import MonthlyView from './views/monthly/pages/MonthlyView';
 import Error404 from './error404/Error404';
 import ErrorPopup from './pop-ups/pages/ErrorPopUp';
 import EmailConfirmationPopup from './pop-ups/pages/EmailConfirmationPopUp';
-import ConfirmEmailAddress from './modify-user/logged-out/pages/ChangeEmailAddressConfirmation';
+import EmailAddressConfirmation from './modify-user/logged-out/pages/ChangeEmailAddressConfirmation';
 import ChangeForgottenPassword from './modify-user/logged-out/pages/ChangeForgottenPassword';
 import Overlay from './_shared/components/UIElements/Overlay';
 import HamburgerButton from './_shared/components/UIElements/HamburgerButton';
@@ -30,8 +30,8 @@ import Homepage from './homepage/pages/Homepage';
 import DesktopSidebar from './layout/sidebar/pages/DesktopSidebar';
 import MobileSidebar from './layout/sidebar/pages/MobileSidebar';
 import DeleteAccount from './modify-user/logged-in/pages/DeleteAccount';
-import DeleteAccountConfirm from './modify-user/logged-in/pages/DeleteAccountConfirmation';
-import ChangeEmailConfirm from './modify-user/logged-in/pages/ChangeEmailConfirm';
+import DeleteAccountConfirmation from './modify-user/logged-in/pages/DeleteAccountConfirmation';
+import ChangeEmailConfirmation from './modify-user/logged-in/pages/ChangeEmailConfirmation';
 import AlertPopup from './pop-ups/pages/AlertPopUp';
 import ForgotPasswordPopUp from './pop-ups/pages/ForgotPasswordPopUp';
 
@@ -128,7 +128,7 @@ const App: React.FC = () => {
 			{userData && <HamburgerButton />}
 			{userData && <DesktopSidebar />}
 			{userData && <MobileSidebar />}
-			{overlayState.show && <Overlay />}
+			{/* {overlayState.show && <Overlay />} */}
 			{alertPopUpState.message && <AlertPopup message={alertPopUpState.message} />}
 			{errorPopUpState.message && <ErrorPopup message={errorPopUpState.message} />}
 			{emailConfirmationPopUpState.show && <EmailConfirmationPopup />}
@@ -167,15 +167,15 @@ const App: React.FC = () => {
 				{/* //LOGGED IN OR OUT*/}
 				<Route
 					path='/profil/confirmation/:email/:code'
-					element={<ConfirmEmailAddress />}
+					element={<EmailAddressConfirmation />}
 				/>
 				<Route
 					path='/supprimer-compte/confirmation/:email/:code'
-					element={<DeleteAccountConfirm />}
+					element={<DeleteAccountConfirmation />}
 				/>
 				<Route
 					path='/modifier-email/confirmation/:oldEmail/:newEmail'
-					element={<ChangeEmailConfirm />}
+					element={<ChangeEmailConfirmation />}
 				/>
 				<Route
 					path='/modifier/mot-de-passe/:email/:uniqueId'

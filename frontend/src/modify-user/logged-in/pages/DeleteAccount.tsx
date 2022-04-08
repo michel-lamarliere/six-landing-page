@@ -13,7 +13,7 @@ import EditProfileFormWrapper, {
 } from '../components/EditProfileFormWrapper';
 import RoundedButton from '../../../_shared/components/UIElements/RoundedButton';
 
-import successIcon from '../../../_shared/assets/imgs/icons/validated.svg';
+import successIcon from '../../../_shared/assets/imgs/icons/success.svg';
 
 import classes from './DeleteAccount.module.scss';
 

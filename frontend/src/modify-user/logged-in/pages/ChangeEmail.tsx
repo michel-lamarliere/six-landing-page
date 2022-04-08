@@ -11,7 +11,7 @@ import EditProfileFormWrapper, {
 	EditProfileFormWrapperTypes,
 } from '../components/EditProfileFormWrapper';
 
-import successIcon from '../../../_shared/assets/imgs/icons/validated.svg';
+import successIcon from '../../../_shared/assets/imgs/icons/success.svg';
 
 import classes from './ChangeEmail.module.scss';
 

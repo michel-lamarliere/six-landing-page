@@ -125,7 +125,7 @@ export const useUserClass = () => {
 			dispatch({
 				type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
 			});
-			navigate('/');
+			// navigate('/');
 		}
 
 		static getInfo() {

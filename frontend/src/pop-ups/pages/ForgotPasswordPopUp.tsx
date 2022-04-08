@@ -12,7 +12,7 @@ import Input, { InputStyles } from '../../_shared/components/FormElements/Input'
 import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
 import PopUp, { PopUpTypes } from '../components/PopUp';
 
-import successIcon from '../../_shared/assets/imgs/icons/validated.svg';
+import successIcon from '../../_shared/assets/imgs/icons/success.svg';
 
 import classes from './ForgotPasswordPopUp.module.scss';
 
@@ -61,7 +61,7 @@ const ForgotPassword: React.FC = () => {
 	const closePopUp = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
-		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
+		// dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
 		dispatch({ type: ForgotPasswordPopUpActionTypes.HIDE_FORGOT_PASSWORD_POP_UP });
 	};
 

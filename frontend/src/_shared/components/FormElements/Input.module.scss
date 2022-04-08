@@ -15,6 +15,7 @@
 		border-radius: 0.5rem;
 		color: #ffffff;
 		font-size: 16px;
+		box-sizing: border-box;
 
 		&--basic {
 			border: 0.1rem solid #4740a0;
@@ -48,7 +49,7 @@
 
 	&__show-password {
 		position: absolute;
-		right: 0;
+		right: 0.5rem;
 		top: 50%;
 		transform: translateY(-50%);
 		background: none;

@@ -358,7 +358,12 @@ const checkForgotPasswordAuth: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	res.status(200).json({ success: true, message: 'Autorisé.', id: user._id });
+	res.status(200).json({
+		success: true,
+		message: 'Autorisé.',
+		id: user._id,
+		name: user.name,
+	});
 };
 
 const changeForgottenPassword: RequestHandler = async (req, res, next) => {
@@ -385,9 +390,15 @@ const changeForgottenPassword: RequestHandler = async (req, res, next) => {
 		newPasswordConfirmation: false,
 	};
 
-	validInputs.newPassword = reqNewPassword.match(
+	const newPasswordIsValid = reqNewPassword.match(
 		/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
 	);
+
+	if (newPasswordIsValid) {
+		validInputs.newPassword = true;
+	}
+
+	console.log(validInputs.newPassword);
 
 	validInputs.newPasswordConfirmation = reqNewPassword === reqNewPasswordConfirmation;
 
@@ -402,7 +413,7 @@ const changeForgottenPassword: RequestHandler = async (req, res, next) => {
 
 	await databaseConnect.updateOne(
 		{ _id: reqId },
-		{ $set: { password: hashedNewPassword } }
+		{ $set: { password: hashedNewPassword, 'forgotPassword.code': null } }
 	);
 
 	res.status(200).json({ success: true, message: 'Mot de passe modifié.' });

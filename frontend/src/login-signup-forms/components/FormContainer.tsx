@@ -55,7 +55,6 @@ const FormContainer: React.FC<Props> = (props) => {
 			{!userData && (
 				<>
 					<form onSubmit={props.formHandler} className={classes.form}>
-						{forgotPasswordPopUpState.show && <ForgotPassword />}
 						{props.children}
 					</form>
 					<div className={classes['response-message']}>
