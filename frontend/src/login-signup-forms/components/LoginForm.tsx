@@ -79,17 +79,13 @@ const LoginForm: React.FC<Props> = (props) => {
 			return;
 		}
 
-		console.log(responseData);
-
-		const user = new User(responseData);
-
 		if (rememberEmail) {
-			user.rememberEmail();
+			User.rememberEmail(responseData.email);
 		} else {
-			user.forgetEmail();
+			User.forgetEmail();
 		}
 
-		user.logIn();
+		User.logIn(responseData);
 	};
 
 	const checkboxHandler = (event: React.MouseEvent<HTMLButtonElement>) => {

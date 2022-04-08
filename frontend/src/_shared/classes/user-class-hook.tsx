@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { addHours } from 'date-fns';
 
 import { useRequest } from '../hooks/http-hook';
+import { useFormatUserName } from '../hooks/format-user-name-hook';
 
 import { UserActionTypes } from '../store/user';
 import { RootState } from '../store/_store';
@@ -15,36 +16,26 @@ export const useUserClass = () => {
 	const navigate = useNavigate();
 
 	const { sendRequest } = useRequest();
+	const { formatUserName } = useFormatUserName();
 
 	const userState = useSelector((state: RootState) => state.user);
 
-	const formatUserName = (name: string) => {
-		let formattedName = '';
-		if (!name) return;
-
-		if (name.match(/-/)) {
-			let part1 = name.split('-')[0];
-			part1 = part1.slice(0, 1).toUpperCase() + part1.slice(1);
-
-			let part2 = name.split('-')[1];
-			part2 = part2.slice(0, 1).toUpperCase() + part2.slice(1);
-
-			formattedName = `${part1}-${part2}`;
-		} else {
-			formattedName = name?.slice(0, 1).toUpperCase() + name.slice(1);
-		}
-		return formattedName;
-	};
-
 	class User {
-		token: any;
-		id: any;
-		icon: any;
-		name: any;
-		email: any;
-		confirmedEmail: any;
+		token: string;
+		id: string;
+		icon: number;
+		name: string;
+		email: string;
+		confirmedEmail: string;
 
-		constructor(userData: any) {
+		constructor(userData: {
+			token: string;
+			id: string;
+			icon: number;
+			name: string;
+			email: string;
+			confirmedEmail: string;
+		}) {
 			this.token = userData.token;
 			this.id = userData.id;
 			this.icon = userData.icon;
@@ -53,34 +44,54 @@ export const useUserClass = () => {
 			this.confirmedEmail = userData.confirmedEmail;
 		}
 
-		rememberEmail() {
-			localStorage.setItem('rememberEmail', this.email);
+		static rememberEmail(data: { email: string }) {
+			localStorage.setItem('rememberEmail', data.email);
 		}
 
-		forgetEmail() {
+		static forgetEmail() {
 			localStorage.removeItem('rememberEmail');
 		}
 
-		logIn() {
+		static logIn(data: {
+			token: string;
+			id: string;
+			icon: number;
+			name: string;
+			email: string;
+			confirmedEmail: string;
+		}) {
 			const tokenExpiration = addHours(new Date(), 1);
+
+			localStorage.setItem(
+				'userData',
+				JSON.stringify({
+					token: data.token,
+					tokenExpiration: tokenExpiration,
+					id: data.id,
+					icon: data.icon,
+					name: data.name,
+					email: data.email,
+					confirmedEmail: data.confirmedEmail,
+				})
+			);
 
 			dispatch({
 				type: UserActionTypes.LOG_USER_IN,
-				token: this.token,
-				expiration: tokenExpiration.toISOString(),
-				id: this.id,
-				icon: this.icon,
-				name: formatUserName(this.name),
-				email: this.email,
-				confirmedEmail: this.confirmedEmail,
+				token: data.token,
+				tokenExpiration: tokenExpiration.toISOString(),
+				id: data.id,
+				icon: data.icon,
+				name: formatUserName(data.name),
+				email: data.email,
+				confirmedEmail: data.confirmedEmail,
 			});
 
 			sessionStorage.setItem(
 				'showEmailConfirmationPopup',
-				JSON.stringify(!this.confirmedEmail)
+				JSON.stringify(!data.confirmedEmail)
 			);
 
-			if (!this.confirmedEmail) {
+			if (!data.confirmedEmail) {
 				dispatch({
 					type: EmailConfirmationPopUpActionTypes.SHOW_EMAIL_CONFIRMATION_POP_UP,
 				});
@@ -90,7 +101,10 @@ export const useUserClass = () => {
 		}
 
 		static logOut(data: { redirect: boolean }) {
-			const redirect = data.redirect;
+			const { redirect } = data;
+
+			localStorage.removeItem('userData');
+			sessionStorage.removeItem('showEmailConfirmationPopup');
 
 			dispatch({ type: UserActionTypes.LOG_USER_OUT });
 
@@ -129,11 +143,51 @@ export const useUserClass = () => {
 				confirmedEmail: responseData.user.confirmation.confirmed,
 			});
 
+			const userDataString = localStorage.getItem('userData');
+
+			if (userDataString) {
+				const userData = JSON.parse(userDataString);
+				if (userData) {
+					localStorage.setItem(
+						'userData',
+						JSON.stringify({
+							token: userData.token,
+							tokenExpiration: userData.tokenExpiration,
+							id: userData.id,
+							icon: responseData.user.icon,
+							name: responseData.user.name,
+							email: responseData.user.email,
+							confirmedEmail: responseData.user.confirmedEmail,
+						})
+					);
+				}
+
+				sessionStorage.setItem(
+					'showEmailConfirmationPopup',
+					JSON.stringify(!responseData.user.confirmedEmail)
+				);
+			}
+
 			return responseData.user;
 		}
 
 		static getInfo() {
 			return userState;
+		}
+
+		static isLoggedIn() {
+			if (
+				!userState.token ||
+				!userState.tokenExpiration ||
+				!userState.id ||
+				typeof userState.icon !== 'number' ||
+				!userState.name ||
+				!userState.email ||
+				(userState.confirmedEmail !== true && userState.confirmedEmail !== false)
+			) {
+				return false;
+			}
+			return true;
 		}
 	}
 

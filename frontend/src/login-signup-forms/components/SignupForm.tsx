@@ -94,9 +94,7 @@ const SingupForm: React.FC<Props> = (props) => {
 			return;
 		}
 
-		const user = new User(responseData);
-
-		await user.logIn();
+		User.logIn(responseData);
 		setSubmitted(false);
 	};
 

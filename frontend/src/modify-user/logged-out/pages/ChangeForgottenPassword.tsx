@@ -7,6 +7,7 @@ import { ErrorPopUpActionTypes } from '../../../_shared/store/pop-ups/error-pop-
 
 import { useRequest } from '../../../_shared/hooks/http-hook';
 import { useInput, useInputTypes } from '../../../_shared/hooks/input-hook';
+import { useFormatUserName } from '../../../_shared/hooks/format-user-name-hook';
 
 import { useUserClass } from '../../../_shared/classes/user-class-hook';
 
@@ -23,6 +24,7 @@ const ForgotPasswordForm: React.FC = () => {
 
 	const { email, uniqueId } = useParams();
 	const { sendRequest } = useRequest();
+	const { formatUserName } = useFormatUserName();
 	const { User } = useUserClass();
 
 	const userState = useSelector((state: RootState) => state.user);
@@ -34,7 +36,7 @@ const ForgotPasswordForm: React.FC = () => {
 
 	const userData =
 		userState.token &&
-		userState.expiration &&
+		userState.tokenExpiration &&
 		userState.id &&
 		userState.name &&
 		userState.email &&
@@ -86,24 +88,6 @@ const ForgotPasswordForm: React.FC = () => {
 
 		setUserId(responseData.id);
 		setUserName(responseData.name);
-	};
-
-	const formatUserName = (name: string) => {
-		let formattedName = '';
-		if (!name) return;
-
-		if (name.match(/-/)) {
-			let part1 = name.split('-')[0];
-			part1 = part1.slice(0, 1).toUpperCase() + part1.slice(1);
-
-			let part2 = name.split('-')[1];
-			part2 = part2.slice(0, 1).toUpperCase() + part2.slice(1);
-
-			formattedName = `${part1}-${part2}`;
-		} else {
-			formattedName = name?.slice(0, 1).toUpperCase() + name.slice(1);
-		}
-		return formattedName;
 	};
 
 	const resetForm = () => {

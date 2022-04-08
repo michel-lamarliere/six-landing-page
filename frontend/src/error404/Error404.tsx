@@ -1,26 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
-import { RootState } from '../_shared/store/_store';
+import { useUserClass } from '../_shared/classes/user-class-hook';
 
 import classes from './Error404.module.scss';
 
 const Error404: React.FC = () => {
-	const userState = useSelector((state: RootState) => state.user);
-
-	const userData =
-		userState.token &&
-		userState.expiration &&
-		userState.id &&
-		userState.name &&
-		userState.email;
+	const { User } = useUserClass();
 
 	return (
 		<div>
 			<h1>Erreur 404: Page Introuvable.</h1>
-			{userData && <Link to='/journal/quotidien'>Voir mon journal quotidien</Link>}
-			{!userData && <Link to='/'>Se connecter / S'inscrire</Link>}
+			{User.isLoggedIn() && (
+				<Link to='/journal/quotidien'>Voir mon journal quotidien</Link>
+			)}
+			{!User.isLoggedIn() && <Link to='/'>Se connecter / S'inscrire</Link>}
 		</div>
 	);
 };

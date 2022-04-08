@@ -9,6 +9,8 @@ import { UserActionTypes } from './_shared/store/user';
 import { EmailConfirmationPopUpActionTypes } from './_shared/store/pop-ups/email-confirmation-pop-up';
 import { AlertPopUpActionTypes } from './_shared/store/pop-ups/alert-pop-up';
 
+import { useUserClass } from './_shared/classes/user-class-hook';
+
 import LoginSignupForms from './login-signup-forms/pages/LoginSignupForms';
 import DailyView from './views/daily/pages/DailyView';
 import WeeklyView from './views/weekly/pages/WeeklyView';
@@ -38,6 +40,8 @@ import ForgotPasswordPopUp from './pop-ups/pages/ForgotPasswordPopUp';
 const App: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+
+	const { User } = useUserClass();
 
 	const userState = useSelector((state: RootState) => state.user);
 	const overlayState = useSelector((state: RootState) => state.overlay);
@@ -73,7 +77,7 @@ const App: React.FC = () => {
 		dispatch({
 			type: UserActionTypes.LOG_USER_IN,
 			token: userData.token,
-			expiration: userData.expiration,
+			expiration: userData.tokenExpiration,
 			id: userData.id,
 			icon: userData.icon,
 			email: userData.email,
@@ -93,12 +97,12 @@ const App: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		if (!userState.expiration) {
+		if (!userState.tokenExpiration) {
 			return;
 		}
 
 		let remainingTime =
-			new Date(userState.expiration).getTime() - new Date().getTime();
+			new Date(userState.tokenExpiration).getTime() - new Date().getTime();
 
 		setTimeout(() => {
 			dispatch({
@@ -114,34 +118,27 @@ const App: React.FC = () => {
 
 			navigate('/');
 		}, remainingTime);
-	}, [userState.expiration]);
-
-	const userData =
-		userState.token &&
-		userState.expiration &&
-		userState.id &&
-		userState.name &&
-		userState.email;
+	}, [userState.tokenExpiration]);
 
 	return (
 		<>
-			{userData && <HamburgerButton />}
-			{userData && <DesktopSidebar />}
-			{userData && <MobileSidebar />}
+			{User.isLoggedIn() && <HamburgerButton />}
+			{User.isLoggedIn() && <DesktopSidebar />}
+			{User.isLoggedIn() && <MobileSidebar />}
 			{/* {overlayState.show && <Overlay />} */}
 			{alertPopUpState.message && <AlertPopup message={alertPopUpState.message} />}
 			{errorPopUpState.message && <ErrorPopup message={errorPopUpState.message} />}
 			{emailConfirmationPopUpState.show && <EmailConfirmationPopup />}
 			{forgotPasswordPopUpState.show && <ForgotPasswordPopUp />}
 			<Routes>
-				{!userData && (
+				{!User.isLoggedIn() && (
 					// LOGGED OUT
 					<>
 						<Route path='/' element={<Homepage />} />
 						<Route path='/login-signup' element={<LoginSignupForms />} />
 					</>
 				)}
-				{userData && (
+				{User.isLoggedIn() && (
 					// LOGGED IN
 					<>
 						<Route path='/' element={<DailyView />} />

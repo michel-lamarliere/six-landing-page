@@ -1,6 +1,6 @@
 interface State {
 	token: null | string;
-	expiration: null | Date;
+	tokenExpiration: null | Date;
 	id: null | string;
 	icon: any;
 	name: null | string;
@@ -14,7 +14,7 @@ interface Action extends State {
 
 const initialStateReducer: State = {
 	token: null,
-	expiration: null,
+	tokenExpiration: null,
 	id: null,
 	icon: null,
 	name: null,
@@ -31,22 +31,9 @@ export const enum UserActionTypes {
 const userReducer = (state = initialStateReducer, action: Action) => {
 	switch (action.type) {
 		case UserActionTypes.LOG_USER_IN: {
-			localStorage.setItem(
-				'userData',
-				JSON.stringify({
-					token: action.token,
-					expiration: action.expiration,
-					id: action.id,
-					icon: action.icon,
-					name: action.name,
-					email: action.email,
-					confirmedEmail: action.confirmedEmail,
-				})
-			);
-
 			return {
 				token: action.token,
-				expiration: action.expiration,
+				tokenExpiration: action.tokenExpiration,
 				id: action.id,
 				icon: action.icon,
 				name: action.name,
@@ -56,12 +43,9 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 		}
 
 		case UserActionTypes.LOG_USER_OUT: {
-			localStorage.removeItem('userData');
-			sessionStorage.removeItem('showEmailConfirmationPopup');
-
 			return {
 				token: null,
-				expiration: null,
+				tokenExpiration: null,
 				id: null,
 				icon: null,
 				name: null,
@@ -71,23 +55,6 @@ const userReducer = (state = initialStateReducer, action: Action) => {
 		}
 
 		case UserActionTypes.REFRESH_USER_DATA: {
-			localStorage.setItem(
-				'userData',
-				JSON.stringify({
-					token: state.token,
-					expiration: state.expiration,
-					id: state.id,
-					icon: action.icon,
-					name: action.name,
-					email: action.email,
-					confirmedEmail: action.confirmedEmail,
-				})
-			);
-			sessionStorage.setItem(
-				'showEmailConfirmationPopup',
-				JSON.stringify(!action.confirmedEmail)
-			);
-
 			return {
 				...state,
 				icon: action.icon,
