@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { addHours, addMonths, addYears, getYear, isBefore } from 'date-fns';
+import { addHours, addMonths, addYears, getYear, isBefore, isSameDay } from 'date-fns';
 
 import { TaskSelectorActionTypes } from '../../../_shared/store/task-selector';
 import { CalendarActionTypes } from '../../../_shared/store/calendar';
@@ -106,6 +106,15 @@ const MonthlyCalendar: React.FC<{
 								addHours(
 									new Date(calendarDate.getFullYear(), index, 1),
 									1
+								),
+								new Date()
+							) &&
+							!isSameDay(
+								new Date(
+									addHours(
+										new Date(calendarDate.getFullYear(), index, 1),
+										1
+									)
 								),
 								new Date()
 							)

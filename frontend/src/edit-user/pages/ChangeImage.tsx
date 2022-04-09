@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { useUserClass } from '../../../_shared/classes/user-class-hook';
-import { useRequest } from '../../../_shared/hooks/http-hook';
+import { useUserClass } from '../../_shared/classes/user-class-hook';
+import { useRequest } from '../../_shared/hooks/http-hook';
 
-import userIcon0 from '../../../_shared/assets/imgs/icons/user/icon_0.svg';
-import userIcon1 from '../../../_shared/assets/imgs/icons/user/icon_1.svg';
-import userIcon2 from '../../../_shared/assets/imgs/icons/user/icon_2.svg';
-import userIcon3 from '../../../_shared/assets/imgs/icons/user/icon_3.svg';
-import userIcon4 from '../../../_shared/assets/imgs/icons/user/icon_4.svg';
-import userIcon5 from '../../../_shared/assets/imgs/icons/user/icon_5.svg';
-import userIcon6 from '../../../_shared/assets/imgs/icons/user/icon_6.svg';
-import userIcon7 from '../../../_shared/assets/imgs/icons/user/icon_7.svg';
-import userIcon8 from '../../../_shared/assets/imgs/icons/user/icon_8.svg';
-import userIcon9 from '../../../_shared/assets/imgs/icons/user/icon_9.svg';
-import userIcon10 from '../../../_shared/assets/imgs/icons/user/icon_10.svg';
-import userIcon11 from '../../../_shared/assets/imgs/icons/user/icon_11.svg';
+import userIcon0 from '../../_shared/assets/imgs/icons/user/icon_0.svg';
+import userIcon1 from '../../_shared/assets/imgs/icons/user/icon_1.svg';
+import userIcon2 from '../../_shared/assets/imgs/icons/user/icon_2.svg';
+import userIcon3 from '../../_shared/assets/imgs/icons/user/icon_3.svg';
+import userIcon4 from '../../_shared/assets/imgs/icons/user/icon_4.svg';
+import userIcon5 from '../../_shared/assets/imgs/icons/user/icon_5.svg';
+import userIcon6 from '../../_shared/assets/imgs/icons/user/icon_6.svg';
+import userIcon7 from '../../_shared/assets/imgs/icons/user/icon_7.svg';
+import userIcon8 from '../../_shared/assets/imgs/icons/user/icon_8.svg';
+import userIcon9 from '../../_shared/assets/imgs/icons/user/icon_9.svg';
+import userIcon10 from '../../_shared/assets/imgs/icons/user/icon_10.svg';
+import userIcon11 from '../../_shared/assets/imgs/icons/user/icon_11.svg';
 
 import EditProfileFormWrapper, {
 	EditProfileFormWrapperTypes,
 } from '../components/EditProfileFormWrapper';
 
-import { RootState } from '../../../_shared/store/_store';
+import { RootState } from '../../_shared/store/_store';
 
 import classes from './ChangeImage.module.scss';
 

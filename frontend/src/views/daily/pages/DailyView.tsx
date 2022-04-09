@@ -8,15 +8,24 @@ import { RootState } from '../../../_shared/store/_store';
 import { useRequest } from '../../../_shared/hooks/http-hook';
 import { getMonthFnTypes, useDatesFn } from '../../../_shared/hooks/dates-hook';
 import { useTaskClass } from '../../../_shared/classes/task-class-hook';
+import { useSixNameHook } from '../../../_shared/hooks/six-name-hook';
 
-import { DataButton } from '../../components/ViewButtons';
+import { DataButton } from '../../components/DataButtons';
 import DailyCalendar from '../components/DailyCalendar';
+
+import foodIcon from '../../../_shared/assets/imgs/icons/six/food.svg';
+import sleepIcon from '../../../_shared/assets/imgs/icons/six/sleep.svg';
+import sportsIcon from '../../../_shared/assets/imgs/icons/six/sports.svg';
+import relaxationIcon from '../../../_shared/assets/imgs/icons/six/relaxation.svg';
+import workIcon from '../../../_shared/assets/imgs/icons/six/work.svg';
+import socialIcon from '../../../_shared/assets/imgs/icons/six/social.svg';
 
 import classes from './DailyView.module.scss';
 
 const DailyView: React.FC = () => {
 	const { sendRequest } = useRequest();
 	const { getDayFn, getMonthFn } = useDatesFn();
+	const { translateSixName } = useSixNameHook();
 	const { Task } = useTaskClass();
 
 	const userState = useSelector((state: RootState) => state.user);
@@ -28,6 +37,15 @@ const DailyView: React.FC = () => {
 	const [chosenDate, setChosenDate] = useState(new Date());
 	const [dayStr, setDayStr] = useState('');
 	const [monthStr, setMonthStr] = useState('');
+
+	const sixIcons = [
+		foodIcon,
+		sleepIcon,
+		sportsIcon,
+		workIcon,
+		relaxationIcon,
+		socialIcon,
+	];
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const dateAndTaskStr = (event.target as HTMLElement).id;
@@ -90,17 +108,26 @@ const DailyView: React.FC = () => {
 			/>
 			{!isLoading &&
 				dailyData &&
-				Object.entries(dailyData).map((item: any[]) => (
+				Object.entries(dailyData).map((item: any[], index) => (
 					<div
 						className={classes.task}
 						key={`${format(chosenDate, 'yyyy-MM-dd')}_${item[0]}_task`}
 					>
-						<div>{item[0]}</div>
+						<div className={classes['task-name']}>
+							<img
+								src={sixIcons[index]}
+								alt='six'
+								className={classes['task-name__img']}
+							/>
+							<div className={classes['task-name__text']}>
+								{translateSixName(item[0])}
+							</div>
+						</div>
 						<DataButton
 							id={`${format(chosenDate, 'yyyy-MM-dd')}_${item[0]}`}
 							onClick={addData}
 							value={item[1]}
-							disabled={true}
+							disabled={false}
 						/>
 					</div>
 				))}

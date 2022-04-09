@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState } from '../../../_shared/store/_store';
-import { ErrorPopUpActionTypes } from '../../../_shared/store/pop-ups/error-pop-up';
+import { RootState } from '../_shared/store/_store';
+import { ErrorPopUpActionTypes } from '../_shared/store/pop-ups/error-pop-up';
 
-import { useRequest } from '../../../_shared/hooks/http-hook';
-import { useInput, useInputTypes } from '../../../_shared/hooks/input-hook';
-import { useFormatUserName } from '../../../_shared/hooks/format-user-name-hook';
+import { useRequest } from '../_shared/hooks/http-hook';
+import { useInput, useInputTypes } from '../_shared/hooks/input-hook';
+import { useFormatUserName } from '../_shared/hooks/format-user-name-hook';
 
-import { useUserClass } from '../../../_shared/classes/user-class-hook';
+import { useUserClass } from '../_shared/classes/user-class-hook';
 
-import Input, { InputStyles } from '../../../_shared/components/FormElements/Input';
-import RoundedButton from '../../../_shared/components/UIElements/RoundedButton';
+import Input, { InputStyles } from '../_shared/components/FormElements/Input';
+import RoundedButton from '../_shared/components/UIElements/RoundedButton';
 
-import successIcon from '../../../_shared/assets/imgs/icons/success.svg';
+import successIcon from '../_shared/assets/imgs/icons/success.svg';
 
 import classes from './ChangeForgottenPassword.module.scss';
 

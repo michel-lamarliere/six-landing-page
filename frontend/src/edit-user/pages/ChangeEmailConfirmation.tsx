@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { AlertPopUpActionTypes } from '../../../_shared/store/pop-ups/alert-pop-up';
+import { AlertPopUpActionTypes } from '../../_shared/store/pop-ups/alert-pop-up';
 
-import { useUserClass } from '../../../_shared/classes/user-class-hook';
-import { useRequest } from '../../../_shared/hooks/http-hook';
+import { useUserClass } from '../../_shared/classes/user-class-hook';
+import { useRequest } from '../../_shared/hooks/http-hook';
 
 const ChangeEmailConfirm: React.FC = () => {
 	const dispatch = useDispatch();

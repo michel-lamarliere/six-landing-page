@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { RootState } from '../../../_shared/store/_store';
+import { RootState } from '../../_shared/store/_store';
 
-import { useInput, useInputTypes } from '../../../_shared/hooks/input-hook';
-import { useRequest } from '../../../_shared/hooks/http-hook';
+import { useInput, useInputTypes } from '../../_shared/hooks/input-hook';
+import { useRequest } from '../../_shared/hooks/http-hook';
 
-import Input, { InputStyles } from '../../../_shared/components/FormElements/Input';
+import Input, { InputStyles } from '../../_shared/components/FormElements/Input';
 import EditProfileFormWrapper, {
 	EditProfileFormWrapperTypes,
 } from '../components/EditProfileFormWrapper';
 
-import successIcon from '../../../_shared/assets/imgs/icons/success.svg';
+import successIcon from '../../_shared/assets/imgs/icons/success.svg';
 
 import classes from './ChangeEmail.module.scss';
 

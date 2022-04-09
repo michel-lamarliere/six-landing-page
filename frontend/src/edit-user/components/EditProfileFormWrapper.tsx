@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import RoundedButton from '../../../_shared/components/UIElements/RoundedButton';
+import RoundedButton from '../../_shared/components/UIElements/RoundedButton';
 
-import backButtonIcon from '../../../_shared/assets/imgs/icons/back-button.svg';
+import backButtonIcon from '../../_shared/assets/imgs/icons/back-button.svg';
 
 import classes from './EditProfileFormWrapper.module.scss';
 

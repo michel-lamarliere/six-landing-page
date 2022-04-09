@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { getDay, format, isAfter, startOfMonth } from 'date-fns';
+import {
+	getDay,
+	format,
+	isAfter,
+	startOfMonth,
+	isSameDay,
+	isBefore,
+	addHours,
+} from 'date-fns';
 
 import { RootState } from '../../../_shared/store/_store';
 
@@ -10,7 +18,7 @@ import { getMonthFnTypes, useDatesFn } from '../../../_shared/hooks/dates-hook';
 import { useTaskClass } from '../../../_shared/classes/task-class-hook';
 
 import MonthlyCalendar from '../components/MonthlyCalendar';
-import { DataButton } from '../../components/ViewButtons';
+import { DataButton } from '../../components/DataButtons';
 
 import classes from './MonthlyView.module.scss';
 
@@ -102,27 +110,20 @@ const MonthlyView: React.FC = () => {
 				headerText={`${monthStr} ${chosenDate.getFullYear()}`}
 			/>
 			<div className={classes.days}>
-				<li>Lundi</li>
-				<li>Mardi</li>
-				<li>Mercredi</li>
-				<li>Jeudi</li>
-				<li>Vendredi</li>
-				<li>Samedi</li>
-				<li>Dimanche</li>
+				<li>LUN</li>
+				<li>MAR</li>
+				<li>MER</li>
+				<li>JEU</li>
+				<li>VEN</li>
+				<li>SAM</li>
+				<li>DIM</li>
 			</div>
 			<div className={classes.calendar}>
 				{emptyBoxes.length > 0 &&
 					emptyBoxes.map((item) => <div key={item + Math.random()}></div>)}
 				{monthlyArray &&
 					monthlyArray.map((item: { date: string; level: 0 }, index) => (
-						<div
-							className={classes.calendar__button}
-							key={`${format(
-								new Date(item.date),
-								'yyyy-MM-dd'
-							)}_${chosenTask}_div`}
-						>
-							<div>{index + 1}</div>
+						<>
 							<DataButton
 								id={`${format(
 									new Date(item.date),
@@ -134,9 +135,16 @@ const MonthlyView: React.FC = () => {
 									new Date(item.date),
 									'yyyy-MM-dd'
 								)}_${chosenTask}`}
-								disabled={!isAfter(new Date(item.date), new Date())}
+								disabled={
+									isAfter(new Date(item.date), new Date()) &&
+									!isSameDay(
+										addHours(new Date(item.date), 0),
+										new Date()
+									)
+								}
+								dayNumber={index + 1}
 							/>
-						</div>
+						</>
 					))}
 			</div>
 		</div>

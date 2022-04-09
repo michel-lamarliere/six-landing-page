@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useRequest } from '../../../_shared/hooks/http-hook';
+import { useRequest } from '../_shared/hooks/http-hook';
 
 const ConfirmEmailAddress: React.FC = () => {
 	const { sendRequest } = useRequest();

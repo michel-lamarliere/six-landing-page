@@ -183,6 +183,16 @@ const DailyCalendar: React.FC<{
 										day
 									),
 									new Date()
+								) &&
+								!isSameDay(
+									new Date(
+										calendarDate.getFullYear(),
+										getMonth(calendarDate) < 10
+											? 0 + getMonth(calendarDate)
+											: getMonth(calendarDate),
+										day
+									),
+									new Date()
 								)
 							}
 							id={`${calendarDate.getFullYear()}-${

@@ -53,7 +53,7 @@ const addData: RequestHandler = async (req, res, next) => {
 	inputsAreValid.date.format = true;
 
 	// CHECKS IF DATE IS IN THE FUTURE
-	if (isAfter(reqDate, new Date())) {
+	if (isAfter(reqDate, new Date()) && !isSameDay(reqDate, new Date())) {
 		return res.status(400).json({
 			error: true,
 			message:
