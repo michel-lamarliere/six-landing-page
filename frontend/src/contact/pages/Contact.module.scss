@@ -11,17 +11,17 @@
 .title {
 	font-family: $fontBold;
 	font-size: 15px;
-	color: white;
+	color: $colorWhite;
 }
 
 .submit-button {
-	background-color: #3e379b;
+	background-color: $colorPurple1;
 	font-size: 16px;
-	color: white;
+	color: $colorWhite;
 }
 
 .response-message {
-	color: white;
+	color: $colorWhite;
 }
 
 @media screen and (min-width: 1200px) {

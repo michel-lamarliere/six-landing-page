@@ -1,13 +1,15 @@
+@import '../../_shared/style/variables.scss';
+
 .button {
 	width: 0.7rem;
 	height: 0.7rem;
-	border: solid 0.05rem #ffffff;
+	border: solid 0.05rem $colorWhite;
 	border-radius: 50%;
 	background-color: transparent;
 	cursor: pointer;
 
 	&--active {
-		background-color: #8d88ff;
+		background-color: $colorLavander;
 		cursor: default;
 	}
 }

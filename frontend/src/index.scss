@@ -5,7 +5,7 @@
 	font-family: $fontMedium;
 	position: relative;
 	height: 100vh;
-	background-color: #191b34;
+	background-color: $colorBlack;
 	display: flex;
 	justify-content: center;
 	transition: margin-right 0.3s ease-in-out;
@@ -22,7 +22,7 @@
 	font-size: 20px;
 	font-family: $fontMedium;
 	float: right;
-	background-color: #3e379b;
+	background-color: $colorPurple1;
 	transition: width 0.3s ease-in-out;
 	z-index: 4;
 }
@@ -75,6 +75,6 @@ input {
 		font-size: 20px;
 		font-family: $fontMedium;
 		float: right;
-		background-color: #3e379b;
+		background-color: $colorPurple1;
 	}
 }

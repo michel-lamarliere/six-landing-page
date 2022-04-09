@@ -1,7 +1,9 @@
+@import '../../_shared/style/variables.scss';
+
 .button {
 	width: 2rem;
 	height: 2rem;
-	background-color: white;
+	background-color: $colorWhite;
 	border: none;
 	border-radius: 0.1rem;
 
@@ -18,7 +20,7 @@
 	}
 
 	&--zero {
-		background-color: white;
+		background-color: $colorWhite;
 	}
 
 	&--one {

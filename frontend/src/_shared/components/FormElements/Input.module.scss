@@ -13,7 +13,7 @@
 		width: 100%;
 		padding: 0.7rem 3rem 0.7rem 0.8rem;
 		border-radius: 0.5rem;
-		color: #ffffff;
+		color: $colorWhite;
 		font-family: $fontRegular;
 		font-size: 16px;
 		box-sizing: border-box;
@@ -21,11 +21,11 @@
 		resize: none;
 
 		&--basic {
-			border: 0.1rem solid #4740a0;
-			background-color: #4740a0;
+			border: 0.1rem solid $colorPurple2;
+			background-color: $colorPurple2;
 
 			&::placeholder {
-				color: #8d88ff;
+				color: $colorLavander;
 				opacity: 1;
 			}
 		}
@@ -35,7 +35,7 @@
 			background-color: #24263d;
 
 			&::placeholder {
-				color: white;
+				color: $colorWhite;
 				opacity: 0.5;
 			}
 		}
@@ -45,8 +45,8 @@
 		}
 
 		&--invalid {
-			border: solid 0.1rem #1cc1e6;
-			color: #1cc1e6;
+			border: solid 0.1rem $colorBlue1;
+			color: $colorBlue1;
 		}
 	}
 
@@ -62,5 +62,5 @@
 .error-text {
 	font-family: $fontMedium;
 	font-size: 12px;
-	color: #1cc1e6;
+	color: $colorBlue1;
 }

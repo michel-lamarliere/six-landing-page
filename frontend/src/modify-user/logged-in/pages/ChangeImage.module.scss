@@ -1,3 +1,5 @@
+@import '../../../_shared/style/variables.scss';
+
 .icons {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
@@ -12,7 +14,7 @@
 		cursor: pointer;
 
 		&--active {
-			border: 0.2rem solid #8d88ff;
+			border: 0.2rem solid $colorLavander;
 		}
 
 		&--chosen {

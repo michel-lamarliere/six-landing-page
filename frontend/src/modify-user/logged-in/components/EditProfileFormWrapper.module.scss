@@ -12,7 +12,7 @@
 .title {
 	font-family: $fontBold;
 	font-size: 22px;
-	color: #8d88ff;
+	color: $colorLavander;
 }
 
 .back-button {
@@ -22,17 +22,17 @@
 }
 
 .submit-button {
-	background-color: #3e379b;
-	color: white;
+	background-color: $colorPurple1;
+	color: $colorWhite;
 
 	&:hover {
-		background-color: white;
-		color: #3e379b;
+		background-color: $colorWhite;
+		color: $colorPurple1;
 	}
 }
 
 .response {
-	color: white;
+	color: $colorWhite;
 }
 
 @media screen and (min-width: 1200px) {

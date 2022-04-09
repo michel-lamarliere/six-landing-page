@@ -13,14 +13,14 @@
 	min-height: 4rem;
 	padding: 1rem 0;
 	border-radius: 1rem 1rem 0 0;
-	background-color: #ffffff;
+	background-color: $colorWhite;
 	font-size: 16px;
 }
 
 .message {
 	font-family: $fontMedium;
 	font-size: 14px;
-	color: black;
+	color: $colorBlack;
 }
 
 .buttons {
@@ -29,15 +29,15 @@
 
 	&__button {
 		&--cancel {
-			border-color: black;
-			background-color: white;
-			color: black;
+			border-color: $colorBlack;
+			background-color: $colorWhite;
+			color: $colorBlack;
 		}
 
 		&--confirm {
-			background-color: #24263e;
-			border-color: #24263e;
-			color: white;
+			background-color: $colorGrey1;
+			border-color: $colorGrey1;
+			color: $colorWhite;
 		}
 	}
 }

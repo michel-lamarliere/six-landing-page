@@ -13,7 +13,7 @@
 	min-height: 4rem;
 	padding: 1rem 0;
 	border-radius: 1rem 1rem 0 0;
-	background-color: #ffffff;
+	background-color: $colorWhite;
 	font-size: 16px;
 }
 
@@ -38,7 +38,7 @@
 .title {
 	margin-top: 0.125rem;
 	font-family: $fontSemiBold;
-	color: #8d88ff;
+	color: $colorLavander;
 	font-size: 22px;
 }
 
@@ -56,7 +56,7 @@
 	background-color: #3b3e59;
 	font-family: $fontBold;
 	font-size: 15px;
-	color: white;
+	color: $colorWhite;
 	cursor: pointer;
 }
 

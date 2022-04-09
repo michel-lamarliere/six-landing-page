@@ -9,7 +9,7 @@
 	width: 40rem;
 	height: auto;
 	padding: 2rem 2rem 0 2rem;
-	background-color: #3e379b;
+	background-color: $colorPurple1;
 }
 
 .header {
@@ -25,7 +25,7 @@
 		height: 1.5rem;
 		transform: translateY(-50%);
 		left: -4rem;
-		background: #4740a0;
+		background: $colorPurple2;
 		border-radius: 50%;
 		cursor: pointer;
 
@@ -38,7 +38,7 @@
 	&__title {
 		font-size: 24px;
 		font-family: $fontExtraBold;
-		color: #8d88ff;
+		color: $colorLavander;
 		text-align: center;
 	}
 }
@@ -58,7 +58,7 @@
 	margin: 2rem auto 0 auto;
 	text-align: center;
 	font-size: 15px;
-	color: #ffffff;
+	color: $colorWhite;
 }
 
 .footer {
@@ -74,7 +74,7 @@
 	&__text {
 		font-family: $fontMedium;
 		font-size: 16px;
-		color: #ffffff;
+		color: $colorWhite;
 	}
 
 	&__button {
@@ -82,7 +82,7 @@
 		font-family: $fontBold;
 		text-decoration: underline;
 		font-size: 16px;
-		color: #ffffff;
+		color: $colorWhite;
 		cursor: pointer;
 	}
 }

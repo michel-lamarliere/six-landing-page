@@ -11,24 +11,24 @@
 .title {
 	font-family: $fontBold;
 	font-size: 18px;
-	color: white;
+	color: $colorWhite;
 	text-align: center;
 }
 
 .text {
 	font-family: $fontMediumItalic;
 	font-size: 12px;
-	color: white;
+	color: $colorWhite;
 }
 
 .submit-button {
-	background-color: #8d88ff;
-	color: #3e379b;
+	background-color: $colorLavander;
+	color: $colorPurple1;
 }
 
 .response {
 	font-family: $fontSemiBold;
 	font-size: 14px;
 	text-align: center;
-	color: white;
+	color: $colorWhite;
 }
