@@ -128,9 +128,9 @@ export const useUserClass = () => {
 				tokenExpiration: userData.tokenExpiration,
 				id: userData.id,
 				icon: userData.icon,
+				name: formatUserName(userData.name),
 				email: userData.email,
 				confirmedEmail: userData.confirmedEmail,
-				name: userData.name,
 			});
 
 			if (!userData.confirmedEmail && showEmailConfirmationPopup) {

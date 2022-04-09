@@ -107,19 +107,6 @@ const DeleteAccount: React.FC = () => {
 							onClick={cancelHandler}
 							className={`${classes['buttons__button']} ${classes['buttons__button--cancel']}`}
 						/>
-
-						{/* <button
-							className={`${classes['buttons__button']} ${classes['buttons__button--cancel']}`}
-							onClick={cancelHandler}
-						>
-							Annuler
-						</button> */}
-						{/* <button
-							className={`${classes['buttons__button']} ${classes['buttons__button--confirm']}`}
-							onClick={textValidationHandler}
-						>
-							Supprimer le compte
-						</button> */}
 						<RoundedButton
 							text={'Supprimer le compte'}
 							onClick={textValidationHandler}
@@ -130,9 +117,6 @@ const DeleteAccount: React.FC = () => {
 						Après avoir envoyé ce formulaire, vous recevrez un mail avec un
 						lien sur lequel après avoir cliqué, votre suppression sera
 						effective.
-						{/* Après avoir envoyé ce formulaire, vous
-				aurez 10 jours pour vous reconnecter à votre compte afin de le restaurer
-				avant qu’il ne soit définitivement supprimé. */}
 					</div>
 				</>
 			)}
