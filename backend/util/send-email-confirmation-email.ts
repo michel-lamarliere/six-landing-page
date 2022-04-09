@@ -2,7 +2,6 @@ const sendEmail = require('./send-email');
 
 const sendEmailConfirmationEmail = (data: { to: string; uniqueCode: string }) => {
 	const { to, uniqueCode } = data;
-	console.log('here');
 
 	const emailWasSent = sendEmail({
 		to: to,

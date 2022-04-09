@@ -198,8 +198,6 @@ const changePassword: RequestHandler = async (req, res, next) => {
 	// CHECKS IF THE PASSWORD MATCHES THE USER'S HASHED PASSWORD
 	validInputs.oldPassword = await bcrypt.compare(reqOldPassword, user.password);
 
-	console.log(validInputs.oldPassword);
-
 	if (!validInputs.oldPassword) {
 		res.status(400).json({
 			error: true,
@@ -213,7 +211,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
 				newPasswordConfirmation: true,
 			},
 		});
-		console.log('here');
+
 		return;
 	}
 
@@ -235,7 +233,6 @@ const changePassword: RequestHandler = async (req, res, next) => {
 		!validInputs.newPassword.format ||
 		!validInputs.newPasswordConfirmation
 	) {
-		console.log(validInputs);
 		res.status(400).json({
 			error: true,
 			message: 'Veuillez corriger les erreurs.',
@@ -398,11 +395,7 @@ const changeForgottenPassword: RequestHandler = async (req, res, next) => {
 		validInputs.newPassword = true;
 	}
 
-	console.log(validInputs.newPassword);
-
 	validInputs.newPasswordConfirmation = reqNewPassword === reqNewPasswordConfirmation;
-
-	console.log(validInputs.newPasswordConfirmation);
 
 	if (!validInputs.newPassword || !validInputs.newPasswordConfirmation) {
 		res.status(400).json({ error: true, message: 'Champs invalides.', validInputs });
@@ -428,8 +421,6 @@ const deleteAccountEmail: RequestHandler = async (req, res, next) => {
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
-
-	console.log(user);
 
 	if (!user) {
 		res.status(404).json({ fatal: true });

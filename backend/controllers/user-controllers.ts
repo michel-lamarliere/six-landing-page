@@ -16,8 +16,6 @@ const signUp: RequestHandler = async (req, res, next) => {
 		passwordConfirmation: reqPasswordConfirmation,
 	} = await req.body;
 
-	console.log(req.body);
-
 	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	// CHECKS IF THE USER EXISTS
@@ -63,8 +61,6 @@ const signUp: RequestHandler = async (req, res, next) => {
 	) {
 		inputsAreValid.password = true;
 	}
-	console.log(reqPassword);
-	console.log(reqPasswordConfirmation);
 
 	if (reqPassword === reqPasswordConfirmation) {
 		inputsAreValid.passwordConfirmation = true;
@@ -220,7 +216,6 @@ const confirmEmailAddress: RequestHandler = async (req, res, next) => {
 
 const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
 	const id = new ObjectId(req.body.id);
-	console.log('HEY');
 
 	const databaseConnect = await database.getDb('six-dev').collection('users');
 
