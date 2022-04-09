@@ -491,7 +491,7 @@ const deleteAccountConfirm: RequestHandler = async (req, res, next) => {
 
 	await databaseConnect.deleteOne({ email: reqEmail });
 
-	const emailWasSent = sendEmail({
+	const emailWasSent = await sendEmail({
 		to: reqEmail,
 		subject: 'Compte supprimé',
 		html: `Nous sommes tristes de vous voir partir.`,

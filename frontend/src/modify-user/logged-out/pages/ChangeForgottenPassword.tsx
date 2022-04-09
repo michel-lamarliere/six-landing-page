@@ -154,7 +154,6 @@ const ForgotPasswordForm: React.FC = () => {
 						isTouched={newPassword.isTouched}
 						onChange={newPasswordOnChangeHandler}
 						onBlur={newPasswordOnBlurHandler}
-						password={true}
 					/>
 					<Input
 						styling={InputStyles.BASIC_FORM}
@@ -167,7 +166,6 @@ const ForgotPasswordForm: React.FC = () => {
 						isTouched={newPasswordConfirmation.isTouched}
 						onChange={newPasswordConfirmationOnChangeHandler}
 						onBlur={newPasswordConfirmationOnBlurHandler}
-						password={true}
 					/>
 					Tester1@
 					<RoundedButton

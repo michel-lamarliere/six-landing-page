@@ -139,7 +139,6 @@ const LoginForm: React.FC<Props> = (props) => {
 				errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
 				onChange={passwordOnChangeHandler}
 				onBlur={passwordOnBlurHandler}
-				password={true}
 			/>
 			<div className={classes['remember-me']}>
 				<button

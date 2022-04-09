@@ -35,7 +35,9 @@ export const useInput = (args: {
 	// 	setInput((prev) => ({ ...prev, isValid: true }));
 	// }
 
-	const inputOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const inputOnChangeHandler = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => {
 		setInput((prev) => ({ ...prev, value: event.target.value, isTouched: false }));
 	};
 

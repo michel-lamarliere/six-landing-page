@@ -31,6 +31,7 @@ import DeleteAccountConfirmation from './modify-user/logged-in/pages/DeleteAccou
 import ChangeEmailConfirmation from './modify-user/logged-in/pages/ChangeEmailConfirmation';
 import AlertPopup from './pop-ups/pages/AlertPopUp';
 import ForgotPasswordPopUp from './pop-ups/pages/ForgotPasswordPopUp';
+import Contact from './contact/pages/Contact';
 
 const App: React.FC = () => {
 	const { User } = useUserClass();
@@ -91,6 +92,7 @@ const App: React.FC = () => {
 							path='/profil/modifier/supprimer-compte'
 							element={<DeleteAccount />}
 						/>
+						<Route path='/contact' element={<Contact />} />
 					</>
 				)}
 				<Route

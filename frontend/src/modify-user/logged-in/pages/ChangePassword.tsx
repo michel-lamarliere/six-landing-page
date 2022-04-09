@@ -141,7 +141,6 @@ const ChangePassword: React.FC = () => {
 			<div className={classes.inputs}>
 				<Input
 					styling={InputStyles.PROFILE_FORM}
-					password={true}
 					id='Ancien Mot de Passe'
 					type='password'
 					placeholder='Ancien mot de passe'
@@ -154,7 +153,6 @@ const ChangePassword: React.FC = () => {
 				/>
 				<Input
 					styling={InputStyles.PROFILE_FORM}
-					password={true}
 					id='Nouveau Mot de Passe'
 					type='password'
 					placeholder='Nouveau mot de passe'
@@ -167,7 +165,6 @@ const ChangePassword: React.FC = () => {
 				/>
 				<Input
 					styling={InputStyles.PROFILE_FORM}
-					password={true}
 					id='Confirmer Nouveau Mot de Passe'
 					type='password'
 					placeholder='Confirmation mot de passe'

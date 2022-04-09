@@ -3,10 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store/_store';
 import { UserActionTypes } from '../store/user';
 import { ErrorPopUpActionTypes } from '../store/pop-ups/error-pop-up';
+import { useUserClass } from '../classes/user-class-hook';
 
 export const useRequest = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+	// const { User } = useUserClass();
 
 	const userData = useSelector((state: RootState) => state.user);
 
@@ -29,14 +32,13 @@ export const useRequest = () => {
 		const responseData = await response.json();
 
 		if (responseData.fatal) {
+			// User.logOut({ redirect: true });
 			dispatch({ type: UserActionTypes.LOG_USER_OUT });
 			dispatch({
 				type: ErrorPopUpActionTypes.SET_AND_SHOW_ERROR_POP_UP,
 				message:
 					"Il semble que votre compte n'existe plus, veuillez en créer un autre ou nous contacter.",
 			});
-
-			navigate('/');
 			return;
 		}
 

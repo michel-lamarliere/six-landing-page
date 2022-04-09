@@ -126,11 +126,19 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 			</div>
 			<footer className={classes.footer}>
 				<div className={classes['footer__help-contact']}>
-					<Link to='/'>Aide</Link>
-					<Link to='/'>Nous Contacter</Link>
+					<Link to='/' onClick={closeMobileSidebar}>
+						Aide
+					</Link>
+					<Link to='/contact' onClick={closeMobileSidebar}>
+						Nous Contacter
+					</Link>
 				</div>
 				<div className={classes['footer__legal-notice']}>
-					<Link to='/' className={classes['footer__legal-notice__text']}>
+					<Link
+						to='/'
+						className={classes['footer__legal-notice__text']}
+						onClick={closeMobileSidebar}
+					>
 						Mentions Légales
 					</Link>
 					<img src={sixIcon} alt='six' />

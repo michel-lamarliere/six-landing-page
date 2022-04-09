@@ -14,8 +14,11 @@
 		padding: 0.7rem 3rem 0.7rem 0.8rem;
 		border-radius: 0.5rem;
 		color: #ffffff;
+		font-family: $fontRegular;
 		font-size: 16px;
 		box-sizing: border-box;
+
+		resize: none;
 
 		&--basic {
 			border: 0.1rem solid #4740a0;

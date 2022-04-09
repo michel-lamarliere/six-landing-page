@@ -1,7 +1,12 @@
 import { createNodemailerTransporter } from './create-nodemailer-transporter';
 
-const sendEmail = async (data: any) => {
-	const { to, subject, text, html } = data;
+const sendEmail = async (args: {
+	to: string;
+	subject: string;
+	text: string;
+	html: string;
+}) => {
+	const { to, subject, text, html } = args;
 
 	const transporter = createNodemailerTransporter();
 
@@ -12,8 +17,8 @@ const sendEmail = async (data: any) => {
 
 	emailWasSent = await transporter.sendMail({
 		// REPLACE BY TO WHEN DEPLOYING
+		from: process.env.CONTACT_EMAIL,
 		to: toTemp,
-		from: '"Six App" <contact@michel-lamarliere.com>',
 		subject: subject,
 		text: text,
 		html: html,

@@ -142,7 +142,6 @@ const SingupForm: React.FC<Props> = (props) => {
 				errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
 				onChange={passwordOnChangeHandler}
 				onBlur={passwordOnBlurHandler}
-				password={true}
 			/>
 			<Input
 				styling={InputStyles.BASIC_FORM}
@@ -155,7 +154,6 @@ const SingupForm: React.FC<Props> = (props) => {
 				errorText='Les mots de passe ne sont pas indentiques.'
 				onChange={passwordConfirmationOnChangeHandler}
 				onBlur={passwordConfirmationOnBlurHandler}
-				password={true}
 			/>
 			<RoundedButton text={'Inscription'} />
 		</FormContainer>
