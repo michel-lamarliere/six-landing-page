@@ -18,6 +18,8 @@ const addData: RequestHandler = async (req, res, next) => {
 		levelOfCompletion: reqLevelOfCompletion,
 	} = req.body;
 
+	console.log(reqIdStr, reqDateStr, reqTask, reqLevelOfCompletion);
+
 	const reqDate = new Date(reqDateStr);
 
 	const databaseConnect = await database.getDb('six-dev').collection('users');
@@ -141,6 +143,8 @@ const addData: RequestHandler = async (req, res, next) => {
 const getDaily: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
 	const reqDate: Date = new Date(req.params.date);
+
+	console.log(reqDate);
 
 	const databaseConnect = await database.getDb('six-dev').collection('users');
 

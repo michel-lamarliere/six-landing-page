@@ -75,8 +75,6 @@ const ForgotPasswordForm: React.FC = () => {
 			method: 'GET',
 		});
 
-		console.log(responseData);
-
 		if (responseData.error) {
 			dispatch({
 				type: ErrorPopUpActionTypes.SET_AND_SHOW_ERROR_POP_UP,
@@ -111,14 +109,14 @@ const ForgotPasswordForm: React.FC = () => {
 		}
 
 		if (responseData.error) {
-			console.log(responseData.validInputs);
-
 			if (!responseData.validInputs.newPassword) {
 				setNewPassword((prev) => ({ ...prev, isTouched: true }));
 			}
+
 			if (!responseData.validInputs.newPasswordConfirmation) {
 				setNewPasswordConfirmation((prev) => ({ ...prev, isTouched: true }));
 			}
+
 			return;
 		}
 

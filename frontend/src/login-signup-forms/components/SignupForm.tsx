@@ -70,13 +70,12 @@ const SingupForm: React.FC<Props> = (props) => {
 	const signupFormHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
 		setSubmitted(true);
+
 		const formIsValid = checkFormIsValid();
 
 		if (!formIsValid) {
 			return;
 		}
-
-		console.log(passwordConfirmationInput.value);
 
 		const responseData = await sendRequest({
 			url: `${process.env.REACT_APP_BACKEND_URL}/user/signup`,

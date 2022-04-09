@@ -50,7 +50,12 @@ const AlertOrErrorPopUp: React.FC<Props> = (props) => {
 			</div>
 			<div className={classes.message}>{props.message}</div>
 			{error && (
-				<RoundedButton text={'Signaler le problème'} className={classes.button} />
+				<RoundedButton
+					text={'Signaler le problème'}
+					link='/contact'
+					onClick={closePopUp}
+					className={classes.button}
+				/>
 			)}
 		</div>
 	);

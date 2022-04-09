@@ -6,8 +6,6 @@ const sendEmail = require('../util/send-email');
 const sendMessage: RequestHandler = async (req, res, next) => {
 	const { name: reqName, email: reqEmail, message: reqMessage } = req.body;
 
-	console.log(reqName, reqEmail, reqMessage);
-
 	const databaseConnect = await database.getDb('six-dev').collection('users');
 
 	const user = await databaseConnect.findOne({ email: reqEmail });
@@ -28,7 +26,7 @@ const sendMessage: RequestHandler = async (req, res, next) => {
 	});
 
 	const emailToUs = await sendEmail({
-		to: process.env.CONTACT_EMAIL,
+		to: process.env.NODEMAILER_EMAIL,
 		subject: `Message via le site de ${reqName}: ${reqEmail}`,
 		text: `${reqMessage}`,
 	});

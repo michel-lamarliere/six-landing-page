@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 
 export const createNodemailerTransporter = () => {
 	const transporter = nodemailer.createTransport({
-		host: 'smtp.hostinger.com',
+		host: 'mail.privateemail.com',
 		port: 465,
 		secure: true,
 		auth: {

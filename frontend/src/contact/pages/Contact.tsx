@@ -44,6 +44,8 @@ const Contact: React.FC = () => {
 			}),
 		});
 
+		setMessage({ value: '', isValid: false, isTouched: false });
+
 		setSent(true);
 
 		if (!responseData) {

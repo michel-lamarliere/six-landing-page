@@ -81,8 +81,6 @@ const ChangePassword: React.FC = () => {
 			return;
 		}
 
-		console.log(responseData);
-
 		if (responseData.error) {
 			const { validInputs } = responseData;
 			setResponse(responseData.message);
