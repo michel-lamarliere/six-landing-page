@@ -7,6 +7,7 @@
 	width: 1.5rem;
 	height: 1.5rem;
 	border: 0.125rem solid $colorBlue1;
+	box-sizing: content-box;
 	border-radius: 50%;
 	overflow: hidden;
 	background-color: transparent;
@@ -21,7 +22,7 @@
 		cursor: default;
 
 		& > .button__day-number {
-			color: $colorMouse1;
+			color: $colorGrey2;
 		}
 	}
 
@@ -30,7 +31,6 @@
 		border: none;
 		overflow: hidden;
 		transition: height 0.3s ease-in-out;
-		// cursor: pointer;
 		cursor: crosshair;
 
 		&--zero {

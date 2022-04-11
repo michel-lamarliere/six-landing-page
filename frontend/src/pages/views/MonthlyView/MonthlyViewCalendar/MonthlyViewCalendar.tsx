@@ -44,22 +44,6 @@ const MonthlyCalendar: React.FC<{
 		dispatch({ type: TaskSelectorActionTypes.HIDE_TASK_SELECTOR });
 	};
 
-	const previousHandler = () => {
-		props.setChosenDate(addMonths(props.chosenDate, -1));
-	};
-
-	const nextHandler = () => {
-		props.setChosenDate(addMonths(props.chosenDate, 1));
-	};
-
-	const calendarPreviousYearHandler = () => {
-		setCalendarDate(addYears(calendarDate, -1));
-	};
-
-	const calendarNextYearHandler = () => {
-		setCalendarDate(addYears(calendarDate, 1));
-	};
-
 	const monthOnClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		props.setChosenDate(new Date((event.target as HTMLButtonElement).id));
 
@@ -71,24 +55,24 @@ const MonthlyCalendar: React.FC<{
 			calendar={calendarTypes.MONTHLY}
 			selectHandler={selectHandler}
 			chosenTask={props.chosenTask}
-			previousHandler={previousHandler}
-			previousHandlerDisabled={isBefore(
-				addMonths(props.chosenDate, -1),
-				new Date(2020, 0, 1)
-			)}
+			chosenDate={props.chosenDate}
+			setChosenDate={props.setChosenDate}
+			calendarDate={calendarDate}
+			setCalendarDate={setCalendarDate}
+			// previousHandlerDisabled={isBefore(
+			// 	addMonths(props.chosenDate, -1),
+			// 	new Date(2020, 0, 1)
+			// )}
 			headerText={props.headerText}
-			nextHandler={nextHandler}
-			nextHandlerDisabled={!isBefore(addMonths(props.chosenDate, 1), new Date())}
-			calendarPreviousYearHandler={calendarPreviousYearHandler}
-			calendarPreviousYearHandlerDisabled={isBefore(
-				addYears(calendarDate, -1),
-				new Date(2020, 0, 1)
-			)}
+			// nextHandlerDisabled={!isBefore(addMonths(props.chosenDate, 1), new Date())}
+			// calendarPreviousYearHandlerDisabled={isBefore(
+			// 	addYears(calendarDate, -1),
+			// 	new Date(2020, 0, 1)
+			// )}
 			calendarText={`${getYear(calendarDate)}`}
-			calendarNextYearHandler={calendarNextYearHandler}
-			calendarNextYearHandlerDisabled={
-				!isBefore(addYears(calendarDate, 1), new Date())
-			}
+			// calendarNextYearHandlerDisabled={
+			// 	!isBefore(addYears(calendarDate, 1), new Date())
+			// }
 		>
 			<div className={calendarClasses.month}>
 				{months.map((month, index) => (

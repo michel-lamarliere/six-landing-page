@@ -9,7 +9,7 @@ import { useInput, useInputTypes } from '../../../hooks/input-hook';
 import Input, { InputStyles } from '../../../components/form-elements/Input';
 import EditProfileFormWrapper, {
 	EditProfileFormWrapperTypes,
-} from '../EditUserContainer/EditUserContainer';
+} from '../../../containers/EditUserContainer/EditUserContainer';
 
 import classes from './ChangePasswordPage.module.scss';
 

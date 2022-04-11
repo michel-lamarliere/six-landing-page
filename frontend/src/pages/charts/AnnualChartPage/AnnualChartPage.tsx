@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addYears, getYear, isBefore, addMonths } from 'date-fns';
+import { addYears, getYear, isBefore, addMonths, isAfter } from 'date-fns';
 import { Bar, BarChart, ResponsiveContainer, XAxis } from 'recharts';
 
 import { RootState } from '../../../store/_store';
@@ -11,8 +11,11 @@ import { useRequest } from '../../../hooks/http-hook';
 import { getMonthFnTypes, useDatesFn } from '../../../hooks/dates-hook';
 
 import Calendar, { calendarTypes } from '../../../components/calendar/Calendar/Calendar';
+import ViewsContainer from '../../../containers/ViewsContainer/ViewsContainer';
 
 import classes from './AnnualChartPage.module.scss';
+import DateNavigation from '../../../components/DateNavigation/DateNavigation';
+import { TaskSelectorButton } from '../../../components/calendar/CalendarButtons/CalendarButtons';
 
 const AnnualGraph: React.FC = () => {
 	const dispatch = useDispatch();
@@ -31,6 +34,14 @@ const AnnualGraph: React.FC = () => {
 
 	const nextHandler = () => {
 		setChosenYear(addYears(chosenYear, 1));
+	};
+
+	const previousHandlerDisabled = () => {
+		return isBefore(addYears(chosenYear, -1), new Date(2020, 0, 1));
+	};
+
+	const nextHandlerDisabled = () => {
+		return isAfter(addYears(chosenYear, 1), new Date());
 	};
 
 	const selectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -81,19 +92,14 @@ const AnnualGraph: React.FC = () => {
 	}, [chosenYear, chosenTask]);
 
 	return (
-		<div className={classes.wrapper}>
-			<Calendar
-				calendar={calendarTypes.ANNUAL_CHART}
-				chosenTask={chosenTask}
-				selectHandler={selectHandler}
-				previousHandler={previousHandler}
-				previousHandlerDisabled={isBefore(
-					addMonths(chosenYear, -1),
-					new Date(2020, 1, 1)
-				)}
+		<ViewsContainer>
+			<TaskSelectorButton chosenTask={chosenTask} selectHandler={selectHandler} />
+			<DateNavigation
 				headerText={chosenYear.getFullYear().toString()}
+				previousHandler={previousHandler}
 				nextHandler={nextHandler}
-				nextHandlerDisabled={!isBefore(addMonths(chosenYear, 1), new Date())}
+				previousHandlerDisabled={previousHandlerDisabled}
+				nextHandlerDisabled={nextHandlerDisabled}
 			/>
 			<div className={classes.chart}>
 				<ResponsiveContainer width='70%' height='40%'>
@@ -125,7 +131,7 @@ const AnnualGraph: React.FC = () => {
 					</BarChart>
 				</ResponsiveContainer>
 			</div>
-		</div>
+		</ViewsContainer>
 	);
 };
 

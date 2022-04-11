@@ -19,7 +19,7 @@ import userIcon11 from '../../..//assets/icons/user/icon_11.svg';
 
 import EditProfileFormWrapper, {
 	EditProfileFormWrapperTypes,
-} from '../EditUserContainer/EditUserContainer';
+} from '../../../containers/EditUserContainer/EditUserContainer';
 
 import { RootState } from '../../../store/_store';
 

@@ -10,7 +10,7 @@ import { useUserClass } from '../../../classes/user-class-hook';
 import Input, { InputStyles } from '../../../components/form-elements/Input';
 import EditProfileFormWrapper, {
 	EditProfileFormWrapperTypes,
-} from '../EditUserContainer/EditUserContainer';
+} from '../../../containers/EditUserContainer/EditUserContainer';
 
 const ChangeName: React.FC = () => {
 	const { sendRequest } = useRequest();

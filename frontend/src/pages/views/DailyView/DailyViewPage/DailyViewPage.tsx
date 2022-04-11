@@ -12,6 +12,7 @@ import { useSixNameHook } from '../../../../hooks/six-name-hook';
 
 import { LogDataButton } from '../../LogDataButtons/LogDataButtons';
 import DailyViewCalendar from '../DailyViewCalendar/DailyViewCalendar';
+import ViewsContainer from '../../../../containers/ViewsContainer/ViewsContainer';
 
 import foodIcon from '../../../../assets/icons/six/food.svg';
 import sleepIcon from '../../../../assets/icons/six/sleep.svg';
@@ -98,7 +99,7 @@ const DailyView: React.FC = () => {
 	}, [chosenDate]);
 
 	return (
-		<div className={classes.wrapper}>
+		<ViewsContainer>
 			<DailyViewCalendar
 				chosenDate={chosenDate}
 				setChosenDate={setChosenDate}
@@ -131,7 +132,7 @@ const DailyView: React.FC = () => {
 						/>
 					</div>
 				))}
-		</div>
+		</ViewsContainer>
 	);
 };
 

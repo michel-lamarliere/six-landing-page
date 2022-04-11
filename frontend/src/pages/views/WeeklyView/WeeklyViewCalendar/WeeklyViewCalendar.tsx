@@ -38,30 +38,6 @@ const WeeklyCalendar: React.FC<{
 	const [weeks, setWeeks] = useState<Date[][]>([]);
 	const [weekNumbers, setWeekNumbers] = useState<number[]>([]);
 
-	const previousHandler = () => {
-		props.setChosenDate(addDays(props.chosenDate, -7));
-	};
-
-	const nextHandler = () => {
-		props.setChosenDate(addDays(props.chosenDate, 7));
-	};
-
-	const calendarPreviousYearHandler = () => {
-		setCalendarDate(addYears(calendarDate, -1));
-	};
-
-	const calendarPreviousMonthHandler = () => {
-		setCalendarDate(addMonths(calendarDate, -1));
-	};
-
-	const calendarNextMonthHandler = () => {
-		setCalendarDate(addMonths(calendarDate, 1));
-	};
-
-	const calendarNextYearHandler = () => {
-		setCalendarDate(addYears(calendarDate, 1));
-	};
-
 	const createWeekCalendar = () => {
 		const weeksInMonth = getWeeksInMonth(calendarDate, { weekStartsOn: 1 });
 		const firstDateOfMonth = startOfMonth(calendarDate);
@@ -119,33 +95,31 @@ const WeeklyCalendar: React.FC<{
 	return (
 		<Calendar
 			calendar={calendarTypes.WEEKLY}
-			previousHandler={previousHandler}
-			previousHandlerDisabled={isBefore(
-				addDays(props.chosenDate, -7),
-				new Date(2020, 0, 1)
-			)}
+			chosenDate={props.chosenDate}
+			setChosenDate={props.setChosenDate}
+			calendarDate={calendarDate}
+			setCalendarDate={setCalendarDate}
+			// previousHandlerDisabled={isBefore(
+			// 	addDays(props.chosenDate, -7),
+			// 	new Date(2020, 0, 1)
+			// )}
 			headerText={props.headerText}
-			nextHandler={nextHandler}
-			nextHandlerDisabled={!isBefore(addDays(props.chosenDate, 7), new Date())}
-			calendarPreviousYearHandler={calendarPreviousYearHandler}
-			calendarPreviousYearHandlerDisabled={isBefore(
-				addYears(calendarDate, -1),
-				new Date(2020, 0, 1)
-			)}
-			calendarPreviousMonthHandler={calendarPreviousMonthHandler}
-			calendarPreviousMonthHandlerDisabled={isBefore(
-				addMonths(calendarDate, -1),
-				new Date(2020, 0, 1)
-			)}
+			// nextHandlerDisabled={!isBefore(addDays(props.chosenDate, 7), new Date())}
+			// calendarPreviousYearHandlerDisabled={isBefore(
+			// 	addYears(calendarDate, -1),
+			// 	new Date(2020, 0, 1)
+			// )}
+			// calendarPreviousMonthHandlerDisabled={isBefore(
+			// 	addMonths(calendarDate, -1),
+			// 	new Date(2020, 0, 1)
+			// )}
 			calendarText={`${calendarMonthStr} ${getYear(calendarDate)}`}
-			calendarNextMonthHandler={calendarNextMonthHandler}
-			calendarNextMonthHandlerDisabled={
-				!isBefore(addMonths(calendarDate, 1), new Date())
-			}
-			calendarNextYearHandler={calendarNextYearHandler}
-			calendarNextYearHandlerDisabled={
-				!isBefore(addYears(calendarDate, 1), new Date())
-			}
+			// calendarNextMonthHandlerDisabled={
+			// 	!isBefore(addMonths(calendarDate, 1), new Date())
+			// }
+			// calendarNextYearHandlerDisabled={
+			// 	!isBefore(addYears(calendarDate, 1), new Date())
+			// }
 		>
 			<div className={calendarClasses.week}>
 				<div className={calendarClasses.week__numbers}>

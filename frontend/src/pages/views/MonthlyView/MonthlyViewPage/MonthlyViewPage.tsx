@@ -19,6 +19,7 @@ import { useTaskClass } from '../../../../classes/task-class-hook';
 
 import MonthlyViewCalendar from '../MonthlyViewCalendar/MonthlyViewCalendar';
 import { LogDataButton } from '../../LogDataButtons/LogDataButtons';
+import ViewsContainer from '../../../../containers/ViewsContainer/ViewsContainer';
 
 import classes from './MonthlyViewPage.module.scss';
 
@@ -101,7 +102,7 @@ const MonthlyView: React.FC = () => {
 	}, [chosenDate, chosenTask]);
 
 	return (
-		<div className={classes.wrapper}>
+		<ViewsContainer>
 			<MonthlyViewCalendar
 				chosenDate={chosenDate}
 				setChosenDate={setChosenDate}
@@ -147,7 +148,7 @@ const MonthlyView: React.FC = () => {
 						</>
 					))}
 			</div>
-		</div>
+		</ViewsContainer>
 	);
 };
 

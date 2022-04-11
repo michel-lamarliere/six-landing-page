@@ -9,7 +9,7 @@ import { useRequest } from '../../../../hooks/http-hook';
 import Input, { InputStyles } from '../../../../components/form-elements/Input';
 import EditProfileFormWrapper, {
 	EditProfileFormWrapperTypes,
-} from '../../EditUserContainer/EditUserContainer';
+} from '../../../../containers/EditUserContainer/EditUserContainer';
 
 import successIcon from '../../../../assets//icons/success.svg';
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import RoundedButton from '../../../components/buttons/RoundedButton/RoundedButton';
+import RoundedButton from '../../components/buttons/RoundedButton/RoundedButton';
 
-import backButtonIcon from '../../../assets/icons/back-button.svg';
+import backButtonIcon from '../../assets/icons/back-button.svg';
 
 import classes from './EditUserContainer.module.scss';
 

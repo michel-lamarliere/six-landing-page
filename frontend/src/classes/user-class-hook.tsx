@@ -239,12 +239,12 @@ export const useUserClass = () => {
 				new Date(userState.tokenExpiration).getTime() - new Date().getTime();
 
 			setTimeout(() => {
+				User.logOut({ redirect: true });
+
 				dispatch({
 					type: AlertPopUpActionTypes.SET_AND_SHOW_ALERT_POP_UP,
 					message: 'Votre session a expiré, veuillez vous reconnecter.',
 				});
-
-				User.logOut({ redirect: true });
 			}, remainingTime);
 		}
 	}

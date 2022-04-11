@@ -11,6 +11,7 @@ import { useTaskClass } from '../../../../classes/task-class-hook';
 
 import WeekViewTasks from '../WeeklyViewTasks/WeeklyViewTasks';
 import WeeklyCalendar from '../WeeklyViewCalendar/WeeklyViewCalendar';
+import ViewsContainer from '../../../../containers/ViewsContainer/ViewsContainer';
 
 import classes from './WeeklyViewPage.module.scss';
 
@@ -89,7 +90,7 @@ const WeekView: React.FC = () => {
 	}, [userState.id, chosenDate]);
 
 	return (
-		<div className={classes.wrapper}>
+		<ViewsContainer>
 			<WeeklyCalendar
 				chosenDate={chosenDate}
 				setChosenDate={setChosenDate}
@@ -138,7 +139,7 @@ const WeekView: React.FC = () => {
 					/>
 				</div>
 			</div>
-		</div>
+		</ViewsContainer>
 	);
 };
 

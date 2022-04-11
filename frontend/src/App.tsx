@@ -7,9 +7,9 @@ import { RootState } from './store/_store';
 import { useUserClass } from './classes/user-class-hook';
 
 import LoginSignupForms from './pages/login-signup/LogInSignUpPage/LogInSignUpPage';
-import DailyView from './pages/log/DailyView/DailyViewPage/DailyViewPage';
-import WeeklyView from './pages/log/WeeklyView/WeeklyViewPage/WeeklyViewPage';
-import MonthlyView from './pages/log/MonthlyView/MonthlyViewPage/MonthlyViewPage';
+import DailyView from './pages/views/DailyView/DailyViewPage/DailyViewPage';
+import WeeklyView from './pages/views/WeeklyView/WeeklyViewPage/WeeklyViewPage';
+import MonthlyView from './pages/views/MonthlyView/MonthlyViewPage/MonthlyViewPage';
 import Error404 from './pages/Error404Page/Error404Page';
 import ErrorPopup from './components/pop-ups/alert-or-error-pop-up/ErrorPopUp/ErrorPopUp';
 import EmailConfirmationPopup from './components/pop-ups/pop-ups/EmailConfirmationPopUp/EmailConfirmationPopUp';
