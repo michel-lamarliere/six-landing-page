@@ -1,0 +1,305 @@
+@import '../../../style/variables.scss';
+
+.buttons {
+	display: flex;
+	justify-content: center;
+	gap: 2rem;
+
+	&__button {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 1rem;
+		width: 4.1rem;
+		height: 2.25rem;
+		background-color: $colorGrey1;
+		border-radius: 1.85rem;
+		cursor: pointer;
+
+		&__icon {
+			width: 1.125rem;
+			height: 1.125rem;
+			opacity: 0.5;
+		}
+
+		&__calendar {
+			width: 1.125rem;
+			height: 1.125rem;
+			opacity: 0.5;
+		}
+
+		&__arrow {
+			width: 1rem;
+			transition: all 0.3s ease-in-out;
+
+			&--open {
+				transform: rotateX(180deg);
+			}
+		}
+	}
+}
+
+.header {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 1.85rem;
+	font-family: $fontBold;
+	width: 20rem;
+	text-align: center;
+	color: $colorLavander;
+
+	&__text {
+		font-family: $fontBold;
+		font-size: 16px;
+		width: 100%;
+	}
+
+	&__button {
+		display: grid;
+		place-content: center;
+		background: none;
+		cursor: pointer;
+
+		&--left {
+			position: absolute;
+			left: 2rem;
+		}
+
+		&--right {
+			position: absolute;
+			right: 2rem;
+		}
+	}
+}
+
+.selector {
+	position: absolute;
+	top: 5rem;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 1.85rem;
+	width: 15.9rem;
+	gap: 1rem;
+	padding: 1.35rem;
+	background-color: #25273e;
+	z-index: 3;
+
+	&__active {
+		border: 1px solid $colorLavander;
+	}
+
+	& > button {
+		display: flex;
+		align-items: center;
+		background-color: #2c2e44;
+		color: $colorWhite;
+		border-radius: 1.5rem;
+		font-family: $fontMedium;
+		font-size: 16px;
+		width: 100%;
+		height: 3rem;
+
+		& > img {
+			margin: auto 2rem;
+			width: 1.5rem;
+			height: 1.5rem;
+		}
+
+		&:hover {
+			background-color: $colorLavander;
+			cursor: pointer;
+		}
+	}
+}
+
+.calendar {
+	position: absolute;
+	top: 5rem;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	flex-direction: column;
+	width: 15.9rem;
+	padding: 2rem 1rem;
+	gap: 2.5rem;
+	border-radius: 1.85rem;
+	background-color: #25273e;
+	z-index: 3;
+
+	&__header {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		text-align: center;
+		font-family: $fontBold;
+		font-size: 16px;
+		color: $colorLavander;
+		gap: 0.75rem;
+
+		&__text {
+		}
+
+		&__button {
+			@extend .header__button;
+			height: 100%;
+
+			&--double-left {
+				position: absolute;
+				left: 0rem;
+			}
+
+			&--left {
+				position: absolute;
+				left: 2rem;
+			}
+
+			&--right {
+				position: absolute;
+				right: 2rem;
+			}
+
+			&--double-right {
+				position: absolute;
+				right: 0rem;
+			}
+		}
+	}
+
+	&__calendar {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+
+		&__days {
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			gap: 0.5rem;
+		}
+	}
+}
+
+.day {
+	display: grid;
+	place-content: center;
+	width: 1.5rem;
+	height: 1.5rem;
+	font-family: $fontSemiBold;
+	background-color: transparent;
+	border: 0.15rem solid transparent;
+	color: $colorWhite;
+	border-radius: 50%;
+	cursor: pointer;
+
+	&:hover {
+		border: 0.15rem solid $colorLavander;
+	}
+
+	&--disabled {
+		cursor: default;
+		color: $colorMouse1;
+
+		&:hover {
+			border: 0.15rem solid transparent;
+		}
+
+		&--same-week {
+			cursor: pointer;
+			color: $colorMouse1;
+		}
+	}
+
+	&--today {
+		border: 0.15rem solid #564bef;
+		color: #564bef;
+	}
+
+	&--chosen-date {
+		background-color: $colorLavander;
+	}
+}
+
+.week {
+	display: flex;
+	position: relative;
+
+	&__numbers {
+		position: absolute;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-evenly;
+		gap: 0.83rem;
+		top: 0.4rem;
+		left: -0.5rem;
+		font-family: $fontMediumItalic;
+		font-size: 8px;
+		color: $colorMouse1;
+
+		&__week-number {
+			font-family: $fontMediumItalic;
+			font-size: 8px;
+			color: $colorMouse1;
+		}
+	}
+
+	&__calendar {
+		display: flex;
+		flex-direction: column;
+
+		&__week {
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			gap: 0.85rem;
+			background-color: transparent;
+			border-radius: 0.75rem;
+
+			&:hover {
+				background-color: $colorLavander;
+				cursor: pointer;
+			}
+
+			&--disabled {
+				&:hover {
+					background-color: transparent;
+					cursor: default;
+				}
+			}
+		}
+	}
+}
+
+.month {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	row-gap: 1rem;
+
+	&__month {
+		display: grid;
+		place-content: center;
+		height: 1.5rem;
+		border-radius: 0.75rem;
+		background-color: transparent;
+		color: $colorWhite;
+		font-family: $fontSemiBold;
+		font-size: 14px;
+
+		&:hover {
+			background-color: $colorLavander;
+			cursor: pointer;
+		}
+
+		&--disabled {
+			color: $colorMouse1;
+
+			&:hover {
+				background-color: transparent;
+				cursor: default;
+			}
+		}
+	}
+}

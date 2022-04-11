@@ -1,0 +1,44 @@
+@import '../../../style/variables.scss';
+
+.wrapper {
+	position: absolute;
+	top: 2.3rem;
+	right: 2rem;
+	z-index: 3;
+}
+
+.hamburger {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 1.5rem;
+	height: 1.5rem;
+	cursor: pointer;
+
+	&__lign {
+		content: '';
+		background-color: $colorWhite;
+		width: 100%;
+		height: 0.2rem;
+		border-radius: 0.5rem;
+		transition: all ease-in-out 0.3s;
+
+		&:before {
+			@extend .hamburger__lign;
+			position: absolute;
+			transform: translateY(-0.55rem);
+		}
+
+		&:after {
+			@extend .hamburger__lign;
+			position: absolute;
+			transform: translateY(0.55rem);
+		}
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	.wrapper {
+		display: none;
+	}
+}
