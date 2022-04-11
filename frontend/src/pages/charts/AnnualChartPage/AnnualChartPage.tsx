@@ -15,7 +15,7 @@ import ViewsContainer from '../../../containers/ViewsContainer/ViewsContainer';
 
 import classes from './AnnualChartPage.module.scss';
 import DateNavigation from '../../../components/DateNavigation/DateNavigation';
-import { TaskSelectorButton } from '../../../components/calendar/CalendarButtons/CalendarButtons';
+import { TaskSelectorButton } from '../../../components/buttons/CalendarAndTaskSelectorButtons/CalendarAndTaskSelectorButtons';
 
 const AnnualGraph: React.FC = () => {
 	const dispatch = useDispatch();
@@ -44,7 +44,7 @@ const AnnualGraph: React.FC = () => {
 		return isAfter(addYears(chosenYear, 1), new Date());
 	};
 
-	const selectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const selectTaskHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setChosenTask((event.target as HTMLButtonElement).value);
 
 		dispatch({ type: TaskSelectorActionTypes.HIDE_TASK_SELECTOR });
@@ -93,7 +93,10 @@ const AnnualGraph: React.FC = () => {
 
 	return (
 		<ViewsContainer>
-			<TaskSelectorButton chosenTask={chosenTask} selectHandler={selectHandler} />
+			<TaskSelectorButton
+				chosenTask={chosenTask}
+				selectTaskHandler={selectTaskHandler}
+			/>
 			<DateNavigation
 				headerText={chosenYear.getFullYear().toString()}
 				previousHandler={previousHandler}

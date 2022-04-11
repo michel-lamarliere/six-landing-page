@@ -1,12 +1,15 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { addDays, addMonths, addYears, isBefore } from 'date-fns';
+import { addDays, addMonths, isBefore } from 'date-fns';
 
 import { RootState } from '../../../store/_store';
 
 import CalendarDaysOfWeek from '../CalendarDaysOfWeek/CalendarDaysOfWeek';
-import { CalendarButton, TaskSelectorButton } from '../CalendarButtons/CalendarButtons';
+import {
+	CalendarButton,
+	TaskSelectorButton,
+} from '../../buttons/CalendarAndTaskSelectorButtons/CalendarAndTaskSelectorButtons';
 import CalendarHeader from '../CalendarHeader/CalendarHeader';
 import DateNavigation from '../../DateNavigation/DateNavigation';
 
@@ -36,7 +39,7 @@ type SpecialProps =
 	| {
 			calendar: calendarTypes.MONTHLY;
 			chosenTask: string;
-			selectHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
+			selectTaskHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	  };
 
 type Props = CommonProps & SpecialProps;
@@ -83,7 +86,7 @@ const Calendar: React.FC<Props> = (props) => {
 				{props.calendar === calendarTypes.MONTHLY && (
 					<TaskSelectorButton
 						chosenTask={props.chosenTask}
-						selectHandler={props.selectHandler}
+						selectTaskHandler={props.selectTaskHandler}
 					/>
 				)}
 			</div>

@@ -38,7 +38,7 @@ const MonthlyCalendar: React.FC<{
 		'Décembre',
 	];
 
-	const selectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const selectTaskHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		props.setChosenTask((event.target as HTMLButtonElement).value);
 
 		dispatch({ type: TaskSelectorActionTypes.HIDE_TASK_SELECTOR });
@@ -53,26 +53,14 @@ const MonthlyCalendar: React.FC<{
 	return (
 		<Calendar
 			calendar={calendarTypes.MONTHLY}
-			selectHandler={selectHandler}
+			selectTaskHandler={selectTaskHandler}
 			chosenTask={props.chosenTask}
 			chosenDate={props.chosenDate}
 			setChosenDate={props.setChosenDate}
 			calendarDate={calendarDate}
 			setCalendarDate={setCalendarDate}
-			// previousHandlerDisabled={isBefore(
-			// 	addMonths(props.chosenDate, -1),
-			// 	new Date(2020, 0, 1)
-			// )}
 			headerText={props.headerText}
-			// nextHandlerDisabled={!isBefore(addMonths(props.chosenDate, 1), new Date())}
-			// calendarPreviousYearHandlerDisabled={isBefore(
-			// 	addYears(calendarDate, -1),
-			// 	new Date(2020, 0, 1)
-			// )}
 			calendarText={`${getYear(calendarDate)}`}
-			// calendarNextYearHandlerDisabled={
-			// 	!isBefore(addYears(calendarDate, 1), new Date())
-			// }
 		>
 			<div className={calendarClasses.month}>
 				{months.map((month, index) => (
