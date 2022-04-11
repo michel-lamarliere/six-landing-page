@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express';
+import { RequestHandler, response } from 'express';
 const { ObjectId } = require('mongodb');
 const {
 	addDays,
@@ -17,6 +17,8 @@ const addData: RequestHandler = async (req, res, next) => {
 		task: reqTask,
 		levelOfCompletion: reqLevelOfCompletion,
 	} = req.body;
+
+	console.log(reqDateStr, reqTask, reqLevelOfCompletion);
 
 	const reqDate = new Date(reqDateStr);
 
@@ -216,7 +218,17 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 
 	const datesArray = getDatesArray(reqStartDate);
 
-	const resultsArray: { date: Date; six: {} }[] = [];
+	const resultsArray: {
+		date: Date;
+		six: {
+			food: number;
+			sleep: number;
+			sport: number;
+			relaxation: number;
+			work: number;
+			social: number;
+		};
+	}[] = [];
 
 	await databaseConnect
 		.aggregate([
@@ -254,9 +266,23 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 				},
 			},
 		])
-		.forEach((doc: { data: { date: Date; six: {} } }) => {
-			resultsArray.push(doc.data);
-		});
+		.forEach(
+			(doc: {
+				data: {
+					date: Date;
+					six: {
+						food: number;
+						sleep: number;
+						sport: number;
+						relaxation: number;
+						work: number;
+						social: number;
+					};
+				};
+			}) => {
+				resultsArray.push(doc.data);
+			}
+		);
 
 	for (let date of datesArray) {
 		let found = false;
@@ -280,7 +306,35 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 
 	resultsArray.sort(sortArray);
 
-	res.status(200).json(resultsArray);
+	const responseArray: {
+		food: {}[];
+		sleep: {}[];
+		sport: {}[];
+		relaxation: {}[];
+		work: {}[];
+		social: {}[];
+	} = {
+		food: [],
+		sleep: [],
+		sport: [],
+		relaxation: [],
+		work: [],
+		social: [],
+	};
+
+	let task: 'food' | 'sleep' | 'sport' | 'relaxation' | 'work' | 'social';
+
+	for (task in responseArray) {
+		for (let i = 0; i < resultsArray.length; i++) {
+			for (let sixTask in resultsArray[i].six) {
+				if (task === sixTask) {
+					responseArray[task].push(resultsArray[i].six[task]);
+				}
+			}
+		}
+	}
+
+	res.status(200).json({ datesArray: datesArray, responseArray: responseArray });
 };
 
 const getMonthly: RequestHandler = async (req, res, next) => {

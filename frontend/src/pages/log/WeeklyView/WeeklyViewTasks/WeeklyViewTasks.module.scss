@@ -1,8 +1,26 @@
+@import '../../../../style/variables.scss';
+
 .wrapper {
 	display: grid;
 	grid-auto-flow: column;
-	grid-template-columns: repeat(7, 1fr);
 	grid-template-rows: repeat(6, 1fr);
 	gap: 1rem;
 	width: 100%;
+}
+
+.task {
+	display: grid;
+	grid-auto-flow: column;
+	align-items: center;
+	grid-template-columns: repeat(8, 1fr);
+	gap: 1rem;
+	justify-content: space-between;
+	background-color: $colorGrey1;
+	padding: 0.9rem 0.75rem;
+	border-radius: 0.5rem;
+
+	&__img {
+		width: 1.25rem;
+		height: 1.25rem;
+	}
 }

@@ -21,8 +21,16 @@ const WeekView: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
-	const [mappingArray, setMappingArray] = useState<{ date: Date; six: {} }[]>([]);
+	const [dataArray, setDataArray] = useState<{
+		food: [];
+		sleep: [];
+		sport: [];
+		relaxation: [];
+		social: [];
+		work: [];
+	}>({ food: [], sleep: [], sport: [], relaxation: [], social: [], work: [] });
 	const [isLoading, setIsLoading] = useState(true);
+	const [datesArray, setDatesArray] = useState([]);
 
 	// CALENDAR
 	const [chosenDate, setChosenDate] = useState(addDays(new Date(), 0));
@@ -60,8 +68,12 @@ const WeekView: React.FC = () => {
 			return;
 		}
 
+		console.log(responseData.datesArray);
+		console.log(responseData.responseArray);
+
+		setDatesArray(responseData.datesArray);
 		setIsLoading(false);
-		setMappingArray(responseData);
+		setDataArray(responseData.responseArray);
 	};
 
 	useEffect(() => {
@@ -87,26 +99,41 @@ const WeekView: React.FC = () => {
 			/>
 			<div>
 				<div className={classes.days}>
-					<li>Lundi {addDays(firstOfWeek, 0).getDate()}</li>
-					<li>Mardi {addDays(firstOfWeek, 1).getDate()}</li>
-					<li>Mercredi {addDays(firstOfWeek, 2).getDate()}</li>
-					<li>Jeudi {addDays(firstOfWeek, 3).getDate()}</li>
-					<li>Vendredi {addDays(firstOfWeek, 4).getDate()}</li>
-					<li>Samedi {addDays(firstOfWeek, 5).getDate()}</li>
-					<li>Dimanche {addDays(firstOfWeek, 6).getDate()}</li>
+					<li></li>
+					<li className={classes.days__day}>
+						LUN <br />
+						{addDays(firstOfWeek, 0).getDate()}
+					</li>
+					<li className={classes.days__day}>
+						MAR <br />
+						{addDays(firstOfWeek, 1).getDate()}
+					</li>
+					<li className={classes.days__day}>
+						MER <br />
+						{addDays(firstOfWeek, 2).getDate()}
+					</li>
+					<li className={classes.days__day}>
+						JEU
+						<br /> {addDays(firstOfWeek, 3).getDate()}
+					</li>
+					<li className={classes.days__day}>
+						VEN <br />
+						{addDays(firstOfWeek, 4).getDate()}
+					</li>
+					<li className={classes.days__day}>
+						SAM <br />
+						{addDays(firstOfWeek, 5).getDate()}
+					</li>
+					<li className={classes.days__day}>
+						DIM <br />
+						{addDays(firstOfWeek, 6).getDate()}
+					</li>
 				</div>
 				<div className={classes.six}>
-					<div className={classes.six__titles}>
-						<li>Food</li>
-						<li>Sleep</li>
-						<li>Sport</li>
-						<li>Relaxation</li>
-						<li>Work</li>
-						<li>Social</li>
-					</div>
 					<WeekViewTasks
 						isLoading={isLoading}
-						array={mappingArray}
+						dataArray={dataArray}
+						datesArray={datesArray}
 						onClick={addData}
 					/>
 				</div>
