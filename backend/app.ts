@@ -29,7 +29,7 @@ app.use('/api/log', logRoutes);
 app.use('/api/charts', chartsRoutes);
 app.use('/api/contact', contactRoutes);
 
-app.listen(8080, () => {
+app.listen(process.env.PORT || 8080, () => {
 	database.connectToServer((error: {}) => {
 		if (error) console.error(error);
 	});

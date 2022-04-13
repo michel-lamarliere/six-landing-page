@@ -13,7 +13,7 @@ module.exports = {
 				return callback(error);
 			}
 
-			dbConnection = db.db('development');
+			dbConnection = db.db(`${process.env.DB_NAME}`);
 			console.log(`Connected to the ${process.env.DB_NAME} database!`);
 			return callback();
 		});
