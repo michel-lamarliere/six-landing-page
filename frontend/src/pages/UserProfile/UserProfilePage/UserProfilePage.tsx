@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../../store/_store';
 import { EmailConfirmationPopUpActionTypes } from '../../../store/pop-ups/email-confirmation-pop-up';
+import { OverlayActionTypes } from '../../../store/overlay';
 
 import { useUserClass } from '../../../classes/user-class-hook';
 
@@ -22,6 +23,7 @@ import passwordIcon from '../../../assets/icons/profile/profile-modify-password.
 import logOutIcon from '../../../assets/icons/profile/profile-log-out.svg';
 
 import classes from './UserProfilePage.module.scss';
+import { LogOutConfirmationPopUpActionTypes } from '../../../store/pop-ups/log-out-confirmation-pop-up';
 
 const Profile: React.FC = () => {
 	const dispatch = useDispatch();
@@ -29,26 +31,28 @@ const Profile: React.FC = () => {
 	const { User } = useUserClass();
 
 	const userState = useSelector((state: RootState) => state.user);
+	const logOutConfirmationPopUpState = useSelector(
+		(state: RootState) => state.logOutConfirmationPopUp
+	);
 
 	const [showEditProfile, setShowEditProfile] = useState(true);
-	const [promptLogOut, setPromptLogOut] = useState(false);
 
 	const editProfileHandler = () => {
 		setShowEditProfile((prev) => !prev);
 	};
 
 	const promptLogOutHandler = () => {
-		setPromptLogOut(true);
-	};
-
-	const removeLogOutPrompt = () => {
-		setPromptLogOut(false);
+		dispatch({
+			type: LogOutConfirmationPopUpActionTypes.SHOW_LOG_OUT_CONFIRMATION_POP_UP,
+		});
+		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
 	};
 
 	const confirmEmailAddressHandler = () => {
 		dispatch({
 			type: EmailConfirmationPopUpActionTypes.SHOW_EMAIL_CONFIRMATION_POP_UP,
 		});
+		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
 	};
 
 	return (
@@ -125,9 +129,7 @@ const Profile: React.FC = () => {
 				<img src={logOutIcon} alt='Déconnexion' />
 				<div className={classes['log-out__text']}>Déconnexion</div>
 			</button>
-			{promptLogOut && (
-				<LogOutConfirmation cancelLogOutHandler={removeLogOutPrompt} />
-			)}
+			{logOutConfirmationPopUpState.show && <LogOutConfirmation />}
 		</div>
 	);
 };

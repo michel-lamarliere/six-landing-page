@@ -20,6 +20,9 @@ const EmailPopup: React.FC = () => {
 	const { sendRequest } = useRequest();
 
 	const userState = useSelector((state: RootState) => state.user);
+	const emailConfirmationPopUpState = useSelector(
+		(state: RootState) => state.emailConfirmationPopUp
+	);
 
 	const [sent, setSent] = useState(false);
 	const [responseMessage, setResponseMessage] = useState('');
@@ -52,21 +55,14 @@ const EmailPopup: React.FC = () => {
 		dispatch({
 			type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
 		});
+		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
 	};
 
-	// useEffect(() => {
-	// 	if (userState.confirmedEmail) {
-	// 		dispatch({
-	// 			type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
-	// 		});
-	// 		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
-	// 	} else {
-	// 		dispatch({
-	// 			type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
-	// 		});
-	// 		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
-	// 	}
-	// }, [userState.confirmedEmail]);
+	useEffect(() => {
+		if (emailConfirmationPopUpState.show) {
+			dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
+		}
+	}, [emailConfirmationPopUpState.show]);
 
 	return ReactDOM.createPortal(
 		<PopUp

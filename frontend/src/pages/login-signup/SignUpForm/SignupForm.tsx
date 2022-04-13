@@ -107,7 +107,7 @@ const SingupForm: React.FC<Props> = (props) => {
 			responseMessage={responseMessage}
 		>
 			<Input
-				styling={InputStyles.BASIC_FORM}
+				styling={InputStyles.PURPLE_FORM}
 				id='Nom'
 				type='text'
 				placeholder='Jean'
@@ -119,7 +119,7 @@ const SingupForm: React.FC<Props> = (props) => {
 				onBlur={nameOnBlurHandler}
 			/>
 			<Input
-				styling={InputStyles.BASIC_FORM}
+				styling={InputStyles.PURPLE_FORM}
 				id='Email'
 				type='text'
 				placeholder='jean@email.fr'
@@ -131,7 +131,7 @@ const SingupForm: React.FC<Props> = (props) => {
 				onBlur={emailOnBlurHandler}
 			/>
 			<Input
-				styling={InputStyles.BASIC_FORM}
+				styling={InputStyles.PURPLE_FORM}
 				id='mot de passe'
 				type='password'
 				placeholder='Mot de passe'
@@ -143,7 +143,7 @@ const SingupForm: React.FC<Props> = (props) => {
 				onBlur={passwordOnBlurHandler}
 			/>
 			<Input
-				styling={InputStyles.BASIC_FORM}
+				styling={InputStyles.PURPLE_FORM}
 				id='mot de passe'
 				type='password'
 				placeholder='Confirmation mot de passe'

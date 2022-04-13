@@ -4,8 +4,8 @@ export enum useInputTypes {
 	NAME = 'NAME',
 	EMAIL = 'EMAIL',
 	PASSWORD = 'PASSWORD',
-	NEW_PASSWORD = 'NEW_PASSWORD',
 	COMPARISON = 'COMPARISON',
+	MESSAGE = 'MESSAGE',
 	NONE = 'NONE',
 }
 
@@ -15,6 +15,7 @@ export const useInput = (args: {
 		| useInputTypes.EMAIL
 		| useInputTypes.PASSWORD
 		| useInputTypes.COMPARISON
+		| useInputTypes.MESSAGE
 		| useInputTypes.NONE;
 	validate: boolean;
 	display?: boolean;
@@ -30,10 +31,6 @@ export const useInput = (args: {
 		isValid: false,
 		isTouched: false,
 	});
-
-	// if (!validate) {
-	// 	setInput((prev) => ({ ...prev, isValid: true }));
-	// }
 
 	const inputOnChangeHandler = (
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -53,14 +50,14 @@ export const useInput = (args: {
 		}
 	}, [display]);
 
-	useEffect(() => {
-		if (!validate) {
-			setInput((prev) => ({ ...prev, isValid: true }));
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if (!validate) {
+	// 		setInput((prev) => ({ ...prev, isValid: true }));
+	// 	}
+	// }, []);
 
 	useEffect(() => {
-		if (type === 'NAME' && validate) {
+		if (type === useInputTypes.NAME && validate) {
 			input.value.trim().length >= 2 &&
 			input.value.trim().match(/^['’\p{L}\p{M}]*-?['’\p{L}\p{M}]*$/giu)
 				? setInput((prev) => ({ ...prev, isValid: true }))
@@ -69,7 +66,7 @@ export const useInput = (args: {
 	}, [input.value]);
 
 	useEffect(() => {
-		if (type === 'EMAIL' && validate) {
+		if (type === useInputTypes.EMAIL && validate) {
 			input.value.match(
 				/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 			)
@@ -79,7 +76,7 @@ export const useInput = (args: {
 	}, [input.value]);
 
 	useEffect(() => {
-		if (type === 'PASSWORD' && validate) {
+		if (type === useInputTypes.PASSWORD && validate) {
 			input.value.match(
 				/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
 			)
@@ -89,7 +86,7 @@ export const useInput = (args: {
 	}, [input.value]);
 
 	useEffect(() => {
-		if (type === 'COMPARISON' && validate) {
+		if (type === useInputTypes.COMPARISON && validate) {
 			input.value === compareTo
 				? setInput((prev) => ({ ...prev, isValid: true }))
 				: setInput((prev) => ({ ...prev, isValid: false }));
@@ -97,7 +94,15 @@ export const useInput = (args: {
 	}, [input.value, compareTo]);
 
 	useEffect(() => {
-		if (type === 'NONE') {
+		if (type === useInputTypes.MESSAGE && validate) {
+			input.value.trim().length > 10
+				? setInput((prev) => ({ ...prev, isValid: true }))
+				: setInput((prev) => ({ ...prev, isValid: false }));
+		}
+	}, [input.value]);
+
+	useEffect(() => {
+		if (type === useInputTypes.NONE) {
 			setInput((prev) => ({ ...prev, isValid: true }));
 		}
 	}, [input.value]);

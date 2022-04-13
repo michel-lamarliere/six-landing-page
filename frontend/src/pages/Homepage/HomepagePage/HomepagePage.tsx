@@ -101,6 +101,12 @@ const HomePage: React.FC = () => {
 						onClick={() => carouselHandler(2)}
 					/>
 				</div>
+				<Link
+					to='/contact'
+					className={`${classes.buttons__contact} ${classes['buttons__contact--desktop']}`}
+				>
+					Nous contacter
+				</Link>
 			</div>
 			<div className={classes.buttons}>
 				<RoundedButton
@@ -113,6 +119,12 @@ const HomePage: React.FC = () => {
 					link={'/login-signup'}
 					className={`${classes.buttons__button} ${classes['buttons__button--sign-up']}`}
 				/>
+				<Link
+					to='/contact'
+					className={`${classes.buttons__contact} ${classes['buttons__contact--mobile']}`}
+				>
+					Nous contacter
+				</Link>
 			</div>
 			<div className={classes.forms}>
 				<LoginSignupForms />

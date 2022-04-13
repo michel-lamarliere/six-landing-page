@@ -96,6 +96,7 @@ const LoginForm: React.FC<Props> = (props) => {
 	const forgotPasswordHandler = (event: React.FormEvent) => {
 		event.preventDefault();
 		dispatch({ type: ForgotPasswordPopUpActionTypes.SHOW_FORGOT_PASSWORD_POP_UP });
+		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
 	};
 
 	useEffect(() => {
@@ -117,7 +118,7 @@ const LoginForm: React.FC<Props> = (props) => {
 			responseMessage={responseMessage}
 		>
 			<Input
-				styling={InputStyles.BASIC_FORM}
+				styling={InputStyles.PURPLE_FORM}
 				id='Email'
 				type='text'
 				placeholder='jean@email.fr'
@@ -129,7 +130,7 @@ const LoginForm: React.FC<Props> = (props) => {
 				onBlur={emailOnBlurHandler}
 			/>
 			<Input
-				styling={InputStyles.BASIC_FORM}
+				styling={InputStyles.PURPLE_FORM}
 				id='mot de passe'
 				type='password'
 				placeholder='Mot de passe'

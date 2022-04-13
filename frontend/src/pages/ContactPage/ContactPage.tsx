@@ -6,6 +6,8 @@ import { RootState } from '../../store/_store';
 import { useInput, useInputTypes } from '../../hooks/input-hook';
 import { useRequest } from '../../hooks/http-hook';
 
+import { useUserClass } from '../../classes/user-class-hook';
+
 import RoundedButton from '../../components/buttons/RoundedButton/RoundedButton';
 import Input, { InputStyles } from '../../components/form-elements/Input';
 
@@ -16,21 +18,54 @@ import classes from './ContactPage.module.scss';
 const Contact: React.FC = () => {
 	const { sendRequest } = useRequest();
 
+	const { User } = useUserClass();
+
 	const userState = useSelector((state: RootState) => state.user);
 
 	const [sent, setSent] = useState(false);
+	const [submitted, setSubmitted] = useState(false);
+	// const [formIsValid, setFormIsValid] = useState(false);
 	const [responseMessage, setResponseMessage] = useState('');
 
 	const {
-		input: message,
-		setInput: setMessage,
-		inputOnChangeHandler: messageOnChangeHandler,
-		inputOnBlurHandler: messageOnBlurHandler,
-	} = useInput({ type: useInputTypes.NONE, validate: false });
+		input: nameInput,
+		setInput: setNameInput,
+		inputOnChangeHandler: nameInputOnChangeHandler,
+		inputOnBlurHandler: nameInputOnBlurHandler,
+	} = useInput({ type: useInputTypes.NAME, validate: true, display: submitted });
+
+	const {
+		input: emailInput,
+		setInput: setEmailInput,
+		inputOnChangeHandler: emailInputOnChangeHandler,
+		inputOnBlurHandler: emailInputOnBlurHandler,
+	} = useInput({ type: useInputTypes.EMAIL, validate: true, display: submitted });
+
+	const {
+		input: messageInput,
+		setInput: setMessageInput,
+		inputOnChangeHandler: messageInputOnChangeHandler,
+		inputOnBlurHandler: messageInputOnBlurHandler,
+	} = useInput({ type: useInputTypes.MESSAGE, validate: true, display: submitted });
+
+	const resetForm = () => {
+		setNameInput({ value: '', isValid: false, isTouched: false });
+		setEmailInput({ value: '', isValid: false, isTouched: false });
+		setMessageInput({ value: '', isValid: false, isTouched: false });
+	};
+
+	const validateForm = () => {
+		setSubmitted(true);
+
+		if (!messageInput.isValid || !nameInput.isValid || !emailInput.isValid) {
+			return false;
+		}
+
+		return true;
+	};
 
 	const submitHandler = async () => {
-		if (message.value.trim().length < 10) {
-			setMessage((prev) => ({ ...prev, isValid: false, isTouched: true }));
+		if (!validateForm()) {
 			return;
 		}
 
@@ -38,19 +73,20 @@ const Contact: React.FC = () => {
 			url: `${process.env.REACT_APP_BACKEND_URL}/contact/message`,
 			method: 'POST',
 			body: JSON.stringify({
-				email: userState.email,
-				name: userState.name,
-				message: message.value,
+				email: User.isLoggedIn() ? userState.email : emailInput.value,
+				name: User.isLoggedIn() ? userState.name : nameInput.value,
+				message: messageInput.value,
+				loggedIn: User.isLoggedIn() ? true : false,
 			}),
 		});
-
-		setMessage({ value: '', isValid: false, isTouched: false });
 
 		setSent(true);
 
 		if (!responseData) {
 			return;
 		}
+
+		resetForm();
 
 		if (responseData.error) {
 			setResponseMessage(responseData.message);
@@ -71,17 +107,45 @@ const Contact: React.FC = () => {
 			{!sent && (
 				<>
 					<div className={classes.title}>Un problème ? Une question ?</div>
+					{!User.isLoggedIn() && (
+						<>
+							<Input
+								styling={InputStyles.BLACK_FORM}
+								id={'nom'}
+								placeholder={'Votre nom'}
+								type={'text'}
+								value={nameInput.value}
+								errorText={'2 caractères minimum.'}
+								isValid={nameInput.isValid}
+								isTouched={nameInput.isTouched}
+								onChange={nameInputOnChangeHandler}
+								onBlur={nameInputOnBlurHandler}
+							/>
+							<Input
+								styling={InputStyles.BLACK_FORM}
+								id={'adresse mail'}
+								placeholder={'Votre adresse mail'}
+								type={'text'}
+								value={emailInput.value}
+								errorText={'Format invalide.'}
+								isValid={emailInput.isValid}
+								isTouched={emailInput.isTouched}
+								onChange={emailInputOnChangeHandler}
+								onBlur={emailInputOnBlurHandler}
+							/>
+						</>
+					)}
 					<Input
-						styling={InputStyles.BASIC_FORM}
+						styling={InputStyles.BLACK_FORM}
 						id={'message'}
 						placeholder={'Votre message'}
 						type={'textarea'}
-						value={message.value}
+						value={messageInput.value}
 						errorText={'10 caractères minimum.'}
-						isValid={message.isValid}
-						isTouched={message.isTouched}
-						onChange={messageOnChangeHandler}
-						onBlur={messageOnBlurHandler}
+						isValid={messageInput.isValid}
+						isTouched={messageInput.isTouched}
+						onChange={messageInputOnChangeHandler}
+						onBlur={messageInputOnBlurHandler}
 					/>
 					<RoundedButton
 						text={'Envoyer'}

@@ -69,9 +69,6 @@ const WeekView: React.FC = () => {
 			return;
 		}
 
-		console.log(responseData.datesArray);
-		console.log(responseData.responseArray);
-
 		setDatesArray(responseData.datesArray);
 		setIsLoading(false);
 		setDataArray(responseData.responseArray);

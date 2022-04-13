@@ -9,6 +9,7 @@ import alertPopUpReducer from './pop-ups/alert-pop-up';
 import errorPopUpReducer from './pop-ups/error-pop-up';
 import emailConfirmationPopUpReducer from './pop-ups/email-confirmation-pop-up';
 import forgotPasswordPopUpReducer from './pop-ups/forgot-password-pop-up';
+import logOutConfirmationPopUpReducer from './pop-ups/log-out-confirmation-pop-up';
 
 const rootReducer = combineReducers({
 	user: userReducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
 	errorPopUp: errorPopUpReducer,
 	emailConfirmationPopUp: emailConfirmationPopUpReducer,
 	forgotPasswordPopUp: forgotPasswordPopUpReducer,
+	logOutConfirmationPopUp: logOutConfirmationPopUpReducer,
 });
 
 const store = createStore(rootReducer);

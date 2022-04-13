@@ -90,7 +90,7 @@ const DeleteAccount: React.FC = () => {
 						continuer.
 					</div>
 					<Input
-						styling={InputStyles.PROFILE_FORM}
+						styling={InputStyles.BLACK_FORM}
 						id='Nouveau Nom'
 						type='text'
 						placeholder='Écrivez "SUPPRIMER"'

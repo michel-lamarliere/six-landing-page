@@ -60,7 +60,7 @@ const App: React.FC = () => {
 			{User.isLoggedIn() && <HamburgerButton />}
 			{User.isLoggedIn() && <DesktopSidebar />}
 			{User.isLoggedIn() && <MobileSidebar />}
-			{/* {overlayState.show && <Overlay />} */}
+			{overlayState.show && <Overlay />}
 			{alertPopUpState.message && <AlertPopup message={alertPopUpState.message} />}
 			{errorPopUpState.message && <ErrorPopup message={errorPopUpState.message} />}
 			{emailConfirmationPopUpState.show && <EmailConfirmationPopup />}
@@ -92,9 +92,9 @@ const App: React.FC = () => {
 							path='/profil/modifier/supprimer-compte'
 							element={<DeleteAccount />}
 						/>
-						<Route path='/contact' element={<Contact />} />
 					</>
 				)}
+				<Route path='/contact' element={<Contact />} />
 				<Route
 					path='/profil/confirmation/:email/:code'
 					element={<EmailAddressConfirmation />}

@@ -60,8 +60,8 @@ const ForgotPassword: React.FC = () => {
 	const closePopUp = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
-		// dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
 		dispatch({ type: ForgotPasswordPopUpActionTypes.HIDE_FORGOT_PASSWORD_POP_UP });
+		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
 	};
 
 	return ReactDOM.createPortal(
@@ -77,7 +77,7 @@ const ForgotPassword: React.FC = () => {
 						instructions.
 					</div>
 					<Input
-						styling={InputStyles.BASIC_FORM}
+						styling={InputStyles.PURPLE_FORM}
 						id='Email'
 						type='text'
 						placeholder='jean@email.fr'

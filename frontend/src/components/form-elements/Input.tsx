@@ -6,8 +6,8 @@ import passwordHideIcon from '../../assets/icons/form&input/password_hide.svg';
 import classes from './Input.module.scss';
 
 export enum InputStyles {
-	BASIC_FORM = 'BASIC_FORM',
-	PROFILE_FORM = 'PROFILE_FORM',
+	PURPLE_FORM = 'PURPLE_FORM',
+	BLACK_FORM = 'BLACK_FORM',
 }
 
 const FormInput: React.FC<{
@@ -52,7 +52,7 @@ const FormInput: React.FC<{
 					<>
 						<input
 							className={`${classes.input__input} ${
-								props.styling === InputStyles.BASIC_FORM
+								props.styling === InputStyles.PURPLE_FORM
 									? classes['input__input--basic']
 									: classes['input__input--profile']
 							} ${

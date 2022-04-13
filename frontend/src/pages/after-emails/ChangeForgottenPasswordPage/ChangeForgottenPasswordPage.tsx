@@ -142,7 +142,7 @@ const ForgotPasswordForm: React.FC = () => {
 			{!changedPassword && (
 				<>
 					<Input
-						styling={InputStyles.BASIC_FORM}
+						styling={InputStyles.PURPLE_FORM}
 						id='Nouveau Mot de Passe'
 						type='password'
 						placeholder='Nouveau mot de passe'
@@ -154,7 +154,7 @@ const ForgotPasswordForm: React.FC = () => {
 						onBlur={newPasswordOnBlurHandler}
 					/>
 					<Input
-						styling={InputStyles.BASIC_FORM}
+						styling={InputStyles.PURPLE_FORM}
 						id='Confirmer Nouveau Mot de Passe'
 						type='password'
 						placeholder='Confirmation mot de passe'

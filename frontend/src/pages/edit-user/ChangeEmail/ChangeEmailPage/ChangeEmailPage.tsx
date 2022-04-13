@@ -84,7 +84,7 @@ const ChangeEmail: React.FC = () => {
 						<div className={classes.email}>{userState.email}</div>
 					</div>
 					<Input
-						styling={InputStyles.PROFILE_FORM}
+						styling={InputStyles.BLACK_FORM}
 						id={'email'}
 						type={'email'}
 						placeholder={'Nouvelle adresse mail'}

@@ -5,7 +5,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 	width: 100%;
-	padding: 3.5rem 2rem;
+	padding: 3.5rem 2rem 1rem 2rem;
 	background: $colorPurple1 url('../../../assets/backgrounds/mobile-bg.svg') no-repeat
 		bottom left -200px;
 }
@@ -103,6 +103,21 @@
 			color: $colorWhite;
 		}
 	}
+
+	&__contact {
+		font-size: 14px;
+		text-align: center;
+		color: $colorWhite;
+		text-decoration: underline;
+
+		&--mobile {
+			display: block;
+		}
+
+		&--desktop {
+			display: none;
+		}
+	}
 }
 
 .forms {
@@ -147,5 +162,9 @@
 
 	.buttons {
 		display: none;
+
+		&__contact--desktop {
+			display: block;
+		}
 	}
 }

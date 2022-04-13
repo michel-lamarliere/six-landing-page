@@ -24,15 +24,8 @@ export const CalendarButton: React.FC = () => {
 
 	const calendarButtonHandler = () => {
 		dispatch({ type: CalendarActionTypes.SHOW_CALENDAR });
+		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
 	};
-
-	useEffect(() => {
-		if (calendarState.show) {
-			dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
-		} else {
-			dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
-		}
-	}, [calendarState.show]);
 
 	return (
 		<button className={classes.button} onClick={calendarButtonHandler}>
@@ -87,14 +80,6 @@ export const TaskSelectorButton: React.FC<{
 			}
 		}
 	};
-
-	useEffect(() => {
-		if (taskSelectorState.show) {
-			dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
-		} else {
-			dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
-		}
-	}, [taskSelectorState.show]);
 
 	return (
 		<div className={classes.wrapper}>

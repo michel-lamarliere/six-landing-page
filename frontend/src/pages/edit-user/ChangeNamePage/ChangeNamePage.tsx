@@ -106,7 +106,7 @@ const ChangeName: React.FC = () => {
 			response={response}
 		>
 			<Input
-				styling={InputStyles.PROFILE_FORM}
+				styling={InputStyles.BLACK_FORM}
 				id='Nouveau Nom'
 				type='text'
 				placeholder='Jean'

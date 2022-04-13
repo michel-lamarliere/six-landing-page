@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from '../../../store/_store';
 import { MobileSidebarActionTypes } from '../../../store/mobile-sidebar';
+import { OverlayActionTypes } from '../../../store/overlay';
 
 import { useUserClass } from '../../../classes/user-class-hook';
 
@@ -48,6 +49,9 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 	const closeMobileSidebar = () => {
 		dispatch({
 			type: MobileSidebarActionTypes.HIDE_MOBILE_SIDEBAR,
+		});
+		dispatch({
+			type: OverlayActionTypes.HIDE_OVERLAY,
 		});
 	};
 

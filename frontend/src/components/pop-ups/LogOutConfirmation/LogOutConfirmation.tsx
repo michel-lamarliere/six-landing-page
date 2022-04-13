@@ -1,23 +1,27 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { useUserClass } from '../../../classes/user-class-hook';
+import { OverlayActionTypes } from '../../../store/overlay';
+import { LogOutConfirmationPopUpActionTypes } from '../../../store/pop-ups/log-out-confirmation-pop-up';
 
 import RoundedButton from '../../buttons/RoundedButton/RoundedButton';
 
 import classes from './LogOutConfirmation.module.scss';
 
-interface Props {
-	cancelLogOutHandler: any;
-}
-
-const LogOutConfirmation: React.FC<Props> = (props) => {
+const LogOutConfirmation: React.FC = () => {
+	const dispatch = useDispatch();
 	const { User } = useUserClass();
 
 	const cancelHandler = () => {
-		props.cancelLogOutHandler();
+		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
+		dispatch({
+			type: LogOutConfirmationPopUpActionTypes.HIDE_LOG_OUT_CONFIRMATION_POP_UP,
+		});
 	};
 
 	const logoutHandler = () => {
+		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
 		User.logOut({ redirect: true });
 	};
 

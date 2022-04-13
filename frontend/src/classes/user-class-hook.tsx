@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useNavigate } from 'react-router-dom';
-import { addHours, isBefore } from 'date-fns';
+import { addHours, addSeconds, isBefore } from 'date-fns';
 
 import { useRequest } from '../hooks/http-hook';
 import { useFormatUserName } from '../hooks/format-user-name-hook';
@@ -62,6 +62,7 @@ export const useUserClass = () => {
 			confirmedEmail: string;
 		}) {
 			const tokenExpiration = addHours(new Date(), 1);
+			// const tokenExpiration = addSeconds(new Date(), 5);
 
 			localStorage.setItem(
 				'userData',
