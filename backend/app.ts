@@ -29,7 +29,9 @@ app.use('/api/log', logRoutes);
 app.use('/api/charts', chartsRoutes);
 app.use('/api/contact', contactRoutes);
 
-app.listen(process.env.PORT || 8080, () => {
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
 	database.connectToServer((error: {}) => {
 		if (error) console.error(error);
 	});
