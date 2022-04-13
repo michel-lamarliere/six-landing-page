@@ -1,1 +1,1 @@
-web: ts-node -r dotenv/config app.ts
+web: ts-node app.ts
