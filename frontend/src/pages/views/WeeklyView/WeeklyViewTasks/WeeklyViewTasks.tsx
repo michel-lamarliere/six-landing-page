@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { format, isAfter, isBefore, isSameDay } from 'date-fns';
+import { addDays, format, isAfter, isBefore, isSameDay } from 'date-fns';
 
 import { LogDataButton } from '../../LogDataButtons/LogDataButtons';
 
@@ -26,6 +26,7 @@ interface Props {
 		work: any[];
 	};
 	onClick: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+	firstOfWeek: Date;
 }
 
 const WeekViewTasks: React.FC<Props> = (props) => {
@@ -40,6 +41,37 @@ const WeekViewTasks: React.FC<Props> = (props) => {
 
 	return (
 		<div className={classes.wrapper}>
+			<div className={classes.days}>
+				<li></li>
+				<li className={classes.days__day}>
+					LUN <br />
+					{addDays(props.firstOfWeek, 0).getDate()}
+				</li>
+				<li className={classes.days__day}>
+					MAR <br />
+					{addDays(props.firstOfWeek, 1).getDate()}
+				</li>
+				<li className={classes.days__day}>
+					MER <br />
+					{addDays(props.firstOfWeek, 2).getDate()}
+				</li>
+				<li className={classes.days__day}>
+					JEU
+					<br /> {addDays(props.firstOfWeek, 3).getDate()}
+				</li>
+				<li className={classes.days__day}>
+					VEN <br />
+					{addDays(props.firstOfWeek, 4).getDate()}
+				</li>
+				<li className={classes.days__day}>
+					SAM <br />
+					{addDays(props.firstOfWeek, 5).getDate()}
+				</li>
+				<li className={classes.days__day}>
+					DIM <br />
+					{addDays(props.firstOfWeek, 6).getDate()}
+				</li>
+			</div>
 			{Object.entries(props.dataArray).map((task: any[], index) => (
 				<div className={classes.task} key={`${task[0]}_div`}>
 					<img src={sixIcons[index]} alt='icon' className={classes.task__img} />

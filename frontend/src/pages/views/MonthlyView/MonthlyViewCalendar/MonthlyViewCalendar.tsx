@@ -5,6 +5,7 @@ import { addHours, addMonths, addYears, getYear, isBefore, isSameDay } from 'dat
 
 import { TaskSelectorActionTypes } from '../../../../store/task-selector';
 import { CalendarActionTypes } from '../../../../store/calendar';
+import { OverlayActionTypes } from '../../../../store/overlay';
 
 import Calendar, {
 	calendarTypes,
@@ -48,6 +49,7 @@ const MonthlyCalendar: React.FC<{
 		props.setChosenDate(new Date((event.target as HTMLButtonElement).id));
 
 		dispatch({ type: CalendarActionTypes.HIDE_CALENDAR });
+		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
 	};
 
 	return (

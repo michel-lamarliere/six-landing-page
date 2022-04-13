@@ -55,6 +55,15 @@ const App: React.FC = () => {
 		User.checkTokenIsExpired();
 	}, [userState.tokenExpiration]);
 
+	useEffect(() => {
+		let desktopSidebar = document.getElementById('desktop-sidebar')!;
+		if (!User.isLoggedIn()) {
+			desktopSidebar.style.display = 'none';
+		} else {
+			desktopSidebar.style.display = 'flex';
+		}
+	}, [userState]);
+
 	return (
 		<>
 			{User.isLoggedIn() && <HamburgerButton />}

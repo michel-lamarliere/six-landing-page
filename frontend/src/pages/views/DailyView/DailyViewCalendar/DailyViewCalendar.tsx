@@ -16,6 +16,7 @@ import {
 } from 'date-fns';
 
 import { CalendarActionTypes } from '../../../../store/calendar';
+import { OverlayActionTypes } from '../../../../store/overlay';
 
 import { getMonthFnTypes, useDatesFn } from '../../../../hooks/dates-hook';
 
@@ -71,6 +72,7 @@ const DailyCalendar: React.FC<{
 		props.setChosenDate(addHours(new Date(+year, +month, +day), 1));
 
 		dispatch({ type: CalendarActionTypes.HIDE_CALENDAR });
+		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
 	};
 
 	useEffect(() => {

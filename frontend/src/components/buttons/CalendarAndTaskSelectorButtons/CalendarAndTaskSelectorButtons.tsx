@@ -58,6 +58,12 @@ export const TaskSelectorButton: React.FC<{
 		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
 	};
 
+	const selectTaskHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+		props.selectTaskHandler(event);
+
+		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
+	};
+
 	const getTaskImage = () => {
 		switch (props.chosenTask) {
 			case 'food': {
@@ -101,7 +107,7 @@ export const TaskSelectorButton: React.FC<{
 				<div className={classes.selector}>
 					<button
 						value='food'
-						onClick={props.selectTaskHandler}
+						onClick={selectTaskHandler}
 						className={`${
 							props.chosenTask === 'food' && classes.selector__active
 						}`}
@@ -112,7 +118,7 @@ export const TaskSelectorButton: React.FC<{
 
 					<button
 						value='sleep'
-						onClick={props.selectTaskHandler}
+						onClick={selectTaskHandler}
 						className={`${
 							props.chosenTask === 'sleep' && classes.selector__active
 						}`}
@@ -123,7 +129,7 @@ export const TaskSelectorButton: React.FC<{
 
 					<button
 						value='sport'
-						onClick={props.selectTaskHandler}
+						onClick={selectTaskHandler}
 						className={`${
 							props.chosenTask === 'sport' && classes.selector__active
 						}`}
@@ -134,7 +140,7 @@ export const TaskSelectorButton: React.FC<{
 
 					<button
 						value='relaxation'
-						onClick={props.selectTaskHandler}
+						onClick={selectTaskHandler}
 						className={`${
 							props.chosenTask === 'relaxation' && classes.selector__active
 						}`}
@@ -145,7 +151,7 @@ export const TaskSelectorButton: React.FC<{
 
 					<button
 						value='work'
-						onClick={props.selectTaskHandler}
+						onClick={selectTaskHandler}
 						className={`${
 							props.chosenTask === 'work' && classes.selector__active
 						}`}
@@ -156,7 +162,7 @@ export const TaskSelectorButton: React.FC<{
 
 					<button
 						value='social'
-						onClick={props.selectTaskHandler}
+						onClick={selectTaskHandler}
 						className={`${
 							props.chosenTask === 'social' && classes.selector__active
 						}`}

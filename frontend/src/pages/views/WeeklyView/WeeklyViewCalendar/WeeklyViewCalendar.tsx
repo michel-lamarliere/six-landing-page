@@ -16,6 +16,7 @@ import {
 } from 'date-fns';
 
 import { CalendarActionTypes } from '../../../../store/calendar';
+import { OverlayActionTypes } from '../../../../store/overlay';
 
 import { getMonthFnTypes, useDatesFn } from '../../../../hooks/dates-hook';
 
@@ -80,6 +81,7 @@ const WeeklyCalendar: React.FC<{
 		props.setChosenDate(new Date(+year, +month - 1, +day));
 
 		dispatch({ type: CalendarActionTypes.HIDE_CALENDAR });
+		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
 	};
 
 	useEffect(() => {

@@ -95,47 +95,14 @@ const WeekView: React.FC = () => {
 					chosenDate
 				)}`}
 			/>
-			<div>
-				<div className={classes.days}>
-					<li></li>
-					<li className={classes.days__day}>
-						LUN <br />
-						{addDays(firstOfWeek, 0).getDate()}
-					</li>
-					<li className={classes.days__day}>
-						MAR <br />
-						{addDays(firstOfWeek, 1).getDate()}
-					</li>
-					<li className={classes.days__day}>
-						MER <br />
-						{addDays(firstOfWeek, 2).getDate()}
-					</li>
-					<li className={classes.days__day}>
-						JEU
-						<br /> {addDays(firstOfWeek, 3).getDate()}
-					</li>
-					<li className={classes.days__day}>
-						VEN <br />
-						{addDays(firstOfWeek, 4).getDate()}
-					</li>
-					<li className={classes.days__day}>
-						SAM <br />
-						{addDays(firstOfWeek, 5).getDate()}
-					</li>
-					<li className={classes.days__day}>
-						DIM <br />
-						{addDays(firstOfWeek, 6).getDate()}
-					</li>
-				</div>
-				<div className={classes.six}>
-					<WeekViewTasks
-						isLoading={isLoading}
-						dataArray={dataArray}
-						datesArray={datesArray}
-						onClick={addData}
-					/>
-				</div>
-			</div>
+			<WeekViewTasks
+				isLoading={isLoading}
+				dataArray={dataArray}
+				datesArray={datesArray}
+				onClick={addData}
+				firstOfWeek={firstOfWeek}
+			/>
+			{/* </div> */}
 		</ViewsContainer>
 	);
 };

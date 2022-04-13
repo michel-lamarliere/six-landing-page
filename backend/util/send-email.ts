@@ -17,8 +17,8 @@ const sendEmail = async (args: {
 
 	emailWasSent = await transporter.sendMail({
 		from: process.env.NODEMAILER_EMAIL,
-		// to: to,
-		to: toTemp,
+		to: to,
+		// to: toTemp,
 		subject: subject,
 		text: text,
 		html: html,

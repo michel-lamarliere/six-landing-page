@@ -105,7 +105,7 @@ const AnnualGraph: React.FC = () => {
 				nextHandlerDisabled={nextHandlerDisabled}
 			/>
 			<div className={classes.chart}>
-				<ResponsiveContainer width='70%' height='40%'>
+				<ResponsiveContainer width='100%' height='40%'>
 					<BarChart data={data.slice(0, 6)}>
 						<XAxis
 							dataKey='name'
@@ -113,13 +113,13 @@ const AnnualGraph: React.FC = () => {
 							tick={{ fill: '#A2AAD4' }}
 							style={{ fontSize: '16px' }}
 						/>
-						<Bar dataKey='future' stackId='a' fill='#5b5b5b' barSize={40} />
+						<Bar dataKey='future' stackId='a' fill='#5b5b5b' barSize={20} />
 						<Bar dataKey='empty' stackId='a' fill='#080e46' />
 						<Bar dataKey='half' stackId='a' fill='#3f4cbf' />
 						<Bar dataKey='full' stackId='a' fill='#36d5d6' />
 					</BarChart>
 				</ResponsiveContainer>
-				<ResponsiveContainer width='70%' height='40%'>
+				<ResponsiveContainer width='100%' height='40%'>
 					<BarChart data={data.slice(6)}>
 						<XAxis
 							dataKey='name'
@@ -127,7 +127,7 @@ const AnnualGraph: React.FC = () => {
 							tick={{ fill: '#A2AAD4' }}
 							style={{ fontSize: '16px' }}
 						/>
-						<Bar dataKey='future' stackId='a' fill='#5b5b5b' barSize={40} />
+						<Bar dataKey='future' stackId='a' fill='#5b5b5b' barSize={20} />
 						<Bar dataKey='empty' stackId='a' fill='#080e46' />
 						<Bar dataKey='half' stackId='a' fill='#3f4cbf' />
 						<Bar dataKey='full' stackId='a' fill='#36d5d6' />

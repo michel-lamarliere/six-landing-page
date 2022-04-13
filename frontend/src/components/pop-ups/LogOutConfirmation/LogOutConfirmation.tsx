@@ -22,6 +22,9 @@ const LogOutConfirmation: React.FC = () => {
 
 	const logoutHandler = () => {
 		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
+		dispatch({
+			type: LogOutConfirmationPopUpActionTypes.HIDE_LOG_OUT_CONFIRMATION_POP_UP,
+		});
 		User.logOut({ redirect: true });
 	};
 
