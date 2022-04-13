@@ -1,15 +1,11 @@
 {
 	"name": "six-app",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"private": true,
 	"scripts": {
-		"start": "node build/index.js",
+		"start": "node index.js",
 		"build": "tsc",
-		"postinstall": "npm run build",
 		"dev": "nodemon -r dotenv/config app.ts"
-	},
-	"engines": {
-		"node": "14.17.6"
 	},
 	"dependencies": {
 		"@types/node": "^16.11.12",
