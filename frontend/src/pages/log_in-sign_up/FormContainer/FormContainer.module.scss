@@ -6,10 +6,13 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
-	// width: 40rem;
+	// max-width: 25rem;
 	width: 100%;
 	height: auto;
 	padding: 2rem 2rem 0 2rem;
+	// border: 10px solid $colorBlack;
+	// box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	// border-radius: 2rem;
 	background-color: $colorPurple1;
 }
 
@@ -70,7 +73,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #564bef;
+	background-color: $colorPurple3;
 
 	&__text {
 		font-family: $fontMedium;

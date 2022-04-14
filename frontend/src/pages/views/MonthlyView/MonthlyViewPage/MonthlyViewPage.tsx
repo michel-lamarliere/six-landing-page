@@ -121,31 +121,28 @@ const MonthlyView: React.FC = () => {
 			</div>
 			<div className={classes.calendar}>
 				{emptyBoxes.length > 0 &&
-					emptyBoxes.map((item) => <div key={item + Math.random()}></div>)}
+					emptyBoxes.map((item, index) => (
+						<div key={`emptyBox-${item}-${index}`}></div>
+					))}
 				{monthlyArray &&
 					monthlyArray.map((item: { date: string; level: 0 }, index) => (
-						<>
-							<LogDataButton
-								id={`${format(
-									new Date(item.date),
-									'yyyy-MM-dd'
-								)}_${chosenTask}`}
-								onClick={addData}
-								value={item.level}
-								key={`${format(
-									new Date(item.date),
-									'yyyy-MM-dd'
-								)}_${chosenTask}`}
-								disabled={
-									isAfter(new Date(item.date), new Date()) &&
-									!isSameDay(
-										addHours(new Date(item.date), 0),
-										new Date()
-									)
-								}
-								dayNumber={index + 1}
-							/>
-						</>
+						<LogDataButton
+							id={`${format(
+								new Date(item.date),
+								'yyyy-MM-dd'
+							)}_${chosenTask}`}
+							onClick={addData}
+							value={item.level}
+							key={`${format(
+								new Date(item.date),
+								'yyyy-MM-dd'
+							)}_${chosenTask}-${index}`}
+							disabled={
+								isAfter(new Date(item.date), new Date()) &&
+								!isSameDay(addHours(new Date(item.date), 0), new Date())
+							}
+							dayNumber={index + 1}
+						/>
 					))}
 			</div>
 		</ViewsContainer>

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+
+import { PuffLoader } from 'react-spinners';
 
 import { RootState } from '../../store/_store';
 
@@ -15,7 +18,6 @@ import successIcon from '../../assets/icons/success.svg';
 import backButtonIcon from '../../assets/icons/back-button.svg';
 
 import classes from './ContactPage.module.scss';
-import { Link } from 'react-router-dom';
 
 const Contact: React.FC = () => {
 	const { sendRequest } = useRequest();
@@ -26,7 +28,7 @@ const Contact: React.FC = () => {
 
 	const [sent, setSent] = useState(false);
 	const [submitted, setSubmitted] = useState(false);
-	// const [formIsValid, setFormIsValid] = useState(false);
+	const [formIsValid, setFormIsValid] = useState(false);
 	const [responseMessage, setResponseMessage] = useState('');
 
 	const {
@@ -71,6 +73,7 @@ const Contact: React.FC = () => {
 			}
 		}
 
+		setFormIsValid(true);
 		return true;
 	};
 
@@ -111,6 +114,7 @@ const Contact: React.FC = () => {
 
 		setTimeout(() => {
 			setSent(false);
+			setFormIsValid(false);
 		}, 5000);
 	};
 
@@ -168,6 +172,9 @@ const Contact: React.FC = () => {
 							onChange={messageInputOnChangeHandler}
 							onBlur={messageInputOnBlurHandler}
 						/>
+						{submitted && formIsValid && (
+							<PuffLoader color={'#1cc1e6'} size={'30px'} />
+						)}
 						<RoundedButton
 							type='submit'
 							text={'Envoyer'}

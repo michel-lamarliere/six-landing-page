@@ -92,31 +92,12 @@ const DailyCalendar: React.FC<{
 			setChosenDate={props.setChosenDate}
 			calendarDate={calendarDate}
 			setCalendarDate={setCalendarDate}
-			// previousHandlerDisabled={isBefore(
-			// 	addDays(props.chosenDate, -1),
-			// 	new Date(2020, 0, 1)
-			// )}
 			headerText={props.headerText}
-			// nextHandlerDisabled={!isBefore(addDays(props.chosenDate, 1), new Date())}
-			// calendarPreviousYearHandlerDisabled={isBefore(
-			// 	addYears(calendarDate, -1),
-			// 	new Date(2020, 0, 1)
-			// )}
-			// calendarPreviousMonthHandlerDisabled={isBefore(
-			// 	addMonths(calendarDate, -1),
-			// 	new Date(2020, 0, 1)
-			// )}
 			calendarText={`${calendarMonthStr} ${getYear(calendarDate)}`}
-			// calendarNextMonthHandlerDisabled={
-			// 	!isBefore(addMonths(calendarDate, 1), new Date())
-			// }
-			// calendarNextYearHandlerDisabled={
-			// 	!isBefore(addYears(calendarDate, 1), new Date())
-			// }
 		>
 			<div className={calendarClasses.calendar__calendar__days}>
-				{emptyCalendarDays.map((index) => (
-					<div key={`emptyBox${index}`}></div>
+				{emptyCalendarDays.map((data, index) => (
+					<div key={`emptyBox-${index}`}></div>
 				))}
 				{calendarDays.map((day) => (
 					<button

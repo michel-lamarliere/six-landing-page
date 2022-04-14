@@ -7,8 +7,10 @@ const CalendarDaysOfWeek: React.FC = () => {
 
 	return (
 		<div className={classes.wrapper}>
-			{daysOfWeek.map((day) => (
-				<div className={classes.day}>{day}</div>
+			{daysOfWeek.map((day, index) => (
+				<div key={`calendar-day-${index}`} className={classes.day}>
+					{day}
+				</div>
 			))}
 		</div>
 	);

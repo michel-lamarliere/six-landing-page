@@ -12,6 +12,7 @@ import RoundedButton from '../../../buttons/RoundedButton/RoundedButton';
 import PopUp, { PopUpTypes } from '../PopUpContainer/PopUpContainer';
 
 import successIcon from '../../../../assets/icons/success.svg';
+import errorIcon from '../../../../assets/icons/error.svg';
 
 import classes from './EmailConfirmationPopUp.module.scss';
 
@@ -24,7 +25,8 @@ const EmailPopup: React.FC = () => {
 		(state: RootState) => state.emailConfirmationPopUp
 	);
 
-	const [sent, setSent] = useState(false);
+	const [gotResponse, setGotResponse] = useState(false);
+	const [successResponse, setSuccessResponse] = useState(false);
 	const [responseMessage, setResponseMessage] = useState('');
 
 	const resendEmailConfirmationHandler = async () => {
@@ -34,20 +36,15 @@ const EmailPopup: React.FC = () => {
 			body: JSON.stringify({ id: userState.id }),
 		});
 
+		setGotResponse(true);
+
 		if (responseData.error) {
 			setResponseMessage(responseData.message);
 			return;
 		}
 
 		setResponseMessage(responseData.message);
-
-		setSent(true);
-
-		setTimeout(() => {
-			dispatch({
-				type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,
-			});
-		}, 5000);
+		setSuccessResponse(true);
 	};
 
 	const closePopup = () => {
@@ -68,9 +65,9 @@ const EmailPopup: React.FC = () => {
 		<PopUp
 			type={PopUpTypes.CONFIRM_EMAIL_ADDRESS}
 			closePopUp={closePopup}
-			displayNextMessage={sent}
+			displayNextMessage={gotResponse}
 		>
-			{!sent ? (
+			{!gotResponse ? (
 				<>
 					<div className={classes.title}>
 						Veuillez confirmer votre adresse mail.
@@ -88,7 +85,11 @@ const EmailPopup: React.FC = () => {
 				</>
 			) : (
 				<>
-					<img src={successIcon} alt='Envoyé' className={classes.icon} />
+					<img
+						src={successResponse ? successIcon : errorIcon}
+						alt='Envoyé'
+						className={classes.icon}
+					/>
 					<div className={classes.response}>{responseMessage}</div>
 				</>
 			)}

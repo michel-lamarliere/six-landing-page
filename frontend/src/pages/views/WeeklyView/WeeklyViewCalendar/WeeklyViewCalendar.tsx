@@ -101,34 +101,15 @@ const WeeklyCalendar: React.FC<{
 			setChosenDate={props.setChosenDate}
 			calendarDate={calendarDate}
 			setCalendarDate={setCalendarDate}
-			// previousHandlerDisabled={isBefore(
-			// 	addDays(props.chosenDate, -7),
-			// 	new Date(2020, 0, 1)
-			// )}
 			headerText={props.headerText}
-			// nextHandlerDisabled={!isBefore(addDays(props.chosenDate, 7), new Date())}
-			// calendarPreviousYearHandlerDisabled={isBefore(
-			// 	addYears(calendarDate, -1),
-			// 	new Date(2020, 0, 1)
-			// )}
-			// calendarPreviousMonthHandlerDisabled={isBefore(
-			// 	addMonths(calendarDate, -1),
-			// 	new Date(2020, 0, 1)
-			// )}
 			calendarText={`${calendarMonthStr} ${getYear(calendarDate)}`}
-			// calendarNextMonthHandlerDisabled={
-			// 	!isBefore(addMonths(calendarDate, 1), new Date())
-			// }
-			// calendarNextYearHandlerDisabled={
-			// 	!isBefore(addYears(calendarDate, 1), new Date())
-			// }
 		>
 			<div className={calendarClasses.week}>
 				<div className={calendarClasses.week__numbers}>
 					{weekNumbers.map((weekNumber, index) => (
 						<div
 							className={calendarClasses.week__numbers__number}
-							key={`CalendarWeek-${weekNumber}`}
+							key={`calendarWeek-${weekNumber}-${index}`}
 						>
 							{weekNumber}
 						</div>
@@ -136,7 +117,7 @@ const WeeklyCalendar: React.FC<{
 				</div>
 				<div className={calendarClasses.week__calendar}>
 					{weeks.length > 0 &&
-						weeks.map((week) => (
+						weeks.map((week, index) => (
 							<button
 								className={`${calendarClasses.week__calendar__week} ${
 									!isBefore(new Date(week[0]), new Date()) &&
@@ -145,10 +126,13 @@ const WeeklyCalendar: React.FC<{
 								onClick={weekOnClickHandler}
 								disabled={!isBefore(new Date(week[0]), new Date())}
 								id={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
-								key={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
+								key={`${format(
+									new Date(week[6]),
+									'yyyy-MM-dd'
+								)}-${index}`}
 							>
-								{week.map((day: Date) => (
-									<button
+								{week.map((day: Date, index) => (
+									<div
 										className={`${calendarClasses.day}
 										${!isBefore(day, new Date()) && calendarClasses['day--disabled']}
 										 ${
@@ -161,10 +145,13 @@ const WeeklyCalendar: React.FC<{
 												]
 											}`}
 										id={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
-										key={`${format(new Date(week[6]), 'yyyy-MM-dd')}`}
+										key={`${format(
+											new Date(week[6]),
+											'yyyy-MM-dd'
+										)}-${index}`}
 									>
 										{format(day, 'd')}
-									</button>
+									</div>
 								))}
 							</button>
 						))}

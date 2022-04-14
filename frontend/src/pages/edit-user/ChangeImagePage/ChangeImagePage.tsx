@@ -102,6 +102,7 @@ const ChangeImage: React.FC = () => {
 							index.toString() === chosenIcon &&
 							classes['icons__button--chosen']
 						}`}
+						key={`icon-${icon}-${index}`}
 					>
 						<img src={icon} alt={`icône_${index}`} id={index.toString()} />
 					</button>
