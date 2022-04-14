@@ -12,8 +12,10 @@ import RoundedButton from '../../components/buttons/RoundedButton/RoundedButton'
 import Input, { InputStyles } from '../../components/form-elements/Input';
 
 import successIcon from '../../assets/icons/success.svg';
+import backButtonIcon from '../../assets/icons/back-button.svg';
 
 import classes from './ContactPage.module.scss';
+import { Link } from 'react-router-dom';
 
 const Contact: React.FC = () => {
 	const { sendRequest } = useRequest();
@@ -57,14 +59,24 @@ const Contact: React.FC = () => {
 	const validateForm = () => {
 		setSubmitted(true);
 
-		if (!messageInput.isValid || !nameInput.isValid || !emailInput.isValid) {
-			return false;
+		console.log(messageInput.isValid);
+
+		if (User.isLoggedIn()) {
+			if (!messageInput.isValid) {
+				return false;
+			}
+		} else {
+			if (!messageInput.isValid || !nameInput.isValid || !emailInput.isValid) {
+				return false;
+			}
 		}
 
 		return true;
 	};
 
-	const submitHandler = async () => {
+	const submitHandler = async (event: any) => {
+		event.preventDefault();
+
 		if (!validateForm()) {
 			return;
 		}
@@ -104,54 +116,65 @@ const Contact: React.FC = () => {
 
 	return (
 		<div className={classes.wrapper}>
+			{!User.isLoggedIn() && (
+				<Link to='/' className={classes['back-button']}>
+					<img src={backButtonIcon} alt='Retour' />
+				</Link>
+			)}
 			{!sent && (
 				<>
 					<div className={classes.title}>Un problème ? Une question ?</div>
-					{!User.isLoggedIn() && (
-						<>
-							<Input
-								styling={InputStyles.BLACK_FORM}
-								id={'nom'}
-								placeholder={'Votre nom'}
-								type={'text'}
-								value={nameInput.value}
-								errorText={'2 caractères minimum.'}
-								isValid={nameInput.isValid}
-								isTouched={nameInput.isTouched}
-								onChange={nameInputOnChangeHandler}
-								onBlur={nameInputOnBlurHandler}
-							/>
-							<Input
-								styling={InputStyles.BLACK_FORM}
-								id={'adresse mail'}
-								placeholder={'Votre adresse mail'}
-								type={'text'}
-								value={emailInput.value}
-								errorText={'Format invalide.'}
-								isValid={emailInput.isValid}
-								isTouched={emailInput.isTouched}
-								onChange={emailInputOnChangeHandler}
-								onBlur={emailInputOnBlurHandler}
-							/>
-						</>
-					)}
-					<Input
-						styling={InputStyles.BLACK_FORM}
-						id={'message'}
-						placeholder={'Votre message'}
-						type={'textarea'}
-						value={messageInput.value}
-						errorText={'10 caractères minimum.'}
-						isValid={messageInput.isValid}
-						isTouched={messageInput.isTouched}
-						onChange={messageInputOnChangeHandler}
-						onBlur={messageInputOnBlurHandler}
-					/>
-					<RoundedButton
-						text={'Envoyer'}
-						className={classes['submit-button']}
-						onClick={submitHandler}
-					/>
+					<form onSubmit={submitHandler} className={classes.form}>
+						{!User.isLoggedIn() && (
+							<>
+								<Link to='/' className={classes['back-button']}>
+									<img src={backButtonIcon} alt='Retour' />
+								</Link>
+								<Input
+									styling={InputStyles.BLACK_FORM}
+									id={'nom'}
+									placeholder={'Votre nom'}
+									type={'text'}
+									value={nameInput.value}
+									errorText={'2 caractères minimum.'}
+									isValid={nameInput.isValid}
+									isTouched={nameInput.isTouched}
+									onChange={nameInputOnChangeHandler}
+									onBlur={nameInputOnBlurHandler}
+								/>
+								<Input
+									styling={InputStyles.BLACK_FORM}
+									id={'adresse mail'}
+									placeholder={'Votre adresse mail'}
+									type={'text'}
+									value={emailInput.value}
+									errorText={'Format invalide.'}
+									isValid={emailInput.isValid}
+									isTouched={emailInput.isTouched}
+									onChange={emailInputOnChangeHandler}
+									onBlur={emailInputOnBlurHandler}
+								/>
+							</>
+						)}
+						<Input
+							styling={InputStyles.BLACK_FORM}
+							id={'message'}
+							placeholder={'Votre message'}
+							type={'textarea'}
+							value={messageInput.value}
+							errorText={'10 caractères minimum.'}
+							isValid={messageInput.isValid}
+							isTouched={messageInput.isTouched}
+							onChange={messageInputOnChangeHandler}
+							onBlur={messageInputOnBlurHandler}
+						/>
+						<RoundedButton
+							type='submit'
+							text={'Envoyer'}
+							className={classes['submit-button']}
+							// onClick={submitHandler}
+						/>
+					</form>
 				</>
 			)}
 			{sent && (

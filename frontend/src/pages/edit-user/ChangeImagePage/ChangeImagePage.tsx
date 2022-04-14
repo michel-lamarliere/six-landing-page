@@ -57,7 +57,9 @@ const ChangeImage: React.FC = () => {
 		setChosenIcon(id);
 	};
 
-	const changeImageHandler = async () => {
+	const changeImageHandler = async (event: any) => {
+		event.preventDefault();
+
 		const responseData = await sendRequest({
 			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/image`,
 			method: 'PATCH',

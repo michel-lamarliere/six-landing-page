@@ -8,6 +8,19 @@
 	margin: 6rem 2rem;
 }
 
+.form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2rem;
+}
+
+.back-button {
+	position: absolute;
+	top: 2.4rem;
+	left: 2rem;
+}
+
 .title {
 	font-family: $fontBold;
 	font-size: 15px;

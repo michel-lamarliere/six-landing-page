@@ -13,14 +13,11 @@ const MobileSidebar: React.FC = () => {
 
 	useEffect(() => {
 		let mobileSidebar = document.getElementById('mobile-sidebar')!;
-		let main = document.getElementById('root')!;
 
 		if (mobileSidebarState.show) {
 			mobileSidebar.style.width = '75%';
-			main.style.marginRight = '75%';
 		} else {
 			mobileSidebar.style.width = '0%';
-			main.style.marginRight = '0%';
 		}
 	}, [mobileSidebarState.show]);
 
