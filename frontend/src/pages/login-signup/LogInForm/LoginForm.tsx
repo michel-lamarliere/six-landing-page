@@ -35,14 +35,14 @@ const LoginForm: React.FC<Props> = (props) => {
 		setInput: setEmailInput,
 		inputOnChangeHandler: emailOnChangeHandler,
 		inputOnBlurHandler: emailOnBlurHandler,
-	} = useInput({ type: useInputTypes.EMAIL, validate: false });
+	} = useInput({ type: useInputTypes.NONE, validate: true });
 
 	const {
 		input: passwordInput,
 		setInput: setPasswordInput,
 		inputOnChangeHandler: passwordOnChangeHandler,
 		inputOnBlurHandler: passwordOnBlurHandler,
-	} = useInput({ type: useInputTypes.PASSWORD, validate: false });
+	} = useInput({ type: useInputTypes.NONE, validate: true });
 
 	const checkInputsAreNotEmpty = () => {
 		if (
@@ -61,12 +61,11 @@ const LoginForm: React.FC<Props> = (props) => {
 		const formIsEmpty = !checkInputsAreNotEmpty();
 
 		if (formIsEmpty) {
-			setResponseMessage('Veuillez remplir les champs.');
 			return;
 		}
 
 		const responseData = await sendRequest({
-			url: `${process.env.REACT_APP_BACKEND_URL}/user/signin`,
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/sign-in`,
 			method: 'POST',
 			body: JSON.stringify({
 				email: emailInput.value.trim().toLowerCase(),
@@ -75,7 +74,15 @@ const LoginForm: React.FC<Props> = (props) => {
 		});
 
 		if (responseData.error) {
-			setResponseMessage(responseData.message);
+			if (!responseData.validInputs.email) {
+				setEmailInput((prev) => ({ ...prev, isValid: false, isTouched: true }));
+			} else if (!responseData.validInputs.password) {
+				setPasswordInput((prev) => ({
+					...prev,
+					isValid: false,
+					isTouched: true,
+				}));
+			}
 			return;
 		}
 
@@ -88,13 +95,11 @@ const LoginForm: React.FC<Props> = (props) => {
 		User.logIn(responseData);
 	};
 
-	const checkboxHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-		event.preventDefault();
+	const checkboxHandler = (event: React.MouseEvent<HTMLDivElement>) => {
 		setRememberEmail((prev) => !prev);
 	};
 
-	const forgotPasswordHandler = (event: React.FormEvent) => {
-		event.preventDefault();
+	const forgotPasswordHandler = (event: React.MouseEvent) => {
 		dispatch({ type: ForgotPasswordPopUpActionTypes.SHOW_FORGOT_PASSWORD_POP_UP });
 		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
 	};
@@ -123,7 +128,7 @@ const LoginForm: React.FC<Props> = (props) => {
 				type='text'
 				placeholder='jean@email.fr'
 				value={emailInput.value}
-				errorText='Format invalide.'
+				errorText='Compte non trouvé, veuillez créer un compte.'
 				isValid={emailInput.isValid}
 				isTouched={emailInput.isTouched}
 				onChange={emailOnChangeHandler}
@@ -137,32 +142,29 @@ const LoginForm: React.FC<Props> = (props) => {
 				value={passwordInput.value}
 				isValid={passwordInput.isValid}
 				isTouched={passwordInput.isTouched}
-				errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
+				errorText='Mot de passe incorrect.'
 				onChange={passwordOnChangeHandler}
 				onBlur={passwordOnBlurHandler}
 			/>
 			<div className={classes['remember-me']}>
-				<button
-					onClick={checkboxHandler}
-					className={classes['remember-me__button']}
-				>
+				<div onClick={checkboxHandler} className={classes['remember-me__button']}>
 					<img
 						className={classes['remember-me__button__img']}
 						src={rememberEmail ? rememberMeTrueIcon : rememberMeFalseIcon}
 						alt='Se souvenir de moi'
 					/>
-				</button>
+				</div>
 				<div onClick={() => setRememberEmail((prev) => !prev)}>
 					Se souvenir de moi
 				</div>
 			</div>
-			<button
+			<div
 				onClick={forgotPasswordHandler}
 				className={classes['forgot-password-button']}
 			>
 				Mot de passe oublié ?
-			</button>
-			<RoundedButton text={'Connexion'} />
+			</div>
+			<RoundedButton text={'Connexion'} type='submit' />
 		</FormContainer>
 	);
 };

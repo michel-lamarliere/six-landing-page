@@ -1,22 +1,20 @@
 @import './style/variables.scss';
 
 #root {
-	font-size: 20px;
-	font-family: $fontMedium;
 	position: relative;
-	height: 100vh;
-	background-color: $colorBlack;
 	display: flex;
 	justify-content: center;
+	min-height: 100vh;
+	height: 100%;
+	font-family: $fontMedium;
+	font-size: 20px;
+	background-color: $colorBlack;
 	transition: margin-right 0.3s ease-in-out;
 }
 
 #mobile-sidebar {
 	position: relative;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	width: 0rem;
+	width: 0%;
 	max-width: 30rem;
 	height: 100vh;
 	font-size: 20px;
@@ -25,6 +23,7 @@
 	background-color: $colorPurple1;
 	transition: width 0.3s ease-in-out;
 	z-index: 4;
+	overflow-y: scroll;
 }
 
 #desktop-sidebar {
@@ -62,6 +61,10 @@ input {
 }
 
 @media screen and (min-width: 1200px) {
+	#root {
+		height: 100vh;
+	}
+
 	#desktop-sidebar {
 		position: relative;
 		display: block;

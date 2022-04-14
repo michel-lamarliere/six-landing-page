@@ -30,7 +30,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 		return;
 	}
 
-	let inputsAreValid = {
+	const validInputs = {
 		all: false,
 		name: false,
 		email: false,
@@ -43,7 +43,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 		reqName.trim().length >= 2 &&
 		reqName.trim().match(/^['’\p{L}\p{M}]*-?['’\p{L}\p{M}]*$/giu)
 	) {
-		inputsAreValid.name = true;
+		validInputs.name = true;
 	}
 
 	if (
@@ -51,7 +51,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 			/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 		)
 	) {
-		inputsAreValid.email = true;
+		validInputs.email = true;
 	}
 
 	if (
@@ -59,23 +59,23 @@ const signUp: RequestHandler = async (req, res, next) => {
 			/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
 		)
 	) {
-		inputsAreValid.password = true;
+		validInputs.password = true;
 	}
 
 	if (reqPassword === reqPasswordConfirmation) {
-		inputsAreValid.passwordConfirmation = true;
+		validInputs.passwordConfirmation = true;
 	}
 
 	if (
-		inputsAreValid.name &&
-		inputsAreValid.email &&
-		inputsAreValid.password &&
-		inputsAreValid.passwordConfirmation
+		validInputs.name &&
+		validInputs.email &&
+		validInputs.password &&
+		validInputs.passwordConfirmation
 	) {
-		inputsAreValid.all = true;
+		validInputs.all = true;
 	}
 
-	if (!inputsAreValid.all) {
+	if (!validInputs.all) {
 		res.status(400).json({
 			error: true,
 			message: 'Erreur lors de la création de compte.',
@@ -149,20 +149,30 @@ const signIn: RequestHandler = async (req, res, next) => {
 
 	const user = await databaseConnect.findOne({ email: reqEmail });
 
+	let validInputs = {
+		email: false,
+		password: false,
+	};
+
+	console.log(reqEmail);
+
 	if (!user) {
-		res.status(404).json({
-			error: true,
-			message: 'Adresse email non trouvée, veuillez créer un compte.',
-		});
+		res.status(400).json({ error: true, validInputs });
 		return;
+	} else {
+		validInputs.email = true;
 	}
 
 	// CHECKS IF THE PASSWORD MATCHES THE USER'S HASHED PASSWORD
 	const matchingPasswords = await bcrypt.compare(reqPassword, user.password);
 
 	// IF THE PASSWORDS DON'T MATCH
-	if (!matchingPasswords) {
-		res.status(400).json({ error: true, message: 'Mot de passe incorrect.' });
+	if (matchingPasswords) {
+		validInputs.password = true;
+	}
+
+	if (!validInputs.email || !validInputs.password) {
+		res.status(400).json({ error: true, validInputs });
 		return;
 	}
 

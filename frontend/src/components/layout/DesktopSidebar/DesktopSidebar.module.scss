@@ -4,9 +4,9 @@
 
 @media screen and (min-width: 1200px) {
 	.wrapper {
+		height: 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		height: 100%;
 	}
 }

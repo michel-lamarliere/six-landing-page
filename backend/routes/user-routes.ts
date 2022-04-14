@@ -5,9 +5,9 @@ const userControllers = require('../controllers/user-controllers');
 
 const router = Router();
 
-router.post('/signup', userControllers.signUp);
+router.post('/sign-up', userControllers.signUp);
 
-router.post('/signin', userControllers.signIn);
+router.post('/sign-in', userControllers.signIn);
 
 router.patch('/confirm/email', userControllers.confirmEmailAddress);
 

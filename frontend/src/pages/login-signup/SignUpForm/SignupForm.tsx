@@ -78,7 +78,7 @@ const SingupForm: React.FC<Props> = (props) => {
 		}
 
 		const responseData = await sendRequest({
-			url: `${process.env.REACT_APP_BACKEND_URL}/user/signup`,
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/sign-up`,
 			method: 'POST',
 			body: JSON.stringify({
 				name: nameInput.value.trim().toLowerCase(),

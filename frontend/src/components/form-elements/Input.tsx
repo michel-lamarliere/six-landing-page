@@ -40,7 +40,7 @@ const FormInput: React.FC<{
 
 	const [showPassword, setShowPassword] = useState(false);
 
-	const showPasswordHandler = (event: React.FormEvent) => {
+	const showPasswordHandler = (event: React.MouseEvent) => {
 		event.preventDefault();
 		setShowPassword((prev) => !prev);
 	};
@@ -68,7 +68,7 @@ const FormInput: React.FC<{
 							onPaste={onPaste}
 						/>
 						{props.type === 'password' && (
-							<button
+							<div
 								onClick={showPasswordHandler}
 								className={classes['input__show-password']}
 							>
@@ -78,7 +78,7 @@ const FormInput: React.FC<{
 									}
 									alt='Icone mot de passe'
 								/>
-							</button>
+							</div>
 						)}
 					</>
 				)}

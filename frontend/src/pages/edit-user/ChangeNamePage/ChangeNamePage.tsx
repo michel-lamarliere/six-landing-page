@@ -53,7 +53,7 @@ const ChangeName: React.FC = () => {
 		return true;
 	};
 
-	const changeNameHandler = async (event: React.FormEvent) => {
+	const changeNameHandler = async (event: any) => {
 		event.preventDefault();
 
 		if (!validateName()) {
@@ -99,10 +99,10 @@ const ChangeName: React.FC = () => {
 
 	return (
 		<EditProfileFormWrapper
+			formAction={changeNameHandler}
 			title={'Nom'}
 			type={EditProfileFormWrapperTypes.MODIFY}
 			displaySubmitButton={true}
-			button_onClick={changeNameHandler}
 			response={response}
 		>
 			<Input

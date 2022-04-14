@@ -5,6 +5,7 @@ import classes from './RoundedButton.module.scss';
 
 interface ButtonProps {
 	text: string;
+	type?: string;
 	className?: string;
 	link?: string;
 	onClick?: any;

@@ -71,10 +71,10 @@ const ChangeEmail: React.FC = () => {
 
 	return (
 		<EditProfileFormWrapper
+			formAction={submitHandler}
 			type={EditProfileFormWrapperTypes.MODIFY}
 			title={'Adresse mail'}
 			displaySubmitButton={!submitted}
-			button_onClick={submitHandler}
 			response={response}
 		>
 			{!submitted && (

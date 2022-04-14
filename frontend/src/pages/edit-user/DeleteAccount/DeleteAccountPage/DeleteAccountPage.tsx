@@ -80,6 +80,7 @@ const DeleteAccount: React.FC = () => {
 
 	return (
 		<EditProfileFormWrapper
+			// formAction={textValidationHandler}
 			type={EditProfileFormWrapperTypes.DELETE}
 			title={'Suppression de compte'}
 		>
@@ -108,6 +109,7 @@ const DeleteAccount: React.FC = () => {
 							className={`${classes['buttons__button']} ${classes['buttons__button--cancel']}`}
 						/>
 						<RoundedButton
+							type='submit'
 							text={'Supprimer le compte'}
 							onClick={textValidationHandler}
 							className={`${classes['buttons__button']} ${classes['buttons__button--confirm']}`}

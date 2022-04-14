@@ -38,6 +38,7 @@ const App: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 	const overlayState = useSelector((state: RootState) => state.overlay);
+	const mobileSidebarState = useSelector((state: RootState) => state.mobileSidebar);
 	const alertPopUpState = useSelector((state: RootState) => state.alertPopUp);
 	const errorPopUpState = useSelector((state: RootState) => state.errorPopUp);
 	const emailConfirmationPopUpState = useSelector(
@@ -45,6 +46,9 @@ const App: React.FC = () => {
 	);
 	const forgotPasswordPopUpState = useSelector(
 		(state: RootState) => state.forgotPasswordPopUp
+	);
+	const logOutConfirmationPopUpState = useSelector(
+		(state: RootState) => state.logOutConfirmationPopUp
 	);
 
 	useEffect(() => {
@@ -63,6 +67,18 @@ const App: React.FC = () => {
 			desktopSidebar.style.display = 'flex';
 		}
 	}, [userState]);
+
+	useEffect(() => {
+		let root = document.getElementById('root')!;
+
+		if (mobileSidebarState.show || logOutConfirmationPopUpState.show) {
+			root.style.height = '100vh';
+			root.style.overflowY = 'hidden';
+		} else {
+			root.style.height = '100%';
+			root.style.overflowY = 'auto';
+		}
+	}, [mobileSidebarState.show, logOutConfirmationPopUpState.show]);
 
 	return (
 		<>

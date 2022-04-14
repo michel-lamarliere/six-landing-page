@@ -84,10 +84,10 @@ const ChangeImage: React.FC = () => {
 
 	return (
 		<EditProfileFormWrapper
+			formAction={changeImageHandler}
 			type={EditProfileFormWrapperTypes.MODIFY}
 			title={'Image'}
 			displaySubmitButton={true}
-			button_onClick={changeImageHandler}
 			response={response}
 		>
 			<div className={classes.icons}>

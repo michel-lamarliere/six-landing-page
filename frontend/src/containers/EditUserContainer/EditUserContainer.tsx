@@ -15,15 +15,15 @@ export enum EditProfileFormWrapperTypes {
 interface Props {
 	type: EditProfileFormWrapperTypes;
 	title: string;
+	formAction?: any;
 	displaySubmitButton?: boolean;
-	button_onClick?: any;
 	response?: string;
 }
 
 const Form: React.FC<Props> = (props) => {
 	let rendered =
 		props.type === EditProfileFormWrapperTypes.MODIFY ? (
-			<div className={classes.wrapper}>
+			<form className={classes.wrapper} onSubmit={props.formAction}>
 				<div className={classes.title}>{props.title}</div>
 				<Link to='/profil' className={classes['back-button']}>
 					<img src={backButtonIcon} alt='Retour' />
@@ -31,13 +31,13 @@ const Form: React.FC<Props> = (props) => {
 				{props.children}
 				{props.displaySubmitButton && (
 					<RoundedButton
+						type='submit'
 						text={'Enregistrer'}
-						onClick={props.button_onClick}
 						className={classes['submit-button']}
 					/>
 				)}
 				<div className={classes.response}>{props.response}</div>
-			</div>
+			</form>
 		) : (
 			<div className={classes.wrapper}>
 				<div className={classes.title}>{props.title}</div>

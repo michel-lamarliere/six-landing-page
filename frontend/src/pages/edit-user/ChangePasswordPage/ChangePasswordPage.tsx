@@ -55,7 +55,9 @@ const ChangePassword: React.FC = () => {
 		setNewPasswordConfirmation((prev) => ({ ...prev, value: '', isTouched: false }));
 	};
 
-	const changePasswordHandler = async () => {
+	const changePasswordHandler = async (event: any, data: any) => {
+		event.preventDefault();
+
 		if (
 			oldPassword.value.trim().length === 0 ||
 			newPassword.value.trim().length === 0 ||
@@ -83,7 +85,6 @@ const ChangePassword: React.FC = () => {
 
 		if (responseData.error) {
 			const { validInputs } = responseData;
-			setResponse(responseData.message);
 
 			if (!validInputs.oldPassword) {
 				setOldPassword((prev) => ({ ...prev, isValid: false, isTouched: true }));
@@ -130,10 +131,10 @@ const ChangePassword: React.FC = () => {
 
 	return (
 		<EditProfileFormWrapper
+			formAction={changePasswordHandler}
 			type={EditProfileFormWrapperTypes.MODIFY}
 			title={'Mot de passe'}
 			displaySubmitButton={true}
-			button_onClick={changePasswordHandler}
 			response={response}
 		>
 			<div className={classes.inputs}>

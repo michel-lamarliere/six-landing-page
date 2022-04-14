@@ -11,6 +11,7 @@ import { RootState } from '../store/_store';
 import { EmailConfirmationPopUpActionTypes } from '../store/pop-ups/email-confirmation-pop-up';
 import { ErrorPopUpActionTypes } from '../store/pop-ups/error-pop-up';
 import { AlertPopUpActionTypes } from '../store/pop-ups/alert-pop-up';
+import { MobileSidebarActionTypes } from '../store/mobile-sidebar';
 
 export const useUserClass = () => {
 	const dispatch = useDispatch();
@@ -148,6 +149,8 @@ export const useUserClass = () => {
 			sessionStorage.removeItem('showEmailConfirmationPopup');
 
 			dispatch({ type: UserActionTypes.LOG_USER_OUT });
+
+			dispatch({ type: MobileSidebarActionTypes.HIDE_MOBILE_SIDEBAR });
 
 			dispatch({
 				type: EmailConfirmationPopUpActionTypes.HIDE_EMAIL_CONFIRMATION_POP_UP,

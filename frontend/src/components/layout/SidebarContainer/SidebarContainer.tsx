@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from '../../../store/_store';
 import { MobileSidebarActionTypes } from '../../../store/mobile-sidebar';
-import { OverlayActionTypes } from '../../../store/overlay';
 
+import { OverlayActionTypes } from '../../../store/overlay';
 import { useUserClass } from '../../../classes/user-class-hook';
 
 import UserIcon from '../../UserIcon/UserIcon';

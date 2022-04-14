@@ -5,6 +5,7 @@
 	"scripts": {
 		"start": "node app.js",
 		"build": "tsc",
+		"subtree": "git subtree push --prefix backend origin backend",
 		"dev": "nodemon -r dotenv/config app.ts"
 	},
 	"dependencies": {
