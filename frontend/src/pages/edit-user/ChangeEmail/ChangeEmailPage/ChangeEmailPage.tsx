@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import { PuffLoader } from 'react-spinners';
+
 import { RootState } from '../../../../store/_store';
 
 import { useInput, useInputTypes } from '../../../../hooks/input-hook';
@@ -12,6 +14,7 @@ import EditProfileFormWrapper, {
 } from '../../../../containers/EditUserContainer/EditUserContainer';
 
 import successIcon from '../../../../assets//icons/success.svg';
+import errorIcon from '../../../../assets//icons/error.svg';
 
 import classes from './ChangeEmailPage.module.scss';
 
@@ -21,7 +24,8 @@ const ChangeEmail: React.FC = () => {
 
 	const [response, setResponse] = useState('');
 	const [submitted, setSubmitted] = useState(false);
-	const [sent, setSent] = useState(false);
+	const [formIsValid, setFormIsValid] = useState(false);
+	const [gotResponse, setGotResponse] = useState(false);
 	const [inputErrorText, setInputErrorText] = useState('');
 
 	const {
@@ -29,12 +33,12 @@ const ChangeEmail: React.FC = () => {
 		setInput: setNewEmailInput,
 		inputOnChangeHandler: newEmailOnChangeHandler,
 		inputOnBlurHandler: newEmailOnBlurHandler,
-	} = useInput({ type: useInputTypes.EMAIL, validate: true, display: sent });
+	} = useInput({ type: useInputTypes.EMAIL, validate: true, display: submitted });
 
 	const submitHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
-		setSent(true);
+		setSubmitted(true);
 
 		if (!newEmailInput.isValid) {
 			setInputErrorText('Format invalide.');
@@ -46,8 +50,11 @@ const ChangeEmail: React.FC = () => {
 			setInputErrorText(
 				"Votre nouvelle adresse mail ne peut pas être identique à l'actuelle."
 			);
+
 			return;
 		}
+
+		setFormIsValid(true);
 
 		const responseData = await sendRequest({
 			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/email`,
@@ -58,15 +65,18 @@ const ChangeEmail: React.FC = () => {
 			}),
 		});
 
+		setGotResponse(true);
+
 		if (responseData.used) {
 			setNewEmailInput((prev) => ({ ...prev, isValid: false }));
 			setInputErrorText(responseData.message);
+			// setGotResponse(false);
 			return;
 		}
 
 		setResponse(responseData.message);
 
-		setSubmitted(true);
+		setFormIsValid(false);
 	};
 
 	return (
@@ -74,10 +84,10 @@ const ChangeEmail: React.FC = () => {
 			formAction={submitHandler}
 			type={EditProfileFormWrapperTypes.MODIFY}
 			title={'Adresse mail'}
-			displaySubmitButton={!submitted}
+			displaySubmitButton={!gotResponse}
 			response={response}
 		>
-			{!submitted && (
+			{!gotResponse && (
 				<>
 					<div className={classes.wrapper}>
 						<div className={classes.label}>Adresse mail actuelle:</div>
@@ -86,7 +96,7 @@ const ChangeEmail: React.FC = () => {
 					<Input
 						styling={InputStyles.BLACK_FORM}
 						id={'email'}
-						type={'email'}
+						type={'text'}
 						placeholder={'Nouvelle adresse mail'}
 						value={newEmailInput.value}
 						errorText={inputErrorText}
@@ -100,10 +110,12 @@ const ChangeEmail: React.FC = () => {
 						l'ancienne adresse mail et un autre sur la nouvelle avec un lien
 						permettant de confirmer le changement.
 					</div>
+					{formIsValid && !gotResponse && (
+						<PuffLoader color={'#1cc1e6'} size={'30px'} />
+					)}
 				</>
 			)}
-
-			{submitted && (
+			{gotResponse && (
 				<div className={classes.response}>
 					<img
 						src={successIcon}
