@@ -6,7 +6,6 @@ import { RootState } from './store/_store';
 
 import { useUserClass } from './classes/user-class-hook';
 
-import LoginSignupForms from './pages/login-signup/LogInSignUpPage/LogInSignUpPage';
 import DailyView from './pages/views/DailyView/DailyViewPage/DailyViewPage';
 import WeeklyView from './pages/views/WeeklyView/WeeklyViewPage/WeeklyViewPage';
 import MonthlyView from './pages/views/MonthlyView/MonthlyViewPage/MonthlyViewPage';
@@ -32,6 +31,8 @@ import ChangeEmailConfirmation from './pages/edit-user/ChangeEmail/ChangeEmailCo
 import AlertPopup from './components/pop-ups/alert-or-error-pop-up/AlertPopUp/AlertPopUp';
 import ForgotPasswordPopUp from './components/pop-ups/pop-ups/ForgotPasswordPopUp/ForgotPasswordPopUp';
 import Contact from './pages/ContactPage/ContactPage';
+import LogInForm from './pages/log_in-sign_up/LogInForm/LogInForm';
+import SignUpForm from './pages/log_in-sign_up/SignUpForm/SignUpForm';
 
 const App: React.FC = () => {
 	const { User } = useUserClass();
@@ -94,7 +95,21 @@ const App: React.FC = () => {
 				{!User.isLoggedIn() && (
 					<>
 						<Route path='/' element={<Homepage />} />
-						<Route path='/login-signup' element={<LoginSignupForms />} />
+						<Route
+							path='/connexion'
+							element={
+								<LogInForm
+									mobile={true}
+									switchFormHandler={function (): void {
+										throw new Error('Function not implemented.');
+									}}
+								/>
+							}
+						/>
+						<Route
+							path='/inscription'
+							element={<SignUpForm mobile={true} />}
+						/>
 					</>
 				)}
 				{User.isLoggedIn() && (

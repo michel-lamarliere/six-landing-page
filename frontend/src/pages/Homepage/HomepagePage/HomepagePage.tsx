@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import RoundedButton from '../../../components/buttons/RoundedButton/RoundedButton';
 import { Slide2GridItem, Slide3GridItem } from '../HomepageGridItem/HomepageGridItem';
 import HomepageCarouselButton from '../HomepageCarouselButton/HomepageCarouselButton';
-import LoginSignupForms from '../../login-signup/LogInSignUpPage/LogInSignUpPage';
 
 import sixIcon from '../../../assets/icons/app/logo.svg';
 import foodIcon from '../../../assets/icons/six/food.svg';
@@ -18,6 +17,8 @@ import taskHalfIcon from '../../../assets/icons/tutorial/tutorial-half.svg';
 import taskEmptyIcon from '../../../assets/icons/tutorial/tutorial-empty.svg';
 
 import classes from './HomepagePage.module.scss';
+import LoginForm from '../../log_in-sign_up/LogInForm/LogInForm';
+import SignupForm from '../../log_in-sign_up/SignUpForm/SignUpForm';
 
 const HomePage: React.FC = () => {
 	const carousel = [
@@ -80,6 +81,8 @@ const HomePage: React.FC = () => {
 		setCarouselIndex(number);
 	};
 
+	const [showLoginForm, setShowLoginForm] = useState(true);
+
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.carousel}>
@@ -111,12 +114,12 @@ const HomePage: React.FC = () => {
 			<div className={classes.buttons}>
 				<RoundedButton
 					text={'Se connecter'}
-					link={'/login-signup'}
+					link={'/connexion'}
 					className={`${classes.buttons__button} ${classes['buttons__button--log-in']}`}
 				/>
 				<RoundedButton
 					text={"S'inscrire"}
-					link={'/login-signup'}
+					link={'/inscription'}
 					className={`${classes.buttons__button} ${classes['buttons__button--sign-up']}`}
 				/>
 				<Link
@@ -127,7 +130,17 @@ const HomePage: React.FC = () => {
 				</Link>
 			</div>
 			<div className={classes.forms}>
-				<LoginSignupForms />
+				{showLoginForm ? (
+					<LoginForm
+						mobile={false}
+						switchFormHandler={() => setShowLoginForm(false)}
+					/>
+				) : (
+					<SignupForm
+						mobile={false}
+						switchFormHandler={() => setShowLoginForm(true)}
+					/>
+				)}
 			</div>
 		</div>
 	);

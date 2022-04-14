@@ -12,7 +12,7 @@ interface Props {
 	headerTitle: string;
 	footerText: string;
 	footerTextLink: string;
-	switchFormHandler: () => void;
+	switchFormHandler?: any;
 	responseMessage: string;
 }
 

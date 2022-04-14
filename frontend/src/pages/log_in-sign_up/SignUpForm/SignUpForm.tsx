@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useRequest } from '../../../hooks/http-hook';
 import { useInput, useInputTypes } from '../../../hooks/input-hook';
@@ -10,10 +11,12 @@ import Input, { InputStyles } from '../../../components/form-elements/Input';
 import RoundedButton from '../../../components/buttons/RoundedButton/RoundedButton';
 
 interface Props {
-	switchFormHandler: () => void;
+	mobile: boolean;
+	switchFormHandler?: () => void;
 }
 
-const SingupForm: React.FC<Props> = (props) => {
+const SignUpForm: React.FC<Props> = (props) => {
+	const navigate = useNavigate();
 	const { sendRequest } = useRequest();
 	const { User } = useUserClass();
 
@@ -103,7 +106,9 @@ const SingupForm: React.FC<Props> = (props) => {
 			headerTitle={'Bienvenue !'}
 			footerText={'Déjà membre ?'}
 			footerTextLink={'Connectez-vous !'}
-			switchFormHandler={props.switchFormHandler}
+			switchFormHandler={
+				props.mobile ? () => navigate('/connexion') : props.switchFormHandler
+			}
 			responseMessage={responseMessage}
 		>
 			<Input
@@ -159,4 +164,4 @@ const SingupForm: React.FC<Props> = (props) => {
 	);
 };
 
-export default SingupForm;
+export default SignUpForm;

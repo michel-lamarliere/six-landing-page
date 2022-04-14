@@ -125,14 +125,19 @@
 	display: none;
 }
 
+@media screen and (min-width: 800px) {
+	.wrapper {
+		background: $colorPurple1 url('../../../assets/backgrounds/desktop-bg.svg')
+			no-repeat bottom right;
+	}
+}
+
 @media screen and (min-width: 1200px) {
 	.wrapper {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		padding: 6rem;
-		background: $colorPurple1 url('../../../assets/backgrounds/desktop-bg.svg')
-			no-repeat right;
 	}
 
 	.carousel {

@@ -1,6 +1,6 @@
 @import '../../../style/variables.scss';
 
-.button {
+.wrapper {
 	position: relative;
 	display: flex;
 	align-items: flex-end;
@@ -13,10 +13,7 @@
 	background-color: transparent;
 	cursor: pointer;
 
-	&:active {
-	}
-
-	&:disabled {
+	&--disabled {
 		background-color: $colorGrey1;
 		border: 0.125rem solid $colorGrey2;
 		cursor: default;
@@ -24,6 +21,17 @@
 		& > .button__day-number {
 			color: $colorGrey2;
 		}
+	}
+}
+
+.button {
+	position: absolute;
+	background-color: transparent;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+
+	&:active {
 	}
 
 	&__filling {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { OverlayActionTypes } from '../../../store/overlay';
 import { ForgotPasswordPopUpActionTypes } from '../../../store/pop-ups/forgot-password-pop-up';
@@ -16,14 +17,16 @@ import RoundedButton from '../../../components/buttons/RoundedButton/RoundedButt
 import rememberMeTrueIcon from '../../../assets/icons/form&input/remember-me_true.svg';
 import rememberMeFalseIcon from '../../../assets/icons/form&input/remember-me_false.svg';
 
-import classes from './LoginForm.module.scss';
+import classes from './LogInForm.module.scss';
 
 interface Props {
-	switchFormHandler: () => void;
+	mobile: boolean;
+	switchFormHandler?: () => void;
 }
 
-const LoginForm: React.FC<Props> = (props) => {
+const LogInForm: React.FC<Props> = (props) => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const { sendRequest } = useRequest();
 	const { User } = useUserClass();
 
@@ -119,7 +122,9 @@ const LoginForm: React.FC<Props> = (props) => {
 			headerTitle={'Vous revoilà !'}
 			footerText={'Pas de compte ?'}
 			footerTextLink={'Inscrivez-vous !'}
-			switchFormHandler={props.switchFormHandler}
+			switchFormHandler={
+				props.mobile ? () => navigate('/inscription') : props.switchFormHandler
+			}
 			responseMessage={responseMessage}
 		>
 			<Input
@@ -169,4 +174,4 @@ const LoginForm: React.FC<Props> = (props) => {
 	);
 };
 
-export default LoginForm;
+export default LogInForm;

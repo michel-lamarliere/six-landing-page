@@ -10,7 +10,7 @@ import { getMonthFnTypes, useDatesFn } from '../../../../hooks/dates-hook';
 import { useTaskClass } from '../../../../classes/task-class-hook';
 import { useSixNameHook } from '../../../../hooks/six-name-hook';
 
-import { LogDataButton } from '../../LogDataButtons/LogDataButtons';
+import LogDataButton from '../../LogDataButtons/LogDataButtons';
 import DailyViewCalendar from '../DailyViewCalendar/DailyViewCalendar';
 import ViewsContainer from '../../../../containers/ViewsContainer/ViewsContainer';
 

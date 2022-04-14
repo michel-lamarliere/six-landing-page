@@ -18,7 +18,7 @@ import { getMonthFnTypes, useDatesFn } from '../../../../hooks/dates-hook';
 import { useTaskClass } from '../../../../classes/task-class-hook';
 
 import MonthlyViewCalendar from '../MonthlyViewCalendar/MonthlyViewCalendar';
-import { LogDataButton } from '../../LogDataButtons/LogDataButtons';
+import LogDataButton from '../../LogDataButtons/LogDataButtons';
 import ViewsContainer from '../../../../containers/ViewsContainer/ViewsContainer';
 
 import classes from './MonthlyViewPage.module.scss';

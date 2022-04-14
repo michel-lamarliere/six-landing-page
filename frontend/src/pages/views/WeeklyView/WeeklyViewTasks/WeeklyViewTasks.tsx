@@ -2,7 +2,7 @@ import React from 'react';
 
 import { addDays, format, isAfter, isBefore, isSameDay } from 'date-fns';
 
-import { LogDataButton } from '../../LogDataButtons/LogDataButtons';
+import LogDataButton from '../../LogDataButtons/LogDataButtons';
 
 import foodIcon from '../../../../assets/icons/six/food.svg';
 import sleepIcon from '../../../../assets/icons/six/sleep.svg';
