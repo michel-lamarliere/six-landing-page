@@ -53,11 +53,13 @@ const FormInput: React.FC<{
 						<input
 							className={`${classes.input__input} ${
 								props.styling === InputStyles.PURPLE_FORM
-									? classes['input__input--basic']
-									: classes['input__input--profile']
+									? classes['input__input--purple']
+									: classes['input__input--black']
 							} ${
-								!isValid && isTouched && classes['input__input--invalid']
-							}`}
+								props.type === 'password' &&
+								classes['input__input--password']
+							}
+							${!isValid && isTouched && classes['input__input--invalid']}`}
 							type={showPassword ? 'text' : type}
 							name={id}
 							placeholder={placeholder}
@@ -70,7 +72,9 @@ const FormInput: React.FC<{
 						{props.type === 'password' && (
 							<div
 								onClick={showPasswordHandler}
-								className={classes['input__show-password']}
+								className={`${classes['input__show-password']} ${
+									showPassword && classes['input__show-password--open']
+								}`}
 							>
 								<img
 									src={
@@ -85,7 +89,7 @@ const FormInput: React.FC<{
 				{props.type === 'textarea' && (
 					<textarea
 						className={`${classes.input__input} ${
-							classes['input__input--profile']
+							classes['input__input--black']
 						} ${!isValid && isTouched && classes['input__input--invalid']}`}
 						name={id}
 						placeholder={placeholder}

@@ -48,8 +48,6 @@ const FormContainer: React.FC<Props> = (props) => {
 					</div>
 				</>
 			)}
-			<h3>michel@test.com</h3>
-			<h3>Tester1@</h3>
 			<div className={classes.footer}>
 				{!User.isLoggedIn() && (
 					<>

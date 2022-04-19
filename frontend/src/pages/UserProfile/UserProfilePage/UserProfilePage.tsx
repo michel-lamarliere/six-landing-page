@@ -78,53 +78,51 @@ const Profile: React.FC = () => {
 			>
 				<img src={recapIcon} alt='Stats' className={classes.recap__img} />
 			</RoundedButton>
-			<div className={classes['edit-profile']}>
-				<button
-					className={`${classes['edit-profile__button']} ${
-						showEditProfile && classes['edit-profile__button--open']
+			<button
+				className={`${classes['edit-profile__button']} ${
+					showEditProfile && classes['edit-profile__button--open']
+				}`}
+				onClick={editProfileHandler}
+			>
+				<div className={classes['edit-profile__text']}>Éditer le profil</div>
+				<img
+					src={arrowIcon}
+					alt='Flêche'
+					className={`${classes['edit-profile__img']} ${
+						!showEditProfile && classes['edit-profile__img--closed']
 					}`}
-					onClick={editProfileHandler}
-				>
-					<div className={classes['edit-profile__text']}>Éditer le profil</div>
-					<img
-						src={arrowIcon}
-						alt='Flêche'
-						className={`${classes['edit-profile__img']} ${
-							!showEditProfile && classes['edit-profile__img--closed']
-						}`}
+				/>
+			</button>
+			{showEditProfile && (
+				<div className={classes['edit-profile']}>
+					<UserProfileEditButton
+						icon={imageIcon}
+						text={'Image'}
+						to={'/profil/modifier/image'}
 					/>
-				</button>
-				{showEditProfile && (
-					<>
-						<UserProfileEditButton
-							icon={imageIcon}
-							text={'Image'}
-							to={'/profil/modifier/image'}
-						/>
-						<UserProfileEditButton
-							icon={nameIcon}
-							text={'Nom'}
-							to={'/profil/modifier/nom'}
-						/>
-						<UserProfileEditButton
-							icon={emailIcon}
-							text={'Adresse mail'}
-							to={'/profil/modifier/email'}
-						/>
-						<UserProfileEditButton
-							icon={passwordIcon}
-							text={'Mot de passe'}
-							to={'/profil/modifier/mot-de-passe'}
-						/>
-						<Link
-							to='/profil/modifier/supprimer-compte'
-							className={classes['delete-button']}
-						>
-							Supprimer mon compte
-						</Link>
-					</>
-				)}
-			</div>
+					<UserProfileEditButton
+						icon={nameIcon}
+						text={'Nom'}
+						to={'/profil/modifier/nom'}
+					/>
+					<UserProfileEditButton
+						icon={emailIcon}
+						text={'Adresse mail'}
+						to={'/profil/modifier/email'}
+					/>
+					<UserProfileEditButton
+						icon={passwordIcon}
+						text={'Mot de passe'}
+						to={'/profil/modifier/mot-de-passe'}
+					/>
+					<Link
+						to='/profil/modifier/supprimer-compte'
+						className={classes['delete-button']}
+					>
+						Supprimer mon compte
+					</Link>
+				</div>
+			)}
 			<button onClick={promptLogOutHandler} className={classes['log-out']}>
 				<img src={logOutIcon} alt='Déconnexion' />
 				<div className={classes['log-out__text']}>Déconnexion</div>
