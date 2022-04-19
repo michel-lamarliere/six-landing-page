@@ -6,6 +6,7 @@ export enum useInputTypes {
 	PASSWORD = 'PASSWORD',
 	COMPARISON = 'COMPARISON',
 	MESSAGE = 'MESSAGE',
+	GOALS = 'GOALS',
 	NONE = 'NONE',
 }
 
@@ -16,6 +17,7 @@ export const useInput = (args: {
 		| useInputTypes.PASSWORD
 		| useInputTypes.COMPARISON
 		| useInputTypes.MESSAGE
+		| useInputTypes.GOALS
 		| useInputTypes.NONE;
 	validate: boolean;
 	display?: boolean;
@@ -60,6 +62,14 @@ export const useInput = (args: {
 		if (type === useInputTypes.NAME && validate) {
 			input.value.trim().length >= 2 &&
 			input.value.trim().match(/^['’\p{L}\p{M}]*-?['’\p{L}\p{M}]*$/giu)
+				? setInput((prev) => ({ ...prev, isValid: true }))
+				: setInput((prev) => ({ ...prev, isValid: false }));
+		}
+	}, [input.value]);
+
+	useEffect(() => {
+		if (type === useInputTypes.GOALS && validate) {
+			input.value.trim().length < 100
 				? setInput((prev) => ({ ...prev, isValid: true }))
 				: setInput((prev) => ({ ...prev, isValid: false }));
 		}

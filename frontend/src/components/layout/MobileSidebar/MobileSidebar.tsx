@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { RootState } from '../../../store/_store';
 
-import Sidebar from '../SidebarContainer/SidebarContainer';
+import Sidebar from '../../../containers/SidebarContainer/SidebarContainer';
 
 import classes from './MobileSidebar.module.scss';
 

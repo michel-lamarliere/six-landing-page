@@ -7,7 +7,7 @@ interface Action {
 	message: string;
 }
 
-const initialStateReducer: State = {
+const initialState: State = {
 	message: null,
 };
 
@@ -16,7 +16,7 @@ export const enum ErrorPopUpActionTypes {
 	REMOVE_AND_HIDE_ERROR_POP_UP = 'REMOVE_AND_HIDE_ERROR_POP_UP',
 }
 
-const errorPopUpReducer = (state = initialStateReducer, action: Action) => {
+const errorPopUpReducer = (state = initialState, action: Action) => {
 	switch (action.type) {
 		case ErrorPopUpActionTypes.SET_AND_SHOW_ERROR_POP_UP: {
 			return {

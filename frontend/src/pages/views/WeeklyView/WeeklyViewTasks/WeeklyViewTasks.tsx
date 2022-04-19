@@ -2,14 +2,14 @@ import React from 'react';
 
 import { addDays, format, isAfter, isBefore, isSameDay } from 'date-fns';
 
-import LogDataButton from '../../LogDataButtons/LogDataButtons';
+import LogDataButton from '../../../../components/buttons/LogDataButton/LogDataButton';
 
-import foodIcon from '../../../../assets/icons/six/food.svg';
+import nutritionIcon from '../../../../assets/icons/six/nutrition.svg';
 import sleepIcon from '../../../../assets/icons/six/sleep.svg';
 import sportsIcon from '../../../../assets/icons/six/sports.svg';
 import relaxationIcon from '../../../../assets/icons/six/relaxation.svg';
-import workIcon from '../../../../assets/icons/six/work.svg';
-import socialIcon from '../../../../assets/icons/six/social.svg';
+import projectsIcon from '../../../../assets/icons/six/projects.svg';
+import socialLifeIcon from '../../../../assets/icons/six/social_life.svg';
 
 import classes from './WeeklyViewTasks.module.scss';
 
@@ -18,12 +18,12 @@ interface Props {
 	isLoading: boolean;
 	datesArray: Date[];
 	dataArray: {
-		food: any[];
+		nutrition: any[];
 		sleep: any[];
-		sport: any[];
+		sports: any[];
 		relaxation: any[];
-		social: any[];
-		work: any[];
+		projects: any[];
+		socialLife: any[];
 	};
 	onClick: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 	firstOfWeek: Date;
@@ -31,12 +31,12 @@ interface Props {
 
 const WeekViewTasks: React.FC<Props> = (props) => {
 	const sixIcons = [
-		foodIcon,
+		nutritionIcon,
 		sleepIcon,
 		sportsIcon,
 		relaxationIcon,
-		workIcon,
-		socialIcon,
+		projectsIcon,
+		socialLifeIcon,
 	];
 
 	return (
@@ -80,13 +80,13 @@ const WeekViewTasks: React.FC<Props> = (props) => {
 							id={`${format(
 								new Date(props.datesArray[dataIndex]),
 								'yyyy-MM-dd'
-							)}_${task[0]}`}
+							)}/${task[0]}`}
 							onClick={props.onClick}
 							value={data}
 							key={`${format(
 								new Date(props.datesArray[dataIndex]),
 								'yyyy-MM-dd'
-							)}_${task[0]}`}
+							)}/${task[0]}`}
 							disabled={
 								isAfter(
 									new Date(props.datesArray[dataIndex]),

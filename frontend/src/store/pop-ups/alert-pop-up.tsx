@@ -7,7 +7,7 @@ interface Action {
 	message: string;
 }
 
-const initialStateReducer: State = {
+const initialState: State = {
 	message: null,
 };
 
@@ -16,7 +16,7 @@ export const enum AlertPopUpActionTypes {
 	REMOVE_AND_HIDE_ALERT_POP_UP = 'REMOVE_AND_HIDE_ALERT_POP_UP',
 }
 
-const alertPopUpReducer = (state = initialStateReducer, action: Action) => {
+const alertPopUpReducer = (state = initialState, action: Action) => {
 	switch (action.type) {
 		case AlertPopUpActionTypes.SET_AND_SHOW_ALERT_POP_UP: {
 			return {

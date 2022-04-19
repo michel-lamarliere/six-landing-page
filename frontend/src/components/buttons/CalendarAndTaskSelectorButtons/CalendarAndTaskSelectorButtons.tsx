@@ -8,12 +8,12 @@ import { TaskSelectorActionTypes } from '../../../store/task-selector';
 
 import topArrowIcon from '../../../assets/icons/top-arrow.svg';
 import calendarIcon from '../../../assets/icons/calendar/calendar_icon.svg';
-import foodIcon from '../../../assets/icons/six/food.svg';
+import nutritionIcon from '../../../assets/icons/six/nutrition.svg';
 import sleepIcon from '../../../assets/icons/six/sleep.svg';
 import sportsIcon from '../../../assets/icons/six/sports.svg';
 import relaxationIcon from '../../../assets/icons/six/relaxation.svg';
-import workIcon from '../../../assets/icons/six/work.svg';
-import socialIcon from '../../../assets/icons/six/social.svg';
+import projectsIcon from '../../../assets/icons/six/projects.svg';
+import socialLifeIcon from '../../../assets/icons/six/social_life.svg';
 
 import classes from './CalendarAndTaskSelectorButtons.module.scss';
 
@@ -66,23 +66,23 @@ export const TaskSelectorButton: React.FC<{
 
 	const getTaskImage = () => {
 		switch (props.chosenTask) {
-			case 'food': {
-				return foodIcon;
+			case 'nutrition': {
+				return nutritionIcon;
 			}
 			case 'sleep': {
 				return sleepIcon;
 			}
-			case 'sport': {
+			case 'sports': {
 				return sportsIcon;
 			}
 			case 'relaxation': {
 				return relaxationIcon;
 			}
-			case 'work': {
-				return workIcon;
+			case 'projects': {
+				return projectsIcon;
 			}
-			case 'social': {
-				return socialIcon;
+			case 'social_life': {
+				return socialLifeIcon;
 			}
 		}
 	};
@@ -106,13 +106,13 @@ export const TaskSelectorButton: React.FC<{
 			{taskSelectorState.show && (
 				<div className={classes.selector}>
 					<button
-						value='food'
+						value='nutrition'
 						onClick={selectTaskHandler}
 						className={`${
-							props.chosenTask === 'food' && classes.selector__active
+							props.chosenTask === 'nutrition' && classes.selector__active
 						}`}
 					>
-						<img src={foodIcon} alt='Alimentation' />
+						<img src={nutritionIcon} alt='Alimentation' />
 						Alimentation
 					</button>
 
@@ -150,24 +150,24 @@ export const TaskSelectorButton: React.FC<{
 					</button>
 
 					<button
-						value='work'
+						value='projects'
 						onClick={selectTaskHandler}
 						className={`${
-							props.chosenTask === 'work' && classes.selector__active
+							props.chosenTask === 'projects' && classes.selector__active
 						}`}
 					>
-						<img src={workIcon} alt='Projets' />
+						<img src={projectsIcon} alt='Projets' />
 						Projets
 					</button>
 
 					<button
-						value='social'
+						value='social_life'
 						onClick={selectTaskHandler}
 						className={`${
-							props.chosenTask === 'social' && classes.selector__active
+							props.chosenTask === 'social_life' && classes.selector__active
 						}`}
 					>
-						<img src={socialIcon} alt='Vie Sociale' />
+						<img src={socialLifeIcon} alt='Vie Sociale' />
 						Vie Sociale
 					</button>
 				</div>

@@ -10,29 +10,36 @@ import DailyView from './pages/views/DailyView/DailyViewPage/DailyViewPage';
 import WeeklyView from './pages/views/WeeklyView/WeeklyViewPage/WeeklyViewPage';
 import MonthlyView from './pages/views/MonthlyView/MonthlyViewPage/MonthlyViewPage';
 import Error404 from './pages/Error404Page/Error404Page';
-import ErrorPopup from './components/pop-ups/alert-or-error-pop-up/ErrorPopUp/ErrorPopUp';
-import EmailConfirmationPopup from './components/pop-ups/pop-ups/EmailConfirmationPopUp/EmailConfirmationPopUp';
-import EmailAddressConfirmation from './pages/after-emails/EmailAddressConfirmationPage/EmailAddressConfirmationPage';
-import ChangeForgottenPassword from './pages/after-emails/ChangeForgottenPasswordPage/ChangeForgottenPasswordPage';
-import Overlay from './components/overlays/Overlay';
+import ErrorPopup from './components/pop-ups/ErrorPopUp/ErrorPopUp';
+import EmailConfirmationPopup from './components/pop-ups/EmailConfirmationPopUp/EmailConfirmationPopUp';
+import EmailAddressConfirmation from './pages/EmailAddressConfirmationPage/EmailAddressConfirmationPage';
+import ChangeForgottenPassword from './pages/ChangeForgottenPasswordPage/ChangeForgottenPasswordPage';
+import Overlay from './components/Overlay/Overlay';
 import HamburgerButton from './components/buttons/HamburgerButton/HamburgerButton';
 import Profile from './pages/UserProfile/UserProfilePage/UserProfilePage';
 import ChangeName from './pages/edit-user/ChangeNamePage/ChangeNamePage';
 import ChangeEmail from './pages/edit-user/ChangeEmail/ChangeEmailPage/ChangeEmailPage';
 import ChangePassword from './pages/edit-user/ChangePasswordPage/ChangePasswordPage';
 import ChangeImage from './pages/edit-user/ChangeImagePage/ChangeImagePage';
-import AnnualChart from './pages/charts/AnnualChartPage/AnnualChartPage';
+import AnnualChart from './pages/AnnualChartPage/AnnualChartPage';
 import Homepage from './pages/Homepage/HomepagePage/HomepagePage';
 import DesktopSidebar from './components/layout/DesktopSidebar/DesktopSidebar';
 import MobileSidebar from './components/layout/MobileSidebar/MobileSidebar';
 import DeleteAccount from './pages/edit-user/DeleteAccount/DeleteAccountPage/DeleteAccountPage';
 import DeleteAccountConfirmation from './pages/edit-user/DeleteAccount/DeleteAccountConfirmation/DeleteAccountConfirmation';
 import ChangeEmailConfirmation from './pages/edit-user/ChangeEmail/ChangeEmailConfirmation/ChangeEmailConfirmation';
-import AlertPopup from './components/pop-ups/alert-or-error-pop-up/AlertPopUp/AlertPopUp';
-import ForgotPasswordPopUp from './components/pop-ups/pop-ups/ForgotPasswordPopUp/ForgotPasswordPopUp';
+import AlertPopup from './components/pop-ups/AlertPopUp/AlertPopUp';
+import ForgotPasswordPopUp from './components/pop-ups/ForgotPasswordPopUp/ForgotPasswordPopUp';
 import Contact from './pages/ContactPage/ContactPage';
-import LogInForm from './pages/log_in-sign_up/LogInForm/LogInForm';
-import SignUpForm from './pages/log_in-sign_up/SignUpForm/SignUpForm';
+import LogInForm from './pages/LogInForm/LogInForm';
+import SignUpForm from './pages/SignUpForm/SignUpForm';
+import HelpPage from './pages/HelpPage/HelpPage';
+import SleepPage from './pages/tasks/SleepPage';
+import SocialLifePage from './pages/tasks/SocialLifePage';
+import ProjectsPage from './pages/tasks/ProjectsPage';
+import RelaxationPage from './pages/tasks/RelaxationPage';
+import NutritionPage from './pages/tasks/NutritionPage';
+import SportsPage from './pages/tasks/SportsPage';
 
 const App: React.FC = () => {
 	const { User } = useUserClass();
@@ -132,6 +139,13 @@ const App: React.FC = () => {
 							path='/profil/modifier/supprimer-compte'
 							element={<DeleteAccount />}
 						/>
+						<Route path='/aide' element={<HelpPage />} />
+						<Route path='/alimentation' element={<NutritionPage />} />
+						<Route path='/sommeil' element={<SleepPage />} />
+						<Route path='/sport' element={<SportsPage />} />
+						<Route path='/detente' element={<RelaxationPage />} />
+						<Route path='/projets' element={<ProjectsPage />} />
+						<Route path='/vie-sociale' element={<SocialLifePage />} />
 					</>
 				)}
 				<Route path='/contact' element={<Contact />} />

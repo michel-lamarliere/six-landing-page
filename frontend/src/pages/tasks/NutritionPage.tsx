@@ -1,0 +1,17 @@
+import React from 'react';
+
+import TaskDetailContainer from '../../components/TaskDetailContainer/TaskDetailContainer';
+
+import nutritionIcon from '../../assets/icons/six/nutrition.svg';
+
+const NutritionPage: React.FC = () => {
+	return (
+		<TaskDetailContainer
+			icon={nutritionIcon}
+			title={'Alimentation'}
+			task='nutrition'
+		/>
+	);
+};
+
+export default NutritionPage;

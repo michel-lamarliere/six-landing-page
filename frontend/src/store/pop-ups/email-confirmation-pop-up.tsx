@@ -6,7 +6,7 @@ interface Action {
 	type: EmailConfirmationPopUpActionTypes;
 }
 
-const initialStateReducer: State = {
+const initialState: State = {
 	show: false,
 };
 
@@ -15,7 +15,7 @@ export const enum EmailConfirmationPopUpActionTypes {
 	HIDE_EMAIL_CONFIRMATION_POP_UP = 'HIDE_EMAIL_CONFIRMATION_POP_UP',
 }
 
-const emailConfirmationPopUpReducer = (state = initialStateReducer, action: Action) => {
+const emailConfirmationPopUpReducer = (state = initialState, action: Action) => {
 	switch (action.type) {
 		case EmailConfirmationPopUpActionTypes.SHOW_EMAIL_CONFIRMATION_POP_UP: {
 			return { show: true };

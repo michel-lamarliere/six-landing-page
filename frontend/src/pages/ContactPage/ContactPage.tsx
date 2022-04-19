@@ -60,9 +60,7 @@ const Contact: React.FC = () => {
 
 	const validateForm = () => {
 		setSubmitted(true);
-
-		console.log(messageInput.isValid);
-
+		
 		if (User.isLoggedIn()) {
 			if (!messageInput.isValid) {
 				return false;

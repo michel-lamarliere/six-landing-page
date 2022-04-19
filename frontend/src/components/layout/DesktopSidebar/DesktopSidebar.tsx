@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Sidebar from '../SidebarContainer/SidebarContainer';
+import Sidebar from '../../../containers/SidebarContainer/SidebarContainer';
 
 import classes from './DesktopSidebar.module.scss';
 

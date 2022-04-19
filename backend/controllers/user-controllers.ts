@@ -102,6 +102,14 @@ const signUp: RequestHandler = async (req, res, next) => {
 			code: hashedConfirmationCode,
 			nextEmail: addMinutes(new Date(), 5),
 		},
+		goals: {
+			nutrition: null,
+			sleep: null,
+			relaxation: null,
+			projects: null,
+			sports: null,
+			social_life: null,
+		},
 		deleteCode: null,
 		log: [],
 	};
@@ -153,8 +161,6 @@ const signIn: RequestHandler = async (req, res, next) => {
 		email: false,
 		password: false,
 	};
-
-	console.log(reqEmail);
 
 	if (!user) {
 		res.status(400).json({ error: true, validInputs });

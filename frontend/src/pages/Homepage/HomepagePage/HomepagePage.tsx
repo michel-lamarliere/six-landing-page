@@ -6,19 +6,19 @@ import { Slide2GridItem, Slide3GridItem } from '../HomepageGridItem/HomepageGrid
 import HomepageCarouselButton from '../HomepageCarouselButton/HomepageCarouselButton';
 
 import sixIcon from '../../../assets/icons/app/logo.svg';
-import foodIcon from '../../../assets/icons/six/food.svg';
+import nutritionIcon from '../../../assets/icons/six/nutrition.svg';
 import sleepIcon from '../../../assets/icons/six/sleep.svg';
 import sportsIcon from '../../../assets/icons/six/sports.svg';
 import relaxationIcon from '../../../assets/icons/six/relaxation.svg';
-import workIcon from '../../../assets/icons/six/work.svg';
-import socialIcon from '../../../assets/icons/six/social.svg';
+import projectsIcon from '../../../assets/icons/six/projects.svg';
+import socialLifeIcon from '../../../assets/icons/six/social_life.svg';
 import taskFullIcon from '../../../assets/icons/tutorial/tutorial-full.svg';
 import taskHalfIcon from '../../../assets/icons/tutorial/tutorial-half.svg';
 import taskEmptyIcon from '../../../assets/icons/tutorial/tutorial-empty.svg';
 
 import classes from './HomepagePage.module.scss';
-import LoginForm from '../../log_in-sign_up/LogInForm/LogInForm';
-import SignupForm from '../../log_in-sign_up/SignUpForm/SignUpForm';
+import LoginForm from '../../LogInForm/LogInForm';
+import SignupForm from '../../SignUpForm/SignUpForm';
 
 const HomePage: React.FC = () => {
 	const carousel = [
@@ -49,12 +49,12 @@ const HomePage: React.FC = () => {
 				Nos six objectifs journaliers :
 			</div>
 			<div className={classes.carousel__text__grid}>
-				<Slide2GridItem title={'Alimentation'} img={foodIcon} />
+				<Slide2GridItem title={'Alimentation'} img={nutritionIcon} />
 				<Slide2GridItem title={'Sommeil'} img={sleepIcon} />
 				<Slide2GridItem title={'Sport'} img={sportsIcon} />
 				<Slide2GridItem title={'Relaxation'} img={relaxationIcon} />
-				<Slide2GridItem title={'Projets'} img={workIcon} />
-				<Slide2GridItem title={'Vie Sociale'} img={socialIcon} />
+				<Slide2GridItem title={'Projets'} img={projectsIcon} />
+				<Slide2GridItem title={'Vie Sociale'} img={socialLifeIcon} />
 			</div>
 		</>,
 		<>

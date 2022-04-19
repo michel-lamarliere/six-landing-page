@@ -4,7 +4,7 @@ interface State {
 	show: boolean;
 }
 
-const initialStateReducer: State = {
+const initialState: State = {
 	show: false,
 };
 
@@ -13,7 +13,7 @@ export enum ForgotPasswordPopUpActionTypes {
 	HIDE_FORGOT_PASSWORD_POP_UP = 'HIDE_FORGOT_PASSWORD_POP_UP',
 }
 
-const forgotPasswordPopUpReducer = (state = initialStateReducer, action: Action) => {
+const forgotPasswordPopUpReducer = (state = initialState, action: Action) => {
 	switch (action.type) {
 		case ForgotPasswordPopUpActionTypes.SHOW_FORGOT_PASSWORD_POP_UP:
 			return { show: true };

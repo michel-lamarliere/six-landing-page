@@ -4,7 +4,7 @@ interface State {
 	show: boolean;
 }
 
-const initialStateReducer: State = {
+const initialState: State = {
 	show: false,
 };
 
@@ -13,7 +13,7 @@ export enum LogOutConfirmationPopUpActionTypes {
 	HIDE_LOG_OUT_CONFIRMATION_POP_UP = 'HIDE_LOG_OUT_CONFIRMATION_POP_UP',
 }
 
-const logOutConfirmationPopUpReducer = (state = initialStateReducer, action: Action) => {
+const logOutConfirmationPopUpReducer = (state = initialState, action: Action) => {
 	switch (action.type) {
 		case LogOutConfirmationPopUpActionTypes.SHOW_LOG_OUT_CONFIRMATION_POP_UP:
 			return { show: true };

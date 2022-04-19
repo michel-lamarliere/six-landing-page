@@ -4,7 +4,7 @@ interface State {
 	show: boolean;
 }
 
-const initialStateReducer: State = {
+const initialState: State = {
 	show: false,
 };
 
@@ -13,7 +13,7 @@ export enum OverlayActionTypes {
 	HIDE_OVERLAY = 'HIDE_OVERLAY',
 }
 
-const overlayReducer = (state = initialStateReducer, action: Action) => {
+const overlayReducer = (state = initialState, action: Action) => {
 	switch (action.type) {
 		case OverlayActionTypes.SHOW_OVERLAY:
 			return { show: true };

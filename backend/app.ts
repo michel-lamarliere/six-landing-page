@@ -7,6 +7,7 @@ const userModifyRoutes = require('./routes/user-modify-routes');
 const logRoutes = require('./routes/log-routes');
 const chartsRoutes = require('./routes/charts-routes');
 const contactRoutes = require('./routes/contact-routes');
+const goalsRoutes = require('./routes/goals-routes');
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use('/api/user-modify', userModifyRoutes);
 app.use('/api/log', logRoutes);
 app.use('/api/charts', chartsRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/goals', goalsRoutes);
 
 const PORT = process.env.PORT || 8080;
 

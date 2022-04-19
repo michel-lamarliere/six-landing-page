@@ -3,17 +3,17 @@ export const useSixNameHook = () => {
 		task.toLowerCase();
 
 		switch (task) {
-			case 'food':
+			case 'nutrition':
 				return 'Alimentation';
 			case 'sleep':
 				return 'Sommeil';
-			case 'sport':
+			case 'sports':
 				return 'Sport';
-			case 'work':
-				return 'Projet';
+			case 'projects':
+				return 'Projets';
 			case 'relaxation':
 				return 'Détente';
-			case 'social':
+			case 'social_life':
 				return 'Vie sociale';
 			default:
 				return;

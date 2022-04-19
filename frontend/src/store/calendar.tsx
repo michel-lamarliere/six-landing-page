@@ -4,7 +4,7 @@ interface State {
 	show: boolean;
 }
 
-const initialStateReducer: State = {
+const initialState: State = {
 	show: false,
 };
 
@@ -13,7 +13,7 @@ export enum CalendarActionTypes {
 	HIDE_CALENDAR = 'HIDE_CALENDAR',
 }
 
-const calendarReducer = (state = initialStateReducer, action: Action) => {
+const calendarReducer = (state = initialState, action: Action) => {
 	switch (action.type) {
 		case CalendarActionTypes.SHOW_CALENDAR:
 			return { show: true };

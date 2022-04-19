@@ -69,7 +69,14 @@ const addData: RequestHandler = async (req, res, next) => {
 	}
 
 	// VALIDATES THE TASK
-	const taskNames = ['food', 'sleep', 'sport', 'relaxation', 'work', 'social'];
+	const taskNames = [
+		'nutrition',
+		'sleep',
+		'sports',
+		'relaxation',
+		'projects',
+		'social_life',
+	];
 
 	if (taskNames.includes(reqTask)) inputsAreValid.task = true;
 
@@ -117,12 +124,12 @@ const addData: RequestHandler = async (req, res, next) => {
 							log: {
 								date: reqDate,
 								six: {
-									food: 0,
+									nutrition: 0,
 									sleep: 0,
-									sport: 0,
+									sports: 0,
 									relaxation: 0,
-									work: 0,
-									social: 0,
+									projects: 0,
+									social_life: 0,
 									[reqTask]: reqLevelOfCompletion,
 								},
 							},
@@ -179,12 +186,12 @@ const getDaily: RequestHandler = async (req, res, next) => {
 	if (result.length === 0) {
 		console.log('get daily');
 		return res.status(200).json({
-			food: 0,
+			nutrition: 0,
 			sleep: 0,
-			sport: 0,
+			sports: 0,
 			relaxation: 0,
-			work: 0,
-			social: 0,
+			projects: 0,
+			social_life: 0,
 		});
 	}
 
@@ -221,12 +228,12 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 	const resultsArray: {
 		date: Date;
 		six: {
-			food: number;
+			nutrition: number;
 			sleep: number;
-			sport: number;
+			sports: number;
 			relaxation: number;
-			work: number;
-			social: number;
+			projects: number;
+			social_life: number;
 		};
 	}[] = [];
 
@@ -271,12 +278,12 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 				data: {
 					date: Date;
 					six: {
-						food: number;
+						nutrition: number;
 						sleep: number;
-						sport: number;
+						sports: number;
 						relaxation: number;
-						work: number;
-						social: number;
+						projects: number;
+						social_life: number;
 					};
 				};
 			}) => {
@@ -295,7 +302,14 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 		if (!found) {
 			resultsArray.push({
 				date: date,
-				six: { food: 0, sleep: 0, sport: 0, relaxation: 0, work: 0, social: 0 },
+				six: {
+					nutrition: 0,
+					sleep: 0,
+					sports: 0,
+					relaxation: 0,
+					projects: 0,
+					social_life: 0,
+				},
 			});
 		}
 	}
@@ -307,22 +321,28 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 	resultsArray.sort(sortArray);
 
 	const responseArray: {
-		food: {}[];
+		nutrition: {}[];
 		sleep: {}[];
-		sport: {}[];
+		sports: {}[];
 		relaxation: {}[];
-		work: {}[];
-		social: {}[];
+		projects: {}[];
+		social_life: {}[];
 	} = {
-		food: [],
+		nutrition: [],
 		sleep: [],
-		sport: [],
+		sports: [],
 		relaxation: [],
-		work: [],
-		social: [],
+		projects: [],
+		social_life: [],
 	};
 
-	let task: 'food' | 'sleep' | 'sport' | 'relaxation' | 'work' | 'social';
+	let task:
+		| 'nutrition'
+		| 'sleep'
+		| 'sports'
+		| 'relaxation'
+		| 'projects'
+		| 'social_life';
 
 	for (task in responseArray) {
 		for (let i = 0; i < resultsArray.length; i++) {

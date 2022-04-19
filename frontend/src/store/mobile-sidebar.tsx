@@ -4,7 +4,7 @@ interface State {
 	show: boolean;
 }
 
-const initialStateReducer: State = {
+const initialState: State = {
 	show: false,
 };
 
@@ -13,7 +13,7 @@ export enum MobileSidebarActionTypes {
 	HIDE_MOBILE_SIDEBAR = 'HIDE_MOBILE_SIDEBAR',
 }
 
-const mobileSidebarReducer = (state = initialStateReducer, action: Action) => {
+const mobileSidebarReducer = (state = initialState, action: Action) => {
 	switch (action.type) {
 		case MobileSidebarActionTypes.SHOW_MOBILE_SIDEBAR:
 			return { show: true };

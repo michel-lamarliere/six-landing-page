@@ -12,7 +12,7 @@ interface Action extends State {
 	type: UserActionTypes;
 }
 
-const initialStateReducer: State = {
+const initialState: State = {
 	token: null,
 	tokenExpiration: null,
 	id: null,
@@ -28,7 +28,7 @@ export const enum UserActionTypes {
 	REFRESH_USER_DATA = 'REFRESH_USER_DATA',
 }
 
-const userReducer = (state = initialStateReducer, action: Action) => {
+const userReducer = (state = initialState, action: Action) => {
 	switch (action.type) {
 		case UserActionTypes.LOG_USER_IN: {
 			return {

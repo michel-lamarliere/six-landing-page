@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { getDate, getDay, getYear, format } from 'date-fns';
 
@@ -10,20 +11,22 @@ import { getMonthFnTypes, useDatesFn } from '../../../../hooks/dates-hook';
 import { useTaskClass } from '../../../../classes/task-class-hook';
 import { useSixNameHook } from '../../../../hooks/six-name-hook';
 
-import LogDataButton from '../../LogDataButtons/LogDataButtons';
+import LogDataButton from '../../../../components/buttons/LogDataButton/LogDataButton';
 import DailyViewCalendar from '../DailyViewCalendar/DailyViewCalendar';
 import ViewsContainer from '../../../../containers/ViewsContainer/ViewsContainer';
 
-import foodIcon from '../../../../assets/icons/six/food.svg';
+import nutritionIcon from '../../../../assets/icons/six/nutrition.svg';
 import sleepIcon from '../../../../assets/icons/six/sleep.svg';
 import sportsIcon from '../../../../assets/icons/six/sports.svg';
 import relaxationIcon from '../../../../assets/icons/six/relaxation.svg';
-import workIcon from '../../../../assets/icons/six/work.svg';
-import socialIcon from '../../../../assets/icons/six/social.svg';
+import workIcon from '../../../../assets/icons/six/projects.svg';
+import socialLifeIcon from '../../../../assets/icons/six/social_life.svg';
+import rightArrowIcon from '../../../../assets/icons/calendar/right-arrow.svg';
 
 import classes from './DailyViewPage.module.scss';
 
 const DailyView: React.FC = () => {
+	const navigate = useNavigate();
 	const { sendRequest } = useRequest();
 	const { getDayFn, getMonthFn } = useDatesFn();
 	const { translateSixName } = useSixNameHook();
@@ -40,20 +43,20 @@ const DailyView: React.FC = () => {
 	const [monthStr, setMonthStr] = useState('');
 
 	const sixIcons = [
-		foodIcon,
+		nutritionIcon,
 		sleepIcon,
 		sportsIcon,
 		workIcon,
 		relaxationIcon,
-		socialIcon,
+		socialLifeIcon,
 	];
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const dateAndTaskStr = (event.target as HTMLElement).id;
 		const previousLevel = parseInt((event.target as HTMLButtonElement).value);
 
-		const date = dateAndTaskStr.split('_')[0];
-		const task = dateAndTaskStr.split('_')[1];
+		const date = dateAndTaskStr.split('/')[0];
+		const task = dateAndTaskStr.split('/')[1];
 
 		const newTaskObj = {
 			date,
@@ -85,6 +88,27 @@ const DailyView: React.FC = () => {
 		setIsLoading(false);
 	};
 
+	const taskHandler = (event: React.MouseEvent<HTMLDivElement>) => {
+		event.preventDefault();
+
+		const id = (event.target as HTMLDivElement).id;
+
+		switch (id) {
+			case 'nutrition':
+				return navigate('/alimentation');
+			case 'sleep':
+				return navigate('/sommeil');
+			case 'sports':
+				return navigate('/sport');
+			case 'relaxation':
+				return navigate('/detente');
+			case 'projects':
+				return navigate('/projets');
+			case 'social_life':
+				return navigate('/vie-sociale');
+		}
+	};
+
 	useEffect(() => {
 		if (userState.id) {
 			getDailyData();
@@ -113,22 +137,32 @@ const DailyView: React.FC = () => {
 					<div
 						className={classes.task}
 						key={`${format(chosenDate, 'yyyy-MM-dd')}_${item[0]}_task`}
+						id={item[0]}
+						onClick={taskHandler}
 					>
-						<div className={classes['task-name']}>
+						<div className={classes['task__name']} id={item[0]}>
 							<img
 								src={sixIcons[index]}
 								alt='six'
-								className={classes['task-name__img']}
+								className={classes['task__name__img']}
+								id={item[0]}
 							/>
-							<div className={classes['task-name__text']}>
+							<div className={classes['task__name__text']} id={item[0]}>
 								{translateSixName(item[0])}
 							</div>
 						</div>
 						<LogDataButton
-							id={`${format(chosenDate, 'yyyy-MM-dd')}_${item[0]}`}
+							id={`${format(chosenDate, 'yyyy-MM-dd')}/${item[0]}`}
 							onClick={addData}
 							value={item[1]}
 							disabled={false}
+						/>
+						<img
+							src={rightArrowIcon}
+							alt='Flêche'
+							className={classes.task__arrow}
+							// onClick={taskHandler}
+							id={item[0]}
 						/>
 					</div>
 				))}

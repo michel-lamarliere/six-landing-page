@@ -23,13 +23,20 @@ const WeekView: React.FC = () => {
 	const userState = useSelector((state: RootState) => state.user);
 
 	const [dataArray, setDataArray] = useState<{
-		food: [];
+		nutrition: [];
 		sleep: [];
-		sport: [];
+		sports: [];
 		relaxation: [];
-		social: [];
-		work: [];
-	}>({ food: [], sleep: [], sport: [], relaxation: [], social: [], work: [] });
+		projects: [];
+		socialLife: [];
+	}>({
+		nutrition: [],
+		sleep: [],
+		sports: [],
+		relaxation: [],
+		projects: [],
+		socialLife: [],
+	});
 	const [isLoading, setIsLoading] = useState(true);
 	const [datesArray, setDatesArray] = useState([]);
 
@@ -43,8 +50,8 @@ const WeekView: React.FC = () => {
 		const dateAndTaskStr = (event.target as HTMLElement).id;
 		const previousLevel = parseInt((event.target as HTMLButtonElement).value);
 
-		const date = dateAndTaskStr.split('_')[0];
-		const task = dateAndTaskStr.split('_')[1];
+		const date = dateAndTaskStr.split('/')[0];
+		const task = dateAndTaskStr.split('/')[1];
 
 		const newTaskObj = {
 			date,

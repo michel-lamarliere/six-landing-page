@@ -18,7 +18,7 @@ import { getMonthFnTypes, useDatesFn } from '../../../../hooks/dates-hook';
 import { useTaskClass } from '../../../../classes/task-class-hook';
 
 import MonthlyViewCalendar from '../MonthlyViewCalendar/MonthlyViewCalendar';
-import LogDataButton from '../../LogDataButtons/LogDataButtons';
+import LogDataButton from '../../../../components/buttons/LogDataButton/LogDataButton';
 import ViewsContainer from '../../../../containers/ViewsContainer/ViewsContainer';
 
 import classes from './MonthlyViewPage.module.scss';
@@ -34,15 +34,15 @@ const MonthlyView: React.FC = () => {
 	const [chosenDate, setChosenDate] = useState<Date>(startOfMonth(new Date()));
 	const [monthStr, setMonthStr] = useState('');
 	const [monthlyArray, setMonthlyArray] = useState<[]>([]);
-	const [chosenTask, setChosenTask] = useState('food');
+	const [chosenTask, setChosenTask] = useState('nutrition');
 	const [emptyBoxes, setEmptyBoxes] = useState<0[]>([]);
 
 	const addData = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		const dateAndTaskStr = (event.target as HTMLElement).id;
 		const previousLevel = parseInt((event.target as HTMLButtonElement).value);
 
-		const date = dateAndTaskStr.split('_')[0];
-		const task = dateAndTaskStr.split('_')[1];
+		const date = dateAndTaskStr.split('/')[0];
+		const task = dateAndTaskStr.split('/')[1];
 
 		const newTaskObj = {
 			date,
@@ -130,13 +130,13 @@ const MonthlyView: React.FC = () => {
 							id={`${format(
 								new Date(item.date),
 								'yyyy-MM-dd'
-							)}_${chosenTask}`}
+							)}/${chosenTask}`}
 							onClick={addData}
 							value={item.level}
 							key={`${format(
 								new Date(item.date),
 								'yyyy-MM-dd'
-							)}_${chosenTask}-${index}`}
+							)}/${chosenTask}-${index}`}
 							disabled={
 								isAfter(new Date(item.date), new Date()) &&
 								!isSameDay(addHours(new Date(item.date), 0), new Date())

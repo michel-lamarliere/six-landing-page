@@ -4,7 +4,7 @@ interface State {
 	show: boolean;
 }
 
-const initialStateReducer: State = {
+const initialState: State = {
 	show: false,
 };
 
@@ -13,7 +13,7 @@ export enum TaskSelectorActionTypes {
 	HIDE_TASK_SELECTOR = 'HIDE_TASK_SELECTOR',
 }
 
-const taskSelectorReducer = (state = initialStateReducer, action: Action) => {
+const taskSelectorReducer = (state = initialState, action: Action) => {
 	switch (action.type) {
 		case TaskSelectorActionTypes.SHOW_TASK_SELECTOR:
 			return { show: true };

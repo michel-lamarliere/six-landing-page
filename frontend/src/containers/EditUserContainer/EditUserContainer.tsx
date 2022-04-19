@@ -18,6 +18,7 @@ interface Props {
 	formAction?: any;
 	displaySubmitButton?: boolean;
 	response?: string;
+	backButtonLink?: any;
 }
 
 const Form: React.FC<Props> = (props) => {
@@ -25,7 +26,10 @@ const Form: React.FC<Props> = (props) => {
 		props.type === EditProfileFormWrapperTypes.MODIFY ? (
 			<form className={classes.wrapper} onSubmit={props.formAction}>
 				<div className={classes.title}>{props.title}</div>
-				<Link to='/profil' className={classes['back-button']}>
+				<Link
+					to={props.backButtonLink || '/profil'}
+					className={classes['back-button']}
+				>
 					<img src={backButtonIcon} alt='Retour' />
 				</Link>
 				{props.children}
