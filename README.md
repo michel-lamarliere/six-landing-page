@@ -2,6 +2,14 @@
 
 # Six App
 
+[Site demo ](https://six-app.com)
+
+## Remerciements
+
+Maquette et logo par [Enola Louge](https://www.enolalouge.com).
+
+## Description
+
 Une web app qui permet aux utilisateurs de tracker 6 tâches prédéfinies:
 
 -   alimentation
