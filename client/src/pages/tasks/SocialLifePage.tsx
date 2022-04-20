@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TaskDetailContainer from '../../components/TaskDetailContainer/TaskDetailContainer';
+import TaskDetailContainer from '../../containers/TaskDetailContainer/TaskDetailContainer';
 
 import socialLifeIcon from '../../assets/icons/six/social_life.svg';
 

@@ -12,6 +12,7 @@ import warningButtonIcon from '../../assets/icons/warning.svg';
 
 import classes from './AlertOrErrorPopUpContainer.module.scss';
 import { OverlayActionTypes } from '../../store/overlay';
+import { useNavigate } from 'react-router-dom';
 
 export enum AlertOrErrorPopUpTypes {
 	ERROR = 'ERROR',
@@ -25,9 +26,7 @@ interface Props {
 
 const AlertOrErrorPopUp: React.FC<Props> = (props) => {
 	const dispatch = useDispatch();
-
-	// const errorPopUpState = useSelector((state: RootState) => state.errorPopUp);
-	// const alertPopUpState = useSelector((state: RootState) => state.alertPopUp);
+	const navigate = useNavigate();
 
 	const error = props.type === AlertOrErrorPopUpTypes.ERROR;
 	const warning = props.type === AlertOrErrorPopUpTypes.WARNING;
@@ -42,13 +41,17 @@ const AlertOrErrorPopUp: React.FC<Props> = (props) => {
 		}
 	};
 
-	// useEffect(() => {
-	// 	if (errorPopUpState.message) {
-	// 		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
-	// 	} else if (alertPopUpState.message) {
-	// 		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
-	// 	}
-	// }, [errorPopUpState, alertPopUpState]);
+	const alertButtonHandler = () => {
+		dispatch({ type: OverlayActionTypes.HIDE_OVERLAY });
+
+		if (error) {
+			dispatch({ type: ErrorPopUpActionTypes.REMOVE_AND_HIDE_ERROR_POP_UP });
+		} else if (warning) {
+			dispatch({ type: AlertPopUpActionTypes.REMOVE_AND_HIDE_ALERT_POP_UP });
+		}
+
+		navigate('/contact');
+	};
 
 	return (
 		<div className={classes.wrapper}>
@@ -67,8 +70,7 @@ const AlertOrErrorPopUp: React.FC<Props> = (props) => {
 			{error && (
 				<RoundedButton
 					text={'Signaler le problème'}
-					link='/contact'
-					onClick={closePopUp}
+					onClick={alertButtonHandler}
 					className={classes.button}
 				/>
 			)}

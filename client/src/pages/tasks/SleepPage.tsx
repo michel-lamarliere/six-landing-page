@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TaskDetailContainer from '../../components/TaskDetailContainer/TaskDetailContainer';
+import TaskDetailContainer from '../../containers/TaskDetailContainer/TaskDetailContainer';
 
 import sleepIcon from '../../assets/icons/six/sleep.svg';
 

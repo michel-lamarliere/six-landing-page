@@ -1,7 +1,7 @@
 @import '../../style/variables.scss';
 
 .wrapper {
-	position: relative;
+	// position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -10,7 +10,7 @@
 }
 
 .back-button {
-	position: fixed;
+	position: absolute;
 	top: 2.3rem;
 	left: 2rem;
 }
@@ -57,4 +57,16 @@
 .response {
 	color: $colorWhite;
 	font-size: 12px;
+}
+
+@media screen and (min-width: 1200px) {
+	.wrapper {
+		position: relative;
+		margin-top: 10rem;
+	}
+
+	.back-button {
+		top: -4.75rem;
+		left: 0;
+	}
 }

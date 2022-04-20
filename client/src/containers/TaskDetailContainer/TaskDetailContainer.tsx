@@ -7,8 +7,8 @@ import { RootState } from '../../store/_store';
 import { useInput, useInputTypes } from '../../hooks/input-hook';
 import { useRequest } from '../../hooks/http-hook';
 
-import Input, { InputStyles } from '../form-elements/Input';
-import RoundedButton from '../buttons/RoundedButton/RoundedButton';
+import Input, { InputStyles } from '../../components/form-elements/Input';
+import RoundedButton from '../../components/buttons/RoundedButton/RoundedButton';
 
 import backButtonIcon from '../../assets/icons/back-button.svg';
 import fullBubbleIcon from '../../assets/icons/full-bubble.svg';
