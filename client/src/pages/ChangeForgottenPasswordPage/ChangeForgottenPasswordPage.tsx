@@ -165,7 +165,6 @@ const ForgotPasswordForm: React.FC = () => {
 						onChange={newPasswordConfirmationOnChangeHandler}
 						onBlur={newPasswordConfirmationOnBlurHandler}
 					/>
-					Tester1@
 					<RoundedButton
 						text={'Enregistrer'}
 						onClick={changePasswordHandler}

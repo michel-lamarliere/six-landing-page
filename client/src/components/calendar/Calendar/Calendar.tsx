@@ -6,12 +6,10 @@ import { addDays, addMonths, isBefore } from 'date-fns';
 import { RootState } from '../../../store/_store';
 
 import CalendarDaysOfWeek from '../CalendarDaysOfWeek/CalendarDaysOfWeek';
-import {
-	CalendarButton,
-	TaskSelectorButton,
-} from '../../buttons/CalendarAndTaskSelectorButtons/CalendarAndTaskSelectorButtons';
+import CalendarButton from '../../buttons/CalendarAndTaskSelectorButtons/CalendarButton/CalendarButton';
+import TaskSelectorButton from '../../buttons/CalendarAndTaskSelectorButtons/TaskSelectorButton/TaskSelectorButton';
 import CalendarHeader from '../CalendarHeader/CalendarHeader';
-import DateNavigation from '../../DateNavigation/DateNavigation';
+import DateNavigation, { DateNavigationTypes } from '../../DateNavigation/DateNavigation';
 
 import classes from './Calendar.module.scss';
 
@@ -50,13 +48,8 @@ const Calendar: React.FC<Props> = (props) => {
 	let previousHandler;
 	let nextHandler;
 
-	const previousHandlerDisabled = () => {
-		return isBefore(addDays(props.chosenDate, -1), new Date(2020, 0, 1));
-	};
-
-	const nextHandlerDisabled = () => {
-		return !isBefore(addDays(props.chosenDate, 1), new Date());
-	};
+	let previousHandlerDisabled;
+	let nextHandlerDisabled;
 
 	if (
 		props.calendar === calendarTypes.DAILY ||
@@ -69,6 +62,14 @@ const Calendar: React.FC<Props> = (props) => {
 		nextHandler = () => {
 			props.setChosenDate(addDays(props.chosenDate, 7));
 		};
+
+		previousHandlerDisabled = () => {
+			return isBefore(addDays(props.chosenDate, -1), new Date(2020, 0, 1));
+		};
+
+		nextHandlerDisabled = () => {
+			return !isBefore(addDays(props.chosenDate, 1), new Date());
+		};
 	} else {
 		previousHandler = () => {
 			props.setChosenDate(addMonths(props.chosenDate, -1));
@@ -76,6 +77,14 @@ const Calendar: React.FC<Props> = (props) => {
 
 		nextHandler = () => {
 			props.setChosenDate(addMonths(props.chosenDate, 1));
+		};
+
+		previousHandlerDisabled = () => {
+			return isBefore(addMonths(props.chosenDate, -1), new Date(2020, 0, 1));
+		};
+
+		nextHandlerDisabled = () => {
+			return !isBefore(addMonths(props.chosenDate, 1), new Date());
 		};
 	}
 
@@ -91,6 +100,7 @@ const Calendar: React.FC<Props> = (props) => {
 				)}
 			</div>
 			<DateNavigation
+				type={DateNavigationTypes.VIEW}
 				headerText={props.headerText}
 				previousHandler={previousHandler}
 				nextHandler={nextHandler}

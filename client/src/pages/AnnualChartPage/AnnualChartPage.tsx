@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addYears, getYear, isBefore, addMonths, isAfter } from 'date-fns';
-import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+import { addYears, getYear, isBefore, isAfter } from 'date-fns';
+import { Bar, BarChart, ResponsiveContainer, XAxis } from 'recharts';
 
 import { RootState } from '../../store/_store';
 import { TaskSelectorActionTypes } from '../../store/task-selector';
@@ -10,12 +10,13 @@ import { TaskSelectorActionTypes } from '../../store/task-selector';
 import { useRequest } from '../../hooks/http-hook';
 import { getMonthFnTypes, useDatesFn } from '../../hooks/dates-hook';
 
-import Calendar, { calendarTypes } from '../../components/calendar/Calendar/Calendar';
 import ViewsContainer from '../../containers/ViewsContainer/ViewsContainer';
+import DateNavigation, {
+	DateNavigationTypes,
+} from '../../components/DateNavigation/DateNavigation';
+import TaskSelectorButton from '../../components/buttons/CalendarAndTaskSelectorButtons/TaskSelectorButton/TaskSelectorButton';
 
 import classes from './AnnualChartPage.module.scss';
-import DateNavigation from '../../components/DateNavigation/DateNavigation';
-import { TaskSelectorButton } from '../../components/buttons/CalendarAndTaskSelectorButtons/CalendarAndTaskSelectorButtons';
 
 const AnnualGraph: React.FC = () => {
 	const dispatch = useDispatch();
@@ -102,6 +103,7 @@ const AnnualGraph: React.FC = () => {
 				selectTaskHandler={selectTaskHandler}
 			/>
 			<DateNavigation
+				type={DateNavigationTypes.ANNUAL_CHART}
 				headerText={chosenYear.getFullYear().toString()}
 				previousHandler={previousHandler}
 				nextHandler={nextHandler}

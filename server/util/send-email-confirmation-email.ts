@@ -6,12 +6,11 @@ const sendEmailConfirmationEmail = (data: { to: string; uniqueCode: string }) =>
 	const emailWasSent = sendEmail({
 		to: to,
 		subject: "Confirmation de l'adresse mail. ",
-		text: 'Veuillez confirmer votre adresse mail en cliquant sur ce lien.',
-		html: `<div><b>Bien ou quoi?</b><a href="${
+		html: `<div>Cliquez <a href="${
 			process.env.FRONT_END_URL
 		}/profil/confirmation/${encodeURI(to)}/${encodeURI(
 			uniqueCode
-		)}"> Cliquez ici pour confirmer votre adresse mail.</a></div>`,
+		)}">ici</a> pour confirmer votre adresse mail.</div>`,
 	});
 
 	return emailWasSent;

@@ -174,7 +174,6 @@ const ChangePassword: React.FC = () => {
 					onChange={newPasswordConfirmationOnChangeHandler}
 					onBlur={newPasswordConfirmationOnBlurHandler}
 				/>
-				Tester1@
 			</div>
 		</EditProfileFormWrapper>
 	);

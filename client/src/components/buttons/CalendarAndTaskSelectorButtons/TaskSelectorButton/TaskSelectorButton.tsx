@@ -1,51 +1,21 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState } from '../../../store/_store';
-import { CalendarActionTypes } from '../../../store/calendar';
-import { OverlayActionTypes } from '../../../store/overlay';
-import { TaskSelectorActionTypes } from '../../../store/task-selector';
+import { RootState } from '../../../../store/_store';
+import { OverlayActionTypes } from '../../../../store/overlay';
+import { TaskSelectorActionTypes } from '../../../../store/task-selector';
 
-import topArrowIcon from '../../../assets/icons/top-arrow.svg';
-import calendarIcon from '../../../assets/icons/calendar/calendar_icon.svg';
-import nutritionIcon from '../../../assets/icons/six/nutrition.svg';
-import sleepIcon from '../../../assets/icons/six/sleep.svg';
-import sportsIcon from '../../../assets/icons/six/sports.svg';
-import relaxationIcon from '../../../assets/icons/six/relaxation.svg';
-import projectsIcon from '../../../assets/icons/six/projects.svg';
-import socialLifeIcon from '../../../assets/icons/six/social_life.svg';
+import topArrowIcon from '../../../../assets/icons/top-arrow.svg';
+import nutritionIcon from '../../../../assets/icons/six/nutrition.svg';
+import sleepIcon from '../../../../assets/icons/six/sleep.svg';
+import sportsIcon from '../../../../assets/icons/six/sports.svg';
+import relaxationIcon from '../../../../assets/icons/six/relaxation.svg';
+import projectsIcon from '../../../../assets/icons/six/projects.svg';
+import socialLifeIcon from '../../../../assets/icons/six/social_life.svg';
 
-import classes from './CalendarAndTaskSelectorButtons.module.scss';
+import classes from '../CalendarAndTaskSelectorButtons.module.scss';
 
-export const CalendarButton: React.FC = () => {
-	const dispatch = useDispatch();
-
-	const calendarState = useSelector((state: RootState) => state.calendar);
-
-	const calendarButtonHandler = () => {
-		dispatch({ type: CalendarActionTypes.SHOW_CALENDAR });
-		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
-	};
-
-	return (
-		<button className={classes.button} onClick={calendarButtonHandler}>
-			<img
-				src={calendarIcon}
-				alt='LogoCalendrier'
-				className={classes.button__icon}
-			/>
-			<img
-				src={topArrowIcon}
-				className={`${classes.button__arrow} ${
-					calendarState.show && classes['button__arrow--open']
-				}`}
-				alt='Flêche Calendrier'
-			/>
-		</button>
-	);
-};
-
-export const TaskSelectorButton: React.FC<{
+const TaskSelectorButton: React.FC<{
 	chosenTask: string;
 	selectTaskHandler: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }> = (props) => {
@@ -128,10 +98,10 @@ export const TaskSelectorButton: React.FC<{
 					</button>
 
 					<button
-						value='sport'
+						value='sports'
 						onClick={selectTaskHandler}
 						className={`${
-							props.chosenTask === 'sport' && classes.selector__active
+							props.chosenTask === 'sports' && classes.selector__active
 						}`}
 					>
 						<img src={sportsIcon} alt='Sport' />
@@ -175,3 +145,5 @@ export const TaskSelectorButton: React.FC<{
 		</div>
 	);
 };
+
+export default TaskSelectorButton;

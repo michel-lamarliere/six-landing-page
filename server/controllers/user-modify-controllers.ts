@@ -56,12 +56,14 @@ const changeEmail: RequestHandler = async (req, res, next) => {
 
 	const oldEmailWasSent = await sendEmail({
 		to: reqOldEmail,
-		subject: `<div>Une demande a été faite pour changer d'adresse mail. Un mail a également été envoyé sur l'ancienne ${reqOldEmail}. Cliquez <a href=${process.env.FRONT_END_URL}/modifier-email/confirmation/${reqOldEmail}/${reqNewEmail} >ici</a> pour confirmer le changement. </div>`,
+		subject: "Changement d'adresse mail.",
+		html: `<div>Une demande a été faite pour changer d'adresse mail. Un mail a également été envoyé sur l'ancienne ${reqOldEmail}. Cliquez <a href=${process.env.FRONT_END_URL}/modifier-email/confirmation/${reqOldEmail}/${reqNewEmail} >ici</a> pour confirmer le changement. </div>`,
 	});
 
 	const newEmailWasSent = await sendEmail({
 		to: reqNewEmail,
-		subject: `<div>Une demande a été faite pour changer d'adresse mail. Un mail a également été envoyé sur l'ancienne ${reqOldEmail}. Cliquez <a href=${process.env.FRONT_END_URL}/modifier-email/confirmation/${reqOldEmail}/${reqNewEmail} >ici</a> pour confirmer le changement. </div>`,
+		subject: "Changement d'adresse mail.",
+		html: `<div>Une demande a été faite pour changer d'adresse mail et remplacer celle-ci par ${reqNewEmail}. Veuillez nous contacter si vous n'êtes pas à l'origine de cette demande.</div>`,
 	});
 
 	if (!oldEmailWasSent || !newEmailWasSent) {
@@ -315,7 +317,6 @@ const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 	const emailWasSent = await sendEmail({
 		to: reqEmail,
 		subject: 'Modification de votre mot de passe',
-		text: `Pour modifier votre mot de passe, cliquez sur ce lien. ${reqEmail}`,
 		html: `<div><b>Mot de passe oublié?</b><a href="${
 			process.env.FRONT_END_URL
 		}/modifier/mot-de-passe/${encodeURI(reqEmail)}/${encodeURI(
@@ -445,7 +446,7 @@ const deleteAccountEmail: RequestHandler = async (req, res, next) => {
 			process.env.FRONT_END_URL
 		}/supprimer-compte/confirmation/${encodeURI(user.email)}/${encodeURI(
 			generatedForgotPasswordCode
-		)}">ici</a> pour supprimer votre compte, cliquez sur ce lien</div>`,
+		)}">ici</a> pour supprimer votre compte.</div>`,
 	});
 
 	if (!emailWasSent) {

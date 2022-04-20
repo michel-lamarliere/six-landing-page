@@ -5,7 +5,13 @@ import rightArrowIcon from '../../assets/icons/calendar/right-arrow.svg';
 
 import classes from './DateNavigation.module.scss';
 
+export enum DateNavigationTypes {
+	VIEW = 'VIEW',
+	ANNUAL_CHART = 'ANNUAL_CHART',
+}
+
 interface Props {
+	type: DateNavigationTypes;
 	headerText: string;
 	previousHandler: () => void;
 	nextHandler: () => void;
@@ -18,7 +24,10 @@ const DateNavigation: React.FC<Props> = (props) => {
 		<div className={classes.wrapper}>
 			{!props.previousHandlerDisabled() && (
 				<button
-					className={`${classes.button} ${classes['button--left']}`}
+					className={`${classes.button} ${classes['button--left']} ${
+						props.type === DateNavigationTypes.ANNUAL_CHART &&
+						classes['button--left--annual-chart']
+					}`}
 					onClick={props.previousHandler}
 				>
 					<img src={leftArrowIcon} alt='Flêche gauche' />
@@ -27,7 +36,10 @@ const DateNavigation: React.FC<Props> = (props) => {
 			<h1 className={classes.text}>{props.headerText}</h1>
 			{!props.nextHandlerDisabled() && (
 				<button
-					className={`${classes.button} ${classes['button--right']}`}
+					className={`${classes.button} ${classes['button--right']} ${
+						props.type === DateNavigationTypes.ANNUAL_CHART &&
+						classes['button--right--annual-chart']
+					}`}
 					onClick={props.nextHandler}
 				>
 					<img src={rightArrowIcon} alt='Flêche droite' />

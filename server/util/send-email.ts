@@ -16,12 +16,14 @@ const sendEmail = async (args: {
 	let emailWasSent = false;
 
 	emailWasSent = await transporter.sendMail({
-		from: process.env.NODEMAILER_EMAIL,
+		from: `info@six-app.com <${process.env.NODEMAILER_EMAIL}>`,
 		to: to,
 		// to: toTemp,
 		subject: subject,
 		text: text,
-		html: html,
+		html:
+			html +
+			`<br /><br /><div><a href='https://six-app.com'>six-app.com</a> vous remercie.</div>`,
 	});
 
 	return emailWasSent;

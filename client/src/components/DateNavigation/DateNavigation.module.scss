@@ -3,34 +3,41 @@
 .wrapper {
 	position: relative;
 	display: flex;
+	justify-content: center;
 	align-items: center;
 	gap: 1.85rem;
-	font-family: $fontBold;
 	width: 20rem;
-	text-align: center;
-	color: $colorLavander;
 	margin-top: 2rem;
+	font-family: $fontBold;
+	color: $colorLavander;
+	text-align: center;
 }
 
 .text {
 	font-family: $fontBold;
 	font-size: 16px;
-	width: 100%;
 }
 
 .button {
+	position: absolute;
 	display: grid;
 	place-content: center;
 	background: none;
 	cursor: pointer;
 
 	&--left {
-		position: absolute;
 		left: 1rem;
+
+		&--annual-chart {
+			left: 6rem !important;
+		}
 	}
 
 	&--right {
-		position: absolute;
 		right: 1rem;
+
+		&--annual-chart {
+			right: 6rem;
+		}
 	}
 }
