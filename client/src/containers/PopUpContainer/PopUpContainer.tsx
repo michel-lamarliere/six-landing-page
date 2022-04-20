@@ -12,11 +12,11 @@ export enum PopUpTypes {
 
 interface Props {
 	type: PopUpTypes;
-	closePopUp: any;
+	closePopUp: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	displayNextMessage: boolean;
 }
 
-const PopUp: React.FC<Props> = (props) => {
+const PopUpContainer: React.FC<Props> = (props) => {
 	return (
 		<div className={classes.wrapper}>
 			<button onClick={props.closePopUp} className={classes['close-button']}>
@@ -34,4 +34,4 @@ const PopUp: React.FC<Props> = (props) => {
 	);
 };
 
-export default PopUp;
+export default PopUpContainer;

@@ -55,7 +55,7 @@ const ChangePassword: React.FC = () => {
 		setNewPasswordConfirmation((prev) => ({ ...prev, value: '', isTouched: false }));
 	};
 
-	const changePasswordHandler = async (event: any, data: any) => {
+	const changePasswordHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
 
 		if (

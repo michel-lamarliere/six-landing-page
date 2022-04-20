@@ -14,9 +14,9 @@ interface Props {
 	calendar: calendarTypes;
 	calendarText?: string;
 	chosenDate: Date;
-	setChosenDate: any;
+	setChosenDate: (arg0: Date) => void;
 	calendarDate: Date;
-	setCalendarDate: any;
+	setCalendarDate: (arg0: Date) => void;
 }
 
 const CalendarHeader: React.FC<Props> = (props) => {

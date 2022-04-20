@@ -59,9 +59,7 @@ const WeekView: React.FC = () => {
 			previousLevel,
 		};
 
-		const newTask = new Task(newTaskObj);
-
-		await newTask.save();
+		await Task.save(newTaskObj);
 
 		getWeekData();
 	};
@@ -76,6 +74,7 @@ const WeekView: React.FC = () => {
 			return;
 		}
 
+		console.log(responseData.responseArray);
 		setDatesArray(responseData.datesArray);
 		setIsLoading(false);
 		setDataArray(responseData.responseArray);

@@ -53,7 +53,7 @@ const ChangeName: React.FC = () => {
 		return true;
 	};
 
-	const changeNameHandler = async (event: any) => {
+	const changeNameHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
 
 		if (!validateName()) {

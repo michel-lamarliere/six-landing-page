@@ -8,7 +8,7 @@ interface ButtonProps {
 	type?: string;
 	className?: string;
 	link?: string;
-	onClick?: any;
+	onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const RoundedButton: React.FC<ButtonProps> = (props) => {

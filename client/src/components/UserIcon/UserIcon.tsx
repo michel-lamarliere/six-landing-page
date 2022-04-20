@@ -14,7 +14,7 @@ import userIcon10 from '../../assets/icons/user/icon_10.svg';
 import userIcon11 from '../../assets/icons/user/icon_11.svg';
 
 interface Props {
-	icon: number;
+	icon: number | null;
 	className: string;
 }
 
@@ -50,7 +50,7 @@ const UserIcon: React.FC<Props> = (props) => {
 		}
 	};
 
-	return <>{getIcon(props.icon)}</>;
+	return <>{typeof props.icon === 'number' ? getIcon(props.icon) : 0}</>;
 };
 
 export default UserIcon;

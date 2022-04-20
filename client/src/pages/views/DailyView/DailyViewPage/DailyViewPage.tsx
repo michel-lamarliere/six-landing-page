@@ -34,7 +34,14 @@ const DailyView: React.FC = () => {
 
 	const userState = useSelector((state: RootState) => state.user);
 
-	const [dailyData, setDailyData] = useState<{}>();
+	const [dailyData, setDailyData] = useState<{
+		nutrition: number;
+		sleep: number;
+		sports: number;
+		relaxation: number;
+		projects: number;
+		social_life: number;
+	}>({ nutrition: 0, sleep: 0, sports: 0, relaxation: 0, projects: 0, social_life: 0 });
 
 	// CALENDAR
 	const [isLoading, setIsLoading] = useState(true);
@@ -64,9 +71,7 @@ const DailyView: React.FC = () => {
 			previousLevel,
 		};
 
-		const newTask = new Task(newTaskObj);
-
-		await newTask.save();
+		await Task.save(newTaskObj);
 
 		getDailyData();
 	};
@@ -132,40 +137,46 @@ const DailyView: React.FC = () => {
 				)}`}
 			/>
 			{!isLoading &&
-				dailyData &&
-				Object.entries(dailyData).map((item: any[], index) => (
-					<div
-						className={classes.task}
-						key={`${format(chosenDate, 'yyyy-MM-dd')}_${item[0]}_task`}
-						id={item[0]}
-						onClick={taskHandler}
-					>
-						<div className={classes['task__name']} id={item[0]}>
-							<img
-								src={sixIcons[index]}
-								alt='six'
-								className={classes['task__name__img']}
+				Object.entries(dailyData).map(
+					(item: [string, number], index: number) =>
+						dailyData && (
+							<div
+								className={classes.task}
+								key={`${format(chosenDate, 'yyyy-MM-dd')}_${
+									item[0]
+								}_task`}
 								id={item[0]}
-							/>
-							<div className={classes['task__name__text']} id={item[0]}>
-								{translateSixName(item[0])}
+								onClick={taskHandler}
+							>
+								<div className={classes['task__name']} id={item[0]}>
+									<img
+										src={sixIcons[index]}
+										alt='six'
+										className={classes['task__name__img']}
+										id={item[0]}
+									/>
+									<div
+										className={classes['task__name__text']}
+										id={item[0]}
+									>
+										{translateSixName(item[0])}
+									</div>
+								</div>
+								<LogDataButton
+									id={`${format(chosenDate, 'yyyy-MM-dd')}/${item[0]}`}
+									onClick={addData}
+									value={item[1]}
+									disabled={false}
+								/>
+								<img
+									src={rightArrowIcon}
+									alt='Flêche'
+									className={classes.task__arrow}
+									id={item[0]}
+								/>
 							</div>
-						</div>
-						<LogDataButton
-							id={`${format(chosenDate, 'yyyy-MM-dd')}/${item[0]}`}
-							onClick={addData}
-							value={item[1]}
-							disabled={false}
-						/>
-						<img
-							src={rightArrowIcon}
-							alt='Flêche'
-							className={classes.task__arrow}
-							// onClick={taskHandler}
-							id={item[0]}
-						/>
-					</div>
-				))}
+						)
+				)}
 		</ViewsContainer>
 	);
 };

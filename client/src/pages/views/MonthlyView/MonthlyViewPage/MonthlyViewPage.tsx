@@ -50,9 +50,7 @@ const MonthlyView: React.FC = () => {
 			previousLevel,
 		};
 
-		const newTask = new Task(newTaskObj);
-
-		await newTask.save();
+		await Task.save(newTaskObj);
 
 		getMonthlyData();
 	};

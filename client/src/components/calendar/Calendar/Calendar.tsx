@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useSelector } from 'react-redux';
 
 import { addDays, addMonths, isBefore } from 'date-fns';
@@ -24,10 +24,10 @@ export enum calendarTypes {
 type CommonProps = {
 	headerText: string;
 	chosenDate: Date;
-	setChosenDate: any;
+	setChosenDate: (arg0: Date) => void;
 	calendarText: string;
-	calendarDate: any;
-	setCalendarDate: any;
+	calendarDate: Date;
+	setCalendarDate: Dispatch<SetStateAction<Date>>;
 };
 
 type SpecialProps =
@@ -69,7 +69,7 @@ const Calendar: React.FC<Props> = (props) => {
 		nextHandler = () => {
 			props.setChosenDate(addDays(props.chosenDate, 7));
 		};
-	} else if (props.calendar === calendarTypes.MONTHLY) {
+	} else {
 		previousHandler = () => {
 			props.setChosenDate(addMonths(props.chosenDate, -1));
 		};

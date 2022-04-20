@@ -35,7 +35,7 @@ const ChangeEmail: React.FC = () => {
 		inputOnBlurHandler: newEmailOnBlurHandler,
 	} = useInput({ type: useInputTypes.EMAIL, validate: true, display: submitted });
 
-	const submitHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
+	const submitHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
 
 		setSubmitted(true);

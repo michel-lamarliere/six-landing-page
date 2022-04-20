@@ -2,7 +2,7 @@ interface State {
 	token: null | string;
 	tokenExpiration: null | Date;
 	id: null | string;
-	icon: any;
+	icon: null | number;
 	name: null | string;
 	email: null | string;
 	confirmedEmail: boolean | null;

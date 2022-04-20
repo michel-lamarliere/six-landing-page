@@ -15,10 +15,10 @@ export enum EditProfileFormWrapperTypes {
 interface Props {
 	type: EditProfileFormWrapperTypes;
 	title: string;
-	formAction?: any;
+	formAction?: (event: React.FormEvent) => void;
 	displaySubmitButton?: boolean;
 	response?: string;
-	backButtonLink?: any;
+	backButtonLink?: string;
 }
 
 const Form: React.FC<Props> = (props) => {

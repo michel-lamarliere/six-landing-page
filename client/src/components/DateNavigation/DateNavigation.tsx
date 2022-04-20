@@ -6,11 +6,11 @@ import rightArrowIcon from '../../assets/icons/calendar/right-arrow.svg';
 import classes from './DateNavigation.module.scss';
 
 interface Props {
-	headerText: any;
-	previousHandler: any;
-	nextHandler: any;
-	previousHandlerDisabled: any;
-	nextHandlerDisabled: any;
+	headerText: string;
+	previousHandler: () => void;
+	nextHandler: () => void;
+	previousHandlerDisabled: () => boolean;
+	nextHandlerDisabled: () => boolean;
 }
 
 const DateNavigation: React.FC<Props> = (props) => {

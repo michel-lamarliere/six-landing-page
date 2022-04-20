@@ -57,7 +57,7 @@ const ChangeImage: React.FC = () => {
 		setChosenIcon(id);
 	};
 
-	const changeImageHandler = async (event: any) => {
+	const changeImageHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
 
 		const responseData = await sendRequest({

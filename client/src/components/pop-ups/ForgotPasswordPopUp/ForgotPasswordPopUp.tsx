@@ -10,7 +10,9 @@ import { useRequest } from '../../../hooks/http-hook';
 
 import Input, { InputStyles } from '../../form-elements/Input';
 import RoundedButton from '../../buttons/RoundedButton/RoundedButton';
-import PopUp, { PopUpTypes } from '../../../containers/PopUpContainer/PopUpContainer';
+import PopUpContainer, {
+	PopUpTypes,
+} from '../../../containers/PopUpContainer/PopUpContainer';
 
 import successIcon from '../../../assets/icons/success.svg';
 
@@ -65,7 +67,7 @@ const ForgotPassword: React.FC = () => {
 	};
 
 	return ReactDOM.createPortal(
-		<PopUp
+		<PopUpContainer
 			type={PopUpTypes.CONFIRM_EMAIL_ADDRESS}
 			closePopUp={closePopUp}
 			displayNextMessage={sent}
@@ -100,7 +102,7 @@ const ForgotPassword: React.FC = () => {
 					<div className={classes['text-sent']}>{responseMessage}</div>
 				</>
 			)}
-		</PopUp>,
+		</PopUpContainer>,
 		document.getElementById('forgot-password-pop-up')!
 	);
 };

@@ -60,7 +60,7 @@ const Contact: React.FC = () => {
 
 	const validateForm = () => {
 		setSubmitted(true);
-		
+
 		if (User.isLoggedIn()) {
 			if (!messageInput.isValid) {
 				return false;
@@ -75,7 +75,7 @@ const Contact: React.FC = () => {
 		return true;
 	};
 
-	const submitHandler = async (event: any) => {
+	const submitHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
 
 		if (!validateForm()) {

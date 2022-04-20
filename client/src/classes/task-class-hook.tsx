@@ -13,17 +13,17 @@ export const useTaskClass = () => {
 	const userData = useSelector((state: RootState) => state.user);
 
 	class Task {
-		date: any;
-		task: any;
-		previousLevel: any;
+		// date: string;
+		// task: string;
+		// previousLevel: number;
 
-		constructor(taskData: any) {
-			this.date = taskData.date;
-			this.task = taskData.task;
-			this.previousLevel = taskData.previousLevel;
-		}
+		// constructor(taskData: { date: string; task: string; previousLevel: number }) {
+		// 	this.date = taskData.date;
+		// 	this.task = taskData.task;
+		// 	this.previousLevel = taskData.previousLevel;
+		// }
 
-		async save() {
+		static async save(data: { date: string; task: string; previousLevel: number }) {
 			const response = await fetch(
 				`${process.env.REACT_APP_BACKEND_URL}/log/task`,
 				{
@@ -34,10 +34,10 @@ export const useTaskClass = () => {
 					},
 					body: JSON.stringify({
 						_id: userData.id,
-						date: this.date,
-						task: this.task,
+						date: data.date,
+						task: data.task,
 						levelOfCompletion:
-							this.previousLevel !== 2 ? this.previousLevel + 1 : 0,
+							data.previousLevel !== 2 ? data.previousLevel + 1 : 0,
 					}),
 				}
 			);

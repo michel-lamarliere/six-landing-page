@@ -408,7 +408,7 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 			},
 			{ $project: { _id: 0, date: '$log.date', level: `$log.six.${reqTask}` } },
 		])
-		.forEach((doc: any) => {
+		.forEach((doc: { date: Date; level: number }) => {
 			matchedDatesArray.push(doc);
 		});
 

@@ -18,12 +18,12 @@ interface Props {
 	isLoading: boolean;
 	datesArray: Date[];
 	dataArray: {
-		nutrition: any[];
-		sleep: any[];
-		sports: any[];
-		relaxation: any[];
-		projects: any[];
-		socialLife: any[];
+		nutrition: number[];
+		sleep: number[];
+		sports: number[];
+		relaxation: number[];
+		projects: number[];
+		socialLife: number[];
 	};
 	onClick: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 	firstOfWeek: Date;
@@ -72,10 +72,10 @@ const WeekViewTasks: React.FC<Props> = (props) => {
 					{addDays(props.firstOfWeek, 6).getDate()}
 				</li>
 			</div>
-			{Object.entries(props.dataArray).map((task: any[], index) => (
+			{Object.entries(props.dataArray).map((task: [string, number[]], index) => (
 				<div className={classes.task} key={`${task[0]}_div`}>
 					<img src={sixIcons[index]} alt='icon' className={classes.task__img} />
-					{task[1].map((data: any, dataIndex: number) => (
+					{task[1].map((data: number, dataIndex: number) => (
 						<LogDataButton
 							id={`${format(
 								new Date(props.datesArray[dataIndex]),
