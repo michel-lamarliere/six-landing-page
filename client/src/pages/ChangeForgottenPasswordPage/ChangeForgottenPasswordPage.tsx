@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { PuffLoader } from 'react-spinners';
-
 import { RootState } from '../../store/_store';
 import { ErrorPopUpActionTypes } from '../../store/pop-ups/error-pop-up';
 
@@ -174,9 +172,6 @@ const ForgotPasswordForm: React.FC = () => {
 						onChange={newPasswordConfirmationOnChangeHandler}
 						onBlur={newPasswordConfirmationOnBlurHandler}
 					/>
-					{/* {submitted && !gotResponse && (
-						<PuffLoader color={'#1cc1e6'} size={'30px'} />
-					)} */}
 					<RoundedButton
 						text={'Enregistrer'}
 						type='submit'

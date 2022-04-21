@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { PuffLoader } from 'react-spinners';
-
 import { RootState } from '../../store/_store';
 
 import { useInput, useInputTypes } from '../../hooks/input-hook';
@@ -13,6 +11,7 @@ import { useUserClass } from '../../classes/user-class-hook';
 
 import RoundedButton from '../../components/buttons/RoundedButton/RoundedButton';
 import Input, { InputStyles } from '../../components/form-elements/Input';
+import Spinner from '../../components/Spinner/Spinner';
 
 import successIcon from '../../assets/icons/success.svg';
 import backButtonIcon from '../../assets/icons/back-button.svg';
@@ -170,9 +169,7 @@ const Contact: React.FC = () => {
 							onChange={messageInputOnChangeHandler}
 							onBlur={messageInputOnBlurHandler}
 						/>
-						{submitted && formIsValid && (
-							<PuffLoader color={'#1cc1e6'} size={'30px'} />
-						)}
+						{submitted && formIsValid && <Spinner />}
 						<RoundedButton
 							type='submit'
 							text={'Envoyer'}

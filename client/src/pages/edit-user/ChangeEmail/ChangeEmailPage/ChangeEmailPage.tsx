@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { PuffLoader } from 'react-spinners';
-
 import { RootState } from '../../../../store/_store';
 
 import { useInput, useInputTypes } from '../../../../hooks/input-hook';
@@ -12,6 +10,7 @@ import Input, { InputStyles } from '../../../../components/form-elements/Input';
 import EditProfileFormWrapper, {
 	EditProfileFormWrapperTypes,
 } from '../../../../containers/EditUserContainer/EditUserContainer';
+import Spinner from '../../../../components/Spinner/Spinner';
 
 import successIcon from '../../../../assets//icons/success.svg';
 import errorIcon from '../../../../assets//icons/error.svg';
@@ -117,7 +116,7 @@ const ChangeEmail: React.FC = () => {
 					</div>
 					{formIsValid && !gotResponse && (
 						<div className={classes.spinner}>
-							<PuffLoader color={'#1cc1e6'} size={'30px'} />
+							<Spinner />
 						</div>
 					)}
 				</div>

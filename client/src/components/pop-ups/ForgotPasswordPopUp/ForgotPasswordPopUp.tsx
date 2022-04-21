@@ -17,8 +17,7 @@ import PopUpContainer, {
 import successIcon from '../../../assets/icons/success.svg';
 
 import classes from './ForgotPasswordPopUp.module.scss';
-import { PuffLoader } from 'react-spinners';
-
+import Spinner from '../../Spinner/Spinner';
 const ForgotPassword: React.FC = () => {
 	const dispatch = useDispatch();
 	const { sendRequest } = useRequest();
@@ -97,7 +96,7 @@ const ForgotPassword: React.FC = () => {
 						onBlur={forgotPasswordEmailOnBlurHandler}
 					/>
 					{submitted && !gotResponse.error && !gotResponse.success && (
-						<PuffLoader color={'#1cc1e6'} size={'30px'} />
+						<Spinner />
 					)}
 					<RoundedButton
 						text={'Envoyer'}

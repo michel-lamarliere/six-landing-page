@@ -51,10 +51,23 @@ const Calendar: React.FC<Props> = (props) => {
 	let previousHandlerDisabled;
 	let nextHandlerDisabled;
 
-	if (
-		props.calendar === calendarTypes.DAILY ||
-		props.calendar === calendarTypes.WEEKLY
-	) {
+	if (props.calendar === calendarTypes.DAILY) {
+		previousHandler = () => {
+			props.setChosenDate(addDays(props.chosenDate, -1));
+		};
+
+		nextHandler = () => {
+			props.setChosenDate(addDays(props.chosenDate, 1));
+		};
+
+		previousHandlerDisabled = () => {
+			return isBefore(addDays(props.chosenDate, -1), new Date(2020, 0, 1));
+		};
+
+		nextHandlerDisabled = () => {
+			return !isBefore(addDays(props.chosenDate, 1), new Date());
+		};
+	} else if (props.calendar === calendarTypes.WEEKLY) {
 		previousHandler = () => {
 			props.setChosenDate(addDays(props.chosenDate, -7));
 		};
@@ -64,11 +77,11 @@ const Calendar: React.FC<Props> = (props) => {
 		};
 
 		previousHandlerDisabled = () => {
-			return isBefore(addDays(props.chosenDate, -1), new Date(2020, 0, 1));
+			return isBefore(addDays(props.chosenDate, -7), new Date(2020, 0, 1));
 		};
 
 		nextHandlerDisabled = () => {
-			return !isBefore(addDays(props.chosenDate, 1), new Date());
+			return !isBefore(addDays(props.chosenDate, 7), new Date());
 		};
 	} else {
 		previousHandler = () => {
