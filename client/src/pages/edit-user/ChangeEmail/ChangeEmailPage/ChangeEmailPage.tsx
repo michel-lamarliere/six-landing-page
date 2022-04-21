@@ -38,6 +38,10 @@ const ChangeEmail: React.FC = () => {
 	const submitHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
 
+		if (submitted && !gotResponse) {
+			return;
+		}
+
 		setSubmitted(true);
 
 		if (!newEmailInput.isValid) {
@@ -70,9 +74,10 @@ const ChangeEmail: React.FC = () => {
 		if (responseData.used) {
 			setNewEmailInput((prev) => ({ ...prev, isValid: false }));
 			setInputErrorText(responseData.message);
-			// setGotResponse(false);
 			return;
 		}
+
+		setNewEmailInput((prev) => ({ ...prev, value: '' }));
 
 		setResponse(responseData.message);
 
@@ -88,8 +93,8 @@ const ChangeEmail: React.FC = () => {
 			response={response}
 		>
 			{!gotResponse && (
-				<>
-					<div className={classes.wrapper}>
+				<div className={classes.wrapper}>
+					<div className={classes.header}>
 						<div className={classes.label}>Adresse mail actuelle:</div>
 						<div className={classes.email}>{userState.email}</div>
 					</div>
@@ -111,9 +116,11 @@ const ChangeEmail: React.FC = () => {
 						permettant de confirmer le changement.
 					</div>
 					{formIsValid && !gotResponse && (
-						<PuffLoader color={'#1cc1e6'} size={'30px'} />
+						<div className={classes.spinner}>
+							<PuffLoader color={'#1cc1e6'} size={'30px'} />
+						</div>
 					)}
-				</>
+				</div>
 			)}
 			{gotResponse && (
 				<div className={classes.response}>

@@ -17,6 +17,7 @@ import PopUpContainer, {
 import successIcon from '../../../assets/icons/success.svg';
 
 import classes from './ForgotPasswordPopUp.module.scss';
+import { PuffLoader } from 'react-spinners';
 
 const ForgotPassword: React.FC = () => {
 	const dispatch = useDispatch();
@@ -24,7 +25,8 @@ const ForgotPassword: React.FC = () => {
 
 	const [responseMessage, setResponseMessage] = useState('');
 	const [inputErrorMessage, setInputErrorMessage] = useState('');
-	const [sent, setSent] = useState(false);
+	const [submitted, setSubmitted] = useState(false);
+	const [gotResponse, setGotResponse] = useState<any>({});
 
 	const {
 		input: forgotPasswordEmailInput,
@@ -35,6 +37,8 @@ const ForgotPassword: React.FC = () => {
 
 	const sendEmailForgotPassword = async (event: React.FormEvent) => {
 		event.preventDefault();
+
+		setSubmitted(true);
 
 		const responseData = await sendRequest({
 			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/${forgotPasswordEmailInput.value}`,
@@ -52,11 +56,13 @@ const ForgotPassword: React.FC = () => {
 				isValid: false,
 				isTouched: true,
 			}));
+			setGotResponse(responseData);
 			return;
 		}
 
-		setSent(true);
+		setGotResponse(responseData);
 		setResponseMessage(responseData.message);
+		setSubmitted(false);
 	};
 
 	const closePopUp = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -70,10 +76,10 @@ const ForgotPassword: React.FC = () => {
 		<PopUpContainer
 			type={PopUpTypes.CONFIRM_EMAIL_ADDRESS}
 			closePopUp={closePopUp}
-			displayNextMessage={sent}
+			displayNextMessage={gotResponse.success}
 		>
-			{!sent ? (
-				<>
+			{!gotResponse.success && (
+				<form onSubmit={sendEmailForgotPassword} className={classes.form}>
 					<div className={classes.text}>
 						Veuillez saisir votre adresse mail et nous vous enverrons les
 						instructions.
@@ -90,13 +96,17 @@ const ForgotPassword: React.FC = () => {
 						onChange={forgotPasswordEmailOnChangeHandler}
 						onBlur={forgotPasswordEmailOnBlurHandler}
 					/>
+					{submitted && !gotResponse.error && !gotResponse.success && (
+						<PuffLoader color={'#1cc1e6'} size={'30px'} />
+					)}
 					<RoundedButton
 						text={'Envoyer'}
-						onClick={sendEmailForgotPassword}
+						type='submit'
 						className={classes['submit-button']}
 					/>
-				</>
-			) : (
+				</form>
+			)}
+			{gotResponse.success && (
 				<>
 					<img src={successIcon} alt='Succès' />
 					<div className={classes['text-sent']}>{responseMessage}</div>

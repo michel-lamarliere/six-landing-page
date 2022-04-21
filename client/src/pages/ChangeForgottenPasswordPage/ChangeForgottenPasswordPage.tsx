@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { PuffLoader } from 'react-spinners';
+
 import { RootState } from '../../store/_store';
 import { ErrorPopUpActionTypes } from '../../store/pop-ups/error-pop-up';
 
@@ -33,6 +35,8 @@ const ForgotPasswordForm: React.FC = () => {
 	const [changedPassword, setChangedPassword] = useState(false);
 	const [userId, setUserId] = useState('');
 	const [userName, setUserName] = useState('');
+	// const [submitted, setSubmitted] = useState(false);
+	// const [gotResponse, setGotResponse] = useState(false);
 
 	const userData =
 		userState.token &&
@@ -93,7 +97,10 @@ const ForgotPasswordForm: React.FC = () => {
 		setNewPasswordConfirmation({ value: '', isValid: false, isTouched: false });
 	};
 
-	const changePasswordHandler = async () => {
+	const changePasswordHandler = async (event: React.FormEvent) => {
+		event.preventDefault();
+		// setSubmitted(true);
+
 		const responseData = await sendRequest({
 			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/modify`,
 			method: 'PATCH',
@@ -103,6 +110,8 @@ const ForgotPasswordForm: React.FC = () => {
 				newPasswordConfirmation: newPasswordConfirmation.value,
 			}),
 		});
+
+		// setGotResponse(true);
 
 		if (!responseData) {
 			return;
@@ -140,7 +149,7 @@ const ForgotPasswordForm: React.FC = () => {
 			<div className={classes.greeting}>Bonjour {formatUserName(userName)} !</div>
 			<div className={classes.message}>{message}</div>
 			{!changedPassword && (
-				<>
+				<form onSubmit={changePasswordHandler} className={classes.form}>
 					<Input
 						styling={InputStyles.PURPLE_FORM}
 						id='Nouveau Mot de Passe'
@@ -165,13 +174,16 @@ const ForgotPasswordForm: React.FC = () => {
 						onChange={newPasswordConfirmationOnChangeHandler}
 						onBlur={newPasswordConfirmationOnBlurHandler}
 					/>
+					{/* {submitted && !gotResponse && (
+						<PuffLoader color={'#1cc1e6'} size={'30px'} />
+					)} */}
 					<RoundedButton
 						text={'Enregistrer'}
-						onClick={changePasswordHandler}
+						type='submit'
 						className={classes['submit-button']}
 					/>
 					<div className={classes.email}>{email}</div>
-				</>
+				</form>
 			)}
 			{changedPassword && (
 				<>
