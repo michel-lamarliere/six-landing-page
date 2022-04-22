@@ -14,7 +14,7 @@ const DeleteAccountConfirm: React.FC = () => {
 
 	const deleteAccountHandler = async () => {
 		const responseData = await sendRequest({
-			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/delete-account/confirmation`,
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/delete/account/confirmation`,
 			method: 'DELETE',
 			body: JSON.stringify({
 				email,

@@ -61,7 +61,7 @@ const ChangeName: React.FC = () => {
 		}
 
 		const responseData = await sendRequest({
-			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/name`,
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/modify/name`,
 			method: 'PATCH',
 			body: JSON.stringify({
 				id: userState.id,
@@ -109,7 +109,7 @@ const ChangeName: React.FC = () => {
 				styling={InputStyles.BLACK_FORM}
 				id='Nouveau Nom'
 				type='text'
-				placeholder='Jean'
+				placeholder={userState.name ? userState.name : 'Jean'}
 				errorText={inputErrorMessage}
 				value={newName.value}
 				isValid={newName.isValid}

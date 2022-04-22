@@ -5,8 +5,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { v5: uuidv5 } = require('uuid');
 
-const database = require('../util/db-connect');
-const sendEmailConfirmationEmail = require('../util/send-email-confirmation-email');
+const database = require('../utils/db-connect');
+const sendEmailConfirmationEmail = require('../utils/send-email-confirmation-email');
 
 const signUp: RequestHandler = async (req, res, next) => {
 	const {

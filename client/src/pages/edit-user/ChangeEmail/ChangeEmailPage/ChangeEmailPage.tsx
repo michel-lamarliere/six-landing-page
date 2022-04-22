@@ -60,7 +60,7 @@ const ChangeEmail: React.FC = () => {
 		setFormIsValid(true);
 
 		const responseData = await sendRequest({
-			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/email`,
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/modify/email`,
 			method: 'PATCH',
 			body: JSON.stringify({
 				oldEmail: userState.email,

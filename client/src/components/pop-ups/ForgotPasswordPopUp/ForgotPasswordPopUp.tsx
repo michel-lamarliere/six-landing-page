@@ -40,7 +40,7 @@ const ForgotPassword: React.FC = () => {
 		setSubmitted(true);
 
 		const responseData = await sendRequest({
-			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/${forgotPasswordEmailInput.value}`,
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/modify/password/forgot/send-email/${forgotPasswordEmailInput.value}`,
 			method: 'GET',
 		});
 

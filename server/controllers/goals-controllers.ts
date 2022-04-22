@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import { ObjectId } from 'mongodb';
 
-const database = require('../util/db-connect');
+const database = require('../utils/db-connect');
 
 const getGoals: RequestHandler = async (req, res, next) => {
 	const { id: reqIdStr, task: reqTask } = req.params;

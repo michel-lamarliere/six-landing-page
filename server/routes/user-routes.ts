@@ -9,12 +9,12 @@ router.post('/sign-up', userControllers.signUp);
 
 router.post('/sign-in', userControllers.signIn);
 
-router.patch('/confirm/email', userControllers.confirmEmailAddress);
+router.patch('/email-confirmation/confirm', userControllers.confirmEmailAddress);
 
 router.use(checkAuth);
 
-router.get('/:userId', userControllers.refreshData);
+router.get('/refresh-data/:userId', userControllers.refreshData);
 
-router.post('/email/email-confirmation', userControllers.resendEmailConfirmation);
+router.post('/email-confirmation/send-email', userControllers.resendEmailConfirmation);
 
 module.exports = router;

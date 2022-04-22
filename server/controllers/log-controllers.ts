@@ -1,4 +1,4 @@
-import { RequestHandler, response } from 'express';
+import { RequestHandler } from 'express';
 const { ObjectId } = require('mongodb');
 const {
 	addDays,
@@ -8,7 +8,7 @@ const {
 	isSameDay,
 } = require('date-fns');
 
-const database = require('../util/db-connect');
+const database = require('../utils/db-connect');
 
 const addData: RequestHandler = async (req, res, next) => {
 	const {
@@ -17,8 +17,6 @@ const addData: RequestHandler = async (req, res, next) => {
 		task: reqTask,
 		levelOfCompletion: reqLevelOfCompletion,
 	} = req.body;
-
-	console.log(reqDateStr, reqTask, reqLevelOfCompletion);
 
 	const reqDate = new Date(reqDateStr);
 
@@ -137,7 +135,6 @@ const addData: RequestHandler = async (req, res, next) => {
 					}
 				);
 			}
-			console.log('added data');
 			res.status(201).json({ success: true });
 		})
 		.catch((err: {}) => {
@@ -184,7 +181,6 @@ const getDaily: RequestHandler = async (req, res, next) => {
 		.toArray();
 
 	if (result.length === 0) {
-		console.log('get daily');
 		return res.status(200).json({
 			nutrition: 0,
 			sleep: 0,
@@ -195,7 +191,6 @@ const getDaily: RequestHandler = async (req, res, next) => {
 		});
 	}
 
-	console.log('get daily');
 	return res.status(200).json(result[0].data.six);
 };
 
@@ -435,7 +430,6 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 
 	matchedDatesArray.sort(sortArray);
 
-	console.log('get monthly');
 	res.status(200).json(matchedDatesArray);
 };
 

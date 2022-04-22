@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-const database = require('./util/db-connect');
 const userRoutes = require('./routes/user-routes');
+const userDeleteRoutes = require('./routes/user-delete-routes');
 const userModifyRoutes = require('./routes/user-modify-routes');
 const logRoutes = require('./routes/log-routes');
 const chartsRoutes = require('./routes/charts-routes');
@@ -25,20 +25,12 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/user', userRoutes);
-app.use('/api/user-modify', userModifyRoutes);
+app.use('/api/user/delete', userDeleteRoutes);
+app.use('/api/user/modify', userModifyRoutes);
 app.use('/api/log', logRoutes);
 app.use('/api/charts', chartsRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/goals', goalsRoutes);
-
-const PORT = process.env.PORT || 8080;
-
-app.listen(PORT, () => {
-	database.connectToServer((error: {}) => {
-		if (error) console.error(error);
-	});
-	console.log('listening on port 8080');
-});
 
 // ERROR HANDLING: RETURN IN JSON FORMAT
 app.use(
@@ -51,3 +43,5 @@ app.use(
 		res.status(400).json({ message: error.message });
 	}
 );
+
+module.exports = app;

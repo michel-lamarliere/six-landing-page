@@ -61,7 +61,7 @@ const ChangeImage: React.FC = () => {
 		event.preventDefault();
 
 		const responseData = await sendRequest({
-			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/image`,
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/modify/image`,
 			method: 'PATCH',
 			body: JSON.stringify({
 				id: userState.id,

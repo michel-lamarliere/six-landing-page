@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 
-const database = require('../util/db-connect');
-const sendEmail = require('../util/send-email');
+const database = require('../utils/db-connect');
+const sendEmail = require('../utils/send-email');
 
 const sendMessage: RequestHandler = async (req, res, next) => {
 	const {

@@ -8,11 +8,8 @@ let dbConnection: {};
 
 module.exports = {
 	connectToServer: (callback: (error: Error | void) => void) => {
-		console.log(client);
 		client.connect((error: Error, db: { db: (arg0: string) => {} }) => {
 			if (error || !db) {
-				console.log('here');
-
 				return callback(error);
 			}
 

@@ -73,7 +73,7 @@ const ForgotPasswordForm: React.FC = () => {
 		}
 
 		const responseData = await sendRequest({
-			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/confirmation/${email}/${uniqueId}`,
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/modify/password/forgot/confirmation/${email}/${uniqueId}`,
 			method: 'GET',
 		});
 
@@ -100,7 +100,7 @@ const ForgotPasswordForm: React.FC = () => {
 		// setSubmitted(true);
 
 		const responseData = await sendRequest({
-			url: `${process.env.REACT_APP_BACKEND_URL}/user-modify/forgot-password/modify`,
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/modify/password/forgot`,
 			method: 'PATCH',
 			body: JSON.stringify({
 				id: userId,

@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import { ObjectId } from 'mongodb';
 import { isBefore, getDaysInMonth, isSameDay, addDays, getMonth } from 'date-fns';
 
-const database = require('../util/db-connect');
+const database = require('../utils/db-connect');
 
 const getAnnual: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);

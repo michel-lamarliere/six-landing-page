@@ -163,7 +163,7 @@ export const useUserClass = () => {
 
 		static async refreshInfo() {
 			const responseData = await sendRequest({
-				url: `${process.env.REACT_APP_BACKEND_URL}/user/${userState.id}`,
+				url: `${process.env.REACT_APP_BACKEND_URL}/user/refresh-data/${userState.id}`,
 				method: 'GET',
 			});
 
