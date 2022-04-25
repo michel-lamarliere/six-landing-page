@@ -5,6 +5,8 @@ const userModifyControllers = require('../controllers/user-modify-controllers');
 
 const router = Router();
 
+router.patch('/email-confirmation/confirm', userModifyControllers.confirmEmailAddress);
+
 router.get(
 	'/password/forgot/send-email/:email',
 	userModifyControllers.sendEmailForgotPassword
@@ -22,6 +24,11 @@ router.patch('/email/confirmation', userModifyControllers.changeEmailConfirmatio
 router.patch('/password', userModifyControllers.changePassword);
 
 router.use(checkAuth);
+
+router.post(
+	'/email-confirmation/send-email',
+	userModifyControllers.resendEmailConfirmation
+);
 
 router.patch('/name', userModifyControllers.changeName);
 

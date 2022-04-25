@@ -7,11 +7,113 @@ const crypto = require('crypto');
 const database = require('../utils/db-connect');
 const sendEmail = require('../utils/send-email');
 
+const confirmEmailAddress: RequestHandler = async (req, res, next) => {
+	const email = req.body.email;
+	const code = req.body.code;
+
+	const databaseConnect = await database.getDb().collection('users');
+
+	// CHECKS IF THE USER EXISTS AND IF THE CODE MATCHES THE DB'S CODE
+	const user = await databaseConnect.findOne({
+		email: email,
+		'confirmation.code': code,
+	});
+
+	// IF IT DOESN'T MATCH
+	if (!user) {
+		res.status(400).json({ error: true, message: 'Code invalide' });
+		return;
+	}
+
+	// CONFIRMS THE ACCOUNT
+	await databaseConnect.updateOne(
+		{ email: email },
+		{
+			$set: {
+				'confirmation.confirmed': true,
+			},
+		}
+	);
+
+	res.status(200).json({ success: true, message: 'Compte confirmé.' });
+};
+
+const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
+	const id = new ObjectId(req.body.id);
+
+	const databaseConnect = await database.getDb().collection('users');
+
+	// CHECKS IF THE USER EXISTS
+	const user = await databaseConnect.findOne({ _id: id });
+
+	if (!user) {
+		res.status(404).json({ fatal: true });
+		return;
+	}
+
+	// IF THE ACCOUNT IS ALREADY CONFIRMED
+	if (user.confirmation.confirmed) {
+		res.status(400).json({
+			error: true,
+			message: 'Compte déjà confirmé, veuillez rafraichir vos données.',
+		});
+		return;
+	}
+
+	// CHECKS IF THE USER SENT AN EMAIL DURING THE LAST 5 MINUTES
+	if (user.confirmation.nextEmail) {
+		const fiveMinutesBetweenSends = !isBefore(
+			user.confirmation.nextEmail,
+			new Date()
+		);
+
+		// IF HE DID
+		if (fiveMinutesBetweenSends) {
+			res.status(405).json({
+				error: true,
+				message:
+					"Veuillez attendre 5 minutes entre chaque demande d'envoi de mail de confirmation.",
+			});
+			return;
+		}
+	}
+
+	const emailWasSent = sendEmailConfirmationEmail({
+		to: user.email,
+		uniqueCode: user.confirmation.code,
+	});
+
+	if (!emailWasSent) {
+		return res.status(500).json({
+			error: true,
+			message: "Une erreur est survenue lors de l'envoi du mail.",
+		});
+	}
+
+	// ADDS THE NEW TIME INTERVAL IN THE DB
+	const nextEmail = addMinutes(new Date(), 5);
+
+	await databaseConnect.updateOne(
+		{ _id: id },
+		{
+			$set: {
+				'confirmation.nextEmail': nextEmail,
+			},
+		}
+	);
+
+	res.status(200).json({
+		success: true,
+		message:
+			'Email envoyé. Veuillez vérifier votre boîte de réception ou votre dossier spam.',
+	});
+};
+
 const changeImage: RequestHandler = async (req, res, next) => {
 	const { id: reqIdStr, icon: reqIcon } = req.body;
 	const reqId = new ObjectId(reqIdStr);
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
@@ -36,7 +138,7 @@ const changeImage: RequestHandler = async (req, res, next) => {
 const changeEmail: RequestHandler = async (req, res, next) => {
 	const { oldEmail: reqOldEmail, newEmail: reqNewEmail } = req.body;
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ email: reqOldEmail });
@@ -84,7 +186,7 @@ const changeEmail: RequestHandler = async (req, res, next) => {
 const changeEmailConfirmation: RequestHandler = async (req, res, next) => {
 	const { oldEmail: reqOldEmail, newEmail: reqNewEmail } = req.body;
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ email: reqOldEmail });
@@ -120,7 +222,7 @@ const changeName: RequestHandler = async (req, res, next) => {
 	const { id: reqIdStr, newName: reqNewName } = req.body;
 	const reqId = new ObjectId(reqIdStr);
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
@@ -178,7 +280,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
 
 	const reqId = new ObjectId(reqIdStr);
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
@@ -263,7 +365,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
 const sendEmailForgotPassword: RequestHandler = async (req, res, next) => {
 	const reqEmail = req.params.email;
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ email: reqEmail });
@@ -342,7 +444,7 @@ const checkForgotPasswordAuth: RequestHandler = async (req, res, next) => {
 	const reqEmail = req.params.email;
 	const reqUniqueId = req.params.uniqueId;
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS AND
 	// IF THE UNIQUE ID MATCHES THE USER'S ONE FROM THE DB
@@ -373,7 +475,7 @@ const changeForgottenPassword: RequestHandler = async (req, res, next) => {
 
 	const reqId = new ObjectId(reqIdStr);
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
@@ -413,6 +515,8 @@ const changeForgottenPassword: RequestHandler = async (req, res, next) => {
 	res.status(200).json({ success: true, message: 'Mot de passe modifié.' });
 };
 
+exports.confirmEmailAddress = confirmEmailAddress;
+exports.resendEmailConfirmation = resendEmailConfirmation;
 exports.changeImage = changeImage;
 exports.changeName = changeName;
 exports.changeEmail = changeEmail;

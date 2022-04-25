@@ -7,8 +7,8 @@ const router = Router();
 
 router.use(checkAuth);
 
-router.get('/get/:id/:task', goalsControllers.getGoals);
+router.get('/goal/:id/:task', goalsControllers.getGoals);
 
-router.post('/edit', goalsControllers.editGoals);
+router.post('/edit-goal', goalsControllers.editGoals);
 
 module.exports = router;

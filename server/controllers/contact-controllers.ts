@@ -11,7 +11,7 @@ const sendMessage: RequestHandler = async (req, res, next) => {
 		isLoggedIn: reqIsLoggedIn,
 	} = req.body;
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	if (reqIsLoggedIn) {
 		const user = await databaseConnect.findOne({ email: reqEmail });

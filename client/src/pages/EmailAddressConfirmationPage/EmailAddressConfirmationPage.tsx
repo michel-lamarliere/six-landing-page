@@ -18,7 +18,7 @@ const ConfirmEmailAddress: React.FC = () => {
 
 	const confirmationHandler = async () => {
 		const responseData = await sendRequest({
-			url: `${process.env.REACT_APP_BACKEND_URL}/user/email-confirmation/confirm`,
+			url: `${process.env.REACT_APP_BACKEND_URL}/user/modify/email-confirmation/confirm`,
 			method: 'PATCH',
 			body: JSON.stringify({ email: email, code: code }),
 		});

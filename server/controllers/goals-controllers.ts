@@ -8,7 +8,7 @@ const getGoals: RequestHandler = async (req, res, next) => {
 
 	const reqId = new ObjectId(reqIdStr);
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
@@ -25,7 +25,7 @@ const editGoals: RequestHandler = async (req, res, next) => {
 
 	const reqId = new ObjectId(reqIdStr);
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });

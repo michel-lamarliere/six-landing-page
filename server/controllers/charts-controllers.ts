@@ -9,13 +9,13 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 	const reqYear: number = +req.params.year;
 	const reqTask = req.params.task;
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
 
 	if (!user) {
-		res.status(404).json({ fatal: true });
+		res.status(403).json({ fatal: true });
 	}
 
 	const resultsArray: { empty: number; half: number; full: number; future: number }[] =
@@ -29,7 +29,7 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 			future: 0,
 		});
 	}
-	const test = await databaseConnect
+	const data = await databaseConnect
 		.aggregate([
 			{
 				$match: {
@@ -134,7 +134,6 @@ const getAnnual: RequestHandler = async (req, res, next) => {
 			resultsArray[i].empty = emptyTotal;
 		}
 	}
-
 	res.status(200).json({ success: true, array: resultsArray });
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useRequest } from '../../hooks/http-hook';
@@ -20,7 +20,7 @@ const SignUpForm: React.FC<Props> = (props) => {
 	const { sendRequest } = useRequest();
 	const { User } = useUserClass();
 
-	const [responseMessage, setResponseMessage] = useState('');
+	const [emailErrorMessage, setEmailErrorMessage] = useState('Format invalide.');
 
 	const [sumbitted, setSubmitted] = useState(false);
 
@@ -92,13 +92,43 @@ const SignUpForm: React.FC<Props> = (props) => {
 		});
 
 		if (responseData.error) {
-			setResponseMessage(responseData.message);
+			if (!responseData.validInputs.name) {
+				setNameInput((prev) => ({ ...prev, isValid: false }));
+			}
+
+			if (
+				responseData.validInputs.email.format &&
+				!responseData.validInputs.email.isAvailable
+			) {
+				setEmailInput((prev) => ({ ...prev, isValid: false }));
+				setEmailErrorMessage(
+					'Adresse mail utilisée, veuillez vous connecter ou créer un nouveau compte.'
+				);
+			}
+
+			if (!responseData.validInputs.email.format) {
+				setEmailInput((prev) => ({ ...prev, isValid: false }));
+				setEmailErrorMessage('Format invalide.');
+			}
+
+			if (!responseData.validInputs.password) {
+				setPasswordInput((prev) => ({ ...prev, isValid: false }));
+			}
+
+			if (!responseData.validInputs.passwordConfirmation) {
+				setPasswordConfirmationInput((prev) => ({ ...prev, isValid: false }));
+			}
+
 			return;
 		}
 
 		User.logIn(responseData);
 		setSubmitted(false);
 	};
+
+	useEffect(() => {
+		setEmailErrorMessage('Format invalide.');
+	}, [emailInput.isTouched]);
 
 	return (
 		<FormContainer
@@ -109,7 +139,7 @@ const SignUpForm: React.FC<Props> = (props) => {
 			switchFormHandler={
 				props.mobile ? () => navigate('/connexion') : props.switchFormHandler
 			}
-			responseMessage={responseMessage}
+			responseMessage={''}
 		>
 			<Input
 				styling={InputStyles.PURPLE_FORM}
@@ -129,7 +159,7 @@ const SignUpForm: React.FC<Props> = (props) => {
 				type='text'
 				placeholder='jean@email.fr'
 				value={emailInput.value}
-				errorText='Format invalide.'
+				errorText={emailErrorMessage}
 				isValid={emailInput.isValid}
 				isTouched={emailInput.isTouched}
 				onChange={emailOnChangeHandler}

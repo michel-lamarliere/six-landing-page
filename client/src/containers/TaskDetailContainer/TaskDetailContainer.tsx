@@ -51,7 +51,7 @@ const TaskDetailContainer: React.FC<Props> = (props) => {
 	const getGoals = async () => {
 		const responseData = await sendRequest({
 			method: 'GET',
-			url: `${process.env.REACT_APP_BACKEND_URL}/goals/get/${userState.id}/${props.task}`,
+			url: `${process.env.REACT_APP_BACKEND_URL}/goals/goal/${userState.id}/${props.task}`,
 		});
 
 		if (responseData.goals !== null) {
@@ -69,7 +69,7 @@ const TaskDetailContainer: React.FC<Props> = (props) => {
 
 		const responseData = await sendRequest({
 			method: 'POST',
-			url: `${process.env.REACT_APP_BACKEND_URL}/goals/edit`,
+			url: `${process.env.REACT_APP_BACKEND_URL}/goals/edit-goal`,
 			body: JSON.stringify({
 				id: userState.id,
 				task: props.task,

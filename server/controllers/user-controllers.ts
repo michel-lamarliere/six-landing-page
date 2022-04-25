@@ -16,24 +16,15 @@ const signUp: RequestHandler = async (req, res, next) => {
 		passwordConfirmation: reqPasswordConfirmation,
 	} = await req.body;
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
-
-	// CHECKS IF THE USER EXISTS
-	const user = await databaseConnect.findOne({ email: reqEmail });
-
-	if (user) {
-		res.status(400).json({
-			error: true,
-			message:
-				'Adresse email déjà utilisée, veuillez en choisir une autre ou vous connecter.',
-		});
-		return;
-	}
+	const databaseConnect = await database.getDb().collection('users');
 
 	const validInputs = {
 		all: false,
 		name: false,
-		email: false,
+		email: {
+			format: false,
+			isAvailable: false,
+		},
 		password: false,
 		passwordConfirmation: false,
 	};
@@ -51,7 +42,14 @@ const signUp: RequestHandler = async (req, res, next) => {
 			/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 		)
 	) {
-		validInputs.email = true;
+		validInputs.email.format = true;
+	}
+
+	// // CHECKS IF THE USER EXISTS
+	const user = await databaseConnect.findOne({ email: reqEmail });
+
+	if (!user) {
+		validInputs.email.isAvailable = true;
 	}
 
 	if (
@@ -68,7 +66,8 @@ const signUp: RequestHandler = async (req, res, next) => {
 
 	if (
 		validInputs.name &&
-		validInputs.email &&
+		validInputs.email.format &&
+		validInputs.email.isAvailable &&
 		validInputs.password &&
 		validInputs.passwordConfirmation
 	) {
@@ -78,7 +77,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 	if (!validInputs.all) {
 		res.status(400).json({
 			error: true,
-			message: 'Erreur lors de la création de compte.',
+			validInputs,
 		});
 		return;
 	}
@@ -153,7 +152,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 const signIn: RequestHandler = async (req, res, next) => {
 	const { email: reqEmail, password: reqPassword } = req.body;
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	const user = await databaseConnect.findOne({ email: reqEmail });
 
@@ -199,112 +198,10 @@ const signIn: RequestHandler = async (req, res, next) => {
 	});
 };
 
-const confirmEmailAddress: RequestHandler = async (req, res, next) => {
-	const email = req.body.email;
-	const code = req.body.code;
-
-	const databaseConnect = await database.getDb('six-dev').collection('users');
-
-	// CHECKS IF THE USER EXISTS AND IF THE CODE MATCHES THE DB'S CODE
-	const user = await databaseConnect.findOne({
-		email: email,
-		'confirmation.code': code,
-	});
-
-	// IF IT DOESN'T MATCH
-	if (!user) {
-		res.status(400).json({ error: true, message: 'Code invalide' });
-		return;
-	}
-
-	// CONFIRMS THE ACCOUNT
-	await databaseConnect.updateOne(
-		{ email: email },
-		{
-			$set: {
-				'confirmation.confirmed': true,
-			},
-		}
-	);
-
-	res.status(200).json({ success: true, message: 'Compte confirmé.' });
-};
-
-const resendEmailConfirmation: RequestHandler = async (req, res, next) => {
-	const id = new ObjectId(req.body.id);
-
-	const databaseConnect = await database.getDb('six-dev').collection('users');
-
-	// CHECKS IF THE USER EXISTS
-	const user = await databaseConnect.findOne({ _id: id });
-
-	if (!user) {
-		res.status(404).json({ fatal: true });
-		return;
-	}
-
-	// IF THE ACCOUNT IS ALREADY CONFIRMED
-	if (user.confirmation.confirmed) {
-		res.status(400).json({
-			error: true,
-			message: 'Compte déjà confirmé, veuillez rafraichir vos données.',
-		});
-		return;
-	}
-
-	// CHECKS IF THE USER SENT AN EMAIL DURING THE LAST 5 MINUTES
-	if (user.confirmation.nextEmail) {
-		const fiveMinutesBetweenSends = !isBefore(
-			user.confirmation.nextEmail,
-			new Date()
-		);
-
-		// IF HE DID
-		if (fiveMinutesBetweenSends) {
-			res.status(405).json({
-				error: true,
-				message:
-					"Veuillez attendre 5 minutes entre chaque demande d'envoi de mail de confirmation.",
-			});
-			return;
-		}
-	}
-
-	const emailWasSent = sendEmailConfirmationEmail({
-		to: user.email,
-		uniqueCode: user.confirmation.code,
-	});
-
-	if (!emailWasSent) {
-		return res.status(500).json({
-			error: true,
-			message: "Une erreur est survenue lors de l'envoi du mail.",
-		});
-	}
-
-	// ADDS THE NEW TIME INTERVAL IN THE DB
-	const nextEmail = addMinutes(new Date(), 5);
-
-	await databaseConnect.updateOne(
-		{ _id: id },
-		{
-			$set: {
-				'confirmation.nextEmail': nextEmail,
-			},
-		}
-	);
-
-	res.status(200).json({
-		success: true,
-		message:
-			'Email envoyé. Veuillez vérifier votre boîte de réception ou votre dossier spam.',
-	});
-};
-
 const refreshData: RequestHandler = async (req, res, next) => {
 	const id = new ObjectId(req.params.userId);
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: id });
@@ -319,6 +216,4 @@ const refreshData: RequestHandler = async (req, res, next) => {
 
 exports.signUp = signUp;
 exports.signIn = signIn;
-exports.confirmEmailAddress = confirmEmailAddress;
 exports.refreshData = refreshData;
-exports.resendEmailConfirmation = resendEmailConfirmation;

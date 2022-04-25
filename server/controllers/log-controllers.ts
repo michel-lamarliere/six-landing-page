@@ -20,7 +20,7 @@ const addData: RequestHandler = async (req, res, next) => {
 
 	const reqDate = new Date(reqDateStr);
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	const reqId = ObjectId(reqIdStr);
 
@@ -148,7 +148,7 @@ const getDaily: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
 	const reqDate: Date = new Date(req.params.date);
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
@@ -198,7 +198,7 @@ const getWeekly: RequestHandler = async (req, res, next) => {
 	const reqId = new ObjectId(req.params.id);
 	const reqStartDate = new Date(req.params.startofweek);
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
@@ -357,7 +357,7 @@ const getMonthly: RequestHandler = async (req, res, next) => {
 	const reqFirstDateOfMonth = new Date(req.params.date);
 	const reqTask = req.params.task;
 
-	const databaseConnect = await database.getDb('six-dev').collection('users');
+	const databaseConnect = await database.getDb().collection('users');
 
 	// CHECKS IF THE USER EXISTS
 	const user = await databaseConnect.findOne({ _id: reqId });
