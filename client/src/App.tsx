@@ -40,6 +40,7 @@ import ProjectsPage from './pages/tasks/ProjectsPage';
 import RelaxationPage from './pages/tasks/RelaxationPage';
 import NutritionPage from './pages/tasks/NutritionPage';
 import SportsPage from './pages/tasks/SportsPage';
+import LegalNoticePage from './pages/legalNotice/LegalNoticePage/LegalNoticePage';
 
 const App: React.FC = () => {
 	const { User } = useUserClass();
@@ -69,9 +70,15 @@ const App: React.FC = () => {
 
 	useEffect(() => {
 		let desktopSidebar = document.getElementById('desktop-sidebar')!;
+		let root = document.getElementById('root')!;
+
 		if (!User.isLoggedIn()) {
 			desktopSidebar.style.display = 'none';
+			root.style.width = '100%';
 		} else {
+			if (window.innerWidth > 1200) {
+				root.style.width = 'calc(100% - 30rem)';
+			}
 			desktopSidebar.style.display = 'flex';
 		}
 	}, [userState]);
@@ -146,6 +153,7 @@ const App: React.FC = () => {
 						<Route path='/detente' element={<RelaxationPage />} />
 						<Route path='/projets' element={<ProjectsPage />} />
 						<Route path='/vie-sociale' element={<SocialLifePage />} />
+						<Route path='/mentions-legales' element={<LegalNoticePage />} />
 					</>
 				)}
 				<Route path='/contact' element={<Contact />} />

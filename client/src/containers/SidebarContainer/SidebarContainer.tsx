@@ -139,7 +139,7 @@ const Sidebar: React.FC<{ className: string }> = (props) => {
 				</div>
 				<div className={classes['footer__legal-notice']}>
 					<Link
-						to='/'
+						to='/mentions-legales'
 						className={classes['footer__legal-notice__text']}
 						onClick={closeMobileSidebar}
 					>

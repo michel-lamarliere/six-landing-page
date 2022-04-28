@@ -1,37 +1,5 @@
 @import './style/variables.scss';
 
-#root {
-	position: relative;
-	display: flex;
-	justify-content: center;
-	min-height: 100vh;
-	height: 100%;
-	font-family: $fontMedium;
-	font-size: 20px;
-	background-color: $colorBlack;
-	transition: margin-right 0.3s ease-in-out;
-}
-
-#mobile-sidebar {
-	position: fixed;
-	top: 0;
-	right: 0;
-	width: 0%;
-	max-width: 30rem;
-	height: 100vh;
-	font-size: 20px;
-	font-family: $fontMedium;
-	float: right;
-	background-color: $colorPurple1;
-	transition: width 0.3s ease-in-out;
-	z-index: 4;
-	overflow-y: scroll;
-}
-
-#desktop-sidebar {
-	display: none;
-}
-
 body {
 	background-color: $colorBlack;
 	margin: 0;
@@ -69,15 +37,47 @@ p {
 	margin: 0;
 }
 
+#root {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	min-height: 100vh;
+	width: 100%;
+	height: 100%;
+	font-family: $fontMedium;
+	font-size: 20px;
+	background-color: $colorBlack;
+	transition: margin-right 0.3s ease-in-out;
+}
+
+#mobile-sidebar {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 0%;
+	max-width: 30rem;
+	height: 100vh;
+	font-size: 20px;
+	font-family: $fontMedium;
+	float: right;
+	background-color: $colorPurple1;
+	transition: width 0.3s ease-in-out;
+	z-index: 4;
+	overflow-y: scroll;
+}
+
+#desktop-sidebar {
+	display: none;
+}
+
 @media screen and (min-width: 1200px) {
 	#root {
 		height: 100vh;
-		width: calc(100% - 30rem);
+		// width: calc(100% - 30rem) !important;
 	}
 
 	#desktop-sidebar {
 		position: fixed;
-		// position: sticky;
 		display: block;
 		float: right;
 		top: 0;
@@ -88,7 +88,6 @@ p {
 		height: 100%;
 		font-size: 20px;
 		font-family: $fontMedium;
-		float: right;
 		background-color: $colorPurple1;
 	}
 }
