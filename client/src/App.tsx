@@ -33,7 +33,7 @@ import ForgotPasswordPopUp from './components/pop-ups/ForgotPasswordPopUp/Forgot
 import Contact from './pages/ContactPage/ContactPage';
 import LogInForm from './pages/LogInForm/LogInForm';
 import SignUpForm from './pages/SignUpForm/SignUpForm';
-import HelpPage from './pages/HelpPage/HelpPage';
+import HelpPage from './pages/help/HelpPage/HelpPage';
 import SleepPage from './pages/tasks/SleepPage';
 import SocialLifePage from './pages/tasks/SocialLifePage';
 import ProjectsPage from './pages/tasks/ProjectsPage';

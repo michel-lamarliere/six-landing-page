@@ -65,17 +65,27 @@ input {
 	padding: 0;
 }
 
+p {
+	margin: 0;
+}
+
 @media screen and (min-width: 1200px) {
 	#root {
 		height: 100vh;
+		width: calc(100% - 30rem);
 	}
 
 	#desktop-sidebar {
-		position: relative;
+		position: fixed;
+		// position: sticky;
 		display: block;
+		float: right;
+		top: 0;
+		right: 0;
+		z-index: 2;
 		flex-direction: column;
 		width: 30rem;
-		height: 100vh;
+		height: 100%;
 		font-size: 20px;
 		font-family: $fontMedium;
 		float: right;

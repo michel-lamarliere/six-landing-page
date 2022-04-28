@@ -6,7 +6,7 @@
 	flex-direction: column;
 	align-items: center;
 	gap: 2rem;
-	margin-top: 6rem;
+	margin-top: $marginTopMobile;
 }
 
 .back-button {
@@ -62,7 +62,7 @@
 @media screen and (min-width: 1200px) {
 	.wrapper {
 		position: relative;
-		margin-top: 10rem;
+		margin-top: $marginTopDesktop;
 	}
 
 	.back-button {

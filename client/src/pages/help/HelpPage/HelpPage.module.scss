@@ -1,0 +1,86 @@
+@import '../../../style/variables.scss';
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 2.5rem;
+	width: 100%;
+	margin: $marginTopMobile $marginSidesMobile;
+}
+
+.title {
+	font-family: $fontBold;
+	font-size: 24px;
+	color: $colorLavander;
+	text-align: center;
+}
+
+.question-wrapper {
+}
+
+.question {
+	font-family: $fontBold;
+	font-size: 16px;
+	color: $colorLavander;
+
+	&--contact {
+		margin-top: 2rem;
+		text-align: center;
+		font-size: 20px;
+		color: $colorWhite;
+	}
+}
+
+.answer {
+	&--text {
+		font-family: $fontRegular;
+		font-size: 12px;
+		color: $colorWhite;
+	}
+}
+
+.tasks {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.contact-button {
+	align-self: center;
+}
+
+@media screen and (min-width: 700px) {
+	.wrapper {
+		width: 70%;
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	.wrapper {
+		width: 50%;
+	}
+
+	.title {
+		font-size: 28px;
+	}
+
+	.question {
+		font-size: 18px;
+
+		&--contact {
+			margin-top: 4rem;
+		}
+	}
+
+	.answer {
+		&--text {
+			font-size: 16px;
+		}
+	}
+
+	.tasks {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 0;
+	}
+}
