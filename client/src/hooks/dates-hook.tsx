@@ -39,7 +39,6 @@ export const useDatesFn = () => {
 		monthNumber: number;
 		abreviation: boolean;
 		setState?: Dispatch<SetStateAction<string>>;
-		// }): string | Dispatch<SetStateAction<string>> => {
 	}): string | Dispatch<SetStateAction<string>> => {
 		const { type, monthNumber, abreviation, setState } = args;
 

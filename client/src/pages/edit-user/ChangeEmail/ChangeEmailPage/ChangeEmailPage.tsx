@@ -13,7 +13,6 @@ import EditProfileFormWrapper, {
 import Spinner from '../../../../components/Spinner/Spinner';
 
 import successIcon from '../../../../assets//icons/success.svg';
-import errorIcon from '../../../../assets//icons/error.svg';
 
 import classes from './ChangeEmailPage.module.scss';
 

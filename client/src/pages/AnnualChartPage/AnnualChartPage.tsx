@@ -59,8 +59,6 @@ const AnnualGraph: React.FC = () => {
 			method: 'GET',
 		});
 
-		console.log(responseData);
-
 		createChartData(responseData.array);
 	};
 

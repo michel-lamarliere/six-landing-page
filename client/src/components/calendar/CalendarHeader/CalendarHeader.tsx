@@ -23,7 +23,6 @@ const CalendarHeader: React.FC<Props> = (props) => {
 	let calendarPreviousMonthHandler;
 	let calendarNextMonthHandler;
 
-	// if (props.calendar !== calendarTypes.ANNUAL_CHART) {
 	const calendarPreviousYearHandler = () => {
 		props.setCalendarDate(addYears(props.calendarDate, -1));
 	};
@@ -45,7 +44,6 @@ const CalendarHeader: React.FC<Props> = (props) => {
 	const calendarNextYearHandlerDisabled = () => {
 		return !isBefore(addYears(props.calendarDate, 1), new Date());
 	};
-	// }
 
 	if (
 		props.calendar === calendarTypes.DAILY ||

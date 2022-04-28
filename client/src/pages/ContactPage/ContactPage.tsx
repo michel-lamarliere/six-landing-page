@@ -174,7 +174,6 @@ const Contact: React.FC = () => {
 							type='submit'
 							text={'Envoyer'}
 							className={classes['submit-button']}
-							// onClick={submitHandler}
 						/>
 					</form>
 				</>

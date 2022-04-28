@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -40,10 +40,12 @@ import ProjectsPage from './pages/tasks/ProjectsPage';
 import RelaxationPage from './pages/tasks/RelaxationPage';
 import NutritionPage from './pages/tasks/NutritionPage';
 import SportsPage from './pages/tasks/SportsPage';
-import LegalNoticePage from './pages/legalNotice/LegalNoticePage/LegalNoticePage';
+import LegalNoticePage from './pages/LegalNoticePage/LegalNoticePage';
 
 const App: React.FC = () => {
 	const { User } = useUserClass();
+
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
 	const userState = useSelector((state: RootState) => state.user);
 	const overlayState = useSelector((state: RootState) => state.overlay);
@@ -76,12 +78,18 @@ const App: React.FC = () => {
 			desktopSidebar.style.display = 'none';
 			root.style.width = '100%';
 		} else {
-			if (window.innerWidth > 1200) {
+			if (windowWidth > 1200) {
 				root.style.width = 'calc(100% - 30rem)';
+			} else {
+				root.style.width = '100%';
 			}
 			desktopSidebar.style.display = 'flex';
 		}
-	}, [userState]);
+	}, [userState, window.innerWidth]);
+
+	useEffect(() => {
+		window.addEventListener('resize', () => setWindowWidth(window.innerWidth));
+	}, []);
 
 	useEffect(() => {
 		let root = document.getElementById('root')!;

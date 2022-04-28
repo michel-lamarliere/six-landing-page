@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,7 +18,6 @@ import classes from './Overlay.module.scss';
 const Overlay: React.FC = () => {
 	const dispatch = useDispatch();
 
-	// const overlayState = useSelector((state: RootState) => state.overlay);
 	const calendarState = useSelector((state: RootState) => state.calendar);
 	const taskSelectorState = useSelector((state: RootState) => state.taskSelector);
 	const mobileSidebarState = useSelector((state: RootState) => state.mobileSidebar);
@@ -75,42 +74,6 @@ const Overlay: React.FC = () => {
 			});
 		}
 	};
-
-	// useEffect(() => {
-	// 	if (
-	// 		(calendarState.show ||
-	// 			taskSelectorState.show ||
-	// 			mobileSidebarState.show ||
-	// 			alertPopUpState.message ||
-	// 			errorPopUpState.message ||
-	// 			emailConfirmationPopUpState.show ||
-	// 			forgotPasswordPopUpState.show) &&
-	// 		!overlayState.show
-	// 	) {
-	// 		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
-	// 		console.log('here');
-	// 	} else {
-	// 		console.log(
-	// 			calendarState.show,
-	// 			taskSelectorState.show,
-	// 			mobileSidebarState.show,
-	// 			alertPopUpState.message,
-	// 			errorPopUpState.message,
-	// 			emailConfirmationPopUpState.show,
-	// 			forgotPasswordPopUpState.show,
-	// 			overlayState.show
-	// 		);
-	// 	}
-	// }, [
-	// 	overlayState,
-	// 	calendarState,
-	// 	taskSelectorState,
-	// 	mobileSidebarState,
-	// 	alertPopUpState,
-	// 	errorPopUpState,
-	// 	emailConfirmationPopUpState,
-	// 	forgotPasswordPopUpState,
-	// ]);
 
 	return ReactDOM.createPortal(
 		<div className={classes.overlay} onClick={hideOverlay}></div>,

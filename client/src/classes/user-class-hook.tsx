@@ -23,29 +23,6 @@ export const useUserClass = () => {
 	const userState = useSelector((state: RootState) => state.user);
 
 	class User {
-		// token: string;
-		// id: string;
-		// icon: number;
-		// name: string;
-		// email: string;
-		// confirmedEmail: string;
-
-		// constructor(userData: {
-		// 	token: string;
-		// 	id: string;
-		// 	icon: number;
-		// 	name: string;
-		// 	email: string;
-		// 	confirmedEmail: string;
-		// }) {
-		// 	this.token = userData.token;
-		// 	this.id = userData.id;
-		// 	this.icon = userData.icon;
-		// 	this.name = userData.name;
-		// 	this.email = userData.email;
-		// 	this.confirmedEmail = userData.confirmedEmail;
-		// }
-
 		static rememberEmail(data: { email: string }) {
 			localStorage.setItem('rememberEmail', data.email);
 		}
@@ -63,7 +40,6 @@ export const useUserClass = () => {
 			confirmedEmail: string;
 		}) {
 			const tokenExpiration = addHours(new Date(), 1);
-			// const tokenExpiration = addSeconds(new Date(), 5);
 
 			localStorage.setItem(
 				'userData',

@@ -33,8 +33,6 @@ const ForgotPasswordForm: React.FC = () => {
 	const [changedPassword, setChangedPassword] = useState(false);
 	const [userId, setUserId] = useState('');
 	const [userName, setUserName] = useState('');
-	// const [submitted, setSubmitted] = useState(false);
-	// const [gotResponse, setGotResponse] = useState(false);
 
 	const userData =
 		userState.token &&
@@ -97,7 +95,6 @@ const ForgotPasswordForm: React.FC = () => {
 
 	const changePasswordHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
-		// setSubmitted(true);
 
 		const responseData = await sendRequest({
 			url: `${process.env.REACT_APP_BACKEND_URL}/user/modify/password/forgot`,
@@ -108,8 +105,6 @@ const ForgotPasswordForm: React.FC = () => {
 				newPasswordConfirmation: newPasswordConfirmation.value,
 			}),
 		});
-
-		// setGotResponse(true);
 
 		if (!responseData) {
 			return;

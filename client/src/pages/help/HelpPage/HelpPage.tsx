@@ -30,47 +30,53 @@ const HelpPage: React.FC = () => {
 				</p>
 			</div>
 			<h3 className={classes.question}>Quels sont les 6 objectifs ?</h3>
-			<HelpTaskItem
-				task={'Alimentation'}
-				icon={nutritionIcon}
-				iconAlt={'alimentation'}
-			>
-				Par exemple :
-				<br />
-				- Manger 5 fruits et légumes.
-				<br />
-				- Ne pas manger trop gras, trop sucré ou trop salé.
-				<br />- Boire 1,5 L d’eau.
-			</HelpTaskItem>
-			<HelpTaskItem task={'Sommeil'} icon={sleepIcon} iconAlt={'sommeil'}>
-				Par exemple :
-				<br />
-				- Dormir 8h.
-				<br />- Arrêter les écrans 2h avant de s’endormir.
-			</HelpTaskItem>
-			<HelpTaskItem task={'Sport'} icon={sportsIcon} iconAlt={'sport'}>
-				Par exemple : <br />- Faire 30 min d’exercice. <br />- Marcher au moins
-				2km.
-			</HelpTaskItem>
-			<HelpTaskItem task={'Projets'} icon={projectsIcon} iconAlt={'projets'}>
-				Par exemple : <br />- Consacrer 2h à un projet qui vous importe
-				(associatif, personnel, loisir). <br />- Apprendre pendant 1h (langue,
-				cuisine, histoire).
-			</HelpTaskItem>
-			<HelpTaskItem task={'Détente'} icon={relaxationIcon} iconAlt={'relaxation'}>
-				Par exemple : <br />- Méditer ou lire. <br />- Se balader. <br />- Ne rien
-				faire.
-			</HelpTaskItem>
-			<HelpTaskItem
-				task={'Vie Sociale'}
-				icon={socialLifeIcon}
-				iconAlt={'Vie Social'}
-			>
-				Par exemple : <br />- Voir sa famille ou ses amis. <br />- Parler aux gens
-				de votre quartier. <br />- Faire du bénévolat.
-			</HelpTaskItem>
-			<h3 className={classes.question}>Comment atteindre un objectif ?</h3>
 			<div className={classes.tasks}>
+				<HelpTaskItem
+					task={'Alimentation'}
+					icon={nutritionIcon}
+					iconAlt={'alimentation'}
+				>
+					Par exemple :
+					<br />
+					- Manger 5 fruits et légumes.
+					<br />
+					- Ne pas manger trop gras, trop sucré ou trop salé.
+					<br />- Boire 1,5 L d’eau.
+				</HelpTaskItem>
+				<HelpTaskItem task={'Sommeil'} icon={sleepIcon} iconAlt={'sommeil'}>
+					Par exemple :
+					<br />
+					- Dormir 8h.
+					<br />- Arrêter les écrans 2h avant de s’endormir.
+				</HelpTaskItem>
+				<HelpTaskItem task={'Sport'} icon={sportsIcon} iconAlt={'sport'}>
+					Par exemple : <br />- Faire 30 min d’exercice. <br />- Marcher au
+					moins 2km.
+				</HelpTaskItem>
+				<HelpTaskItem task={'Projets'} icon={projectsIcon} iconAlt={'projets'}>
+					Par exemple : <br />- Consacrer 2h à un projet qui vous importe
+					(associatif, personnel, loisir). <br />- Apprendre pendant 1h (langue,
+					cuisine, histoire).
+				</HelpTaskItem>
+				<HelpTaskItem
+					task={'Détente'}
+					icon={relaxationIcon}
+					iconAlt={'relaxation'}
+				>
+					Par exemple : <br />- Méditer ou lire. <br />- Se balader. <br />- Ne
+					rien faire.
+				</HelpTaskItem>
+				<HelpTaskItem
+					task={'Vie Sociale'}
+					icon={socialLifeIcon}
+					iconAlt={'Vie Social'}
+				>
+					Par exemple : <br />- Voir sa famille ou ses amis. <br />- Parler aux
+					gens de votre quartier. <br />- Faire du bénévolat.
+				</HelpTaskItem>
+			</div>
+			<h3 className={classes.question}>Comment atteindre un objectif ?</h3>
+			<div className={classes.bubbles}>
 				<HelpLevelItem
 					icon={fullBubble}
 					iconAlt={'tâche accomplie'}

@@ -52,12 +52,6 @@ export const useInput = (args: {
 		}
 	}, [display]);
 
-	// useEffect(() => {
-	// 	if (!validate) {
-	// 		setInput((prev) => ({ ...prev, isValid: true }));
-	// 	}
-	// }, []);
-
 	useEffect(() => {
 		if (type === useInputTypes.NAME && validate) {
 			input.value.trim().length >= 2 &&

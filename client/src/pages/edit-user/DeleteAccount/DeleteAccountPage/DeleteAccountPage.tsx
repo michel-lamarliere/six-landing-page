@@ -80,7 +80,6 @@ const DeleteAccount: React.FC = () => {
 
 	return (
 		<EditProfileFormWrapper
-			// formAction={textValidationHandler}
 			type={EditProfileFormWrapperTypes.DELETE}
 			title={'Suppression de compte'}
 		>

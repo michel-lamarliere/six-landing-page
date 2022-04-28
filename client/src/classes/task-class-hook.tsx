@@ -13,16 +13,6 @@ export const useTaskClass = () => {
 	const userData = useSelector((state: RootState) => state.user);
 
 	class Task {
-		// date: string;
-		// task: string;
-		// previousLevel: number;
-
-		// constructor(taskData: { date: string; task: string; previousLevel: number }) {
-		// 	this.date = taskData.date;
-		// 	this.task = taskData.task;
-		// 	this.previousLevel = taskData.previousLevel;
-		// }
-
 		static async save(data: { date: string; task: string; previousLevel: number }) {
 			const response = await fetch(
 				`${process.env.REACT_APP_BACKEND_URL}/log/task`,
