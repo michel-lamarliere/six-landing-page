@@ -121,7 +121,7 @@ const DailyView: React.FC = () => {
 			getMonthFn({
 				type: getMonthFnTypes.STATE,
 				monthNumber: chosenDate.getMonth(),
-				abreviation: false,
+				abbreviation: false,
 				setState: setMonthStr,
 			});
 		}
@@ -170,7 +170,7 @@ const DailyView: React.FC = () => {
 								/>
 								<img
 									src={rightArrowIcon}
-									alt='Flêche'
+									alt='Flèche Droite'
 									className={classes.task__arrow}
 									id={item[0]}
 								/>

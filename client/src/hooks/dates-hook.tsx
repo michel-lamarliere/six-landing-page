@@ -37,48 +37,48 @@ export const useDatesFn = () => {
 	const getMonthFn = (args: {
 		type: getMonthFnTypes.VARIABLE | getMonthFnTypes.STATE;
 		monthNumber: number;
-		abreviation: boolean;
+		abbreviation: boolean;
 		setState?: Dispatch<SetStateAction<string>>;
 	}): string | Dispatch<SetStateAction<string>> => {
-		const { type, monthNumber, abreviation, setState } = args;
+		const { type, monthNumber, abbreviation, setState } = args;
 
 		if (type === getMonthFnTypes.STATE && setState) {
 			switch (monthNumber) {
 				case 0:
-					!abreviation ? setState('Janvier') : setState('Janv.');
+					!abbreviation ? setState('Janvier') : setState('Janv.');
 					break;
 				case 1:
-					!abreviation ? setState('Février') : setState('Fév.');
+					!abbreviation ? setState('Février') : setState('Fév.');
 					break;
 				case 2:
-					!abreviation ? setState('Mars') : setState('Mars');
+					!abbreviation ? setState('Mars') : setState('Mars');
 					break;
 				case 3:
-					!abreviation ? setState('Avril') : setState('Avr.');
+					!abbreviation ? setState('Avril') : setState('Avr.');
 					break;
 				case 4:
-					!abreviation ? setState('Mai') : setState('Mai');
+					!abbreviation ? setState('Mai') : setState('Mai');
 					break;
 				case 5:
-					!abreviation ? setState('Juin') : setState('Juin');
+					!abbreviation ? setState('Juin') : setState('Juin');
 					break;
 				case 6:
-					!abreviation ? setState('Juillet') : setState('Juill.');
+					!abbreviation ? setState('Juillet') : setState('Juill.');
 					break;
 				case 7:
-					!abreviation ? setState('Août') : setState('Août');
+					!abbreviation ? setState('Août') : setState('Août');
 					break;
 				case 8:
-					!abreviation ? setState('Septembre') : setState('Sept.');
+					!abbreviation ? setState('Septembre') : setState('Sept.');
 					break;
 				case 9:
-					!abreviation ? setState('Octobre') : setState('Oct.');
+					!abbreviation ? setState('Octobre') : setState('Oct.');
 					break;
 				case 10:
-					!abreviation ? setState('Novembre') : setState('Nov.');
+					!abbreviation ? setState('Novembre') : setState('Nov.');
 					break;
 				case 11:
-					!abreviation ? setState('Décembre') : setState('Déc.');
+					!abbreviation ? setState('Décembre') : setState('Déc.');
 					break;
 				default:
 					break;
@@ -90,40 +90,40 @@ export const useDatesFn = () => {
 
 			switch (monthNumber) {
 				case 0:
-					!abreviation ? (variable = 'Janvier') : (variable = 'Janv.');
+					!abbreviation ? (variable = 'Janvier') : (variable = 'Janv.');
 					break;
 				case 1:
-					!abreviation ? (variable = 'Février') : (variable = 'Fév.');
+					!abbreviation ? (variable = 'Février') : (variable = 'Fév.');
 					break;
 				case 2:
-					!abreviation ? (variable = 'Mars') : (variable = 'Mars');
+					!abbreviation ? (variable = 'Mars') : (variable = 'Mars');
 					break;
 				case 3:
-					!abreviation ? (variable = 'Avril') : (variable = 'Avr.');
+					!abbreviation ? (variable = 'Avril') : (variable = 'Avr.');
 					break;
 				case 4:
-					!abreviation ? (variable = 'Mai') : (variable = 'Mai');
+					!abbreviation ? (variable = 'Mai') : (variable = 'Mai');
 					break;
 				case 5:
-					!abreviation ? (variable = 'Juin') : (variable = 'Juin');
+					!abbreviation ? (variable = 'Juin') : (variable = 'Juin');
 					break;
 				case 6:
-					!abreviation ? (variable = 'Juillet') : (variable = 'Juill.');
+					!abbreviation ? (variable = 'Juillet') : (variable = 'Juill.');
 					break;
 				case 7:
-					!abreviation ? (variable = 'Août') : (variable = 'Août');
+					!abbreviation ? (variable = 'Août') : (variable = 'Août');
 					break;
 				case 8:
-					!abreviation ? (variable = 'Septembre') : (variable = 'Sept.');
+					!abbreviation ? (variable = 'Septembre') : (variable = 'Sept.');
 					break;
 				case 9:
-					!abreviation ? (variable = 'Octobre') : (variable = 'Oct.');
+					!abbreviation ? (variable = 'Octobre') : (variable = 'Oct.');
 					break;
 				case 10:
-					!abreviation ? (variable = 'Novembre') : (variable = 'Nov.');
+					!abbreviation ? (variable = 'Novembre') : (variable = 'Nov.');
 					break;
 				case 11:
-					!abreviation ? (variable = 'Décembre') : (variable = 'Déc.');
+					!abbreviation ? (variable = 'Décembre') : (variable = 'Déc.');
 					break;
 				default:
 					break;

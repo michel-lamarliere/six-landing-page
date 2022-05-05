@@ -70,7 +70,7 @@ const DeleteAccount: React.FC = () => {
 		input: confirmationInput,
 		setInput: setConfirmationInput,
 		inputOnChangeHandler: confirmationInputOnChangeHandler,
-		inputOnBlurHandler: nconfirmationInputOnBlurHandler,
+		inputOnBlurHandler: confirmationInputOnBlurHandler,
 	} = useInput({
 		type: useInputTypes.COMPARISON,
 		validate: false,
@@ -99,7 +99,7 @@ const DeleteAccount: React.FC = () => {
 						isValid={confirmationInput.isValid}
 						isTouched={confirmationInput.isTouched}
 						onChange={confirmationInputOnChangeHandler}
-						onBlur={nconfirmationInputOnBlurHandler}
+						onBlur={confirmationInputOnBlurHandler}
 					/>
 					<div className={classes.buttons}>
 						<RoundedButton

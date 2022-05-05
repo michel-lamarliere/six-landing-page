@@ -30,7 +30,7 @@ const DateNavigation: React.FC<Props> = (props) => {
 					}`}
 					onClick={props.previousHandler}
 				>
-					<img src={leftArrowIcon} alt='Flêche gauche' />
+					<img src={leftArrowIcon} alt='Flèche gauche' />
 				</button>
 			)}
 			<h1 className={classes.text}>{props.headerText}</h1>
@@ -42,7 +42,7 @@ const DateNavigation: React.FC<Props> = (props) => {
 					}`}
 					onClick={props.nextHandler}
 				>
-					<img src={rightArrowIcon} alt='Flêche droite' />
+					<img src={rightArrowIcon} alt='Flèche droite' />
 				</button>
 			)}
 		</div>

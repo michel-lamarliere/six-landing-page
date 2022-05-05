@@ -71,7 +71,7 @@ const AnnualGraph: React.FC = () => {
 			let month = getMonthFn({
 				type: getMonthFnTypes.VARIABLE,
 				monthNumber: i,
-				abreviation: true,
+				abbreviation: true,
 			});
 
 			if (typeof month === 'string') {

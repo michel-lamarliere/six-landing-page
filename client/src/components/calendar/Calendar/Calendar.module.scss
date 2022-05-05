@@ -46,7 +46,7 @@
 	cursor: pointer;
 
 	&:hover {
-		border: 0.15rem solid $colorLavander;
+		border: 0.15rem solid $colorLavender;
 	}
 
 	&--disabled {
@@ -69,7 +69,7 @@
 	}
 
 	&--chosen-date {
-		background-color: $colorLavander;
+		background-color: $colorLavender;
 	}
 }
 
@@ -109,7 +109,7 @@
 			border-radius: 0.75rem;
 
 			&:hover {
-				background-color: $colorLavander;
+				background-color: $colorLavender;
 				cursor: pointer;
 			}
 
@@ -139,7 +139,7 @@
 		font-size: 14px;
 
 		&:hover {
-			background-color: $colorLavander;
+			background-color: $colorLavender;
 			cursor: pointer;
 		}
 

@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { ErrorPopUpActionTypes } from '../../store/pop-ups/error-pop-up';
 import { AlertPopUpActionTypes } from '../../store/pop-ups/alert-pop-up';
-import { RootState } from '../../store/_store';
-
 import RoundedButton from '../../components/buttons/RoundedButton/RoundedButton';
 
 import closeButtonIcon from '../../assets/icons/close.svg';

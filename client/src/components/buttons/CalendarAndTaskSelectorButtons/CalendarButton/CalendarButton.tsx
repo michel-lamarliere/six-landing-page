@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../../../store/_store';
@@ -32,7 +32,7 @@ export const CalendarButton: React.FC = () => {
 				className={`${classes.button__arrow} ${
 					calendarState.show && classes['button__arrow--open']
 				}`}
-				alt='Flêche Calendrier'
+				alt='Flèche Calendrier'
 			/>
 		</button>
 	);

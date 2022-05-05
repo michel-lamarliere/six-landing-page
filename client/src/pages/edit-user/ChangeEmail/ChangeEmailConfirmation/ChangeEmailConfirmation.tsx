@@ -17,7 +17,7 @@ const ChangeEmailConfirm: React.FC = () => {
 
 	const [response, setResponse] = useState('');
 
-	const modifyEmailAdressHandler = async () => {
+	const modifyEmailAddressHandler = async () => {
 		const responseData = await sendRequest({
 			url: `${process.env.REACT_APP_BACKEND_URL}/user/modify/email/confirmation`,
 			method: 'PATCH',
@@ -41,7 +41,7 @@ const ChangeEmailConfirm: React.FC = () => {
 	};
 
 	useEffect(() => {
-		modifyEmailAdressHandler();
+		modifyEmailAddressHandler();
 	}, []);
 
 	return <div>{response}</div>;

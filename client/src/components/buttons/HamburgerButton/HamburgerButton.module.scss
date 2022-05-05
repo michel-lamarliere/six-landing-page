@@ -15,7 +15,7 @@
 	height: 1.5rem;
 	cursor: pointer;
 
-	&__lign {
+	&__line {
 		content: '';
 		background-color: $colorWhite;
 		width: 100%;
@@ -24,13 +24,13 @@
 		transition: all ease-in-out 0.3s;
 
 		&:before {
-			@extend .hamburger__lign;
+			@extend .hamburger__line;
 			position: absolute;
 			transform: translateY(-0.55rem);
 		}
 
 		&:after {
-			@extend .hamburger__lign;
+			@extend .hamburger__line;
 			position: absolute;
 			transform: translateY(0.55rem);
 		}

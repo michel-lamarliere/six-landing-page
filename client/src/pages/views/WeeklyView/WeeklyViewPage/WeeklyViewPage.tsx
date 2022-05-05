@@ -85,7 +85,7 @@ const WeekView: React.FC = () => {
 			getMonthFn({
 				type: getMonthFnTypes.STATE,
 				monthNumber: chosenDate.getMonth(),
-				abreviation: false,
+				abbreviation: false,
 				setState: setMonthStr,
 			});
 		}

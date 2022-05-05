@@ -81,7 +81,7 @@ const HelpPage: React.FC = () => {
 					icon={fullBubble}
 					iconAlt={'tâche accomplie'}
 					description={
-						'Atteint à 100%. Vous avez fait votre maximum aujourd’hui et pouvez être fier de vous.'
+						"Atteint à 100%. Vous avez fait votre maximum aujourd’hui et pouvez être fier de vous."
 					}
 				/>
 				<HelpLevelItem

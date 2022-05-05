@@ -87,7 +87,7 @@ const Profile: React.FC = () => {
 				<div className={classes['edit-profile__text']}>Éditer le profil</div>
 				<img
 					src={arrowIcon}
-					alt='Flêche'
+					alt='Flèche'
 					className={`${classes['edit-profile__img']} ${
 						!showEditProfile && classes['edit-profile__img--closed']
 					}`}

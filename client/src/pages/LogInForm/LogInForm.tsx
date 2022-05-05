@@ -31,7 +31,6 @@ const LogInForm: React.FC<Props> = (props) => {
 	const { User } = useUserClass();
 
 	const [rememberEmail, setRememberEmail] = useState(false);
-	const [responseMessage, setResponseMessage] = useState('');
 
 	const {
 		input: emailInput,
@@ -98,11 +97,11 @@ const LogInForm: React.FC<Props> = (props) => {
 		User.logIn(responseData);
 	};
 
-	const checkboxHandler = (event: React.MouseEvent<HTMLDivElement>) => {
+	const checkboxHandler = () => {
 		setRememberEmail((prev) => !prev);
 	};
 
-	const forgotPasswordHandler = (event: React.MouseEvent) => {
+	const forgotPasswordHandler = () => {
 		dispatch({ type: ForgotPasswordPopUpActionTypes.SHOW_FORGOT_PASSWORD_POP_UP });
 		dispatch({ type: OverlayActionTypes.SHOW_OVERLAY });
 	};
@@ -125,7 +124,7 @@ const LogInForm: React.FC<Props> = (props) => {
 			switchFormHandler={
 				props.mobile ? () => navigate('/inscription') : props.switchFormHandler
 			}
-			responseMessage={responseMessage}
+			responseMessage={''}
 		>
 			<Input
 				styling={InputStyles.PURPLE_FORM}

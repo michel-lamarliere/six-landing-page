@@ -76,7 +76,7 @@ const Overlay: React.FC = () => {
 	};
 
 	return ReactDOM.createPortal(
-		<div className={classes.overlay} onClick={hideOverlay}></div>,
+		<div className={classes.overlay} onClick={hideOverlay} />,
 		document.getElementById('overlay')!
 	);
 };

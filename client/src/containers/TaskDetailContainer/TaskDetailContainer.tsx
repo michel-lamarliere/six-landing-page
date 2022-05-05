@@ -122,7 +122,7 @@ const TaskDetailContainer: React.FC<Props> = (props) => {
 					<div>Atteint</div>
 				</div>
 				<div className={classes.bubbles__item}>
-					<img src={halfBubbleIcon} alt='Preque atteint' />
+					<img src={halfBubbleIcon} alt='Presque atteint' />
 					<div>Presque atteint</div>
 				</div>
 				<div className={classes.bubbles__item}>

@@ -66,7 +66,7 @@ const CalendarHeader: React.FC<Props> = (props) => {
 						className={`${classes.button} ${classes['button--double-left']}`}
 						onClick={calendarPreviousYearHandler}
 					>
-						<img src={doubleLeftArrowIcon} alt='Flêche Année Précédente' />
+						<img src={doubleLeftArrowIcon} alt='Flèche Année Précédente' />
 					</button>
 				)}
 			{(props.calendar === calendarTypes.DAILY ||
@@ -77,7 +77,7 @@ const CalendarHeader: React.FC<Props> = (props) => {
 						className={`${classes.button} ${classes['button--left']}`}
 						onClick={calendarPreviousMonthHandler}
 					>
-						<img src={leftArrowIcon} alt='Flêche Mois Précédente' />
+						<img src={leftArrowIcon} alt='Flèche Mois Précédente' />
 					</button>
 				)}
 			<div className={classes.text}>{props.calendarText}</div>
@@ -89,7 +89,7 @@ const CalendarHeader: React.FC<Props> = (props) => {
 						className={`${classes.button} ${classes['button--right']}`}
 						onClick={calendarNextMonthHandler}
 					>
-						<img src={rightArrowIcon} alt='Flêche Mois Suivant' />
+						<img src={rightArrowIcon} alt='Flèche Mois Suivant' />
 					</button>
 				)}
 			{calendarNextYearHandlerDisabled && !calendarNextYearHandlerDisabled() && (
@@ -97,7 +97,7 @@ const CalendarHeader: React.FC<Props> = (props) => {
 					className={`${classes.button} ${classes['button--double-right']}`}
 					onClick={calendarNextYearHandler}
 				>
-					<img src={doubleRightArrowIcon} alt='Flêche Année Suivante' />
+					<img src={doubleRightArrowIcon} alt='Flèche Année Suivante' />
 				</button>
 			)}
 		</div>

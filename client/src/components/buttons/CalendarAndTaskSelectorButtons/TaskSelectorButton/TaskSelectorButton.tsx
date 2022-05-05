@@ -70,7 +70,7 @@ const TaskSelectorButton: React.FC<{
 					className={`${classes.button__arrow} ${
 						taskSelectorState.show && classes['button__arrow--open']
 					}`}
-					alt='Flêche Calendrier'
+					alt='Flèche Calendrier'
 				/>
 			</button>
 			{taskSelectorState.show && (

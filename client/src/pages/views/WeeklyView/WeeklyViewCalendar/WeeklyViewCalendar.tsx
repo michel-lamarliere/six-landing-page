@@ -88,7 +88,7 @@ const WeeklyCalendar: React.FC<{
 		getMonthFn({
 			type: getMonthFnTypes.STATE,
 			monthNumber: calendarDate.getMonth(),
-			abreviation: true,
+			abbreviation: true,
 			setState: setCalendarMonthStr,
 		});
 		createWeekCalendar();

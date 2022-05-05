@@ -17,7 +17,7 @@ const HamburgerButton: React.FC = () => {
 	return (
 		<div className={classes.wrapper} onClick={hamburgerButtonHandler}>
 			<div className={classes.hamburger}>
-				<span className={classes.hamburger__lign}></span>
+				<span className={classes.hamburger__line}></span>
 			</div>
 		</div>
 	);

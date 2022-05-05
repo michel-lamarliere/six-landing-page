@@ -22,28 +22,28 @@ const SignUpForm: React.FC<Props> = (props) => {
 
 	const [emailErrorMessage, setEmailErrorMessage] = useState('Format invalide.');
 
-	const [sumbitted, setSubmitted] = useState(false);
+	const [submitted, setSubmitted] = useState(false);
 
 	const {
 		input: nameInput,
 		setInput: setNameInput,
 		inputOnChangeHandler: nameOnChangeHandler,
 		inputOnBlurHandler: nameOnBlurHandler,
-	} = useInput({ type: useInputTypes.NAME, validate: true, display: sumbitted });
+	} = useInput({ type: useInputTypes.NAME, validate: true, display: submitted });
 
 	const {
 		input: emailInput,
 		setInput: setEmailInput,
 		inputOnChangeHandler: emailOnChangeHandler,
 		inputOnBlurHandler: emailOnBlurHandler,
-	} = useInput({ type: useInputTypes.EMAIL, validate: true, display: sumbitted });
+	} = useInput({ type: useInputTypes.EMAIL, validate: true, display: submitted });
 
 	const {
 		input: passwordInput,
 		setInput: setPasswordInput,
 		inputOnChangeHandler: passwordOnChangeHandler,
 		inputOnBlurHandler: passwordOnBlurHandler,
-	} = useInput({ type: useInputTypes.PASSWORD, validate: true, display: sumbitted });
+	} = useInput({ type: useInputTypes.PASSWORD, validate: true, display: submitted });
 
 	const {
 		input: passwordConfirmationInput,
@@ -53,7 +53,7 @@ const SignUpForm: React.FC<Props> = (props) => {
 	} = useInput({
 		type: useInputTypes.COMPARISON,
 		validate: true,
-		display: sumbitted,
+		display: submitted,
 		compareTo: passwordInput.value,
 	});
 
@@ -173,7 +173,7 @@ const SignUpForm: React.FC<Props> = (props) => {
 				value={passwordInput.value}
 				isValid={passwordInput.isValid}
 				isTouched={passwordInput.isTouched}
-				errorText='8 caractères minimum dont 1 minuscle, 1 majuscule, 1 chiffre et un caractère spécial.'
+				errorText='8 caractères minimum dont 1 minuscule, 1 majuscule, 1 chiffre et un caractère spécial.'
 				onChange={passwordOnChangeHandler}
 				onBlur={passwordOnBlurHandler}
 			/>
@@ -185,7 +185,7 @@ const SignUpForm: React.FC<Props> = (props) => {
 				value={passwordConfirmationInput.value}
 				isValid={passwordConfirmationInput.isValid}
 				isTouched={passwordConfirmationInput.isTouched}
-				errorText='Les mots de passe ne sont pas indentiques.'
+				errorText='Les mots de passe ne sont pas identiques.'
 				onChange={passwordConfirmationOnChangeHandler}
 				onBlur={passwordConfirmationOnBlurHandler}
 			/>

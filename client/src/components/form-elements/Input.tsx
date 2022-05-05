@@ -80,7 +80,7 @@ const FormInput: React.FC<{
 									src={
 										showPassword ? passwordShowIcon : passwordHideIcon
 									}
-									alt='Icone mot de passe'
+									alt='Icône mot de passe'
 								/>
 							</div>
 						)}
