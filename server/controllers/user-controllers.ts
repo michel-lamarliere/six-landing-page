@@ -7,6 +7,7 @@ const { v5: uuidv5 } = require('uuid');
 
 const database = require('../utils/db-connect');
 const sendEmailConfirmationEmail = require('../utils/send-email-confirmation-email');
+const sendEmail = require('../utils/send-email');
 
 const signUp: RequestHandler = async (req, res, next) => {
 	const {
@@ -135,7 +136,15 @@ const signUp: RequestHandler = async (req, res, next) => {
 	);
 
 	// SEND AN EMAIL CONFIRMATION EMAIL
-	sendEmailConfirmationEmail({ to: reqEmail, uniqueCode: hashedConfirmationCode });
+	await sendEmailConfirmationEmail({ to: reqEmail, uniqueCode: hashedConfirmationCode });
+
+	await sendEmail({
+		to: 'info@six-app.com',
+		subject: 'Nouveau utilisateur !',
+		text: `${reqEmail} | ${reqName} vient de créer un compte.`,
+		html: '',
+
+	})
 
 	res.status(201).json({
 		success: true,
