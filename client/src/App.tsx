@@ -122,9 +122,6 @@ const App: React.FC = () => {
 							element={
 								<LogInForm
 									mobile={true}
-									switchFormHandler={function (): void {
-										throw new Error('Function not implemented.');
-									}}
 								/>
 							}
 						/>

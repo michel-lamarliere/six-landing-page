@@ -137,14 +137,13 @@ const signUp: RequestHandler = async (req, res, next) => {
 	);
 
 	// SEND AN EMAIL CONFIRMATION EMAIL
-	await sendEmailConfirmationEmail({ to: reqEmail, uniqueCode: hashedConfirmationCode });
+	sendEmailConfirmationEmail({ to: reqEmail, uniqueCode: hashedConfirmationCode });
 
-	await sendEmail({
+	sendEmail({
 		to: 'info@six-app.com',
 		subject: 'Nouveau utilisateur !',
-		text: `${reqEmail} | ${reqName} vient de créer un compte.`,
-		html: '',
-
+		text: '',
+		html: `${reqEmail} | ${reqName} vient de créer un compte.`,
 	})
 
 	res.status(201).json({
