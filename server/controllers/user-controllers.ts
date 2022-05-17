@@ -112,6 +112,7 @@ const signUp: RequestHandler = async (req, res, next) => {
 		},
 		deleteCode: null,
 		log: [],
+
 	};
 
 	// INSERTS THE NEW USER IS THE DATABASE
