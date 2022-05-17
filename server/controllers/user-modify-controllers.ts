@@ -6,6 +6,7 @@ const crypto = require('crypto');
 
 const database = require('../utils/db-connect');
 const sendEmail = require('../utils/send-email');
+const sendEmailConfirmationEmail = require('../utils/send-email');
 
 const confirmEmailAddress: RequestHandler = async (req, res, next) => {
 	const email = req.body.email;
