@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="dca3563d-78bb-4b9f-af98-76caa028c5a2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../client/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/.idea/client.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/.idea/dictionaries/michel.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/public/favicons/android-chrome-192x192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/public/favicons/apple-touch-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/public/favicons/browserconfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/public/favicons/favicon-16x16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/public/favicons/favicon-32x32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/public/favicons/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/public/favicons/mstile-150x150.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/public/favicons/safari-pinned-tab.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/public/favicons/site.webmanifest" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/App.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/backgrounds/desktop-bg.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/backgrounds/mobile-bg.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/OFL.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-Black.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-BlackItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-Bold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-BoldItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-ExtraBold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-ExtraBoldItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-ExtraLight.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-ExtraLightItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-Italic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-Light.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-LightItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-Medium.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-MediumItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-Regular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-SemiBold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-SemiBoldItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-Thin.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/fonts/Poppins-ThinItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/app/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/arrow-bottom-purple.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/back-button.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/calendar/calendar_icon.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/calendar/double-left-arrow.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/calendar/double-right-arrow.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/calendar/left-arrow.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/calendar/right-arrow.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/close.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/empty-bubble.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/error.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/form&amp;input/password_hide.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/form&amp;input/password_show.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/form&amp;input/remember-me_false.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/form&amp;input/remember-me_true.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/full-bubble.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/half-bubble.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/log_in-sign_up-back-button.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/profile/profile-confirmed-email-arrow.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/profile/profile-log-out.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/profile/profile-modify-email.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/profile/profile-modify-image.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/profile/profile-modify-name.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/profile/profile-modify-password.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/profile/profile-stats.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/refresh-spinner.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/six/nutrition.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/six/projects.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/six/relaxation.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/six/sleep.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/six/social_life.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/six/sports.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/spinner.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/success.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/top-arrow.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/tutorial/tutorial-empty.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/tutorial/tutorial-full.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/tutorial/tutorial-half.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/user/icon_0.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/user/icon_1.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/user/icon_10.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/user/icon_11.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/user/icon_2.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/user/icon_3.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/user/icon_4.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/user/icon_5.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/user/icon_6.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/user/icon_7.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/user/icon_8.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/user/icon_9.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/assets/icons/warning.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/classes/task-class-hook.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/classes/user-class-hook.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/DateNavigation/DateNavigation.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/DateNavigation/DateNavigation.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/Overlay/Overlay.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/Overlay/Overlay.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/ScrollToTop/ScrollToTop.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/Spinner/Spinner.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/UserIcon/UserIcon.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/buttons/CalendarAndTaskSelectorButtons/CalendarAndTaskSelectorButtons.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/buttons/CalendarAndTaskSelectorButtons/CalendarButton/CalendarButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/buttons/CalendarAndTaskSelectorButtons/TaskSelectorButton/TaskSelectorButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/buttons/HamburgerButton/HamburgerButton.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/buttons/HamburgerButton/HamburgerButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/buttons/LogDataButton/LogDataButton.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/buttons/LogDataButton/LogDataButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/buttons/RoundedButton/RoundedButton.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/buttons/RoundedButton/RoundedButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/calendar/Calendar/Calendar.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/calendar/Calendar/Calendar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/calendar/CalendarDaysOfWeek/CalendarDaysOfWeek.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/calendar/CalendarDaysOfWeek/CalendarDaysOfWeek.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/calendar/CalendarHeader/CalendarHeader.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/calendar/CalendarHeader/CalendarHeader.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/form-elements/Input.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/form-elements/Input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/layout/DesktopSidebar/DesktopSidebar.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/layout/DesktopSidebar/DesktopSidebar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/layout/MobileSidebar/MobileSidebar.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/layout/MobileSidebar/MobileSidebar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/pop-ups/AlertPopUp/AlertPopUp.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/pop-ups/EmailConfirmationPopUp/EmailConfirmationPopUp.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/pop-ups/EmailConfirmationPopUp/EmailConfirmationPopUp.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/pop-ups/ErrorPopUp/ErrorPopUp.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/pop-ups/ForgotPasswordPopUp/ForgotPasswordPopUp.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/pop-ups/ForgotPasswordPopUp/ForgotPasswordPopUp.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/pop-ups/LogOutConfirmation/LogOutConfirmation.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/pop-ups/LogOutConfirmation/LogOutConfirmation.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/svgs/RefreshSpinnerSVG.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/AlertOrErrorPopUpContainer/AlertOrErrorPopUpContainer.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/AlertOrErrorPopUpContainer/AlertOrErrorPopUpContainer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/EditUserContainer/EditUserContainer.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/EditUserContainer/EditUserContainer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/LogInSignUpFormContainer/LogInSignUpFormContainer.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/LogInSignUpFormContainer/LogInSignUpFormContainer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/PopUpContainer/PopUpContainer.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/PopUpContainer/PopUpContainer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/SidebarContainer/SidebarContainer.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/SidebarContainer/SidebarContainer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/TaskDetailContainer/TaskDetailContainer.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/TaskDetailContainer/TaskDetailContainer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/ViewsContainer/ViewsContainer.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/containers/ViewsContainer/ViewsContainer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/hooks/dates-hook.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/hooks/format-user-name-hook.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/hooks/http-hook.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/hooks/if-user-inexistant.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/hooks/input-hook.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/hooks/six-name-hook.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/AnnualChartPage/AnnualChartPage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/AnnualChartPage/AnnualChartPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/ChangeForgottenPasswordPage/ChangeForgottenPasswordPage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/ChangeForgottenPasswordPage/ChangeForgottenPasswordPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/ContactPage/ContactPage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/ContactPage/ContactPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/EmailAddressConfirmationPage/EmailAddressConfirmationPage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/EmailAddressConfirmationPage/EmailAddressConfirmationPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/Error404Page/Error404Page.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/Error404Page/Error404Page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/Homepage/HomepageCarouselButton/HomepageCarouselButton.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/Homepage/HomepageCarouselButton/HomepageCarouselButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/Homepage/HomepageGridItem/HomepageGridItem.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/Homepage/HomepageGridItem/HomepageGridItem.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/Homepage/HomepagePage/HomepagePage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/Homepage/HomepagePage/HomepagePage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/LegalNoticePage/LegalNoticePage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/LegalNoticePage/LegalNoticePage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/LogInForm/LogInForm.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/LogInForm/LogInForm.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/SignUpForm/SignUpForm.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/UserProfile/UserProfileEditButton/UserProfileEditButton.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/UserProfile/UserProfileEditButton/UserProfileEditButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/UserProfile/UserProfilePage/UserProfilePage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/UserProfile/UserProfilePage/UserProfilePage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/edit-user/ChangeEmail/ChangeEmailConfirmation/ChangeEmailConfirmation.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/edit-user/ChangeEmail/ChangeEmailPage/ChangeEmailPage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/edit-user/ChangeEmail/ChangeEmailPage/ChangeEmailPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/edit-user/ChangeImagePage/ChangeImagePage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/edit-user/ChangeImagePage/ChangeImagePage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/edit-user/ChangeNamePage/ChangeNamePage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/edit-user/ChangePasswordPage/ChangePasswordPage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/edit-user/ChangePasswordPage/ChangePasswordPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/edit-user/DeleteAccount/DeleteAccountConfirmation/DeleteAccountConfirmation.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/edit-user/DeleteAccount/DeleteAccountPage/DeleteAccountPage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/edit-user/DeleteAccount/DeleteAccountPage/DeleteAccountPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/help/HelpLevelItem/HelpLevelItem.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/help/HelpLevelItem/HelpLevelItem.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/help/HelpPage/HelpPage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/help/HelpPage/HelpPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/help/HelpTaskItem/HelpTaskItem.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/help/HelpTaskItem/HelpTaskItem.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/tasks/NutritionPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/tasks/ProjectsPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/tasks/RelaxationPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/tasks/SleepPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/tasks/SocialLifePage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/tasks/SportsPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/views/DailyView/DailyViewCalendar/DailyViewCalendar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/views/DailyView/DailyViewPage/DailyViewPage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/views/DailyView/DailyViewPage/DailyViewPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/views/MonthlyView/MonthlyViewCalendar/MonthlyViewCalendar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/views/MonthlyView/MonthlyViewPage/MonthlyViewPage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/views/MonthlyView/MonthlyViewPage/MonthlyViewPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/views/WeeklyView/WeeklyViewCalendar/WeeklyViewCalendar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/views/WeeklyView/WeeklyViewPage/WeeklyViewPage.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/views/WeeklyView/WeeklyViewPage/WeeklyViewPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/views/WeeklyView/WeeklyViewTasks/WeeklyViewTasks.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/views/WeeklyView/WeeklyViewTasks/WeeklyViewTasks.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/react-app-env.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/store/_store.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/store/calendar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/store/mobile-sidebar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/store/overlay.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/store/pop-ups/alert-pop-up.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/store/pop-ups/email-confirmation-pop-up.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/store/pop-ups/error-pop-up.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/store/pop-ups/forgot-password-pop-up.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/store/pop-ups/log-out-confirmation-pop-up.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/store/task-selector.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/store/user.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/style/variables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../package.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="29O19t26h2O0GMsnpo7VaCjbnhr" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/michel/Dev/Projects/six-app/client-app&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dca3563d-78bb-4b9f-af98-76caa028c5a2" name="Changes" comment="" />
+      <created>1652969169722</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1652969169722</updated>
+      <workItem from="1652969170935" duration="982000" />
+      <workItem from="1652970425384" duration="3155000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
